@@ -19,6 +19,7 @@ body {
 	font-size: 2em;
 	position: absolute;
 	z-index: 3;
+	vertical-align: top;
 }
 
 button {
@@ -32,6 +33,7 @@ button {
 	font-size: 1em;
 	cursor: pointer;
 	z-index: 2;
+	vertical-align: bottom;
 }
 
 button:hover {
