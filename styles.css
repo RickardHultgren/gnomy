@@ -33,13 +33,63 @@ button {
 	border-radius: 5px;
 	font-size: 1em;
 	cursor: pointer;
-	z-index: 2;
+	z-index: 3;
 	vertical-align: bottom;
+	bottom: 0;
 }
+
+
+
 
 button:hover {
 	background-color: #666;
 }
+
+left {
+	position: absolute;
+	bottom: 20px;
+	color: white;
+	background-color: #444;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	font-size: 1em;
+	cursor: pointer;
+	z-index: 3;
+	vertical-align: middle;
+	align: left;
+	left: 0;
+}
+
+
+
+left:hover {
+	background-color: #666;
+}
+
+right {
+	position: absolute;
+	bottom: 20px;
+	color: white;
+	background-color: #444;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	font-size: 1em;
+	cursor: pointer;
+	z-index: 3;
+	vertical-align: middle;
+	align: right;
+	right: 0;
+}
+
+
+
+right:hover {
+	background-color: #666;
+}
+
+
 
 #emotions {
 	background-color:blue;
