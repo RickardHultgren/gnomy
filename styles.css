@@ -8,11 +8,40 @@ body {
 	background-color: black;
 	font-family: 'Cabin', sans-serif;
 	overflow: hidden;
+	position: relative;
 }
 
 #datetime {
 	color: white;
+	background-color: green;
+	padding: 10px 20px;
+	border-radius: 5px;
 	font-size: 2em;
 	position: absolute;
 	z-index: 3;
+}
+
+button {
+	position: absolute;
+	bottom: 20px;
+	color: white;
+	background-color: #444;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	font-size: 1em;
+	cursor: pointer;
+	z-index: 2;
+}
+
+button:hover {
+	background-color: #666;
+}
+
+#transparent-mirror {
+	left: 20px;
+}
+
+#map {
+	right: 20px;
 }
