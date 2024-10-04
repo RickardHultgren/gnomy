@@ -12,6 +12,7 @@ body {
 }
 
 #datetime {
+	top:0;
 	color: white;
 	background-color: green;
 	padding: 10px 20px;
@@ -23,7 +24,6 @@ body {
 }
 
 button {
-	top:0;
 	position: absolute;
 	bottom: 20px;
 	color: white;
@@ -39,6 +39,13 @@ button {
 
 button:hover {
 	background-color: #666;
+}
+
+#emotions {
+	background-color:blue;
+	height:40%;
+	width:40%;
+	
 }
 
 #transparent-mirror {
