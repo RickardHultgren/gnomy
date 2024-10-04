@@ -1,0 +1,18 @@
+body {
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: black;
+	font-family: 'Cabin', sans-serif;
+	overflow: hidden;
+}
+
+#datetime {
+	color: white;
+	font-size: 2em;
+	position: absolute;
+	z-index: 3;
+}
