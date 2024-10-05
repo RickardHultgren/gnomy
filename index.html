@@ -62,14 +62,26 @@
 
       <div id="wheel"></div>
 <script>
+  const circularTable = [
+      { value: 3 },
+      { value: 3 },
+      { value: 3 },
+      { value: 3 },
+      { value: 3 },
+      { value: 3 },
+      { value: 3 },
+      { value: 3 },
+      { value: 2 },
+      { value: 2 },
+  ];
 
   const wheel = document.getElementById('wheel');
 
   // Center Hub for value 1
   const nr1 = document.createElement('div');
-  one.className = 'nr1';
-  one.innerText = '1';
-  wheel.appendChild(one);
+  nr1.className = 'nr1';
+  nr1.innerText = '1';
+  wheel.appendChild(nr1);
 
   // Place the peripheral fields for all "3" and the spokes for "2"
   const count = circularTable.filter(item => item.value === 3).length;
@@ -84,8 +96,8 @@
 
           const field = document.createElement('div');
           field.className = 'nr3';
-          field.style.left = `${x}px`;
-          field.style.top = `${y}px`;
+          field.style.left = `${x - 25}px`;
+          field.style.top = `${y - 25}px`;
           field.innerText = item.value;
           wheel.appendChild(field);
 
@@ -96,14 +108,12 @@
 
           const spoke = document.createElement('div');
           spoke.className = 'nr2';
-          spoke.style.left = `${spokeX}px`;
-          spoke.style.top = `${spokeY}px`;
+          spoke.style.left = `${spokeX - 25}px`;
+          spoke.style.top = `${spokeY - 25}px`;
           spoke.innerText = '2';
           wheel.appendChild(spoke);
       }
-  });
-
-  
+  });  
 </script>
     </div>
 </body>

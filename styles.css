@@ -239,46 +239,27 @@ padding-top:3.5%;
 	position: relative;
 	width: 400px;
 	height: 400px;
-	margin: 1.75% -3%;
+	margin: 0 auto;
 	border-radius: 50%;
-	border: 2px solid #000;
-	z-index:7;
+	border: 2px solid black;
 }
 
-.nr3 {
+.nr1, .nr2, .nr3 {
 	position: absolute;
 	width: 50px;
 	height: 50px;
-	line-height: 50px;
 	text-align: center;
+	line-height: 50px;
 	border-radius: 50%;
 	background-color: lightblue;
-	transform: translate(-50%, -50%);
-	z-index:7;
-}
-
-.nr2 {
-	position: absolute;
-	width: 80px;
-	height: 80px;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: lightcoral;
-	border-radius: 50%;
-	text-align: center;
-	line-height: 80px;
-	z-index:7;
+	border: 1px solid black;
 }
 
 .nr1 {
-	position: absolute;
-	width: 40px;
-	height: 40px;
-	line-height: 40px;
-	text-align: center;
-	border-radius: 50%;
-	background-color: lightgreen;
-	transform: translate(-50%, -50%);
-	z-index:7;
+	left: 175px;  /* Centered in the hub */
+	top: 175px;
+}
+
+.nr2, .nr3 {
+	/* Styling for outer values */
 }
