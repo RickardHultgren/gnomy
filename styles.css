@@ -105,7 +105,7 @@ button:hover {
 		height: 0;
 		border-left: 60px solid transparent;
 		border-right: 60px solid transparent;
-		border-top-width: 160px;
+		border-top-width: 180px;
 		border-top-style: solid;
 		transform-origin: 50% 100%; /* Setting the point of rotation to the bottom center */
 }
@@ -145,35 +145,35 @@ button:hover {
 
 
 
-.top .top2 .top1 {
+.top, .top2, .top1 {
 	transform: rotate(0deg);
 }
 
-.top-right .top-right2 .top-right .top-right1 {
+.top-right, .top-right2, .top-right1 {
 	transform: rotate(45deg);
 }
 
-.right .right2 .right1 {
+.right, .right2, .right1 {
 	transform: rotate(90deg);
 }
 
-.bottom-right .bottom-right2 .bottom-right1 {
+.bottom-right, .bottom-right2, .bottom-right1 {
 	transform: rotate(135deg);
 }
 
-.bottom .bottom2 .bottom1 {
+.bottom, .bottom2, .bottom1 {
 	transform: rotate(180deg);
 }
 
-.bottom-left .bottom-left2 .bottom-left1 {
+.bottom-left, .bottom-left2, .bottom-left1 {
 	transform: rotate(225deg);
 }
 
-.left .left2 .left1 {
+.left, .left2, .left1 {
 	transform: rotate(270deg);
 }
 
-.top-left .top-left2 .top-left1 {
+.top-left, .top-left2, .top-left1 {
 	transform: rotate(315deg);
 }
 
@@ -182,9 +182,9 @@ button:hover {
 	border-top-color: #888888;
 	opacity: 0.5;
 	transform-origin: 50% 100%;
-	border-left: 60px solid transparent;
-	border-right: 60px solid transparent;
-	
+	border-left: 40px solid transparent;
+	border-right: 40px solid transparent;
+  	border-top-width: 120px;
 		border-top-color: #888888;
 		opacity: 0.5;
 	  z-index:5
