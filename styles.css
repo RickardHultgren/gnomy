@@ -7,10 +7,10 @@ body {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: black;
 		font-family: 'Cabin', sans-serif;
 		overflow: hidden;
 		position: relative;
+	background-color:#000000;
 }
 
 #datetime {
@@ -86,29 +86,43 @@ button:hover {
 /* emotions.css */
 
 #emotions {
-		position: relative;
 		width: 300px; /* Set to accommodate the largest "emotion cake" */
 		height: 300px;
 }
 
-.emotions {
+.emotions, .emotions3, .emotions2, .emotions1 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	vertical-align: middle;
 		position: absolute;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-	z-index:4;
 }
 
+.emotions2 {
+padding-top:3.5%;
+	
+}
+
+.emotions1  {
+	padding-top:7%;
+
+}
+
+
 .emotions3 div, .emotions2 div, .emotions1 div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 		position: absolute;
 		width: 0;
 		height: 0;
-		border-left: 60px solid transparent;
-		border-right: 60px solid transparent;
-		border-top-width: 180px;
 		border-top-style: solid;
 		transform-origin: 50% 100%; /* Setting the point of rotation to the bottom center */
 }
+
 
 /* Emotions 3 colors */
 .top {
@@ -177,6 +191,18 @@ button:hover {
 	transform: rotate(315deg);
 }
 
+/* Emotions 3 colors */
+.top, .top-right, .right, .bottom-right, .bottom, .bottom-left, .left, .top-left {
+	transform-origin: 50% 100%;
+	border-left: 60px solid transparent;
+	border-right: 60px solid transparent;
+		border-top-width: 180px;
+		opacity: 1;
+		z-index:4;
+		border-top-style: solid;
+}
+
+
 /* Emotions 2 colors */
 .top2, .top-right2, .right2, .bottom-right2, .bottom2, .bottom-left2, .left2, .top-left2 {
 	border-top-color: #888888;
@@ -187,7 +213,8 @@ button:hover {
   	border-top-width: 120px;
 		border-top-color: #888888;
 		opacity: 0.5;
-	  z-index:5
+	  z-index:5;
+	  border-top-style: solid;
 }
 
 /* Emotions 1 colors */
@@ -199,4 +226,5 @@ button:hover {
 		border-right: 20px solid transparent;
 		border-top-width: 60px;
 		z-index:6;
+  	border-top-style: solid;
 }
