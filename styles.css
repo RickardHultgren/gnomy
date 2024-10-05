@@ -1,16 +1,45 @@
-/* styles.css */
+/* Importing a Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
 body {
-		margin: 0;
-		padding: 0;
-		height: 100vh;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-family: 'Cabin', sans-serif;
-		overflow: hidden;
-		position: relative;
-	background-color:#000000;
+		font-family: 'Montserrat', sans-serif;
+		background: #F0F4F8;
+		color: #333;
+		text-align: center;
+		padding: 5% 10%;
+}
+
+.container {
+		background: #ffffff;
+		border-radius: 15px;
+		padding: 40px;
+		max-width: 600px;
+		margin: auto;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+		color: #4A90E2;
+}
+
+p {
+		line-height: 1.6;
+}
+
+button {
+		background-color: #4A90E2;
+		color: #fff;
+		padding: 15px 30px;
+		font-size: 16px;
+		border: none;
+		border-radius: 30px;
+		cursor: pointer;
+		margin-top: 20px;
+		transition: background-color 0.3s;
+}
+
+button:hover {
+		background-color: #357ABD;
 }
 
 #datetime {
@@ -24,22 +53,6 @@ body {
 		z-index: 3;
 }
 
-button {
-		position: absolute;
-		bottom: 20px;
-		color: white;
-		background-color: #444;
-		border: none;
-		padding: 10px 20px;
-		border-radius: 5px;
-		font-size: 1em;
-		cursor: pointer;
-		z-index: 3;
-}
-
-button:hover {
-		background-color: #666;
-}
 
 #leftbutton {
 		position: absolute;
