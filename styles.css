@@ -252,7 +252,8 @@ padding-top:3.5%;
 	line-height: 50px;
 	border-radius: 50%;
 	background-color: lightblue;
-	border: 1px solid black;
+	border: 1px solid black
+	z-index:7;
 }
 
 .nr1 {
