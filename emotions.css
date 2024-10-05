@@ -94,3 +94,78 @@
 	border-top-color: #ff4444;
 	transform: rotate(315deg);
 }
+
+
+
+
+
+
+
+.top2 {
+	transform: rotate(0deg);
+}
+
+.top-right2 {
+	transform: rotate(45deg);
+}
+
+.right2 {
+	transform: rotate(90deg);
+}
+
+.bottom-right2 {
+	transform: rotate(135deg);
+}
+
+.bottom2 {
+	transform: rotate(180deg);
+}
+
+.bottom-left2 {
+	transform: rotate(225deg);
+}
+
+.left2 {
+	transform: rotate(270deg);
+}
+
+.top-left2 {
+	transform: rotate(315deg);
+}
+
+
+
+
+
+
+.top1 {
+	transform: rotate(0deg);
+}
+
+.top-right1 {
+	transform: rotate(45deg);
+}
+
+.right1 {
+	transform: rotate(90deg);
+}
+
+.bottom-right1 {
+	transform: rotate(135deg);
+}
+
+.bottom1 {
+	transform: rotate(180deg);
+}
+
+.bottom-left1 {
+	transform: rotate(225deg);
+}
+
+.left1 {
+	transform: rotate(270deg);
+}
+
+.top-left1 {
+	transform: rotate(315deg);
+}
