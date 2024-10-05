@@ -1,129 +1,54 @@
-
 .emotions {
-	/*position: relative;*/
 	width: 100px;
 	height: 100px;
 }
 
 .emotions div {
-  position: absolute;
+	position: absolute;
 	width: 0;
 	height: 0;
 	border-left: 150px solid transparent;
 	border-right: 150px solid transparent;
-	border-top: 50px solid;
-	transform-origin: 50% 100%;  /* Setting the point of rotation to the bottom center */
+	border-top: 50px solid; /* Default border color if no specific class is added */
+	transform-origin: 50% 100%; /* Setting the point of rotation to the bottom center */
 }
 
 .top {
-	width: 0; 
-	height: 0; 
-	border-left: 150px solid transparent;
-	border-right: 150px solid transparent;
-
-	border-top: 50px solid #aaaa00
-	transform: translate(0, -25px) rotate(0deg);
-}
-
-.top-right {
-	width: 0; 
-	height: 0; 
-	border-left: 150px solid transparent;
-	border-right: 150px solid transparent;
-
-	border-top: 50px solid #66ff66
-	transform: translate(-50%, -25px) rotate(45deg);
-}
-
-.right {
-	width: 0; 
-	height: 0; 
-	border-left: 150px solid transparent;
-	border-right: 150px solid transparent;
-
-	border-top: 50px solid #44ff44
-	transform: translate(-50%, -50%) rotate(90deg);
-}
-
-.bottom-right {
-	width: 0; 
-	height: 0; 
-	border-left: 150px solid transparent;
-	border-right: 150px solid transparent;
-
-	border-top: 50px solid #00aaaa
-	transform: translate(-50%, 25px) rotate(135deg);
-}
-
-.bottom {
-	width: 0; 
-	height: 0; 
-	border-left: 150px solid transparent;
-	border-right: 150px solid transparent;
-
-	border-top: 50px solid #4444ff
-	transform: translate(0, 25px) rotate(180deg);
-}
-
-.bottom-left {
-	width: 0; 
-	height: 0; 
-	border-left: 150px solid transparent;
-	border-right: 150px solid transparent;
-
-	border-top: 50px solid #aa00aa
-	transform: translate(50%, 25px) rotate(225deg);
-}
-
-.left {
-	width: 0; 
-	height: 0; 
-	border-left: 150px solid transparent;
-	border-right: 150px solid transparent;
-
-	border-top: 50px solid #aa0000
-	transform: translate(50%, -50%) rotate(270deg);
-}
-
-.top-left {
-	width: 0; 
-	height: 0; 
-	border-left: 150px solid transparent;
-	border-right: 150px solid transparent;
-
-	border-top: 50px solid #ff4444
-	transform: translate(50%, -25px) rotate(315deg);
-}
-
-
-.top {
+	border-top-color: #aaaa00;
 	transform: rotate(0deg);
 }
 
 .top-right {
+	border-top-color: #66ff66;
 	transform: rotate(45deg);
 }
 
 .right {
+	border-top-color: #44ff44;
 	transform: rotate(90deg);
 }
 
 .bottom-right {
+	border-top-color: #00aaaa;
 	transform: rotate(135deg);
 }
 
 .bottom {
+	border-top-color: #4444ff;
 	transform: rotate(180deg);
 }
 
 .bottom-left {
+	border-top-color: #aa00aa;
 	transform: rotate(225deg);
 }
 
 .left {
+	border-top-color: #aa0000;
 	transform: rotate(270deg);
 }
 
 .top-left {
+	border-top-color: #ff4444;
 	transform: rotate(315deg);
 }
