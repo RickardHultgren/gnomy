@@ -1,7 +1,7 @@
 
 
 #emotions {
-	position: relative;
+	position: rel;
 	max-width: fit-content;
 	max-height: fit-content;
 	margin-left: auto;
@@ -23,8 +23,6 @@
 	margin-top: auto;
 	margin-bottom: auto;
 	z-index:4;
-	width: 100px;
-	height: 100px;
 }
 
 .emotions3 div {
@@ -46,8 +44,6 @@
 	margin-top: auto;
 	margin-bottom: auto;
 	z-index:5;
-	width: 100px;
-	height: 100px;
 }
 
 .emotions2 div {
@@ -71,8 +67,6 @@
 	margin-top: auto;
 	margin-bottom: auto;
 	z-index:6;
-	width: 100px;
-	height: 100px;
 }
 
 .emotions1 div {
