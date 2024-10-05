@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <link rel="icon" type="image/x-icon" href="GnomyLogo.ico">
+  <link rel="icon" type="image/x-icon" href="GnomyLogo.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Date and Time Display</title>
@@ -10,90 +10,107 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        #wheel {
-            position: relative;
-            width: 400px;
-            height: 400px;
-            margin: 0 auto;
-            border-radius: 50%;
-            border: 2px solid black;
-        }
 
-        .nr1, .nr2, .nr3 {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            text-align: center;
-            line-height: 50px;
-            border-radius: 50%;
-            background-color: lightblue;
-            border: 1px solid black;
-        }
-
-        .nr1 {
-            left: 175px;
-            top: 175px;
-        }
-    </style>
+    <script src="script.js"></script>
 </head>
 
 <body>
     <div id="datetime"></div>
-    <div id="wheel"></div>
-    
-    <script>
-        const circularTable = [
-            { position: 'top', value: 1 }, { position: 'top', value: 2 }, { position: 'top', value: 3 },
-            { position: 'top-right', value: 1 }, { position: 'top-right', value: 2 }, { position: 'top-right', value: 3 },
-            { position: 'right', value: 1 }, { position: 'right', value: 2 }, { position: 'right', value: 3 },
-            { position: 'bottom-right', value: 1 }, { position: 'bottom-right', value: 2 }, { position: 'bottom-right', value: 3 },
-            { position: 'bottom', value: 1 }, { position: 'bottom', value: 2 }, { position: 'bottom', value: 3 },
-            { position: 'bottom-left', value: 1 }, { position: 'bottom-left', value: 2 }, { position: 'bottom-left', value: 3 },
-            { position: 'left', value: 1 }, { position: 'left', value: 2 }, { position: 'left', value: 3 },
-            { position: 'top-left', value: 1 }, { position: 'top-left', value: 2 }, { position: 'top-left', value: 3 }
-        ];
+    <div id="leftbutton">Left</div>
+    <div id="rightbutton">Right</div>
+    <button id="transparent-mirror">Transparent Mirror</button>
+    <button id="map">Map</button>
+    <div id="emotions">
+        <div class="emotions3">
+            <div class="top"></div>
+            <div class="top-right"></div>
+            <div class="right"></div>
+            <div class="bottom-right"></div>
+            <div class="bottom"></div>
+            <div class="bottom-left"></div>
+            <div class="left"></div>
+            <div class="top-left"></div>
+        </div>
+        <div class="emotions2">
+            <div class="top2"></div>
+            <div class="top-right2"></div>
+            <div class="right2"></div>
+            <div class="bottom-right2"></div>
+            <div class="bottom2"></div>
+            <div class="bottom-left2"></div>
+            <div class="left2"></div>
+            <div class="top-left2"></div>
+        </div>
+        <div class="emotions1">
+            <div class="top1"></div>
+            <div class="top-right1"></div>
+            <div class="right1"></div>
+            <div class="bottom-right1"></div>
+            <div class="bottom1"></div>
+            <div class="bottom-left1"></div>
+            <div class="left1"></div>
+            <div class="top-left1"></div>
+        </div>
 
-        const wheel = document.getElementById('wheel');
 
-        // Center Hub for value 1
-        const hub = document.createElement('div');
-        hub.className = 'nr1';
-        hub.innerText = '1';
-        wheel.appendChild(hub);
 
-        // Filtering items with value 3 to be placed on the periphery
-        const itemsWithValue3 = circularTable.filter(item => item.value === 3);
-        const count = itemsWithValue3.length;
 
-        itemsWithValue3.forEach((item, index) => {
-            // Calculate angle for the peripheral fields
-            const angle = (index / count) * 2 * Math.PI;
-            const radius = 150;
 
-            const x = radius * Math.cos(angle) + 175; // 175 is to center it in the container
-            const y = radius * Math.sin(angle) + 175;
+      
 
-            const field = document.createElement('div');
-            field.className = 'nr3';
-            field.style.left = `${x}px`;
-            field.style.top = `${y}px`;
-            field.innerText = item.value;
-            wheel.appendChild(field);
+      <div id="wheel"></div>
 
-            // Place spoke for value "2" between the hub and periphery
-            const spokeRadius = radius / 2; // Midway between hub and peripheral field
-            const spokeX = spokeRadius * Math.cos(angle) + 175;
-            const spokeY = spokeRadius * Math.sin(angle) + 175;
+      <script>
+          const circularTable = [
+              { position: 'top', value: 1 }, { position: 'top', value: 2 }, { position: 'top', value: 3 },
+              { position: 'top-right', value: 1 }, { position: 'top-right', value: 2 }, { position: 'top-right', value: 3 },
+              { position: 'right', value: 1 }, { position: 'right', value: 2 }, { position: 'right', value: 3 },
+              { position: 'bottom-right', value: 1 }, { position: 'bottom-right', value: 2 }, { position: 'bottom-right', value: 3 },
+              { position: 'bottom', value: 1 }, { position: 'bottom', value: 2 }, { position: 'bottom', value: 3 },
+              { position: 'bottom-left', value: 1 }, { position: 'bottom-left', value: 2 }, { position: 'bottom-left', value: 3 },
+              { position: 'left', value: 1 }, { position: 'left', value: 2 }, { position: 'left', value: 3 },
+              { position: 'top-left', value: 1 }, { position: 'top-left', value: 2 }, { position: 'top-left', value: 3 }
+          ];
 
-            const spoke = document.createElement('div');
-            spoke.className = 'nr2';
-            spoke.style.left = `${spokeX}px`;
-            spoke.style.top = `${spokeY}px`;
-            spoke.innerText = '2';
-            wheel.appendChild(spoke);
-        });
-    </script>
-</body>
+          const wheel = document.getElementById('wheel');
 
+          // Center Hub for value 1
+          const hub = document.createElement('div');
+          hub.className = 'nr1';
+          hub.innerText = '1';
+          wheel.appendChild(hub);
+
+          // Filtering items with value 3 to be placed on the periphery
+          const itemsWithValue3 = circularTable.filter(item => item.value === 3);
+          const count = itemsWithValue3.length;
+
+          itemsWithValue3.forEach((item, index) => {
+              // Calculate angle for the peripheral fields
+              const angle = (index / count) * 2 * Math.PI;
+              const radius = 150;
+
+              const x = radius * Math.cos(angle) + 175; // 175 is to center it in the container
+              const y = radius * Math.sin(angle) + 175;
+
+              const field = document.createElement('div');
+              field.className = 'nr3';
+              field.style.left = `${x}px`;
+              field.style.top = `${y}px`;
+              field.innerText = item.value;
+              wheel.appendChild(field);
+
+              // Place spoke for value "2" between the hub and periphery
+              const spokeRadius = radius / 2; // Midway between hub and peripheral field
+              const spokeX = spokeRadius * Math.cos(angle) + 175;
+              const spokeY = spokeRadius * Math.sin(angle) + 175;
+
+              const spoke = document.createElement('div');
+              spoke.className = 'nr2';
+              spoke.style.left = `${spokeX}px`;
+              spoke.style.top = `${spokeY}px`;
+              spoke.innerText = '2';
+              wheel.appendChild(spoke);
+          });
+      </script>
+      </body>
 </html>
