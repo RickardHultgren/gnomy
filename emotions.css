@@ -7,16 +7,13 @@
 
 .emotions div {
 	position: absolute;
-	width: 0;
-	height: 0;
-	border-left: 50px solid transparent;
-	border-right: 50px solid transparent;
-	border-top: 50px solid;  position: absolute;
-	width: 0;
-	height: 0;
-	border-left: 50px solid transparent;
-	border-right: 50px solid transparent;
-	border-bottom: 50px solid #88ff88;
+	width: 0; 
+	height: 0; 
+	border-left: 15px solid transparent;
+	border-right: 15px solid transparent;
+
+	border-top: 5px solid
+	border-bottom: 50px solid;
 	transform-origin: 50% 100%;  /* Setting the point of rotation to the bottom center */
 }
 
