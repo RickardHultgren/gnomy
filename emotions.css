@@ -9,46 +9,46 @@
 	height: 0;
 	border-left: 180px solid transparent;
 	border-right: 180px solid transparent;
-	border-top: 60px solid; /* Default border color if no specific class is added */
+
 	transform-origin: 50% 100%; /* Setting the point of rotation to the bottom center */
 }
 
 .top {
-	border-top-color: #aaaa00;
+		border-top: 60px solid #aaaa00;
 	transform: rotate(0deg);
 }
 
 .top-right {
-	border-top-color: #66ff66;
+		border-top: 60px solid #66ff66;
 	transform: rotate(45deg);
 }
 
 .right {
-	border-top-color: #44ff44;
+		border-top: 60px solid #44ff44;
 	transform: rotate(90deg);
 }
 
 .bottom-right {
-	border-top-color: #00aaaa;
+		border-top: 60px solid #00aaaa;
 	transform: rotate(135deg);
 }
 
 .bottom {
-	border-top-color: #4444ff;
+		border-top: 60px solid #4444ff;
 	transform: rotate(180deg);
 }
 
 .bottom-left {
-	border-top-color: #aa00aa;
+		border-top: 60px solid #aa00aa;
 	transform: rotate(225deg);
 }
 
 .left {
-	border-top-color: #aa0000;
+		border-top: 60px solid #aa0000;
 	transform: rotate(270deg);
 }
 
 .top-left {
-	border-top-color: #ff4444;
+		border-top: 60px solid #ff4444;
 	transform: rotate(315deg);
 }
