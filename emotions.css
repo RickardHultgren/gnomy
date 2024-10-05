@@ -1,9 +1,10 @@
-.emotions {
+.emotions3 {
+	z-index:4;
 	width: 100px;
 	height: 100px;
 }
 
-.emotions div {
+.emotions3 div {
 	position: absolute;
 	width: 0;
 	height: 0;
@@ -12,7 +13,47 @@
 	border-top-width: 160px; /* Default border color if no specific class is added */
 	border-top-style: solid;
 	transform-origin: 50% 100%; /* Setting the point of rotation to the bottom center */
+	}
+
+.emotions2 {
+	z-index:5;
+	width: 100px;
+	height: 100px;
 }
+
+.emotions2 div {
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-left: 40px solid transparent;
+	border-right: 40px solid transparent;
+	border-top-width: 160px; /* Default border color if no specific class is added */
+	border-top-style: solid;
+	transform-origin: 50% 100%; /* Setting the point of rotation to the bottom center */
+	opacity:0.5;
+	border-top-color: #888888;
+	}
+
+.emotions1 {
+	z-index:5;
+	width: 100px;
+	height: 100px;
+}
+
+.emotions1 div {
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-top-width: 160px; /* Default border color if no specific class is added */
+	border-top-style: solid;
+	transform-origin: 50% 100%; /* Setting the point of rotation to the bottom center */
+	opacity:0.5;
+	border-top-color: #888888;
+	}
+
+
 
 .top {
 	border-top-color: #aaaa00;
