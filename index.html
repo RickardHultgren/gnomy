@@ -18,7 +18,36 @@
     <button id="transparent-mirror">Transparent Mirror</button>
     <button id="map">Map</button>
     <script src="script.js"></script>
-	<div id="emotions"></div>
+	
+  <div id="emotion-wheel"></div>
+
+  <script>
+    const plutchikEmotionsTable = [
+      { emotionName: "Ecstasy", primaryEmotion: "Joy", intensity: 10, color: "#FFD700" },
+      { emotionName: "Joy", primaryEmotion: "Joy", intensity: 7, color: "#FFE066" },
+      { emotionName: "Serenity", primaryEmotion: "Joy", intensity: 4, color: "#FFFACD" },
+      // ... rest of emotions ...
+    ];
+
+    const wheelContainer = document.getElementById("emotion-wheel");
+    const totalEmotions = plutchikEmotionsTable.length;
+    const angleIncrement = (2 * Math.PI) / totalEmotions;
+
+    plutchikEmotionsTable.forEach((emotion, index) => {
+      const angle = index * angleIncrement;
+      const x = Math.cos(angle) * 200 + 200;
+      const y = Math.sin(angle) * 200 + 200;
+
+      const emotionDiv = document.createElement("div");
+      emotionDiv.classList.add("emotion");
+      emotionDiv.style.left = `${x}px`;
+      emotionDiv.style.top = `${y}px`;
+      emotionDiv.style.backgroundColor = emotion.color;
+      emotionDiv.textContent = `${emotion.emotionName} (${emotion.intensity})`;
+
+      wheelContainer.appendChild(emotionDiv);
+    });
+  </script>
 </body>
 
 </html>
