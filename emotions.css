@@ -2,12 +2,19 @@
 	max-width: fit-content;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
 	z-index:3;
 	width: 100px;
 	height: 100px;
 }
 
 .emotions3 {
+	max-width: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
 	z-index:4;
 	width: 100px;
 	height: 100px;
@@ -25,6 +32,11 @@
 	}
 
 .emotions2 {
+	max-width: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
 	z-index:5;
 	width: 100px;
 	height: 100px;
@@ -43,7 +55,12 @@
 	border-top-color: #888888;
 	}
 
-.emotions1 {
+.emotions1 
+	max-width: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
 	z-index:6;
 	width: 100px;
 	height: 100px;
