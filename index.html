@@ -74,46 +74,46 @@
   ];
 
   
-  const wheel = document.getElementById('wheel');
+          const wheel = document.getElementById('wheel');
 
-  // Center Hub for value 1
-  const nr1 = document.createElement('div');
-  nr1.className = 'nr1';
-  nr1.innerText = '1';
-  wheel.appendChild(nr1);
+          // Center Hub for value 1
+          const hub = document.createElement('div');
+          hub.className = 'nr1';
+          hub.innerText = '1';
+          wheel.appendChild(hub);
 
-  // Place the peripheral fields for all "3" and the spokes for "2"
-  const count = circularTable.filter(item => item.value === 3).length;
+          // Place the peripheral fields for all "3" and the spokes for "2"
+          const count = circularTable.filter(item => item.value === 3).length;
 
-  circularTable.forEach((item, index) => {
-      if (item.value === 3) {
-          // Calculate angle for the peripheral fields
-          const angle = (index / count) * 2 * Math.PI;
-          const radius = 150;
-          const x = radius * Math.cos(angle) + 200; // 200 is to center it in the container
-          const y = radius * Math.sin(angle) + 200;
+          circularTable.forEach((item, index) => {
+              if (item.value === 3) {
+                  // Calculate angle for the peripheral fields
+                  const angle = (index / count) * 2 * Math.PI;
+                  const radius = 150;
+                  const x = radius * Math.cos(angle) + 200; // 200 is to center it in the container
+                  const y = radius * Math.sin(angle) + 200;
 
-          const field = document.createElement('div');
-          field.className = 'nr3';
-          field.style.left = `${x - 25}px`;
-          field.style.top = `${y - 25}px`;
-          field.innerText = item.value;
-          wheel.appendChild(field);
+                  const field = document.createElement('div');
+                  field.className = 'nr3';
+                  field.style.left = `${x}px`;
+                  field.style.top = `${y}px`;
+                  field.innerText = item.value;
+                  wheel.appendChild(field);
 
-          // Place spoke for value "2" between the hub and periphery
-          const spokeRadius = radius / 2; // Midway between hub and peripheral field
-          const spokeX = spokeRadius * Math.cos(angle) + 200;
-          const spokeY = spokeRadius * Math.sin(angle) + 200;
+                  // Place spoke for value "2" between the hub and periphery
+                  const spokeRadius = radius / 2; // Midway between hub and peripheral field
+                  const spokeX = spokeRadius * Math.cos(angle) + 200;
+                  const spokeY = spokeRadius * Math.sin(angle) + 200;
 
-          const spoke = document.createElement('div');
-          spoke.className = 'nr2';
-          spoke.style.left = `${spokeX - 25}px`;
-          spoke.style.top = `${spokeY - 25}px`;
-          spoke.innerText = '2';
-          wheel.appendChild(spoke);
-      }
-  });  
-</script>
+                  const spoke = document.createElement('div');
+                  spoke.className = 'nr2';
+                  spoke.style.left = `${spokeX}px`;
+                  spoke.style.top = `${spokeY}px`;
+                  spoke.innerText = '2';
+                  wheel.appendChild(spoke);
+              }
+          });
+      </script>
     </div>
 </body>
 
