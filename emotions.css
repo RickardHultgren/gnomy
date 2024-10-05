@@ -33,7 +33,7 @@
 	height: 0;
 	border-left: 40px solid transparent;
 	border-right: 40px solid transparent;
-	border-top-width: 160px; /* Default border color if no specific class is added */
+	border-top-width: 120px; /* Default border color if no specific class is added */
 	border-top-style: solid;
 	transform-origin: 50% 100%; /* Setting the point of rotation to the bottom center */
 	opacity:0.5;
@@ -52,7 +52,7 @@
 	height: 0;
 	border-left: 20px solid transparent;
 	border-right: 20px solid transparent;
-	border-top-width: 160px; /* Default border color if no specific class is added */
+	border-top-width: 60px; /* Default border color if no specific class is added */
 	border-top-style: solid;
 	transform-origin: 50% 100%; /* Setting the point of rotation to the bottom center */
 	opacity:0.5;
