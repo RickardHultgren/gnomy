@@ -7,48 +7,49 @@
 	position: absolute;
 	width: 0;
 	height: 0;
-	border-left: 180px solid transparent;
-	border-right: 180px solid transparent;
-
+	border-left: 60px solid transparent;
+	border-right: 60px solid transparent;
+	border-top-width: 160px; /* Default border color if no specific class is added */
+	border-top-style: solid;
 	transform-origin: 50% 100%; /* Setting the point of rotation to the bottom center */
 }
 
 .top {
-		border-top: 60px solid #aaaa00;
+	border-top-color: #aaaa00;
 	transform: rotate(0deg);
 }
 
 .top-right {
-		border-top: 60px solid #66ff66;
+	border-top-color: #66ff66;
 	transform: rotate(45deg);
 }
 
 .right {
-		border-top: 60px solid #44ff44;
+	border-top-color: #44ff44;
 	transform: rotate(90deg);
 }
 
 .bottom-right {
-		border-top: 60px solid #00aaaa;
+	border-top-color: #00aaaa;
 	transform: rotate(135deg);
 }
 
 .bottom {
-		border-top: 60px solid #4444ff;
+	border-top-color: #4444ff;
 	transform: rotate(180deg);
 }
 
 .bottom-left {
-		border-top: 60px solid #aa00aa;
+	border-top-color: #aa00aa;
 	transform: rotate(225deg);
 }
 
 .left {
-		border-top: 60px solid #aa0000;
+	border-top-color: #aa0000;
 	transform: rotate(270deg);
 }
 
 .top-left {
-		border-top: 60px solid #ff4444;
+	border-top-color: #ff4444;
 	transform: rotate(315deg);
 }
