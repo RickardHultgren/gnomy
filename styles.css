@@ -96,6 +96,7 @@ button:hover {
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
+	z-index:4;
 }
 
 .emotions3 div, .emotions2 div, .emotions1 div {
@@ -112,48 +113,81 @@ button:hover {
 /* Emotions 3 colors */
 .top {
 		border-top-color: #aaaa00;
-		transform: rotate(0deg);
 }
 
 .top-right {
 		border-top-color: #66ff66;
-		transform: rotate(45deg);
 }
 
 .right {
 		border-top-color: #44ff44;
-		transform: rotate(90deg);
 }
 
 .bottom-right {
 		border-top-color: #00aaaa;
-		transform: rotate(135deg);
 }
 
 .bottom {
 		border-top-color: #4444ff;
-		transform: rotate(180deg);
 }
 
 .bottom-left {
 		border-top-color: #aa00aa;
-		transform: rotate(225deg);
 }
 
 .left {
 		border-top-color: #aa0000;
-		transform: rotate(270deg);
 }
 
 .top-left {
 		border-top-color: #ff4444;
-		transform: rotate(315deg);
+}
+
+
+
+.top .top2 .top1 {
+	transform: rotate(0deg);
+}
+
+.top-right .top-right2 .top-right .top-right1 {
+	transform: rotate(45deg);
+}
+
+.right .right2 .right1 {
+	transform: rotate(90deg);
+}
+
+.bottom-right .bottom-right2 .bottom-right1 {
+	transform: rotate(135deg);
+}
+
+.bottom .bottom2 .bottom1 {
+	transform: rotate(180deg);
+}
+
+.bottom-left .bottom-left2 .bottom-left1 {
+	transform: rotate(225deg);
+}
+
+.left .left2 .left1 {
+	transform: rotate(270deg);
+}
+
+.top-left .top-left2 .top-left1 {
+	transform: rotate(315deg);
 }
 
 /* Emotions 2 colors */
 .top2, .top-right2, .right2, .bottom-right2, .bottom2, .bottom-left2, .left2, .top-left2 {
+	border-top-color: #888888;
+	opacity: 0.5;
+	transform-origin: 50% 100%;
+	border-left: 60px solid transparent;
+	border-right: 60px solid transparent;
+	
 		border-top-color: #888888;
 		opacity: 0.5;
+	  z-index:5
 }
 
 /* Emotions 1 colors */
@@ -164,4 +198,5 @@ button:hover {
 		border-left: 20px solid transparent;
 		border-right: 20px solid transparent;
 		border-top-width: 60px;
+		z-index:6;
 }
