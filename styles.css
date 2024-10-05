@@ -236,10 +236,10 @@ padding-top:3.5%;
 
 
 #wheel {
-	position: relative;
+	position: absolute;
 	width: 400px;
 	height: 400px;
-	margin: 50px auto;
+	margin: 1.75% -3%;
 	border-radius: 50%;
 	border: 2px solid #000;
 }

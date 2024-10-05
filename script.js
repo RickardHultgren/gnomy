@@ -22,6 +22,9 @@ const circularTable = [
 		{ position: 'left-top', value: 1 }, { position: 'left-top', value: 2 }, { position: 'left-top', value: 3 }
 ];
 
+
+
+
 const wheel = document.getElementById('wheel');
 
 // Center Hub for value 1
