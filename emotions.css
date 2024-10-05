@@ -1,11 +1,4 @@
-body {
-	max-width: fit-content;
-	max-height: fit-content;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: auto;
-	margin-bottom: auto;	
-}
+
 
 #emotions {
 	max-width: fit-content;
@@ -15,8 +8,9 @@ body {
 	margin-top: auto;
 	margin-bottom: auto;
 	z-index:3;
-	width: 100px;
-	height: 100px;
+	position: relative;
+	width: 300px;  /* Set to accommodate the largest "emotion cake" */
+	height: 300px; /* Set to accommodate the largest "emotion cake" */
 }
 
 .emotions3 {
