@@ -18,79 +18,16 @@
     <button id="transparent-mirror">Transparent Mirror</button>
     <button id="map">Map</button>
     <script src="script.js"></script>
-	
-<style>
-  #wheel {
-      position: relative;
-      width: 400px;
-      height: 400px;
-      margin: 50px auto;
-      border-radius: 50%;
-      border: 2px solid #000;
-  }
-
-  .field {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      line-height: 50px;
-      text-align: center;
-      border-radius: 50%;
-      background-color: lightblue;
-      transform: translate(-50%, -50%);
-  }
-
-  .hub {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: lightcoral;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 80px;
-  }
-</style>
-<div id="wheel"></div>
-
-<script>
-  const circularTable = [
-      { position: 'top', value: 1 }, { position: 'top', value: 2 }, { position: 'top', value: 3 },
-      { position: 'top-right', value: 1 }, { position: 'top-right', value: 2 }, { position: 'top-right', value: 3 },
-      { position: 'right', value: 1 }, { position: 'right', value: 2 }, { position: 'right', value: 3 },
-      { position: 'bottom-right', value: 1 }, { position: 'bottom-right', value: 2 }, { position: 'bottom-right', value: 3 },
-      { position: 'bottom', value: 1 }, { position: 'bottom', value: 2 }, { position: 'bottom', value: 3 },
-      { position: 'bottom-left', value: 1 }, { position: 'bottom-left', value: 2 }, { position: 'bottom-left', value: 3 },
-      { position: 'left', value: 1 }, { position: 'left', value: 2 }, { position: 'left', value: 3 },
-      { position: 'left-top', value: 1 }, { position: 'left-top', value: 2 }, { position: 'left-top', value: 3 }
-  ];
-
-  const wheel = document.getElementById('wheel');
-
-  // Center Hub for value 1
-  const hub = document.createElement('div');
-  hub.className = 'hub';
-  hub.innerText = '1';
-  wheel.appendChild(hub);
-
-  // Placing the peripheral fields for all "3"
-  circularTable.forEach((item, index) => {
-      if (item.value === 3) {
-          const angle = (index / circularTable.length) * 2 * Math.PI;
-          const x = 150 * Math.cos(angle) + 200; // 150 is radius, 200 is to center it in the container
-          const y = 150 * Math.sin(angle) + 200;
-
-          const field = document.createElement('div');
-          field.className = 'field';
-          field.style.left = `${x}px`;
-          field.style.top = `${y}px`;
-          field.innerText = item.value;
-          wheel.appendChild(field);
-      }
-  });
-</script>
+  <div class="emotions">
+    <div class="top"></div>
+    <div class="top-right"></div>
+    <div class="right"></div>
+    <div class="bottom-right"></div>
+    <div class="bottom"></div>
+    <div class="bottom-left"></div>
+    <div class="left"></div>
+    <div class="top-left"></div>
+  </div>
 </body>
 
 </html>
