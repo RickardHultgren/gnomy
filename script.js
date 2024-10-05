@@ -28,10 +28,10 @@ const circularTable = [
 const wheel = document.getElementById('wheel');
 
 // Center Hub for value 1
-const hub = document.createElement('div');
-hub.className = 'hub';
-hub.innerText = '1';
-wheel.appendChild(hub);
+const nr1 = document.createElement('div');
+one.className = 'nr1';
+one.innerText = '1';
+wheel.appendChild(one);
 
 // Place the peripheral fields for all "3" and the spokes for "2"
 const count = circularTable.filter(item => item.value === 3).length;
@@ -45,7 +45,7 @@ circularTable.forEach((item, index) => {
 				const y = radius * Math.sin(angle) + 200;
 
 				const field = document.createElement('div');
-				field.className = 'field';
+				field.className = 'nr3';
 				field.style.left = `${x}px`;
 				field.style.top = `${y}px`;
 				field.innerText = item.value;
@@ -57,7 +57,7 @@ circularTable.forEach((item, index) => {
 				const spokeY = spokeRadius * Math.sin(angle) + 200;
 
 				const spoke = document.createElement('div');
-				spoke.className = 'spoke';
+				spoke.className = 'nr2';
 				spoke.style.left = `${spokeX}px`;
 				spoke.style.top = `${spokeY}px`;
 				spoke.innerText = '2';
