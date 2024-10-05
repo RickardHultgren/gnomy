@@ -1,5 +1,15 @@
+body {
+	max-width: fit-content;
+	max-height: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;	
+}
+
 #emotions {
 	max-width: fit-content;
+	max-height: fit-content;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: auto;
@@ -11,6 +21,7 @@
 
 .emotions3 {
 	max-width: fit-content;
+	max-height: fit-content;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: auto;
@@ -33,6 +44,7 @@
 
 .emotions2 {
 	max-width: fit-content;
+	max-height: fit-content;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: auto;
@@ -57,6 +69,7 @@
 
 .emotions1 
 	max-width: fit-content;
+	max-height: fit-content;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: auto;
