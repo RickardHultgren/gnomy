@@ -228,3 +228,53 @@ padding-top:3.5%;
 		z-index:6;
   	border-top-style: solid;
 }
+
+
+
+
+
+
+
+#wheel {
+	position: relative;
+	width: 400px;
+	height: 400px;
+	margin: 50px auto;
+	border-radius: 50%;
+	border: 2px solid #000;
+}
+
+.field {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	border-radius: 50%;
+	background-color: lightblue;
+	transform: translate(-50%, -50%);
+}
+
+.hub {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: lightcoral;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 80px;
+}
+
+.spoke {
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	border-radius: 50%;
+	background-color: lightgreen;
+	transform: translate(-50%, -50%);
+}
