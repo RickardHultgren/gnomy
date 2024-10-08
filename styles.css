@@ -110,12 +110,9 @@ background-color:#888888;*/
             justify-content: space-around; /* Distribute items evenly */
             align-items: center; /* Align items in the center vertically */
 	    vertical-align:top;
-            margin: 20px 0;
-		/*background-color:#645452;*/
-	background: linear-gradient(45deg, #331800 12%, transparent 0, transparent 88%,     linear-gradient(45deg, transparent 37%, #331800 0, #331800 63%, transparent 0) #753; 0),
-    linear-gradient(135deg, transparent 37%, #b96 0, #954535 63%, transparent 0),
-    linear-gradient(45deg, transparent 37%, #331800 0, #331800 63%, transparent 0) #645452,
-    background-size: 25px 25px;
+            margin: 0 0;
+	    background-color:#645452;
+	
         }
 
         #gnomy-container, #lantern-container, #beads-container, #quick-access {
