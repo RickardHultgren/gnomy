@@ -107,7 +107,7 @@ background-color:#888888;*/
             justify-content: space-around; /* Distribute items evenly */
             align-items: center; /* Align items in the center vertically */
 	    vertical-align:top;
-            margin: 3em 0;
+            margin: 30em 0;
 	    background-color:#645452;
 	
         }
@@ -603,9 +603,7 @@ background-color:#888888;
             margin: 20px 0;
         }
 
-        #gnomy-container, #lantern-container, #beads-container, #quick-access {
-            text-align: center;
-        }
+
 
         /* Quick Access buttons */
         #quick-access button {
