@@ -3,7 +3,6 @@
 
 /* General Settings */
 body, html {
-  font-size: 3.2vw;
   margin: 0;
   padding: 0;
   height: 100%;
@@ -698,4 +697,27 @@ background-color:#888888;
 #map-container{
 
 	background-color:#888888;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+  font-size: 3vw;
+}
+@media screen and (min-width: 1600px) {
+  body {
+     font-size: 30px;
+  }
 }
