@@ -109,8 +109,9 @@ background-color:#888888;*/
             justify-content: space-around; /* Distribute items evenly */
             align-items: center; /* Align items in the center vertically */
             margin: 20px 0;
+		background-color:#999944;
 	background: linear-gradient(45deg, #dca 12%, transparent 0, transparent 88%, #dca 0),
-    linear-gradient(135deg, transparent 37%, #a85 0, #a85 63%, transparent 0),
+    linear-gradient(135deg, transparent 37%, #b96 0, #b96 63%, transparent 0),
     linear-gradient(45deg, transparent 37%, #dca 0, #dca 63%, transparent 0) #753;
     background-size: 25px 25px;
         }
