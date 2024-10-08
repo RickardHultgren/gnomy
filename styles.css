@@ -142,7 +142,7 @@ background-color:#888888;*/
         #gravel-gauge, #lantern-gauge {
             /*text-align: center;*/
             text-align:left;
-            height:3em;
+            height:auto;
         }
 
         /* Notifications */
@@ -217,7 +217,7 @@ h1 {
 }
 
 p {
-		line-height: 1.6;
+		line-height: 1;
 }
 
 button {
@@ -602,7 +602,8 @@ background-color:#888888;
             display: flex; /* Flexbox for horizontal layout */
             justify-content: space-around; /* Distribute items evenly */
             align-items: center; /* Align items in the center vertically */
-            margin: 20px 0;
+            margin: 0px 0;
+            top:0;
         }
 
 
