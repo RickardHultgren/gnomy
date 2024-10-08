@@ -280,3 +280,116 @@ padding-top:3.5%;
 .nr2, .nr3 {
 	/* Styling for outer values */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* General Settings */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Lora', serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
+}
+
+/* Splash Screen Container */
+.splash-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #2a3c4d, #1e2434);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Splash Content */
+.splash-content {
+  text-align: center;
+  color: #f8f4e3;
+  animation: fadeIn 2s ease-in-out;
+  z-index: 2;
+}
+
+/* Logo Styling */
+.logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Heading and Paragraph Styling */
+h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+/* Start Button */
+.start-button {
+  background-color: #a67844;
+  color: #f8f4e3;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+  background-color: #876338;
+}
+
+/* Firefly Effect */
+.splash-container::before, .splash-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0) 60%);
+  opacity: 0.5;
+  animation: firefly 8s linear infinite alternate;
+}
+
+.splash-container::after {
+  animation-delay: 4s;
+}
+
+/* Animations */
+@keyframes firefly {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  100% { transform: translate(50%, 50%) scale(0.9); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
