@@ -135,7 +135,7 @@ background-color:#888888;*/
         #gauges {
             display: flex;
             justify-content: space-around;
-            margin-top: 20px;
+            margin-top: 0px;
 		background-color:#888888;
         }
 
@@ -145,7 +145,7 @@ background-color:#888888;*/
 
         /* Notifications */
         #notifications {
-            margin-top: 20px;
+            margin-top: 0px;
         }
 
         /* Panic button */
@@ -156,11 +156,11 @@ background-color:#888888;*/
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin: 10px 0;
+            margin: 0px 0;
         }
 
-        /* Search mines */
-        #search-mines {
+        /* Search trees */
+        #search-trees {
             margin-top: 20px;
             text-align: center;
         }
@@ -649,8 +649,8 @@ background-color:#888888;
             margin: 10px 0;
         }
 
-        /* Search mines */
-        #search-mines {
+        /* Search trees */
+        #search-trees {
             margin-top: 20px;
             text-align: center;
         }
