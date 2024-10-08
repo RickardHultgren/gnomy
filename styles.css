@@ -3,7 +3,7 @@
 
 /* General Settings */
 body, html {
-  margin: 0;
+  margin-top: 2em;
   padding: 0;
   height: 100%;
   font-family: 'Lora', serif;
@@ -588,7 +588,7 @@ p {
 }
 
 .icon{
-	width:3em;
+	width:1.5em;
 	height:auto;
 	border-top-left-radius: 50% 50%; border-top-right-radius: 50% 50%; border-bottom-right-radius: 50% 50%; border-bottom-left-radius: 50% 50%; 
 background-color:#888888;
