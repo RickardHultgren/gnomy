@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gnomy Map Game Interface</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Assuming a CSS file for styling -->
+</head>
+<body>
+    <!-- Main HUD Container -->
+    <div id="game-hub">
+        <!-- HUD Section -->
+        <div id="hud">
+            <div id="gnomy-container">
+                <div id="gnomy-dialogue">
+                    <p id="gnomy-speech">Hello! How can I help today?</p>
+                </div>
+                <img id="gnomy-avatar" src="gnomy.png" alt="Gnomy" />
+            </div>
+
+            <!-- Lantern of Emotions -->
+            <div id="lantern-container">
+                <p>Lantern Light Level: <span id="lantern-light">75%</span></p>
+                <img id="lantern" src="lantern.png" alt="Lantern of Emotions" />
+            </div>
+
+            <!-- Beads (emotion tracking tool) -->
+            <div id="beads-container">
+                <img id="beads" src="beads.png" alt="Emotion Beads" />
+            </div>
+
+            <!-- Easy Access Buttons -->
+            <div id="quick-access">
+                <button id="btn-calendar">Calendar</button>
+                <button id="btn-map">Map</button>
+                <button id="btn-inventory">Inventory</button>
+            </div>
+        </div>
+
+        <!-- Gauges Section -->
+        <div id="gauges">
+            <div id="gravel-gauge">
+                <p>Competence Gravel: <span id="competence-gravel">150</span></p>
+                <p>Autonomy Gravel: <span id="autonomy-gravel">200</span></p>
+            </div>
+            <div id="lantern-gauge">
+                <p>Lantern Light: <span id="lantern-light-gauge">50%</span></p>
+            </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div id="notifications">
+            <h3>Calendar Notifications</h3>
+            <ul id="calendar-notifications">
+                <li>Check-in reminder for today!</li>
+                <li>Upcoming event: Stress check</li>
+            </ul>
+        </div>
+
+        <!-- Panic Button Section -->
+        <div id="panic-button">
+            <button id="btn-panic">Panic Button</button>
+        </div>
+
+        <!-- Search Section -->
+        <div id="search-mines">
+            <input type="text" id="search-bar" placeholder="Search for mines or clusters..." />
+            <button id="btn-search">Search</button>
+        </div>
+
+        <!-- Map Section -->
+        <div id="map-container">
+            <h2>Interactive Map</h2>
+            <div id="map">
+                <!-- D3.js will be used to render map nodes and paths here -->
+            </div>
+
+            <!-- Tool Menu -->
+            <div id="map-tools">
+                <button id="btn-add-mine">Add Mine</button>
+                <button id="btn-add-path">Add Path</button>
+            </div>
+        </div>
+
+        <!-- Game Menu -->
+        <div id="game-menu">
+            <button id="btn-settings">Settings</button>
+            <button id="btn-stats">Stats</button>
+            <button id="btn-play-map">Play Map</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="d3.min.js"></script>
+    <script src="app.js"></script> <!-- Assuming a JS file for interactivity -->
+</body>
+</html>
