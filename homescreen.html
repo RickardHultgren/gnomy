@@ -23,7 +23,7 @@
             <!-- Lantern of Emotions -->
             <div id="lantern-container">
                 <img class="icon" id="lantern" src="lantern.png" alt="Lantern of Emotions" /><br/>
-                <p><span id="lantern-light" style="display:none;">75% light</span></p>
+                <p style="display:none;"><span id="lantern-light">75% light</span></p>
             </div>
 
             <!-- Beads (emotion tracking tool) -->
@@ -50,28 +50,28 @@
                 <p> <img class="icon" id="gravelyellow" src="leafyellow.png" alt="gravel" />Autonomy Gravel: <span id="autonomy-gravel">200</span></p>
             </div>
         </div>
-        
-        <div id="tools">
-            <div id="search-mines">
-                <input type="text" id="search-bar" placeholder="Search for mines or clusters..." />
-                <button id="btn-search">Search</button>
+        <div id="frame" style="border: 1px 1px 1px 1px solid #ffffff; padding: 1em; ">
+            <div id="tools">
+                <div id="search-mines">
+                    <input type="text" id="search-bar" placeholder="Search for mines or clusters..." />
+                    <button id="btn-search">Search</button>
+                </div>
+            </div>
+            
+            <!-- Map Section -->
+            <div id="map-container">
+                <h2>Interactive Map</h2>
+                <div id="map">
+                    <!-- D3.js will be used to render map nodes and paths here -->
+                </div>
+
+                <!-- Tool Menu -->
+                <div id="map-tools">
+                    <button id="btn-add-mine">Add Mine</button>
+                    <button id="btn-add-path">Add Path</button>
+                </div>
             </div>
         </div>
-        
-        <!-- Map Section -->
-        <div id="map-container">
-            <h2>Interactive Map</h2>
-            <div id="map">
-                <!-- D3.js will be used to render map nodes and paths here -->
-            </div>
-
-            <!-- Tool Menu -->
-            <div id="map-tools">
-                <button id="btn-add-mine">Add Mine</button>
-                <button id="btn-add-path">Add Path</button>
-            </div>
-        </div>
-
         <!-- Game Menu -->
         <div id="game-menu">
             <button id="btn-settings">Settings</button>

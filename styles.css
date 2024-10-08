@@ -140,7 +140,9 @@ background-color:#888888;*/
         }
 
         #gravel-gauge, #lantern-gauge {
-            text-align: center;
+            /*text-align: center;*/
+            text-align:left;
+            height:3em;
         }
 
         /* Notifications */
