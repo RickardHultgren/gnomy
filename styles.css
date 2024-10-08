@@ -108,6 +108,7 @@ background-color:#888888;*/
             display: flex; /* Flexbox for horizontal layout */
             justify-content: space-around; /* Distribute items evenly */
             align-items: center; /* Align items in the center vertically */
+	    vertical-align:top;
             margin: 20px 0;
 		/*background-color:#645452;*/
 	background: linear-gradient(45deg, #331800 12%, transparent 0, transparent 88%,     linear-gradient(45deg, transparent 37%, #331800 0, #331800 63%, transparent 0) #753; 0),
@@ -590,7 +591,7 @@ p {
 }
 
 .icon{
-	width:1em;
+	width:3em;
 	height:auto;
 	border-top-left-radius: 50% 50%; border-top-right-radius: 50% 50%; border-bottom-right-radius: 50% 50%; border-bottom-left-radius: 50% 50%; 
 background-color:#888888;
@@ -693,3 +694,8 @@ background-color:#888888;
         #game-menu button:hover {
             background-color: #555;
         }
+
+#map-container{
+
+	background-color:#888888;
+}
