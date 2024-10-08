@@ -393,3 +393,9 @@ p {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+.icons{
+	width:3em;
+	height:auto;
+	
+}
