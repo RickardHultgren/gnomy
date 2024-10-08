@@ -114,7 +114,7 @@ background-color:#888888;*/
 		/*background-color:#645452;*/
 	background: linear-gradient(45deg, #331800 12%, transparent 0, transparent 88%,     linear-gradient(45deg, transparent 37%, #331800 0, #331800 63%, transparent 0) #753; 0),
     linear-gradient(135deg, transparent 37%, #b96 0, #954535 63%, transparent 0),
-    linear-gradient(45deg, transparent 37%, #331800 0, #331800 63%, transparent 0) #645452;
+    linear-gradient(45deg, transparent 37%, #331800 0, #331800 63%, transparent 0) #645452,
     background-size: 25px 25px;
         }
 
