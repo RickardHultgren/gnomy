@@ -37,13 +37,11 @@ body, html {
 .logo {
   width: 2em;
   height: auto;
-  margin-bottom: 20px;
 }
 
 /* Heading and Paragraph Styling */
 h1 {
   font-size: 3rem;
-  margin-bottom: 10px;
 }
 
 p {
