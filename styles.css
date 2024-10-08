@@ -110,9 +110,9 @@ background-color:#888888;*/
             align-items: center; /* Align items in the center vertically */
             margin: 20px 0;
 		background-color:#999944;
-	background: linear-gradient(45deg, #dca 12%, transparent 0, transparent 88%, #dca 0),
-    linear-gradient(135deg, transparent 37%, #b96 0, #b96 63%, transparent 0),
-    linear-gradient(45deg, transparent 37%, #dca 0, #dca 63%, transparent 0) #753;
+	background: linear-gradient(45deg, #331800 12%, transparent 0, transparent 88%,     linear-gradient(45deg, transparent 37%, #331800 0, #331800 63%, transparent 0) #753; 0),
+    linear-gradient(135deg, transparent 37%, #b96 0, #954535 63%, transparent 0),
+    linear-gradient(45deg, transparent 37%, #331800 0, #331800 63%, transparent 0) #645452;
     background-size: 25px 25px;
         }
 
