@@ -110,7 +110,7 @@ background-color:#888888;*/
             justify-content: space-around; /* Distribute items evenly */
             align-items: center; /* Align items in the center vertically */
 	    vertical-align:top;
-            margin: 0 0;
+            margin: 3em 0;
 	    background-color:#645452;
 	
         }
