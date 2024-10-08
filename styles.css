@@ -1,14 +1,204 @@
 /* Importing a Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600&display=swap');
 
-body {
-		font-family: 'Montserrat', sans-serif;
-		background: #F0F4F8;
-		color: #eeeeee;
-		text-align: center;
-		padding: 5% 10%;
+/* General Settings */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Lora', serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
 }
 
+/* Splash Screen Container */
+.splash-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #2a3c4d, #1e2434);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Splash Content */
+.splash-content {
+  text-align: center;
+  color: #f8f4e3;
+  animation: fadeIn 2s ease-in-out;
+  z-index: 2;
+}
+
+/* Logo Styling */
+.logo {
+  width: 2em;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Heading and Paragraph Styling */
+h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+/* Start Button */
+.start-button {
+  background-color: #a67844;
+  color: #f8f4e3;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+  background-color: #876338;
+}
+
+/* Firefly Effect */
+.splash-container::before, .splash-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0) 60%);
+  opacity: 0.5;
+  animation: firefly 8s linear infinite alternate;
+}
+
+.splash-container::after {
+  animation-delay: 4s;
+}
+
+/* Animations */
+@keyframes firefly {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  100% { transform: translate(50%, 50%) scale(0.9); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.icon{
+	width:1em;
+	height:auto;
+	border-top-left-radius: 50% 50%; border-top-right-radius: 50% 50%; border-bottom-right-radius: 50% 50%; border-bottom-left-radius: 50% 50%; 
+background-color:#888888;
+}
+
+
+        /* HUD section in a single row */
+        #hud {
+            display: flex; /* Flexbox for horizontal layout */
+            justify-content: space-around; /* Distribute items evenly */
+            align-items: center; /* Align items in the center vertically */
+            margin: 20px 0;
+        }
+
+        #gnomy-container, #lantern-container, #beads-container, #quick-access {
+            text-align: center;
+        }
+
+        /* Quick Access buttons */
+        #quick-access button {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #quick-access button:hover {
+            background-color: #555; /* Darker on hover */
+        }
+
+        /* Gauges section */
+        #gauges {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        #gravel-gauge, #lantern-gauge {
+            text-align: center;
+        }
+
+        /* Notifications */
+        #notifications {
+            margin-top: 20px;
+        }
+
+        /* Panic button */
+        #panic-button button {
+            background-color: red;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        /* Search mines */
+        #search-mines {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #search-bar {
+            padding: 10px;
+            width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        #btn-search {
+            padding: 10px 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Game Menu */
+        #game-menu {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        #game-menu button {
+            background-color: #444;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #game-menu button:hover {
+            background-color: #555;
+        }
 .container {
 		background: #ffffff;
 		border-radius: 15px;
