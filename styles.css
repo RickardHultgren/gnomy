@@ -3,7 +3,7 @@
 
 /* General Settings */
 body, html {
-  margin-top: 2em;
+  margin: 0em;
   padding: 0;
   height: 100%;
   font-family: 'Lora', serif;
@@ -35,7 +35,7 @@ body, html {
 
 /* Logo Styling */
 .logo {
-  width: 2em;
+  width: 1.5em;
   height: auto;
 }
 
@@ -107,7 +107,7 @@ background-color:#888888;*/
             justify-content: space-around; /* Distribute items evenly */
             align-items: center; /* Align items in the center vertically */
 	    vertical-align:top;
-            margin: 30em 0;
+            margin: 0em 0;
 	    background-color:#645452;
 	
         }
@@ -711,6 +711,7 @@ background-color:#888888;
 
 body {
   font-size: 3vw;
+  height:auto;
 }
 @media screen and (min-width: 1600px) {
   body {
