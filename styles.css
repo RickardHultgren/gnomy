@@ -192,23 +192,27 @@ p {
 
         /* Search trees */
         #search-trees {
-            margin-top: 20px;
+            margin-top: 1px;
             text-align: center;
+            width:100%;
+        
         }
 
         #search-bar {
-            padding: 10px;
-            width: 300px;
+            padding: 2px;
+            height:2em;
             border-radius: 5px;
             border: 1px solid #ccc;
         }
 
         #btn-search {
-            padding: 10px 20px;
+            padding: 0px;
             background-color: #444;
             color: white;
             border: none;
-            margin-left: 10px;
+            font-size:0.35em;
+            margin:0px;
+            margin-left: 1px;
             cursor: pointer;
             border-radius: 5px;
         }
@@ -235,7 +239,7 @@ p {
 .container {
 		background: #ffffff;
 		border-radius: 15px;
-		padding: 40px;
+		padding: 0px;
 		max-width: 600px;
     min-width:400px;
 		margin: auto;
