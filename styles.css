@@ -99,13 +99,21 @@ p {
 
         /* HUD section in a single row */
         #hud {
-            display: flex; /* Flexbox for horizontal layout */
-            justify-content: space-around; /* Distribute items evenly */
-            align-items: center; /* Align items in the center vertically */
-	    /*vertical-align:top;*/
-            margin: 0em 0;
-	    background-color:#645452;
-      top:0;
+          display: flex; /* Flexbox for horizontal layout */
+          justify-content: space-around; /* Distribute items evenly */
+          align-items: center; /* Align items in the center vertically */
+          margin: 0; /* No margin */
+          background-color: #645452; /* Fallback background color */
+          
+          /* Corrected background gradient without invalid value */
+          background: repeating-linear-gradient(40deg, 
+                                                hsl(30, 50%, 15%), 
+                                                hsl(20, 50%, 30%), 
+                                                hsl(25, 40%, 20%) 8px); 
+        
+          position: relative; /* Added to work with 'top' */
+          top: 0; /* Sticks to the top of the page */
+        }
 	
         }
 
@@ -133,10 +141,14 @@ p {
             display: flex;
             justify-content: space-around;
             margin-top: 0px;
-		background-color:#888888;
+            
+            border: 10px solid transparent;
+            padding: 15px;
+            border-image: url(border.jpg) 30 stretch;
+            
         }
 
-        #gravel-gauge, #lantern-gauge {
+        #leaf-gauge, #lantern-gauge {
             /*text-align: center;*/
             text-align:left;
             height:auto;
@@ -601,10 +613,11 @@ p {
 }
 
 .icon{
-	width:1.5em;
-	height:auto;
-	border-top-left-radius: 50% 50%; border-top-right-radius: 50% 50%; border-bottom-right-radius: 50% 50%; border-bottom-left-radius: 50% 50%; 
-background-color:#888888;
+	height:1.5em;
+	width:auto;
+	/*border-top-left-radius: 50% 50%; border-top-right-radius: 50% 50%; border-bottom-right-radius: 50% 50%; border-bottom-left-radius: 50% 50%; 
+background-color:#888888;*/
+  background-color:none;
 }
 
 
@@ -687,6 +700,7 @@ background-color:#888888;
   height:auto;
   height
 	background-color:#888888;
+  
 }
 
 
@@ -737,9 +751,9 @@ body, html {
   display: flex;
   flex-direction: column;
   flex-grow: 1; /* Allow frame to grow and fill available height */
-  padding: 1em;
+  padding: 0.25em;
   border: 1px solid #ffffff;
-  background-color: #ffffff;
+  background-color: #444444;
 }
 
 /* Map container should also grow to fill available space */
@@ -756,4 +770,5 @@ body, html {
 #map {
   flex-grow: 1;
   background-color: #e0d7a8;
+  overflow: auto;
 }
