@@ -104,18 +104,15 @@ p {
           align-items: center; /* Align items in the center vertically */
           margin: 0; /* No margin */
           background-color: #645452; /* Fallback background color */
-          
-          /* Corrected background gradient without invalid value */
-          background: repeating-linear-gradient(40deg, 
-                                                hsl(30, 50%, 15%), 
-                                                hsl(20, 50%, 30%), 
-                                                hsl(25, 40%, 20%) 8px); 
-        
+          background-image:url(border.jpg);
+          background-repeat: no-repeat;
+          background-size: auto;
+                  
           position: relative; /* Added to work with 'top' */
           top: 0; /* Sticks to the top of the page */
         }
 	
-        }
+        
 
         #gnomy-container, #lantern-container, #beads-container, #quick-access {
             text-align: center;
@@ -141,17 +138,35 @@ p {
             display: flex;
             justify-content: space-around;
             margin-top: 0px;
-            
-            border: 10px solid transparent;
+            background-color: #645452; /* Fallback background color */
+            background-image:url(border.jpg);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;          
+            background-position: bottom;  
+            /*border: 10px solid transparent;
             padding: 15px;
-            border-image: url(border.jpg) 30 stretch;
+            border-image: url(border.jpg) 30 stretch;*/
+            
             
         }
 
-        #leaf-gauge, #lantern-gauge {
+        #leafgauge {
             /*text-align: center;*/
-            text-align:left;
+            display:inline-flex;
+            background-color: #6593a2;
+            color: white;
+            font-weight: bold;
+            font-size:0.35em;
+            padding: 0.25em;
+            border: 2px solid white; 
+            border-color:#98c6d5;
+            border-radius: 0.25em;
+            cursor: pointer;
+            margin: 0.25em 0.5em;
             height:auto;
+            width:100%;
+            line-height: normal;
+            vertical-align: middle;
         }
 
         /* Notifications */
@@ -159,26 +174,20 @@ p {
             margin-top: 0px;
         }
 
-        /* Panic button */
-        #panic-button button {
-            background-color: red;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0px 0;
-        }
 
-        /* Panic button */
-        #menu-button button {
-          background-color: blue;
+        .hud-button button {
+          background-color:#888888;*/
+          background-color:none;
+          background-color: #6593a2;
           color: white;
-          padding: 15px 30px;
-          border: none;
-          border-radius: 5px;
+          padding: 0.25em;
+          border: 2px solid white; 
+          border-color:#98c6d5;
+          border-radius: 0.25em;
           cursor: pointer;
-          margin: 0px 0;
+          margin: 0.25em 0;
+          width:4em;
+          height:4em;
       }
 
         /* Search trees */
@@ -228,6 +237,7 @@ p {
 		border-radius: 15px;
 		padding: 40px;
 		max-width: 600px;
+    min-width:400px;
 		margin: auto;
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -613,11 +623,19 @@ p {
 }
 
 .icon{
-	height:1.5em;
+	height:2.5em;
 	width:auto;
 	/*border-top-left-radius: 50% 50%; border-top-right-radius: 50% 50%; border-bottom-right-radius: 50% 50%; border-bottom-left-radius: 50% 50%; 
 background-color:#888888;*/
   background-color:none;
+  background-color: #6593a2;
+  color: white;
+  padding: 0.25em;
+  border: 1px;
+  border-color:#cbf9ff;
+  border-radius: 0.25em;
+  cursor: pointer;
+  margin: 0.25em 0;
 }
 
 
@@ -626,16 +644,7 @@ background-color:#888888;*/
 
 
 
-        /* Gauges section */
-        #gauges {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
 
-        #gravel-gauge, #lantern-gauge {
-            text-align: center;
-        }
 
         /* Notifications */
         #notifications {
@@ -647,30 +656,38 @@ background-color:#888888;*/
             background-color: red;
             color: white;
             padding: 15px 30px;
-            border: none;
+            border: 2px solid white; 
             border-radius: 5px;
             cursor: pointer;
             margin: 10px 0;
-        }
+
+            padding: 0.25em;
+            border-radius: 0.25em;
+            cursor: pointer;
+            margin: 0.25em 0;    
+            font-size:0.5em;        
+width:4em;
+height:4em;
+          }
 
         /* Search trees */
         #search-trees {
-            margin-top: 20px;
+            margin-top: 0px;
             text-align: center;
         }
 
         #search-bar {
-            padding: 10px;
-            width: 300px;
+            padding: 0px;
+            width: auto;
             border-radius: 5px;
             border: 1px solid #ccc;
         }
 
         #btn-search {
             padding: 10px 20px;
-            background-color: #444;
+            background-color: #888888;
             color: white;
-            border: none;
+            border: white;
             margin-left: 10px;
             cursor: pointer;
             border-radius: 5px;
@@ -697,6 +714,7 @@ background-color:#888888;*/
         }
 
 #map-container{
+  min-width: 400px;
   height:auto;
   height
 	background-color:#888888;
@@ -754,6 +772,9 @@ body, html {
   padding: 0.25em;
   border: 1px solid #ffffff;
   background-color: #444444;
+            border: 10px solid transparent;
+            padding: 2px;
+            border-image: url(border.jpg) 30 stretch;  
 }
 
 /* Map container should also grow to fill available space */
@@ -762,7 +783,7 @@ body, html {
   flex-direction: column;
   flex-grow: 1;
   background-color: #f1e4b0;
-  margin-top: 1em;
+  margin-top: 0.25em;
   overflow: hidden;
 }
 

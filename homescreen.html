@@ -13,54 +13,54 @@
     <div id="game-hub" style="top:0;">
         <!-- HUD Section -->
         <div id="hud">
-            <div id="gnomy-container">
-                <img  class="icon" id="gnomy-avatar" src="GnomyLogo.png" alt="Gnomy" />
+            <div class="hud-button" id="gnomy-container">
+                <button><img  class="icon" id="gnomy-avatar" src="GnomyLogo.png" alt="Gnomy" /></button>
                 <div id="gnomy-dialogue" style="position:absolute;background-color:#eeeeee; color:#333333;">
                     <p id="gnomy-speech" style="display:none;">Hello! How can I help today?</p>
                 </div>
             </div>
 
             <!-- Lantern of Emotions -->
-            <div id="lantern-container">
-                <img class="icon" id="lantern" src="lantern.png" alt="Lantern of Emotions" /><br/>
-                <p style="display:none;"><span id="lantern-light">75% light</span></p>
+            <div class="hud-button" id="lantern-container">
+            <button><img class="icon" id="lantern" src="lantern.png" alt="Lantern of Emotions" /><br/></button>
+            <p style="display:none;"><span id="lantern-light">75% light</span></p> 
             </div>
 
             <!-- Beads (emotion tracking tool) -->
-            <div id="beads-container">
-                <img class="icon" id="beads" src="bead.png" alt="New Beads" />
+            <div class="hud-button" id="beads-container">
+                <button><img class="icon" id="beads" src="bead.png" alt="New Beads" /> </button>
             </div>
 
             <!-- Easy Access Buttons -->
             <!-- Beads (emotion tracking tool) -->
-            <div id="calendar-container">
-                <img class="icon" id="calendar" src="calendar.png" alt="Calendar" />
+            <div class="hud-button" id="calendar-container">
+                <button><img class="icon" id="calendar" src="calendar.png" alt="Calendar" /> </button>
             </div>
 
             <div id="panic-button">
                 <button id="btn-panic">!</button>
             </div>
 
-            <div id="menu-button">
+            <div class="hud-button">
         <!-- Game Menu -->
         <!--div id="game-menu">
             <button id="btn-settings">Settings</button>
             <button id="btn-stats">Stats</button>
             <button id="btn-play-map">Play Map</button>
         </div-->                
-                <button>&#9776;</button>
+                <button style="font-size:0.5em;">&#9776;</button>
             </div>
 
         </div>
 
         <!-- Gauges Section -->
         <div id="gauges">
-            <div id="gravel-gauge">
-                <p style="align:left;"> <img class="icon" style="width:2vw;" id="leafcyan" src="leafcyan.png" alt="leaf" /> Competence Leaf: <span id="competence-gravel">150</span></p>
-                <p style="align:left;"> <img class="icon" style="width:2vw;" id="leafyellow" src="leafyellow.png" alt="leaf" />Autonomy Leaf: <span id="autonomy-gravel">200</span></p>
+            <div id="leafgauge">
+                <div style="width:50%;text-align:left;vertical-align:middle;"><img class="icon" style="height:1.5em;margin:0;padding:0;" id="leafcyan" src="leafcyan.png" alt="leaf" /> Competence Leaf: <span id="competence-leaf">150</span> </div>
+            <div style="width:50%;text-align:right;vertical-align:middle;"><img class="icon" style="height:1.5em;margin:0;padding:0;" id="leafyellow" src="leafyellow.png" alt="leaf" />Autonomy Leaf: <span id="autonomy-leaf">200</span></div>
             </div>
         </div>
-        <div id="frame" style="border: 1px 1px 1px 1px solid #ffffff; padding: 1em; height:auto;">
+        <div id="frame" style="border: 1px 1px 1px 1px solid #ffffff; padding: 0.25em; height:auto;">
             <div id="tools">
                 <div id="search-treas">
                     <input type="text" id="search-bar" placeholder="Search for trees or forests..." />
@@ -70,7 +70,6 @@
             
             <!-- Map Section -->
             <div id="map-container">
-                <h2>Interactive Map</h2>
                 <div id="map">
                     <!-- D3.js will be used to render map nodes and paths here -->
                 </div>
