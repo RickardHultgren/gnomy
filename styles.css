@@ -157,6 +157,17 @@ p {
             margin: 0px 0;
         }
 
+        /* Panic button */
+        #menu-button button {
+          background-color: blue;
+          color: white;
+          padding: 15px 30px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin: 0px 0;
+      }
+
         /* Search trees */
         #search-trees {
             margin-top: 20px;
