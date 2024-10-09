@@ -267,7 +267,7 @@ button {
 }
 
 button:hover {
-		background-color: #357ABD;
+		border-color: #ffffff;
 }
 
 #datetime {
@@ -657,10 +657,10 @@ background-color:#888888;*/
 
         /* Panic button */
         #panic-button button {
-            background-color: red;
+            background-color: #A50021;
             color: white;
             padding: 15px 30px;
-            border: 2px solid white; 
+            border: 2px solid #aaaaaa; 
             border-radius: 5px;
             cursor: pointer;
             margin: 10px 0;
@@ -673,7 +673,10 @@ background-color:#888888;*/
 width:4em;
 height:4em;
           }
-
+          #panic-button button:hover {
+            background-color:red;
+            border: 2px solid #ffffff; 
+          }
         /* Search trees */
         #search-trees {
             margin-top: 0px;
