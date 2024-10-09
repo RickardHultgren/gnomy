@@ -297,6 +297,7 @@ button:hover {
 #map {
 		right: 20px;
 	background-color:#f1e4b0;
+  hight:auto;
 }
 
 /* emotions.css */
@@ -683,7 +684,7 @@ background-color:#888888;
         }
 
 #map-container{
-
+  height:auto;
 	background-color:#888888;
 }
 
