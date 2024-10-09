@@ -94,13 +94,7 @@ p {
   to { opacity: 1; }
 }
 
-.icon{
-	height:3vw;
-  width:3vw;
-	height:auto;
-	border-top-left-radius: 50% 50%; border-top-right-radius: 50% 50%; border-bottom-right-radius: 50% 50%; border-bottom-left-radius: 50% 50%; 
-background-color:#888888;*/
-}
+
 
 
         /* HUD section in a single row */
@@ -219,7 +213,7 @@ h1 {
 }
 
 p {
-		line-height: 1;
+		line-height: normal;
 }
 
 button {
@@ -529,12 +523,7 @@ body, html {
   z-index: 2;
 }
 
-/* Logo Styling */
-.logo {
-  width: 2em;
-  height: auto;
-  margin-bottom: 0px;
-}
+
 
 /* Heading and Paragraph Styling */
 h1 {
@@ -589,6 +578,13 @@ p {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* Logo Styling */
+.logo {
+  width: 2em;
+  height: auto;
+  margin-bottom: 0px;
 }
 
 .icon{
