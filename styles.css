@@ -714,3 +714,46 @@ body {
      font-size: 30px;
   }
 }
+/* Ensure body and html are 100% height */
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align content to the top */
+  background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
+}
+
+/* Make the main hub container fill the viewport */
+#game-hub {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+/* The frame will take up the remaining space */
+#frame {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Allow frame to grow and fill available height */
+  padding: 1em;
+  border: 1px solid #ffffff;
+  background-color: #ffffff;
+}
+
+/* Map container should also grow to fill available space */
+#map-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: #f1e4b0;
+  margin-top: 1em;
+  overflow: hidden;
+}
+
+/* Ensure map takes the full space inside its container */
+#map {
+  flex-grow: 1;
+  background-color: #e0d7a8;
+}
