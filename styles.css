@@ -186,8 +186,8 @@ p {
           border-radius: 0.25em;
           cursor: pointer;
           margin: 0.25em 0;
-          width:4em;
-          height:4em;
+          width:3em;
+          height:3em;
       }
 
         /* Search trees */
@@ -210,7 +210,7 @@ p {
             background-color: #444;
             color: white;
             border: none;
-            font-size:3vw;
+            font-size:14px;
             margin:0px;
             margin-left: 1px;
             cursor: pointer;
@@ -274,8 +274,8 @@ button {
     border-radius: 0.25em;
     cursor: pointer;
     margin: 0.25em 0;
-    width:4em;
-    height:4em;    
+    width:3em;
+    height:3em;    
 }
 
 button:hover {
@@ -682,36 +682,14 @@ background-color:#888888;*/
             cursor: pointer;
             margin: 0.25em 0;    
             font-size:0.5em;        
-width:4em;
-height:4em;
+width:3em;
+height:3em;
           }
           #panic-button button:hover {
             background-color:red;
             border: 2px solid #ffffff; 
           }
         /* Search trees */
-        #search-trees {
-            margin-top: 0px;
-            text-align: center;
-        }
-
-        #search-bar {
-            padding: 0px;
-            width: auto;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        #btn-search {
-            padding: 10px 20px;
-            background-color: #888888;
-            color: white;
-            border: white;
-            margin-left: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
         /* Game Menu */
         #game-menu {
             margin-top: 30px;
