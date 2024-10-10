@@ -210,7 +210,7 @@ p {
             background-color: #444;
             color: white;
             border: none;
-            font-size:0.35em;
+            font-size:3vw;
             margin:0px;
             margin-left: 1px;
             cursor: pointer;
@@ -733,7 +733,7 @@ height:4em;
         }
 
 #map-container{
-  min-width: 400px;
+  min-width: 300px;
   height:auto;
   height
 	background-color:#888888;
