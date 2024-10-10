@@ -8,10 +8,10 @@ let markedNode = null;
 
 // Function to generate a random position within the mindmap div
 function getRandomPosition() {
-    //const x = Math.random() * (width - 80);  // Subtract node width
-    //const y = Math.random() * (height - 80); // Subtract node height
-    const x = Math.random() * (100 - 80);  // Subtract node width
-    const y = Math.random() * (100 - 80); // Subtract node height
+    const x = Math.random() * (width - 80);  // Subtract node width
+    const y = Math.random() * (height - 80); // Subtract node height
+    //const x = Math.random() * (100 - 80);  // Subtract node width
+    //const y = Math.random() * (100 - 80); // Subtract node height
 
     return { x, y };
 }
