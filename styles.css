@@ -213,6 +213,7 @@ button{
             border-radius: 5px;
             border: 1px solid #ccc;
             font-family: 'Lora', serif;
+            width:60%;
         }
 
         #btn-search {
@@ -775,7 +776,14 @@ body, html {
   flex-grow: 1; /* Allow frame to grow and fill available height */
   padding: 0.25em;
   border: 1px solid #ffffff;
-  background-color: #444444;
+    background-color: #9bdef5 /* Light beige, Victorian-like color */
+    background-image:
+      radial-gradient(circle, transparent 20%, #6593a2 20%), /* Dark circles */
+      radial-gradient(circle, transparent 20%, #6593a2 20%), /* Dark circles */
+      radial-gradient(circle, transparent 20%, #85c6db 20%); /* Light circles */
+    background-size: 40px 40px; /* Adjust the size of the pattern */
+    background-position: 0 0, 20px 20px, 40px 40px;
+  
             border: 10px solid transparent;
             padding: 2px;
             border-image: url(border.jpg) 30 stretch;  
@@ -786,7 +794,7 @@ body, html {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  background-color: #f1e4b0;
+  background-color: #6593a2;
   margin-top: 0.25em;
   overflow: hidden;
 }
