@@ -673,15 +673,15 @@ background-color:#888888;*/
             border: 2px solid #aaaaaa; 
             border-radius: 5px;
             cursor: pointer;
-            margin: 0px 0;
+            margin: 0.25em;
 
             padding: 0em;
             border-radius: 0.25em;
             cursor: pointer;
             margin: 0.25em 0;    
             font-size:0.5em;        
-width:3em;
-height:3em;
+width:2em;
+height:2em;
 background-repeat: no-repeat;
 background-size:  auto 100%;
 background-position: center top;
