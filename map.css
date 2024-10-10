@@ -16,7 +16,8 @@
     width: 80px;
     height: 80px;
     background-color: #a2d5f2;
-    position: absolute;
+    /*position: absolute;*/
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
