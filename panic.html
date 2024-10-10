@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable Square with D3.js</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        svg {
+            width: 100vw;
+            height: 100vh;
+        }
+        rect {
+            fill: steelblue;
+            cursor: grab;
+        }
+        rect:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body>
+    <svg></svg>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        // Set up the SVG container
+        const svg = d3.select("svg");
+
+        // Define square properties
+        const squareSize = 50;
+        let initialX = 20;
+        let initialY = window.innerHeight - squareSize - 20;
+
+        // Append a square to the bottom-left corner
+        const square = svg.append("rect")
+            .attr("x", initialX)
+            .attr("y", initialY)
+            .attr("width", squareSize)
+            .attr("height", squareSize);
+
+        // Define drag behavior
+        const drag = d3.drag()
+            .on("start", function (event) {
+                d3.select(this).raise().classed("active", true);
+            })
+            .on("drag", function (event) {
+                d3.select(this)
+                    .attr("x", event.x)
+                    .attr("y", event.y);
+            })
+            .on("end", function () {
+                d3.select(this).classed("active", false);
+            });
+
+        // Apply the drag behavior to the square
+        square.call(drag);
+    </script>
+</body>
+</html>
