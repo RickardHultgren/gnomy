@@ -134,12 +134,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Add event listeners to buttons
-    document.getElementById("addNodeBtn").addEventListener("onclick", addNode);
-    document.getElementById("addBranchBtn").addEventListener("onclick", addBranch);
-    document.getElementById("deleteNodeBtn").addEventListener("onclick", deleteNode);
+    document.getElementById("addNodeBtn").addEventListener("click", addNode);
+    document.getElementById("addBranchBtn").addEventListener("click", addBranch);
+    document.getElementById("deleteNodeBtn").addEventListener("click", deleteNode);
 
     // Add event listener to mindmap for background clicks to unmark the node
-    mindmap.on("onclick", function() {
+    mindmap.on("click", function() {
         unmarkNode();
     });
 });
