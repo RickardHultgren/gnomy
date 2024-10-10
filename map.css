@@ -1,9 +1,13 @@
+/* Importing a Google Font */
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp:wght@400;600&display=swap');
+
 .map-container {
     text-align: center;
     z-index: 7;
 }
 
 #mindmap {
+    font-family:"MedievalSharp";
     width: 400px;
     height: 400px;
     border: 1px solid #ccc;

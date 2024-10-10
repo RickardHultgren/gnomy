@@ -50,6 +50,9 @@ p {
   margin-bottom: 0;
 }
 
+button{
+ font-family: 'Lora', serif;
+}
 /* Start Button */
 .start-button {
   background-color: #a67844;
