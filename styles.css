@@ -737,7 +737,7 @@ height:4em;
   height:auto;
   height
 	background-color:#888888;
-  
+  z-index: 8;
 }
 
 
