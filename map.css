@@ -24,6 +24,7 @@
     width: 80px;
     height: 80px;
     background-color: #a2d5f2;
+    background-image:url(bush.jpg)
     /*position: absolute;*/
     position: relative;
     display: flex;

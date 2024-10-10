@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function() {
     function addNode() {
         const position = getRandomPosition();
         const node = mindmap.append("div")
-            .attr("style", "background-image:url(bush.jpg)")
             .attr("class", "node")
             .style("left", `${position.x}px`)
             .style("top", `${position.y}px`)
