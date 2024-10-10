@@ -185,12 +185,12 @@ p {
     border-radius: 0.25em;
     cursor: pointer;
     margin: 0.25em 0;
-    width: 3em;
-    height: 3em;
+    width: 2em;
+    height: 2em;
     background-repeat: no-repeat;
-    background-size: auto auto; /* Ensure the image covers the entire div */
+    background-size: auto fixed; /* Ensure the image covers the entire div */
     background-position: center; /* Center the background image */
-    background-attachment: fixed;          
+    /*background-attachment: fixed;          */
 }
 
         /* Search trees */
