@@ -264,6 +264,18 @@ button {
 		cursor: pointer;
 		margin-top: 20px;
 		transition: background-color 0.3s;
+    background-color:#888888;*/
+    background-color:none;
+    background-color: #6593a2;
+    color: white;
+    padding: 0.25em;
+    border: 2px solid white; 
+    border-color:#98c6d5;
+    border-radius: 0.25em;
+    cursor: pointer;
+    margin: 0.25em 0;
+    width:4em;
+    height:4em;    
 }
 
 button:hover {
