@@ -221,6 +221,9 @@ p {
             margin-left: 1px;
             cursor: pointer;
             border-radius: 5px;
+            width:auto;
+            height:1.5em;
+            font-family: 'Lora', serif;
         }
 
         /* Game Menu */
