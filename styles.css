@@ -188,7 +188,7 @@ p {
     width: 3em;
     height: 3em;
     background-repeat: no-repeat;
-    background-size: cover; /* Ensure the image covers the entire div */
+    background-size: auto auto; /* Ensure the image covers the entire div */
     background-position: center; /* Center the background image */
     background-attachment: fixed;          
 }
