@@ -175,7 +175,7 @@ p {
         }
 
 
-        .hud-button button {
+        .hud-button {
           background-color:#888888;*/
           background-color:none;
           background-color: #6593a2;
@@ -668,7 +668,7 @@ background-color:#888888;*/
         }
 
         /* Panic button */
-        #panic-button button {
+        #panic-button {
             background-color: #A50021;
             color: white;
             padding: 15px 30px;
