@@ -32,7 +32,7 @@
 
 .branch {
     stroke: black;
-    stroke-width: 2;
+    stroke-width: 2px;
 }
 
 .endpoint {

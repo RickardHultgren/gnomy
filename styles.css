@@ -275,7 +275,7 @@ button {
     cursor: pointer;
     margin: 0.25em 0;
     width:4em;
-    height:auto;    
+    height:4em;    
 }
 
 button:hover {

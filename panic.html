@@ -6,20 +6,30 @@
     <title>Gnomy Countdown with D3.js</title>
     <style>
         body {
+display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
             margin: 0;
             overflow: hidden;
-            display: flex;
+            /*display: flex;*/
             justify-content: center;
             align-items: center;
             height: 100vh; /* Center vertically */
         }
         .container {
-            width: 600px; /* Set width of the box */
-            height: 600px; /* Set height of the box */
+            width: 400px; /* Set width of the box */
+            height: 400px; /* Set height of the box */
             border: 2px solid #6593a2; /* Border around the box */
             position: relative; /* For positioning child elements */
             background: #f9f9f9; /* Light background for contrast */
             overflow: hidden; /* Hide overflow content */
+            background-color: #645452; /* Fallback background color */
+            background-image:url(border.jpg);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;          
+            background-position: bottom;  
+		padding:2em;
         }
         svg {
             background: #338833;
@@ -43,20 +53,22 @@
             border-color: #98c6d5;
             border-radius: 0.25em;
             cursor: pointer;
-            margin: 0.25em 0;
-            position: absolute; /* Position button at the top */
-            top: 10px; /* Adjust top position */
-            right: 10px; /* Adjust right position */
+            margin: 0 0;
+            position: relative; /* Position button at the top */
         }
     </style>
 </head>
 <body>
-<div style="height: 10vh;">
+<div style="display:block;">
+<div style="text-align:left; height: auto; width:420px; position:relative; display:block;             background-color: #645452; /* Fallback background color */
+  border: 10px solid transparent;
+            padding: 15px;
+            border-image: url(border.jpg) 30 stretch; ">
     <a href="homescreen.html">
         <button>Home Screen</button>
     </a>
 </div>
-<div class="container">
+<div class="container" style="display:block;">
     <svg></svg>
 </div>
 
@@ -100,10 +112,14 @@
     function startFirstCountdown() {
         const countdownText1 = svg.append("text")
             .attr("class", "countdown")
-            .attr("x", 500) // Adjust position for visibility within the container
+            .attr("x", 300) // Adjust position for visibility within the container
             .attr("y", 50)
             .text(4);
-
+        const Instructions1 = svg.append("text")
+            .attr("class", "countdown")
+            .attr("x", 100) // Position at the bottom-left corner
+            .attr("y", 100) // Adjusted to fit within the container
+            .text("Inhale");
         let countdownValue1 = 4;
         const countdownInterval1 = setInterval(() => {
             countdownValue1--;
@@ -124,10 +140,14 @@
     function startSecondCountdown() {
         const countdownText2 = svg.append("text")
             .attr("class", "countdown")
-            .attr("x", 500) // Adjust position for visibility within the container
-            .attr("y", 550) // Adjusted to fit within the container
+            .attr("x", 300) // Adjust position for visibility within the container
+            .attr("y", 300) // Adjusted to fit within the container
             .text(7);
-
+        const Instructions2 = svg.append("text")
+            .attr("class", "countdown")
+            .attr("x", 100) // Position at the bottom-left corner
+            .attr("y", 100) // Adjusted to fit within the container
+            .text("Hold Breath");
         let countdownValue2 = 7;
         const countdownInterval2 = setInterval(() => {
             countdownValue2--;
@@ -152,6 +172,12 @@
             .attr("y", 50) // Adjusted to fit within the container
             .text(8);
 
+        const Instructions3 = svg.append("text")
+            .attr("class", "countdown")
+            .attr("x", 100) // Position at the bottom-left corner
+            .attr("y", 100) // Adjusted to fit within the container
+            .text("Exhale");
+
         let countdownValue3 = 8;
         const countdownInterval3 = setInterval(() => {
             countdownValue3--;
@@ -171,5 +197,6 @@
     // Start the countdown loop
     startFirstCountdown();
 </script>
+</div>
 </body>
 </html>
