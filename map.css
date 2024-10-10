@@ -4,7 +4,7 @@
 .map-container {
     text-align: center;
     z-index: 7;
-    
+
     font-family:"MedievalSharp";
     width: 400px;
     height: 400px;
@@ -36,7 +36,7 @@
     width: 80px;
     height: 80px;
     background-color: #a2d5f2;
-    background-image:url(bush.jpg)
+    background-image:url(bush.png)
     /*position: absolute;*/
     position: relative;
     display: flex;
