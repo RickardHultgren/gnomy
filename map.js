@@ -136,6 +136,7 @@ function addBranch() {
 }
 
 // Add event listeners to buttons
+alert("hej0");
 document.getElementById("addNodeBtn").addEventListener("click", addNode);
 document.getElementById("addBranchBtn").addEventListener("click", addBranch);
 document.getElementById("deleteNodeBtn").addEventListener("click", deleteNode);
