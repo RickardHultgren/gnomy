@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="GnomyLogo.ico">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="map.css">
     <title>Gnomy</title>
-      
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="map.js"></script>
 </head>
 <body>
     <!-- Main HUD Container -->
@@ -71,7 +73,14 @@
             <!-- Map Section -->
             <div id="map-container">
                 <div id="map">
-                    <!-- D3.js will be used to render map nodes and paths here -->
+                    
+
+                    <div class="map-container">
+                        <button id="addNodeBtn">Add Node</button>
+                        <button id="addBranchBtn">Add Branch</button>
+                        <button id="deleteNodeBtn" style="display: none;">Delete Node</button>
+                        <div id="mindmap"></div>
+                    </div>  
                 </div>
 
                 <!-- Tool Menu -->
