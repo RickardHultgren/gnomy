@@ -111,7 +111,7 @@
 
             if (countdownValue1 < 1) {
                 clearInterval(countdownInterval1);
-                countdownText1.text("Time's up!");
+                //countdownText1.text("Time's up!");
                 setTimeout(() => {
                     svg.selectAll(".countdown").remove(); // Clear text before starting the next countdown
                     startSecondCountdown();
@@ -135,7 +135,7 @@
 
             if (countdownValue2 < 1) {
                 clearInterval(countdownInterval2);
-                countdownText2.text("Time's up!");
+                //countdownText2.text("Time's up!");
                 setTimeout(() => {
                     svg.selectAll(".countdown").remove(); // Clear text before starting the next countdown
                     startThirdCountdown();
@@ -149,7 +149,7 @@
         const countdownText3 = svg.append("text")
             .attr("class", "countdown")
             .attr("x", 10) // Position at the bottom-left corner
-            .attr("y", 550) // Adjusted to fit within the container
+            .attr("y", 50) // Adjusted to fit within the container
             .text(8);
 
         let countdownValue3 = 8;
@@ -159,7 +159,7 @@
 
             if (countdownValue3 < 1) {
                 clearInterval(countdownInterval3);
-                countdownText3.text("Time's up!");
+                //countdownText3.text("Time's up!");
                 setTimeout(() => {
                     svg.selectAll(".countdown").remove(); // Clear text before starting the next countdown
                     startFirstCountdown(); // Start the countdown loop again
