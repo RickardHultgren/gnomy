@@ -190,7 +190,10 @@ p {
     background-repeat: no-repeat;
     background-size: fixed 100%; /* Ensure the image covers the entire div */
     background-position: center; /* Center the background image */
-    /*background-attachment: fixed;          */
+    /*background-attachment: fixed; 
+             */
+    text-align:center;
+    vertical-align: middle;
 }
 
         /* Search trees */
@@ -679,7 +682,9 @@ background-color:#888888;*/
             border-radius: 0.25em;
             cursor: pointer;
             margin: 0.25em 0;    
-            font-size:0.5em;        
+            font-size:1em;     
+            text-align:center;
+            vertical-align: middle;   
 width:2em;
 height:2em;
 background-repeat: no-repeat;

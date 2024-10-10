@@ -52,6 +52,7 @@ function unmarkNode() {
 
 // Function to add a mindmap node
 function addNode() {
+    alert("hej1");
     const position = getRandomPosition();
     const node = mindmap.append("div")
         .attr("class", "node")
@@ -68,6 +69,7 @@ function addNode() {
             event.stopPropagation();
             markNode(d3.select(this));
         });
+    alert("hej2");
 }
 
 // Function to delete the marked node
