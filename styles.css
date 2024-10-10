@@ -195,7 +195,7 @@ p {
     text-align:center;
     vertical-align: middle;
 }
-
+.hud-button:hover{border-color:#ffffff;}
         /* Search trees */
         #search-trees {
             margin-top: 1px;
