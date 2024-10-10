@@ -20,9 +20,27 @@
         rect:active {
             cursor: grabbing;
         }
+        .countdown {
+            font-size: 48px;
+            font-weight: bold;
+            fill: black;
+        }
     </style>
 </head>
 <body>
+    <a href="homescreen.html"><button style="		transition: background-color 0.3s;
+        background-color:#888888;*/
+        background-color:none;
+        background-color: #6593a2;
+        color: white;
+        padding: 0.25em;
+        border: 2px solid white; 
+        border-color:#98c6d5;
+        border-radius: 0.25em;
+        cursor: pointer;
+        margin: 0.25em 0;
+        width:4em;
+        height:auto; ">Home Screen</button></a>
     <svg></svg>
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -58,6 +76,81 @@
 
         // Apply the drag behavior to the square
         square.call(drag);
+
+        // Function to start the first countdown from 4 to 0
+        function startFirstCountdown() {
+            const countdownText1 = svg.append("text")
+                .attr("class", "countdown")
+                .attr("x", window.innerWidth - 100)
+                .attr("y", 50)
+                .text(4);
+
+            let countdownValue1 = 4;
+            const countdownInterval1 = setInterval(() => {
+                countdownValue1--;
+                countdownText1.text(countdownValue1);
+
+                if (countdownValue1 < 0) {
+                    clearInterval(countdownInterval1);
+                    countdownText1.text("Time's up!");
+                    setTimeout(() => {
+                        svg.selectAll(".countdown").remove(); // Clear text before starting the next countdown
+                        startSecondCountdown();
+                    }, 1000); // Wait 1 second before starting the next countdown
+                }
+            }, 1000);
+        }
+
+        // Function to start the second countdown from 7 to 0
+        function startSecondCountdown() {
+            const countdownText2 = svg.append("text")
+                .attr("class", "countdown")
+                .attr("x", window.innerWidth - 100)
+                .attr("y", window.innerHeight - 50)
+                .text(7);
+
+            let countdownValue2 = 7;
+            const countdownInterval2 = setInterval(() => {
+                countdownValue2--;
+                countdownText2.text(countdownValue2);
+
+                if (countdownValue2 < 0) {
+                    clearInterval(countdownInterval2);
+                    countdownText2.text("Time's up!");
+                    setTimeout(() => {
+                        svg.selectAll(".countdown").remove(); // Clear text before starting the next countdown
+                        startThirdCountdown();
+                    }, 1000); // Wait 1 second before starting the next countdown
+                }
+            }, 1000);
+        }
+
+        // Function to start the third countdown from 8 to 0
+        function startThirdCountdown() {
+            const countdownText3 = svg.append("text")
+                .attr("class", "countdown")
+                .attr("x", 10) // Position at the bottom-left corner
+                .attr("y", window.innerHeight - 50)
+                .text(8);
+
+            let countdownValue3 = 8;
+            const countdownInterval3 = setInterval(() => {
+                countdownValue3--;
+                countdownText3.text(countdownValue3);
+
+                if (countdownValue3 < 0) {
+                    clearInterval(countdownInterval3);
+                    countdownText3.text("Time's up!");
+                    setTimeout(() => {
+                        svg.selectAll(".countdown").remove(); // Clear text before starting the next countdown
+                        startFirstCountdown(); // Start the countdown loop again
+                    }, 1000); // Wait 1 second before starting the next countdown
+                }
+            }, 1000);
+        }
+
+        // Start the countdown loop
+        startFirstCountdown();
     </script>
 </body>
 </html>
