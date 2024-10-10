@@ -212,10 +212,11 @@ button{
             height:2em;
             border-radius: 5px;
             border: 1px solid #ccc;
+            font-family: 'Lora', serif;
         }
 
         #btn-search {
-            padding: 0px;
+            padding: 0px 5px;
             background-color: #444;
             color: white;
             border: none;
@@ -269,12 +270,12 @@ p {
 button {
 		background-color: #4A90E2;
 		color: #fff;
-		padding: 15px 30px;
+		padding: 5px 0px;
 		font-size: 1rem;
 		border: none;
 		border-radius: 30px;
 		cursor: pointer;
-		margin-top: 20px;
+		margin-top: 0px;
 		transition: background-color 0.3s;
     background-color:#888888;*/
     background-color:none;
@@ -286,8 +287,8 @@ button {
     border-radius: 0.25em;
     cursor: pointer;
     margin: 0.25em 0;
-    width:3em;
-    height:3em;    
+    width:auto;
+    height:auto;    
 }
 
 button:hover {
