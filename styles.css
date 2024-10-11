@@ -207,14 +207,7 @@ button{
         
         }
 
-        #search-bar {
-            padding: 2px;
-            height:2em;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-family: 'Lora', serif;
-            width:60%;
-        }
+
 
         #btn-search {
             padding: 0px 5px;
@@ -813,4 +806,11 @@ body, html {
 input [type=text] {
   font-family: 'Lora', serif;
   height: 1.5em;
+    padding: 2px;
+    height:2em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: 'Lora', serif;
+    width:60%;
+
 }
