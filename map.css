@@ -37,6 +37,9 @@
     height: 80px;
     background-color: #a2d5f2;
     background-image:url(bush.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;          
+    background-position: bottom;  
     /*position: absolute;*/
     position: relative;
     display: flex;
