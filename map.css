@@ -48,7 +48,7 @@
     align-items: center;
     font-size: 16px;
     font-weight: bold;
-    color: #333;
+    color: #ff0000;
     border-radius: 5px;
     cursor: grab;
     z-index: 9; /* Keep above branches */
@@ -59,8 +59,11 @@
 }
 
 .branch {
+    color: #ff0000;
     stroke: #444422;
     stroke-width: 10px;
+    border-color: #444422;
+    border-width: 10px;
     position: absolute;
     z-index: 9; /* Set lower z-index so it's behind nodes */
 }
