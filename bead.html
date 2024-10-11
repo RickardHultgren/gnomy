@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="GnomyLogo.ico">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="map.css">
+    <title>Gnomy</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="map.js"></script>
+</head>
+<body>
+    <!-- Main HUD Container -->
+    <div id="game-hub" style="top:0;">
+        <!-- HUD Section -->
+        <div id="hud">
+            <div class="hud-button" id="gnomy-container" style="background-image:url(GnomyLogo.png) ;">
+                
+                <div id="gnomy-dialogue" style="position:absolute;background-color:#eeeeee; color:#333333;">
+                    <p id="gnomy-speech" style="display:none;">Hello! How can I help today?</p>
+                </div>
+            </div>
+
+            <!-- Lantern of Emotions -->
+            <div class="hud-button" id="lantern-container"  style="background-image:url(lantern.png) ;">
+            <p style="display:none;"><span id="lantern-light">75% light</span></p> 
+            </div>
+
+            <!-- Beads (emotion tracking tool) -->
+            <div class="hud-button" id="beads-container"  style="background-image:url(bead.png) ;">
+            </div>
+
+            <!-- Easy Access Buttons -->
+            <!-- Beads (emotion tracking tool) -->
+            <div class="hud-button" id="calendar-container"  style="background-image:url(calendar.png) ;">
+            </div>
+
+            <div id="panic-button" onclick="location.href='panic.html';">
+            !
+            </div>
+
+            <div class="hud-button">
+        <!-- Game Menu -->
+        <!--div id="game-menu">
+            <button id="btn-settings">Settings</button>
+            <button id="btn-stats">Stats</button>
+            <button id="btn-play-map">Play Map</button>
+        </div-->                
+                &#9776;
+            </div>
+
+        </div>
+
+        <!-- Gauges Section -->
+        <div id="gauges"> 
+            <div id="leafgauge">
+                <div style="width:50%;text-align:left;vertical-align:middle;"><img class="icon" style="height:1.5em;margin:0;padding:0;" id="leafcyan" src="leafcyan.png" alt="leaf" /> Competence Leaf: <span id="competence-leaf">150</span> </div>
+            <div style="width:50%;text-align:right;vertical-align:middle;"><img class="icon" style="height:1.5em;margin:0;padding:0;" id="leafyellow" src="leafyellow.png" alt="leaf" />Autonomy Leaf: <span id="autonomy-leaf">200</span></div>
+            </div>
+        </div>
+        <div id="frame" style="border: 1px 1px 1px 1px solid #ffffff; padding: 0.25em; height:auto; min-width: 300px; background-color:#888888;">
+            <div id="tools">
+                <div id="search-garden">
+                    <input type="text" placeholder="Search for gardens..." />
+                    <button id="garden-search-btn">Search</button>
+                    <button id="garden-new-btn">New Garden</button>                    
+                </div>
+                <div id="search-treas">
+                    <input type="text" id="tree-search-bar" placeholder="Search for trees in the garden..." />
+                    <button id="tree-search-btn">Search</button>
+                </div>
+            </div>
+            
+            <!-- Map Section -->
+            <div id="map-container">
+                <div id="map">
+                    
+                    <div class="map-container">
+                        <button id="addNodeBtn" style:="font-family: 'Lora', serif;">Add Tree</button>
+                        <button id="addBranchBtn" style:="font-family: 'Lora', serif;">Add Path</button>
+                        <button id="deleteNodeBtn" style="font-family: 'Lora', serif;display: none;">Delete Tree</button>
+                        <div id="mindmap"></div>
+                    </div>  
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script src="d3.min.js"></script>
+    <script src="app.js"></script> <!-- Assuming a JS file for interactivity -->
+</body>
+</html>
