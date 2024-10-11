@@ -21,7 +21,6 @@ body, html {
   align-items: center;
   height: 100vh;
   width: 100vw;
-  padding: 30% 0%;
   position: relative;
   overflow: hidden;
 }
@@ -34,6 +33,7 @@ body, html {
   animation: fadeIn 2s ease-in-out;
   z-index: 2;
   overflow:auto;
+  padding: 30% 0% 30% 0%
 }
 
 /* Logo Styling */
