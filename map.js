@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .attr("class", "node")
             .style("left", `${position.x}px`)
             .style("top", `${position.y}px`)
-            .text("tree")
+            .text("Tree")
             .call(
                 d3.drag()
                     .on("start", dragStarted)
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .attr("class", "label")
             .style("left", `${(startPos.x + endPos.x) / 2}px`)
             .style("top", `${(startPos.y + endPos.y) / 2}px`)
-            .text("path");
+            .text("Path");
 
         const endpoint1 = mindmap.append("div")
             .attr("class", "endpoint")

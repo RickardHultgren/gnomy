@@ -809,3 +809,8 @@ body, html {
   background-color: #e0d7a8;
   overflow: auto;
 }
+
+input [type=text] {
+  font-family: 'Lora', serif;
+  height: 1.5em;
+}
