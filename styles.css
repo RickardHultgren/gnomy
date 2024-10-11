@@ -572,11 +572,12 @@ body, html {
 
 /* Splash Content */
 .splash-content {
-  margin-top: 1em;
+  padding-top: 1em;
   text-align: center;
   color: #f8f4e3;
   animation: fadeIn 2s ease-in-out;
   z-index: 2;
+  height: 100vh;
 }
 
 
