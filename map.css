@@ -36,6 +36,7 @@
     width: 80px;
     height: 80px;
     background-color: #a2d5f2;
+    background-color: none;
     background-image:url(bush.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;          
@@ -53,17 +54,21 @@
     z-index: 9; /* Keep above branches */
 }
 
+.marked {
+    background-color: #a2d5f2;
+}
+
 .branch {
-    stroke: black;
-    stroke-width: 2px;
+    stroke: #444422;
+    stroke-width: 10px;
     position: absolute;
-    z-index: 1; /* Set lower z-index so it's behind nodes */
+    z-index: 9; /* Set lower z-index so it's behind nodes */
 }
 
 .endpoint {
-    width: 10px;
-    height: 10px;
-    background-color: red;
+    width: 20px;
+    height: 20px;
+    background-color: #444422;
     border-radius: 50%;
     position: absolute;
     cursor: pointer;
