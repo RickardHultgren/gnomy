@@ -11,7 +11,9 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
+  /*background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);*/
+  background-image: url(lantern-bg.jpg);
+  background-size:auto 100%;
 }
 
 /* Splash Screen Container */
@@ -21,8 +23,8 @@ body, html {
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background-image: url(lantern-bg.jpg);
-  background-size:auto 100%;
+  
+  
   position: relative;
   overflow: hidden;
 }
