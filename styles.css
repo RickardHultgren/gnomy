@@ -572,8 +572,9 @@ body, html {
 
 /* Splash Content */
 .splash-content {
-  padding-top: 4em;
+  padding-top: 0em;
   text-align: center;
+  vertical-align: middle;
   color: #f8f4e3;
   animation: fadeIn 2s ease-in-out;
   z-index: 2;
