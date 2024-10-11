@@ -11,7 +11,7 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  /*background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);*/
+  background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
 }
 
 /* Splash Screen Container */
