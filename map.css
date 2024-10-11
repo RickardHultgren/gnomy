@@ -62,8 +62,10 @@
     color: #ff0000;
     font-weight:bold;
     stroke: #444422;
+    stroke: #ff0000;
     stroke-width: 10px;
     border-color: #444422;
+    Background-color: #444422;
     border-width: 10px;
     position: absolute;
     z-index: 9; /* Set lower z-index so it's behind nodes */
