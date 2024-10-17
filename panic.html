@@ -6,38 +6,33 @@
     <title>Gnomy Countdown with D3.js</title>
     <style>
         body {
-display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
-            margin: 0;
-            overflow: hidden;
-            /*display: flex;*/
+            display: flex;
             justify-content: center;
             align-items: center;
+            background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
+            margin: 0;
+            overflow: hidden;
             height: 100vh; /* Center vertically */
         }
         .container {
-            width: 400px; /* Set width of the box */
-            height: 400px; /* Set height of the box */
-            border: 2px solid #6593a2; /* Border around the box */
-            position: relative; /* For positioning child elements */
-            background: #f9f9f9; /* Light background for contrast */
-            overflow: hidden; /* Hide overflow content */
-            background-color: #645452; /* Fallback background color */
-            background-image:url(border.jpg);
+            width: 400px; 
+            height: 400px;
+            border: 2px solid #6593a2; 
+            position: relative;
+            background-color: #645452;
+            background-image: url(border.jpg);
             background-repeat: no-repeat;
             background-size: 100% 100%;          
             background-position: center;  
-		padding:2em;
+            padding: 2em;
         }
         svg {
             background: #338833;
             background-image: radial-gradient(#224422 1px, transparent 0);
             background-size: 1em 1em;
             background-position: -19px -19px;
-            width: 100%; /* Fill the container */
-            height: 100%; /* Fill the container */
+            width: 100%;
+            height: 100%;
         }
         .countdown {
             font-size: 48px;
@@ -53,150 +48,132 @@ display: flex;
             border-color: #98c6d5;
             border-radius: 0.25em;
             cursor: pointer;
-            margin: 0 0;
-            position: relative; /* Position button at the top */
         }
     </style>
 </head>
 <body>
 <div style="display:block;">
-<div style="text-align:left; height: auto; width:420px; position:relative; display:block;             background-color: #645452; /* Fallback background color */
-  border: 10px solid transparent;
-            padding: 15px;
-            border-image: url(border.jpg) 30 stretch; ">
-    <a href="homescreen.html">
-        <button>Home Screen</button>
-    </a>
-</div>
-<div class="container" style="display:block;">
-    <svg></svg>
-</div>
+    <div style="text-align:left; width:420px; background-color: #645452; border: 10px solid transparent; padding: 15px; border-image: url(border.jpg) 30 stretch;">
+        <a href="homescreen.html">
+            <button>Home Screen</button>
+        </a>
+    </div>
+    <div id="hud-text" style="height: 3em; width: 100%;"></div>
+    <div class="container">
+        <svg></svg>
+    </div>
 
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script>
-    // Set up the SVG container
-    const svg = d3.select("svg");
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        // Set up the SVG container
+        const svg = d3.select("svg");
 
-    // Define Gnomy logo properties
-    const logoWidth = 50; // Adjust width as needed
-    const logoHeight = 50; // Adjust height as needed
-    let initialX = 20;
-    let initialY = 20; // Adjusted initial Y to keep the logo visible
+        // Define Gnomy logo properties
+        const logoWidth = 50;
+        const logoHeight = 50;
+        let initialX = 20;
+        let initialY = 20;
 
-    // Append Gnomy logo image to the SVG
-    const gnomyLogo = svg.append("image")
-        .attr("xlink:href", 'GnomyLogo.png') // Change to the correct path of your logo
-        .attr("x", initialX)
-        .attr("y", initialY)
-        .attr("width", logoWidth)
-        .attr("height", logoHeight);
+        // Append Gnomy logo image to the SVG
+        const gnomyLogo = svg.append("image")
+            .attr("xlink:href", 'GnomyLogo.png') 
+            .attr("x", initialX)
+            .attr("y", initialY)
+            .attr("width", logoWidth)
+            .attr("height", logoHeight);
 
-    // Define drag behavior
-    const drag = d3.drag()
-        .on("start", function (event) {
-            d3.select(this).raise().classed("active", true);
-        })
-        .on("drag", function (event) {
-            d3.select(this)
-                .attr("x", Math.max(0, Math.min(event.x, 600 - logoWidth))) // Ensure it stays within bounds
-                .attr("y", Math.max(0, Math.min(event.y, 600 - logoHeight))); // Ensure it stays within bounds
-        })
-        .on("end", function () {
-            d3.select(this).classed("active", false);
-        });
+        // Define drag behavior
+        const drag = d3.drag()
+            .on("start", function () {
+                d3.select(this).raise().classed("active", true);
+            })
+            .on("drag", function (event) {
+                d3.select(this)
+                    .attr("x", Math.max(0, Math.min(event.x, 600 - logoWidth)))
+                    .attr("y", Math.max(0, Math.min(event.y, 600 - logoHeight)));
+            })
+            .on("end", function () {
+                d3.select(this).classed("active", false);
+            });
 
-    // Apply the drag behavior to the logo
-    gnomyLogo.call(drag);
+        // Apply the drag behavior to the logo
+        gnomyLogo.call(drag);
 
-    // Function to start the first countdown from 4 to 0
-    function startFirstCountdown() {
-        const countdownText1 = svg.append("text")
-            .attr("class", "countdown")
-            .attr("x", 300) // Adjust position for visibility within the container
-            .attr("y", 50)
-            .text(4);
-        const Instructions1 = svg.append("text")
-            .attr("class", "countdown")
-            .attr("x", 100) // Position at the bottom-left corner
-            .attr("y", 100) // Adjusted to fit within the container
-            .text("Inhale");
-        let countdownValue1 = 4;
-        const countdownInterval1 = setInterval(() => {
-            countdownValue1--;
-            countdownText1.text(countdownValue1);
+        // Function to start the first countdown from 4 to 0
+        function startFirstCountdown() {
+            const countdownText1 = svg.append("text")
+                .attr("class", "countdown")
+                .attr("x", 300)
+                .attr("y", 50)
+                .text(4);
+            d3.select("#hud-text").text("Inhale");
 
-            if (countdownValue1 < 1) {
-                clearInterval(countdownInterval1);
-                //countdownText1.text("Time's up!");
-                setTimeout(() => {
-                    svg.selectAll(".countdown").remove(); // Clear text before starting the next countdown
-                    startSecondCountdown();
-                }, 1000); // Wait 1 second before starting the next countdown
-            }
-        }, 1000);
-    }
+            let countdownValue1 = 4;
+            const countdownInterval1 = setInterval(() => {
+                countdownValue1--;
+                countdownText1.text(countdownValue1);
 
-    // Function to start the second countdown from 7 to 0
-    function startSecondCountdown() {
-        const countdownText2 = svg.append("text")
-            .attr("class", "countdown")
-            .attr("x", 300) // Adjust position for visibility within the container
-            .attr("y", 300) // Adjusted to fit within the container
-            .text(7);
-        const Instructions2 = svg.append("text")
-            .attr("class", "countdown")
-            .attr("x", 100) // Position at the bottom-left corner
-            .attr("y", 100) // Adjusted to fit within the container
-            .text("Hold Breath");
-        let countdownValue2 = 7;
-        const countdownInterval2 = setInterval(() => {
-            countdownValue2--;
-            countdownText2.text(countdownValue2);
+                if (countdownValue1 < 1) {
+                    clearInterval(countdownInterval1);
+                    setTimeout(() => {
+                        svg.selectAll(".countdown").remove();
+                        startSecondCountdown();
+                    }, 1000);
+                }
+            }, 1000);
+        }
 
-            if (countdownValue2 < 1) {
-                clearInterval(countdownInterval2);
-                //countdownText2.text("Time's up!");
-                setTimeout(() => {
-                    svg.selectAll(".countdown").remove(); // Clear text before starting the next countdown
-                    startThirdCountdown();
-                }, 1000); // Wait 1 second before starting the next countdown
-            }
-        }, 1000);
-    }
+        // Function to start the second countdown from 7 to 0
+        function startSecondCountdown() {
+            const countdownText2 = svg.append("text")
+                .attr("class", "countdown")
+                .attr("x", 300)
+                .attr("y", 300)
+                .text(7);
+            d3.select("#hud-text").text("Hold Breath");
 
-    // Function to start the third countdown from 8 to 0
-    function startThirdCountdown() {
-        const countdownText3 = svg.append("text")
-            .attr("class", "countdown")
-            .attr("x", 10) // Position at the bottom-left corner
-            .attr("y", 50) // Adjusted to fit within the container
-            .text(8);
+            let countdownValue2 = 7;
+            const countdownInterval2 = setInterval(() => {
+                countdownValue2--;
+                countdownText2.text(countdownValue2);
 
-        const Instructions3 = svg.append("text")
-            .attr("class", "countdown")
-            .attr("x", 100) // Position at the bottom-left corner
-            .attr("y", 100) // Adjusted to fit within the container
-            .text("Exhale");
+                if (countdownValue2 < 1) {
+                    clearInterval(countdownInterval2);
+                    setTimeout(() => {
+                        svg.selectAll(".countdown").remove();
+                        startThirdCountdown();
+                    }, 1000);
+                }
+            }, 1000);
+        }
 
-        let countdownValue3 = 8;
-        const countdownInterval3 = setInterval(() => {
-            countdownValue3--;
-            countdownText3.text(countdownValue3);
+        // Function to start the third countdown from 8 to 0
+        function startThirdCountdown() {
+            const countdownText3 = svg.append("text")
+                .attr("class", "countdown")
+                .attr("x", 10)
+                .attr("y", 50)
+                .text(8);
+            d3.select("#hud-text").text("Exhale");
 
-            if (countdownValue3 < 1) {
-                clearInterval(countdownInterval3);
-                //countdownText3.text("Time's up!");
-                setTimeout(() => {
-                    svg.selectAll(".countdown").remove(); // Clear text before starting the next countdown
-                    startFirstCountdown(); // Start the countdown loop again
-                }, 1000); // Wait 1 second before starting the next countdown
-            }
-        }, 1000);
-    }
+            let countdownValue3 = 8;
+            const countdownInterval3 = setInterval(() => {
+                countdownValue3--;
+                countdownText3.text(countdownValue3);
 
-    // Start the countdown loop
-    startFirstCountdown();
-</script>
+                if (countdownValue3 < 1) {
+                    clearInterval(countdownInterval3);
+                    setTimeout(() => {
+                        svg.selectAll(".countdown").remove();
+                        startFirstCountdown();
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        // Start the countdown loop
+        startFirstCountdown();
+    </script>
 </div>
 </body>
 </html>
