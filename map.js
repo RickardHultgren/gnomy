@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Set up the D3 environment and mindmap div dimensions
-    const mindmap = d3.select("#mindmap");
-    const width = parseInt(mindmap.style("width"));
-    const height = parseInt(mindmap.style("height"));
+    // Set up the D3 environment and map div dimensions
+    const map = d3.select("#map");
+    const width = parseInt(map.style("width"));
+    const height = parseInt(map.style("height"));
 
     let markedNode = null;
 
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function addNode() {
         const position = getRandomPosition();
-        const node = mindmap.append("div")
+        const node = map.append("div")
             .attr("class", "node")
             .style("left", `${position.x}px`)
             .style("top", `${position.y}px`)
@@ -74,20 +74,20 @@ document.addEventListener("DOMContentLoaded", function() {
         const startPos = getRandomPosition();
         const endPos = getRandomPosition();
 
-        const line = mindmap.append("line")
+        const line = map.append("line")
             .attr("class", "branch")
             .attr("x1", startPos.x + 5)
             .attr("y1", startPos.y + 5)
             .attr("x2", endPos.x + 5)
             .attr("y2", endPos.y + 5);
 
-        const label = mindmap.append("div")
+        const label = map.append("div")
             .attr("class", "label")
             .style("left", `${(startPos.x + endPos.x) / 2}px`)
             .style("top", `${(startPos.y + endPos.y) / 2}px`)
             .text("Path");
 
-        const endpoint1 = mindmap.append("div")
+        const endpoint1 = map.append("div")
             .attr("class", "endpoint")
             .style("left", `${startPos.x}px`)
             .style("top", `${startPos.y}px`)
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     })
             );
 
-        const endpoint2 = mindmap.append("div")
+        const endpoint2 = map.append("div")
             .attr("class", "endpoint")
             .style("left", `${endPos.x}px`)
             .style("top", `${endPos.y}px`)
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("addBranchBtn").addEventListener("click", addBranch);
     document.getElementById("deleteNodeBtn").addEventListener("click", deleteNode);
 
-    mindmap.on("click", function() {
+    map.on("click", function() {
         unmarkNode();
     });
 });
