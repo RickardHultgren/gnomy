@@ -18,7 +18,7 @@
     background-position: 0 0, 0 0, 4px 7px, 4px 7px, 0 0, 4px 7px;
 }
 
-#mindmap {
+#map {
     font-family:"MedievalSharp";
     width: 400px;
     height: 400px;
@@ -30,6 +30,12 @@
     background-image:  linear-gradient(30deg, #a8a398 12%, transparent 12.5%, transparent 87%, #a8a398 87.5%, #a8a398), linear-gradient(150deg, #a8a398 12%, transparent 12.5%, transparent 87%, #a8a398 87.5%, #a8a398), linear-gradient(30deg, #a8a398 12%, transparent 12.5%, transparent 87%, #a8a398 87.5%, #a8a398), linear-gradient(150deg, #a8a398 12%, transparent 12.5%, transparent 87%, #a8a398 87.5%, #a8a398), linear-gradient(60deg, #a8a39877 25%, transparent 25.5%, transparent 75%, #a8a39877 75%, #a8a39877), linear-gradient(60deg, #a8a39877 25%, transparent 25.5%, transparent 75%, #a8a39877 75%, #a8a39877);
     background-size: 8px 14px;
     background-position: 0 0, 0 0, 4px 7px, 4px 7px, 0 0, 4px 7px;
+    /* Ensure map takes the full space inside its container */
+#map 
+    flex-grow: 1;
+    background-color: #e0d7a8;
+    overflow: auto;
+  
 }
 
 .node {
