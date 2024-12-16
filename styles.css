@@ -773,6 +773,7 @@ body, html {
 
 /* The frame will take up the remaining space */
 #frame {
+  width: 100vw;
   display: flex;
   flex-direction: column;
   flex-grow: 1; /* Allow frame to grow and fill available height */
