@@ -787,7 +787,18 @@ body, html {
   flex-direction: column;
   flex-grow: 1; /* Allow frame to grow and fill available height */
 
-
+  border-image-slice:
+  42 42 42 42;
+  border-image-width:
+  42px 42px 42px 42px;
+  border-image-outset:
+  0px 0px 0px 0px;
+  border-image-repeat:
+  round round;
+  border-image-source:
+  url("border.svg");
+  border-style:
+  solid;
 
 
 }
