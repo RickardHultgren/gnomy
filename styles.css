@@ -816,11 +816,7 @@ body, html {
   border-image: url(border.svg) 30 stretch;*/
 
 
-  background-image:url(border.svg);*/
-  border-image-slice: 42 42 42 42;
-  border-image-width:  42px 42px 42px 42px;  border-image-outset:  0px 0px 0px 0px;
-  border-image-repeat:  round round;
-  
+  background-image:url(border.svg)30 stretch;
   border-style:  solid;
 
 }
