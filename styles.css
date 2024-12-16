@@ -107,7 +107,8 @@ button{
           z-index:10;
           width:100vw;
           height:auto;
-          display: flex; /* Flexbox for horizontal layout */
+          /*display: flex; /* Flexbox for horizontal layout */
+          display: relative; /* Flexbox for horizontal layout */
           justify-content: space-around; /* Distribute items evenly */
           align-items: center; /* Align items in the center vertically */
           margin: 0; /* No margin */
@@ -774,9 +775,10 @@ body, html {
 /* The frame will take up the remaining space */
 #frame {
   width: 100vw;
-  display: flex;
+  /*display: flex;
   flex-direction: column;
   flex-grow: 1; /* Allow frame to grow and fill available height */
+  display: relative;
 
   border-image-slice:  42 42 42 42;
   border-image-width:  42px 42px 42px 42px;
