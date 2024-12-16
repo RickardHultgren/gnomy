@@ -170,42 +170,7 @@ button{
         /* Gauges section */
         #gauges {
             display: flex;
-            justify-content: space-around;
-            margin-top: 0px;
-            background-color: #645452; /* Fallback background color */
-            background-image:url(border.jpg);
-            background-repeat: no-repeat;
-            background-size: 100% 100%;          
-            background-position: bottom;  
-            /*border: 10px solid transparent;
-            padding: 15px;
-            border-image: url(border.jpg) 30 stretch;*/
             
-            
-        }
-
-        #leafgauge {
-            /*text-align: center;*/
-            display:inline-flex;
-            background-color: #6593a2;
-            color: white;
-            font-weight: bold;
-            font-size:0.35em;
-            padding: 0.25em;
-            border: 2px solid white; 
-            border-color:#98c6d5;
-            border-radius: 0.25em;
-            cursor: pointer;
-            margin: 0.25em 0.5em;
-            height:auto;
-            width:100%;
-            line-height: normal;
-            vertical-align: middle;
-        }
-
-        /* Notifications */
-        #notifications {
-            margin-top: 0px;
         }
 
 
@@ -282,6 +247,22 @@ button{
     min-width:400px;
 		margin: auto;
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    background-color: #6593a2;
+    margin-top: 0.25em;
+    overflow: hidden;
+    border-image-slice:
+  42 42 42 42;
+  border-image-width:
+  42px 42px 42px 42px;
+  border-image-outset:
+  0px 0px 0px 0px;
+  border-image-repeat:
+  round round;
+  border-image-source:
+  url("border.svg");
+  border-style:
+  solid;
 }
 
 h1 {
