@@ -793,27 +793,7 @@ body, html {
 }
 
 
-/* Map container should also grow to fill available space */
-#map-container {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  background-color: #6593a2;
-  margin-top: 0.25em;
-  overflow: hidden;
-  border-image-slice:
-42 42 42 42;
-border-image-width:
-42px 42px 42px 42px;
-border-image-outset:
-0px 0px 0px 0px;
-border-image-repeat:
-round round;
-border-image-source:
-url("border.svg");
-border-style:
-solid;
-}
+
 
 /* Ensure map takes the full space inside its container */
 #map {
