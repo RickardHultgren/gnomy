@@ -6,7 +6,7 @@
     z-index: 7;
 
     font-family:"MedievalSharp";
-    width: 90vw;
+    width: 100vw;
     height: 90vh;
     border: 1px solid #00ff95;
     position: relative; /* Ensure child elements are positioned correctly */
