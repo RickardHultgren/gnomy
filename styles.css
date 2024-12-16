@@ -783,25 +783,7 @@ body, html {
   flex-grow: 1; /* Allow frame to grow and fill available height */
   display: block;
 
-  border-image-slice:  42 42 42 42;
-  border-image-width:  42px 42px 42px 42px;
-  border-image-outset:  0px 0px 0px 0px;
-  border-image-repeat:  round round;
-  border-image-source:  url("border.svg");
-  border-style:  solid;
 
-  border-image-slice:
-  42 0 42 42;
-  border-image-width:
-  42px 42px 42px 42px;
-  border-image-outset:
-  0px 0px 0px 0px;
-  border-image-repeat:
-  round round;
-  border-image-source:
-  url("https://mdn.github.io/css-examples/tools/border-image-generator/border-image-6.svg");
-  border-style:
-  solid;
 }
 
 
