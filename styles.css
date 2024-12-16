@@ -108,8 +108,8 @@ button{
           z-index:10;
           width:100vw;
           height:auto;
-          /*display: flex; /* Flexbox for horizontal layout */
-          display: relative; /* Flexbox for horizontal layout */
+          display: flex; /* Flexbox for horizontal layout */
+          /*display: relative; /* Flexbox for horizontal layout */
           justify-content: space-around; /* Distribute items evenly */
           align-items: center; /* Align items in the center vertically */
           margin: 0; /* No margin */
@@ -564,7 +564,8 @@ body, html {
   padding: 0;
   height: 100%;
   font-family: 'Lora', serif;
-  display: flex;
+  /*display: flex;*/
+  display:relative;
   justify-content: center;
   align-items: center;
   background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
