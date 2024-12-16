@@ -783,7 +783,7 @@ body, html {
   height: 100vh;
   width: 100vw;
   margin: 0;
-  display: absolute;
+  /*display: absolute;*/
   overflow: hidden;
   /*justify-content: center;*/
   /*align-items: flex-start; /* Align content to the top */
@@ -792,14 +792,15 @@ body, html {
 
 /* Make the main hub container fill the viewport */
 #game-hub {
-  display: absolute;
+  /*display: absolute;*/
   z-index:9;
   
   height: 100vh;
   width: 100vw;
   background-image:url(border.svg);*/
   border-image-slice: 42 42 42 42;
-  border-image-width:  42px 42px 42px 42px;  border-image-outset:  0px 0px 0px 0px;
+  border-image-width:  42px 42px 42px 42px;
+  border-image-outset:  0px 0px 0px 0px;
   border-image-repeat:  round round;
   
   border-style:  solid;
@@ -825,7 +826,7 @@ body, html {
   /* Custom border */
   border: 10px solid transparent;
   padding: 2px;
-  border-image: url(border.jpg) 30 stretch;
+  border-image: url(border.svg) 30 stretch;
 
 
   background-image:url(border.svg);*/
