@@ -37,17 +37,17 @@
     background: #3f5c38; /* Base green for the lawn */
     background-image: 
       /* Small, irregular dots for detailed grass texture */
-      radial-gradient(circle, #324e32 1px, transparent 0.5), 
-      radial-gradient(circle, #5a8a54 1px, transparent 0.5),
-      radial-gradient(circle, #78814c 1px, transparent 0.5),
-      radial-gradient(circle, #4d6a3d 1px, transparent 0.5),
-      radial-gradient(circle, #80945c 2px, transparent 0.5),
+      radial-gradient(circle, #324e32 1px, transparent 0.75), 
+      radial-gradient(circle, #5a8a54 1px, transparent 0.75),
+      radial-gradient(circle, #78814c 1px, transparent 0.75),
+      radial-gradient(circle, #4d6a3d 1px, transparent 0.75),
+      radial-gradient(circle, #80945c 2px, transparent 0.75),
       
       /* Medium-sized patches for natural variation */
-      radial-gradient(circle, #6f9151 3px, transparent 0.5),
-      radial-gradient(circle, #4f6d3f 3px, transparent 0.5),
-      radial-gradient(circle, #688e43 4px, transparent 0.5),
-      radial-gradient(circle, #a69b59 4px, transparent 0.5),
+      radial-gradient(circle, #6f9151 3px, transparent 0.75),
+      radial-gradient(circle, #4f6d3f 3px, transparent 0.75),
+      radial-gradient(circle, #688e43 4px, transparent 0.75),
+      radial-gradient(circle, #a69b59 4px, transparent 0.75),
       
       /* Larger blades and irregular shapes for layering */
       radial-gradient(ellipse at top left, rgba(50, 80, 50, 0.8) 30%, transparent 60%), 
