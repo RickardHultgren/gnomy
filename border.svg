@@ -5,8 +5,8 @@
   <symbol id="svg_14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
    <defs>
     <linearGradient id="svg_13">
-     <stop offset="0" stop-color="#ffc900"/>
-     <stop offset="1" stop-color="#ffea00"/>
+     <stop offset="0" stop-color="#000000"/>
+     <stop offset="1" stop-color="#000000"/>
     </linearGradient>
     <linearGradient id="svg_12" x1="1.013998" x2="0.126502" xlink:href="#svg_13" y1="0.589738" y2="0.500001"/>
     <linearGradient id="svg_11" x1="0.600124" x2="0.338525" xlink:href="#svg_13" y1="1.013995" y2="-0.013998"/>
