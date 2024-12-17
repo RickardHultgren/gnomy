@@ -90,6 +90,7 @@
       inset 0px -3px 3px rgba(255, 255, 255, 0.1), /* Subtle highlights for blade curvature */
       0px 0px 14px rgba(0, 0, 0, 0.15); /* Ambient shadowing for realism */    
 
+      background-attachment:scroll;
 }
 .node {
     width: 80px;
