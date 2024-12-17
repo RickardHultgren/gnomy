@@ -37,17 +37,17 @@
     background: #3f5c38; /* Base green for the lawn */
     background-image: 
       /* Small, irregular dots for detailed grass texture */
-      radial-gradient(circle, #324e32 1px, transparent 0), 
-      radial-gradient(circle, #5a8a54 1px, transparent 0),
-      radial-gradient(circle, #78814c 1px, transparent 0),
-      radial-gradient(circle, #4d6a3d 1px, transparent 0),
-      radial-gradient(circle, #80945c 2px, transparent 0),
+      radial-gradient(circle, #324e32 1px, transparent 0.5), 
+      radial-gradient(circle, #5a8a54 1px, transparent 0.5),
+      radial-gradient(circle, #78814c 1px, transparent 0.5),
+      radial-gradient(circle, #4d6a3d 1px, transparent 0.5),
+      radial-gradient(circle, #80945c 2px, transparent 0.5),
       
       /* Medium-sized patches for natural variation */
-      radial-gradient(circle, #6f9151 3px, transparent 0),
-      radial-gradient(circle, #4f6d3f 3px, transparent 0),
-      radial-gradient(circle, #688e43 4px, transparent 0),
-      radial-gradient(circle, #a69b59 4px, transparent 0),
+      radial-gradient(circle, #6f9151 3px, transparent 0.5),
+      radial-gradient(circle, #4f6d3f 3px, transparent 0.5),
+      radial-gradient(circle, #688e43 4px, transparent 0.5),
+      radial-gradient(circle, #a69b59 4px, transparent 0.5),
       
       /* Larger blades and irregular shapes for layering */
       radial-gradient(ellipse at top left, rgba(50, 80, 50, 0.8) 30%, transparent 60%), 
@@ -59,16 +59,16 @@
     
     /* Sizes adjusted for irregular, interwoven effect */
     background-size: 
-      0.4em 0.4em, 
-      .6em .6em, 
-      .7em .7em, 
+      0.2em 0.2em, 
+      .3em .3em, 
+      .4em .4em, 
+      .5em .5em, 
+      7em 7em, 
+      8em 8em, 
       1em 1em, 
-      1.5em 1.5em, 
-      1.7em 1.7em, 
+      1em 1em, 
       2em 2em, 
-      2em 2em, 
-      4em 4em, 
-      6em 6em, 
+      3em 3em, 
       100% 100%; /* Full coverage for shading */
     
     /* Positions randomized for natural look */
@@ -91,6 +91,8 @@
       0px 0px 14px rgba(0, 0, 0, 0.15); /* Ambient shadowing for realism */    
 
       background-attachment:scroll;
+
+      margin-top:1em;
 }
 .node {
     width: 80px;
