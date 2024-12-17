@@ -765,41 +765,22 @@ body, html {
     outline: none;
     color: #000;
     /* Base gradient for metallic texture */
-    background: linear-gradient(
-        45deg,
-        #444 5%,
-        #888 10%,
-        #666 30%,
-        #777 50%,
-        #666 70%,
-        #888 80%,
-        #555 95%
-    ),
-    /* Overlapping dots for added texture */
-    radial-gradient(circle, #333 1px, transparent 0),
-    radial-gradient(circle, #555 1px, transparent 0),
-    radial-gradient(circle, #666 1px, transparent 0),
-    radial-gradient(circle, #444 1px, transparent 0),
-    radial-gradient(circle, #555 1px, transparent 0);
-
-    /* Layer positioning and size for texture */
+    background-color: #3d3d3d; /* Dark gray base color */
+    background-image: 
+        radial-gradient(circle, rgba(0, 0, 0, 0.4) 5%, transparent 10%),
+        radial-gradient(circle, rgba(255, 255, 255, 0.03) 15%, transparent 20%), 
+        radial-gradient(circle, rgba(0, 0, 0, 0.3) 5%, transparent 25%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.02) 75%, transparent 75%, transparent);
     background-size: 
-        100% 100%, /* Base gradient covers full area */
-        1em 1em,   /* Dot layer sizes */
-        2em 2em,
-        1.5em 1.5em,
-        1.25em 1.25em,
-        0.5em 0.5em;
-    background-position: 
-        0 0, /* Base gradient aligned normally */
-        0 0, 
-        1em 1em,
-        0.5em 0.5em,
-        1.5em 1.5em,
-        2em 2em;
+        20px 20px, 
+        50px 50px, 
+        100px 100px, 
+        10px 10px;
+    background-blend-mode: multiply;
+    height: 100vh;
 
     /* Visual styling for the surface */
-    border-radius: 10px;
+    border-radius: 4px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
 
