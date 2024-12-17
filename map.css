@@ -39,9 +39,9 @@
       /* Small, irregular dots for detailed grass texture */
       radial-gradient(circle, #547c54 1px, transparent 0), 
       radial-gradient(circle, #4f7949 1px, transparent 0),
-      radial-gradient(circle, #707948 1px, transparent 0),
+      radial-gradient(circle, #6a7247 1px, transparent 0),
       radial-gradient(circle, #4d6a3d 1px, transparent 0),
-      radial-gradient(circle, #708151 2px, transparent 0),
+      radial-gradient(circle, #626e4b 2px, transparent 0),
       
       /* Medium-sized patches for natural variation */
       radial-gradient(circle, #5b7743 3px, transparent 0),
@@ -92,7 +92,7 @@
 
       background-attachment:scroll;
 
-      margin-top:1em;
+      margin:.5m;
 }
 .node {
     width: 80px;
