@@ -33,18 +33,16 @@
     url("border.svg");
     border-style:
     solid;  
-
+    background: #427958; /* Softer green for lawn */
     background-image: 
         radial-gradient(circle, #426142 1px, transparent 0), /* Dark green dots */
         radial-gradient(circle, #5f8a54 1px, transparent 0), /* Lighter green dots */
         radial-gradient(circle, #465c46 1px, transparent 0), /* Yellow dots */
         radial-gradient(circle, #447044 1px, transparent 0), /* Orange dots */
         radial-gradient(circle, #546b46 1px, transparent 0); /* Pink dots */
-    background-size: 1em 1em, 2em 2em, 1.5em 1.5em, 1.25em 1.25em, 0.5em 0.5em; /* Adjust dot sizes */
+    background-size: 1em 1em, 2em 2em, 1.5em 1.5em, 1.25em 1.25em, 0.5em 0.5em, 4em;/* Adjust dot sizes */
     background-position: 0 0, 1em 1em, 0.5em 0.5em, 1.5em 1.5em, 2em 2em; /* Adjust dot positions */
-    
 }
-
 .node {
     width: 80px;
     height: 80px;

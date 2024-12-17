@@ -766,16 +766,17 @@ body, html {
     outline: none;
     color: #000;
     /* Base gradient for metallic texture */
-    background:
-radial-gradient(rgba(255,255,255,.15) 30%, rgba(255,255,255,.3) 16%, rgba(255,255,255,0) 33%,rgba(255,255,255,0) 0) 0 0,
-radial-gradient( rgba(255,255,255,.1) 11%, rgba(255,255,255,.3) 7%, rgba(255,255,255,0) 14%,rgba(255,255,255,0) 0) 0 0,
-radial-gradient( rgba(255,255,255,.2) 17%, rgba(255,255,255,.43) 7%, rgba(255,255,255,0) 20%,rgba(255,255,255,0) 0) 0 110px,
-radial-gradient( rgba(255,255,255,.2) 11%, rgba(255,255,255,.4) 7%, rgba(255,255,255,0) 14%,rgba(255,255,255,0) 0) -130px -170px,
-radial-gradient( rgba(255,255,255,.2) 11%, rgba(255,255,255,.4) 7%, rgba(255,255,255,0) 14%,rgba(255,255,255,0) 0) 130px 370px,
-radial-gradient( rgba(255,255,255,.1) 11%, rgba(255,255,255,.2) 7%, rgba(255,255,255,0) 14%,rgba(255,255,255,0) 0) 0 0,
-linear-gradient(45deg, #370602 0%, 	#612207 20%, 	#3b261d 30%, 	#423c3a 40%, 	#240c02 50%, 	#1f130e 60%,	#0c0806 70%, 	#2c0d00 80%, #1f0b03 90%, #201002 100%);
+/* Base gradient for wrought iron texture */
+background:
+  radial-gradient(rgba(255,255,255,0.1) 30%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 60%, rgba(0,0,0,0) 0) 0 0,
+  radial-gradient(rgba(255,255,255,0.05) 20%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 0) 50px 50px,
+  radial-gradient(rgba(255,255,255,0.07) 25%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0) 60%, rgba(0,0,0,0) 0) 0 120px,
+  radial-gradient(rgba(255,255,255,0.06) 15%, rgba(0,0,0,0.3) 25%, rgba(0,0,0,0) 40%, rgba(0,0,0,0) 0) -130px -170px,
+  radial-gradient(rgba(255,255,255,0.08) 15%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0) 45%, rgba(0,0,0,0) 0) 130px 370px,
+  radial-gradient(rgba(255,255,255,0.04) 15%, rgba(0,0,0,0.2) 30%, rgba(0,0,0,0) 45%, rgba(0,0,0,0) 0) 0 0,
+  linear-gradient(45deg, #0d0d0d 0%, #1a1a1a 25%, #262626 50%, #121212 75%, #1a1a1a 100%);
 background-size: 470px 470px, 970px 970px, 410px 410px, 610px 610px, 530px 530px, 730px 730px, 100% 100%;
-background-color: #471906;
+background-color: #121212;
     height: 100vh;
 
     /* Visual styling for the surface */
