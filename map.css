@@ -59,16 +59,16 @@
     
     /* Sizes adjusted for irregular, interwoven effect */
     background-size: 
-      0.8em 0.8em, 
-      1.2em 1.2em, 
+      0.4em 0.4em, 
+      .6em .6em, 
+      .7em .7em, 
+      1em 1em, 
       1.5em 1.5em, 
+      1.7em 1.7em, 
       2em 2em, 
-      3em 3em, 
-      3.5em 3.5em, 
+      2em 2em, 
       4em 4em, 
-      5em 5em, 
-      8em 8em, 
-      12em 12em, 
+      6em 6em, 
       100% 100%; /* Full coverage for shading */
     
     /* Positions randomized for natural look */
