@@ -280,6 +280,7 @@ button {
 #tools{
   border:1px solid  #FFD700;
   background-color:#333333;
+  margin:.5em .5em 0em .5em ;
 }
 
 
@@ -808,7 +809,7 @@ background-color: #121212;
     /* Adjust dimensions */
     width: 100%;
     height: 100%;
-    padding:1em;
+    padding:0em;
 }
 
 
