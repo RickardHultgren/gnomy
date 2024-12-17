@@ -256,10 +256,10 @@ button {
     background-color:#888888;*/
     background-color:none;
     
-    color: #FFD700;
+    color: #333333;
     padding: 0.25em;
-    border: 2px solid white; 
-    border-color:#98c6d5;
+    border: 2px solid #FFD700; 
+    border-color:#FFD700;
     border-radius: 0.25em;
     cursor: pointer;
     margin: 0.25em 0;
