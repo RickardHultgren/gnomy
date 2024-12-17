@@ -11,14 +11,7 @@
     border: 1px solid #00ff95;
     position: relative; /* Ensure child elements are positioned correctly */
     /*background-color: #3a3;*/
-    background-color: #abadab;
-    /*opacity: 0.8;*/
-    background-image:  linear-gradient(30deg, #849985 12%, transparent 12.5%, transparent 87%, #a8a398 87.5%, #a8a398), linear-gradient(150deg, #a8a398 12%, transparent 12.5%, transparent 87%, #a8a398 87.5%, #a8a398), linear-gradient(30deg, #a8a398 12%, transparent 12.5%, transparent 87%, #a8a398 87.5%, #a8a398), linear-gradient(150deg, #a8a398 12%, transparent 12.5%, transparent 87%, #a8a398 87.5%, #a8a398), linear-gradient(60deg, #a8a39877 25%, transparent 25.5%, transparent 75%, #a8a39877 75%, #a8a39877), linear-gradient(60deg, #a8a39877 25%, transparent 25.5%, transparent 75%, #a8a39877 75%, #a8a39877);
-    background-size: 8px 14px;
-    background-position: 0 0, 0 0, 4px 7px, 4px 7px, 0 0, 4px 7px;
-    /* Ensure map takes the full space inside its container */ 
-    /*flex-grow: 1;*/
-    background-color: #a8e0b4;
+
     overflow: auto;
 
     border-image-slice:  42 42 42 42;
@@ -37,9 +30,42 @@
     border-image-repeat:
     round round;
     border-image-source:
-    url("https://mdn.github.io/css-examples/tools/border-image-generator/border-image-6.svg");
+    url("border.svg");
     border-style:
-    solid;    
+    solid;  
+
+    /* Background for circular grass areas */
+    background: radial-gradient(circle, #6a9e56 30%, transparent 80%),  /* Deep green */
+                radial-gradient(circle, #8fcf5f 40%, transparent 85%),  /* Vibrant green */
+                radial-gradient(circle, #b2d87f 50%, transparent 90%),  /* Light green */
+                radial-gradient(circle, #d6e8a1 40%, transparent 85%),  /* Yellow-green */
+                radial-gradient(circle, #94c76b 30%, transparent 75%);  /* Muted green */
+
+    /* Arrange and size circular gradients */
+    background-size: 
+        8em 8em,  /* Adjust size of the circles */
+        10em 10em, 
+        12em 12em, 
+        9em 9em, 
+        7em 7em;
+    background-position: 
+        2em 2em,  /* Scatter the circles at varying positions */
+        6em 6em,
+        4em 8em,
+        10em 4em,
+        1em 6em;
+
+    /* Visual properties for the grass */
+    background-color: #5a9a43; /* Base green for untextured areas */
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+    /* Dimensions */
+    width: 100%;
+    height: 100%;
+
+    /* Optional transition effect */
+    transition: background 0.3s ease-in-out;      
 }
 
 .node {
