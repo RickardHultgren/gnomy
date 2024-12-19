@@ -8,6 +8,7 @@
     font-family:"MedievalSharp";
     width: auto;
     height: auto;
+    flex: 1 1 auto;
     border: 1px solid #00ff95;
     position: relative; /* Ensure child elements are positioned correctly */
     /*background-color: #3a3;*/

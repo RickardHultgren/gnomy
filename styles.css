@@ -782,10 +782,13 @@ body, html {
 #frame {
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
   /*display: flex;
   flex-direction: column;
   flex-grow: 1; /* Allow frame to grow and fill available height */
-  display: block;
+  /*display: block;*/
 
   background-color: #645452; /* Fallback background color */
   /*background-image:url(border.jpg);*/
