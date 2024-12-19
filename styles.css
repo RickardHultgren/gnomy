@@ -64,7 +64,7 @@ button{
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  /*cursor: pointer;*/
   transition: background-color 0.3s ease;
 }
 
@@ -122,14 +122,14 @@ button{
         }
         #lantern-button{
           position: absolute; /* Allows positioning relative to the parent div */
-          top: 5em; /* Adjust to move the button slightly below the border */
+          top: 9em; /* Adjust to move the button slightly below the border */
           left: 50%; /* Center horizontally */
           transform: translateX(-50%); /* Aligns the button perfectly in the middle */
           /*background-color: blue;*/
           color: white;
           border: none;
           padding: 5px 10px;
-          cursor: pointer;
+          /*cursor: pointer;*/
           z-index:20;
           width:2em;
           height:2em;
@@ -142,7 +142,7 @@ button{
             border: none;
             padding: 10px 20px;
             margin: 5px;
-            cursor: pointer;
+            /*cursor: pointer;*/
             border-radius: 5px;
         }
 
@@ -165,7 +165,7 @@ button{
     border: 2px solid 	#FFD700; 
     border-color: 	#FFD700;
     border-radius: 0.25em;
-    cursor: pointer;
+    /*cursor: pointer;*/
     margin: 0.25em 0;
     width: 2em;
     height: 2em;
@@ -197,7 +197,7 @@ button{
             font-size:14px;
             margin:0px;
             margin-left: 1px;
-            cursor: pointer;
+            /*cursor: pointer;*/
             border-radius: 5px;
             width:auto;
             height:1.5em;
@@ -217,7 +217,7 @@ button{
             margin: 5px;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
+            /*cursor: pointer;*/
         }
 
         #game-menu button:hover {
@@ -264,7 +264,6 @@ button {
 		font-size: 1rem;
 		border: none;
 		border-radius: 30px;
-		cursor: pointer;
 		margin-top: 0px;
 		transition: background-color 0.3s;
     background-color:#888888;*/
@@ -834,7 +833,7 @@ background-color: #121212;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 
     /* Interaction and transition */
-    cursor: pointer;
+    /*cursor: pointer;*/
     transition: all 0.2s ease-in-out;
 
     /* Adjust dimensions */
