@@ -122,7 +122,7 @@ button{
         }
         #lantern-button{
           position: absolute; /* Allows positioning relative to the parent div */
-          bottom: -10px; /* Adjust to move the button slightly below the border */
+          top: 10em; /* Adjust to move the button slightly below the border */
           left: 50%; /* Center horizontally */
           transform: translateX(-50%); /* Aligns the button perfectly in the middle */
           background-color: blue;
@@ -130,6 +130,7 @@ button{
           border: none;
           padding: 5px 10px;
           cursor: pointer;
+          z-index:20;
         }
         /* Quick Access buttons */
         #quick-access button {
