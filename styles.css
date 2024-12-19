@@ -120,7 +120,7 @@ button{
         #gnomy-container, #lantern-button, #beads-container, #quick-access {
             text-align: center;
         }
-        #lantern-container
+        #lantern-button
         {
           position: absolute; /* Allows positioning relative to the parent div */
           bottom: -10px; /* Adjust to move the button slightly below the border */
