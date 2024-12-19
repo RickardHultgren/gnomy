@@ -3,7 +3,7 @@
 
 #map {
     text-align: center;
-    z-index: 7;
+    z-index: 5;
 
     font-family:"MedievalSharp";
     width: 50vw;
@@ -138,4 +138,11 @@
     color: black;
     pointer-events: none;
     z-index: 9;
+}
+
+.lamp-effect {
+    width: 100%; /* Adjust width as needed */
+    height: 100%; /* Adjust height as needed */
+opacity: 0.5;
+z-index:6; 
 }
