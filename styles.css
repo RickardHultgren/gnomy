@@ -695,9 +695,9 @@ background-color:#888888;*/
         #panic-button {
             background-color: #A50021;
             color: white;
-
+            width:2em;
             border-color: #aaaaaa; 
-            font-size:1.75rem;  
+            font-size:1em;  
             
             background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0, 33%, 56%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
             -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0, 34%, 42%, 0.6) 0%, hsla(0,0%,100%,0) 100%),
@@ -713,9 +713,18 @@ background-color:#888888;*/
             
           }
           #panic-button:hover {
-            background-color:red;
-            border: 2px solid #ffffff; 
-          }
+            background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0, 33%, 56%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0, 72%, 34%, 0.6) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0, 78%, 30%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0, 83%, 28%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0, 46%, 62%, 0.2) 2.2%),
+            
+            -webkit-radial-gradient( 50% 50%, 200% 50%, rgb(255, 0, 0) 5%, rgb(255, 135, 135) 30%, rgb(252, 45, 45) 100%);
+        }
+            
         /* Search trees */
         /* Game Menu */
         #game-menu {
