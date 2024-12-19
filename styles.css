@@ -117,10 +117,21 @@ button{
 	
         
 
-        #gnomy-container, #lantern-container, #beads-container, #quick-access {
+        #gnomy-container, #lantern-button, #beads-container, #quick-access {
             text-align: center;
         }
-
+        #lantern-container
+        {
+          position: absolute; /* Allows positioning relative to the parent div */
+          bottom: -10px; /* Adjust to move the button slightly below the border */
+          left: 50%; /* Center horizontally */
+          transform: translateX(-50%); /* Aligns the button perfectly in the middle */
+          background-color: blue;
+          color: white;
+          border: none;
+          padding: 5px 10px;
+          cursor: pointer;
+        }
         /* Quick Access buttons */
         #quick-access button {
             background-color: #444;
