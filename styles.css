@@ -122,7 +122,7 @@ button{
         }
         #lantern-button{
           position: absolute; /* Allows positioning relative to the parent div */
-          bottom: -2em; /* Adjust to move the button slightly below the border */
+          bottom: -0em; /* Adjust to move the button slightly below the border */
           left: 50%; /* Center horizontally */
           transform: translateX(-50%); /* Aligns the button perfectly in the middle */
           /*background-color: blue;*/
