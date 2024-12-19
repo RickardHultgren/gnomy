@@ -73,10 +73,10 @@
       0 0;
     
     /* Add natural irregularities with shadowing and lighting effects */
-    box-shadow:
+    /*box-shadow:
       inset 0px 4px 6px rgba(0, 0, 0, 0.3), /* Depth shadow */
-      inset 0px -3px 3px rgba(255, 255, 255, 0.1), /* Subtle highlights for blade curvature */
-      0px 0px 14px rgba(0, 0, 0, 0.15); /* Ambient shadowing for realism */    
+      /*inset 0px -3px 3px rgba(255, 255, 255, 0.1), /* Subtle highlights for blade curvature */
+      /*0px 0px 14px rgba(0, 0, 0, 0.15); /* Ambient shadowing for realism */    
 
       background-attachment:scroll;
 
@@ -143,6 +143,8 @@
 .lamp-effect {
     width: 100%; /* Adjust width as needed */
     height: 100%; /* Adjust height as needed */
-opacity: 0.5;
+opacity: 0.25;
 z-index:6; 
+margin:0;
+padding:0;
 }

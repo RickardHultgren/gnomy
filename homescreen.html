@@ -78,18 +78,20 @@
         <!-- Map Section -->
 
         <div id="map">ID map 
-            <svg class="lamp-effect" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Black triangles on the sides -->
-                <polygon points="0,0 50,0 0,100" fill="black" />
-                <polygon points="100,0 50,0 100,100" fill="black" />
-                <!-- Gradient towards the bottom -->
-                <rect x="0" y="0" width="100" height="100" fill="url(#light-gradient)" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <defs>
-                    <linearGradient id="light-gradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="black" stop-opacity="0" />
-                        <stop offset="100%" stop-color="black" stop-opacity="1" />
+                    <linearGradient id="lightGradient" x1="0.5" y1="0" x2="0.5" y2="1">
+                        <stop offset="0%" stop-color="black" stop-opacity="1"/>
+                        <stop offset="100%" stop-color="black" stop-opacity="0"/>
                     </linearGradient>
+                    <filter id="blurFilter" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="2" />
+                    </filter>
                 </defs>
+                <!-- Left black triangle -->
+                <polygon points="0,0 50,0 0,100" fill="url(#lightGradient)" filter="url(#blurFilter)"/>
+                <!-- Right black triangle -->
+                <polygon points="50,0 100,0 100,100" fill="url(#lightGradient)" filter="url(#blurFilter)"/>
             </svg>
         </div>
                        
