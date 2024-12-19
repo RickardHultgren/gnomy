@@ -133,6 +133,7 @@ button{
           z-index:20;
           width:2em;
           height:2em;
+          background-image:url('lantern.png');
         }
         /* Quick Access buttons */
         #quick-access button {
