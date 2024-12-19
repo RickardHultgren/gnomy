@@ -695,25 +695,9 @@ background-color:#888888;*/
         #panic-button {
             background-color: #A50021;
             color: white;
-            padding: 15px 30px;
-            border: 2px solid #aaaaaa; 
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0.25em;
 
-            padding: 0em;
-            border-radius: 0.25em;
-            cursor: pointer;
-            margin: 0.25em 0;    
+            border-color: #aaaaaa; 
             font-size:1.75rem;     
-            text-align:center;
-            vertical-align: middle;   
-width:2em;
-height:2em;
-background-repeat: no-repeat;
-background-size:  auto 100%;
-background-position: center top;
-background-attachment: fixed;
           }
           #panic-button:hover {
             background-color:red;
