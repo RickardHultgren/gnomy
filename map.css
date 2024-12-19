@@ -14,25 +14,13 @@
 
     overflow: auto;
 
-    border-image-slice:  42 42 42 42;
-    border-image-width:  42px 42px 42px 42px;
-    border-image-outset:  0px 0px 0px 0px;
-    border-image-repeat:  round round;
-    border-image-source:  url("border.svg");
-    border-style:  solid;
   
-    border-image-slice:
-    42 42 42 42;
-    border-image-width:
-    42px 42px 42px 42px;
-    border-image-outset:
-    0px 0px 0px 0px;
-    border-image-repeat:
-    round round;
-    border-image-source:
-    url("border.svg");
-    border-style:
-    solid;  
+    border-image-slice:    42 42 42 42;
+    border-image-width:    42px 42px 42px 42px;
+    border-image-outset:    -5px -5px -5px -5px;
+    border-image-repeat:    round round;
+    border-image-source:    url("border.svg");
+    border-style:    solid;  
  
     background: #3f5c38; /* Base green for the lawn */
     background-image: 
@@ -60,15 +48,15 @@
     /* Sizes adjusted for irregular, interwoven effect */
     background-size: 
       0.2em 0.2em, 
+      .25em .25em, 
       .3em .3em, 
-      .4em .4em, 
-      .5em .5em, 
-      7em 7em, 
-      8em 8em, 
+      .35em .35em, 
+      3.5em 3.5em, 
+      3.75em 3.75em, 
       1em 1em, 
       1em 1em, 
+      1.5em 1.5em, 
       2em 2em, 
-      3em 3em, 
       100% 100%; /* Full coverage for shading */
     
     /* Positions randomized for natural look */
