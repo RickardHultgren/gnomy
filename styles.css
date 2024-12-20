@@ -889,7 +889,8 @@ input [type=text] {
 
 .switch {
   position: relative;
-  width: 200px;
+  width:100%;
+  min-width: 500px;
   height: 50px;
   background: #dcdcdc;
   border-radius: 25px;
@@ -904,7 +905,7 @@ input [type=text] {
   left: 20px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 20px;
+  font-size: 1rem;
   color: #444;
 }
 
@@ -914,7 +915,7 @@ input [type=text] {
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 20px;
+  font-size: 1rem;
   color: #444;
 }
 
@@ -922,7 +923,7 @@ input [type=text] {
   position: absolute;
   width: 48px;
   height: 48px;
-  background: linear-gradient(145deg, #d4af37, #ffd700);
+  background: linear-gradient(145deg, #e2ae02, #ffeb7c);
   border-radius: 50%;
   top: 1px;
   left: 1px;
