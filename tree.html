@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mindmap Editor</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .node circle {
+      fill: lightblue;
+      stroke: steelblue;
+      stroke-width: 2px;
+    }
+    .node text {
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .marked {
+      fill: orange !important;
+    }
+    .button-container {
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <button id="add-branch">Add Branch</button>
+    <button id="delete-branch">Delete Branch</button>
+  </div>
+  <svg id="mindmap" width="800" height="600"></svg>
+  <script src="mindmap.js"></script>
+</body>
+</html>

@@ -134,6 +134,19 @@ button{
           width:2em;
           height:2em;
           background-image:url('lantern.png');
+          width: 100px; /* Button width */
+          height: 100px; /* Button height */
+          border-radius: 50%; /* Makes it circular */
+          background-color: #3498db; /* Background color */
+          color: white; /* Text color */
+          border: none; /* Removes border */
+          font-size: 16px; /* Text size */
+          cursor: pointer; /* Changes cursor on hover */
+          display: flex; /* Centers text */
+          align-items: center; /* Centers text vertically */
+          justify-content: center; /* Centers text horizontally */
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Adds shadow */
+          transition: transform 0.2s; /* Animation for interaction */          
         }
         /* Quick Access buttons */
         #quick-access button {
