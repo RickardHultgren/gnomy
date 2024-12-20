@@ -310,10 +310,11 @@ button {
   background-color:#333333;
   margin:.5em .5em 0em .5em ;
   padding:.5em .5em 0em .5em ;
-  align:center;
+  text-align:center;
   color:#FFD700;
   font-size:1.2rem;
-  display: flex;
+  /*display: flex;*/
+  display: inline-block;
   align-items: center;
   justify-content: center;
 }
@@ -943,5 +944,6 @@ input[type="checkbox"]:checked + .switch .indicator {
   letter-spacing: -0.5px; /* Slightly reduced letter spacing */
   color: #ffffff; /* Set text color */
   text-align: center; /* Center align text */
+  font-weight: bold;
   /*margin: 20px;*/
 }
