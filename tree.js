@@ -1,108 +1,98 @@
-const width = 800;
-const height = 600;
+<script>
+  const width = 800, height = 600;
+  let currentNodeId = 0;
+  const treeData = { id: currentNodeId++, name: "Center", children: [] };
+  let selectedNode = null;
 
-let treeData = {
-  name: "Root",
-  marked: false,
-  children: []
-};
+  const svg = d3.select("#mindmap")
+    .attr("width", width)
+    .attr("height", height);
 
-let selectedNode = null;
+  const g = svg.append("g")
+    .attr("transform", `translate(${width / 2},${height / 2})`);
 
-const svg = d3.select("#mindmap")
-  .attr("width", width)
-  .attr("height", height);
-
-const g = svg.append("g")
-  .attr("transform", `translate(${width / 2},${height / 2})`);
-
-const tree = d3.tree().size([width - 100, height - 100]);
-
-function update(source) {
+  const treeLayout = d3.tree().nodeSize([100, 100]);
   const root = d3.hierarchy(treeData);
-  tree(root);
 
-  const nodes = root.descendants();
-  const links = root.links();
+  function update() {
+    // Update tree layout
+    const nodes = root.descendants();
+    const links = root.links();
 
-  const link = g.selectAll(".link")
-    .data(links, d => d.target.data.id);
+    treeLayout(root);
 
-  link.enter().append("path")
-    .attr("class", "link")
-    .attr("d", d3.linkHorizontal()
-      .x(d => d.y)
-      .y(d => d.x))
-    .merge(link)
-    .attr("d", d3.linkHorizontal()
-      .x(d => d.y)
-      .y(d => d.x));
+    // Update links
+    const link = g.selectAll(".link")
+      .data(links, d => `${d.source.data.id}-${d.target.data.id}`);
 
-  link.exit().remove();
+    link.enter()
+      .append("path")
+      .attr("class", "link")
+      .merge(link)
+      .attr("d", d3.linkVertical()
+        .x(d => d.x)
+        .y(d => d.y));
 
-  const node = g.selectAll(".node")
-    .data(nodes, d => d.data.id);
+    link.exit().remove();
 
-  const nodeEnter = node.enter().append("g")
-    .attr("class", "node")
-    .attr("transform", d => `translate(${d.y},${d.x})`)
-    .on("click", (event, d) => {
-      selectedNode = d;
-      update(root);
-    });
+    // Update nodes
+    const node = g.selectAll(".node")
+      .data(nodes, d => d.data.id);
 
-  nodeEnter.append("circle")
-    .attr("r", 10)
-    .attr("class", d => d.data.marked ? "marked" : "")
-    .on("dblclick", (event, d) => {
-      d.data.marked = !d.data.marked;
-      update(root);
-    });
+    const nodeEnter = node.enter()
+      .append("circle")
+      .attr("class", "node")
+      .attr("r", 20)
+      .on("click", function (e, d) {
+        d3.selectAll(".node").classed("selected", false);
+        d3.select(this).classed("selected", true);
+        selectedNode = d;
+        e.stopPropagation();
+      });
 
-  nodeEnter.append("text")
-    .attr("dy", -15)
-    .attr("text-anchor", "middle")
-    .text(d => d.data.name)
-    .on("dblclick", (event, d) => {
-      const newName = prompt("Enter new name:", d.data.name);
-      if (newName) d.data.name = newName;
-      update(root);
-    });
+    nodeEnter.merge(node)
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y);
 
-  node.exit().remove();
-}
+    node.exit().remove();
+  }
 
-function addBranch() {
-  if (selectedNode) {
-    const newBranch = {
-      name: `Branch ${Math.random().toFixed(2)}`,
-      marked: false,
-      children: []
-    };
+  update();
+
+  // Button actions
+  d3.select("#add-branch").on("click", () => {
+    if (!selectedNode) return;
+
+    // Ensure `children` array exists
     if (!selectedNode.data.children) {
       selectedNode.data.children = [];
+      selectedNode.children = [];
     }
-    selectedNode.data.children.push(newBranch);
-    update(selectedNode);
-  } else {
-    alert("Please select a node first!");
-  }
-}
 
-function deleteBranch() {
-  if (selectedNode && selectedNode.parent) {
-    const index = selectedNode.parent.children.indexOf(selectedNode);
-    if (index !== -1) {
-      selectedNode.parent.children.splice(index, 1);
-    }
+    // Add a new child node
+    const newChild = { id: currentNodeId++, name: `Node ${currentNodeId}`, children: [] };
+    selectedNode.data.children.push(newChild);
+
+    // Recreate the hierarchy for the selected node
+    selectedNode.children = selectedNode.data.children.map(d3.hierarchy);
+
+    // Update the tree
+    update();
+  });
+
+  d3.select("#delete-branch").on("click", () => {
+    if (!selectedNode || selectedNode === root) return;
+
+    const parent = selectedNode.parent;
+    parent.data.children = parent.data.children.filter(d => d.id !== selectedNode.data.id);
+    parent.children = parent.data.children.length ? parent.data.children.map(d3.hierarchy) : null;
     selectedNode = null;
-    update(treeData);
-  } else {
-    alert("Cannot delete root node or no node selected!");
-  }
-}
+    update();
+  });
 
-document.getElementById("add-branch").addEventListener("click", addBranch);
-document.getElementById("delete-branch").addEventListener("click", deleteBranch);
-
-update(treeData);
+  // Deselect node on background click
+  svg.on("click", () => {
+    d3.selectAll(".node").classed("selected", false);
+    selectedNode = null;
+  });
+</script>
