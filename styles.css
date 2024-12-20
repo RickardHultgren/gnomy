@@ -938,9 +938,9 @@ input[type="checkbox"]:checked + .switch .indicator {
 
 #logoID {
   font-family: 'Amatic SC', cursive; /* Use the Amatic SC font */
-  font-size: 48px; /* Adjust size as needed */
+  font-size: 0.5em; /* Adjust size as needed */
   letter-spacing: -0.5px; /* Slightly reduced letter spacing */
-  color: #333; /* Set text color */
+  color: #ffffff; /* Set text color */
   text-align: center; /* Center align text */
-  margin: 20px;
+  /*margin: 20px;*/
 }
