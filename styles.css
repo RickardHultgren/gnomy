@@ -1021,3 +1021,10 @@ input[type="checkbox"]:checked + .switch .indicator {
     width: 70%;
   }
 }
+
+
+.node circle { fill: steelblue; cursor: pointer; }
+.node text { font: 12px sans-serif; cursor: pointer; }
+.link { fill: none; stroke: #ccc; stroke-width: 2px; }
+.marked { fill: red; }
+.child { fill: orange; }
