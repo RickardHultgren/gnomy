@@ -965,6 +965,7 @@ input[type="checkbox"]:checked + .switch .indicator {
 
 
 .overlay {
+  z-index:100;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -977,6 +978,7 @@ input[type="checkbox"]:checked + .switch .indicator {
   opacity: 0;
 }
 .overlay:target {
+  z-index:100;
   visibility: visible;
   opacity: 1;
 }
