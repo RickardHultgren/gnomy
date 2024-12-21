@@ -973,6 +973,7 @@ input[type="checkbox"]:checked + .switch .indicator {
   background: rgba(0, 0, 0, 0.7);
   transition: opacity 500ms;
   visibility: hidden;
+  visibility: visible
   opacity: 0;
 }
 .overlay:target {
