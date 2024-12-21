@@ -971,8 +971,8 @@ input[type="checkbox"]:checked + .switch .indicator {
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.7);
-  transition: opacity 500ms;
-  visibility: hidden;
+  /*transition: opacity 500ms;*/
+  /*visibility: hidden;*/
   visibility: visible;
   opacity: 0;
 }
