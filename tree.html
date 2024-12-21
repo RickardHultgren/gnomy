@@ -3,158 +3,258 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mindmap Editor</title>
+  <title>D3.js Vertical Tree with Zoom, Pan, and Click Highlighting</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    svg {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
     }
-    #controls {
-      margin-bottom: 20px;
+
+    text {
+      font-size: 12px;
+      fill: #333;
     }
-    button {
-      margin: 5px;
-      padding: 10px 15px;
-      font-size: 16px;
+
+    circle {
+      transition: fill 0.3s;
     }
-    .node {
-      fill: #69b3a2;
-      stroke: #555;
-      stroke-width: 1.5px;
-      cursor: pointer;
-    }
-    .node.selected {
+
+    circle:hover {
       fill: orange;
     }
-    .link {
-      fill: none;
-      stroke: #555;
+
+    .highlighted {
+      fill: red !important;
+    }
+
+    .highlighted-text {
+      fill: red !important;
+    }
+
+    .highlighted-line {
+      stroke: red !important;
+      stroke-width: 2.5px;
+    }
+
+    .highlighted-child {
+      fill: orange !important;
+    }
+
+    .highlighted-child-text {
+      fill: orange !important;
+    }
+
+    .highlighted-child-line {
+      stroke: orange !important;
       stroke-width: 2px;
     }
   </style>
 </head>
 <body>
-  <div id="controls">
-    <button id="add-branch">Add Branch</button>
-    <button id="delete-branch">Delete Branch</button>
-  </div>
-  <svg id="mindmap" width="800" height="600"></svg>
+  <h1>D3.js Tree Visualization (Bottom-Up, Zoomable & Movable)</h1>
+  <div id="demo"></div>
+
   <script>
-    const width = 800, height = 600;
-    let currentNodeId = 0;
-    const treeData = { id: currentNodeId++, name: "Center", children: [] };
-    let selectedNode = null;
+    // Tree function implementation
+    function Tree(
+      data,
+      {
+        path, 
+        id = Array.isArray(data) ? (d) => d.id : null,
+        parentId = Array.isArray(data) ? (d) => d.parentId : null,
+        children,
+        tree = d3.tree,
+        sort,
+        label,
+        title,
+        link,
+        linkTarget = "_blank",
+        width = 400,
+        height = 600,
+        r = 3,
+        padding = 1,
+        fill = "#999",
+        fillOpacity,
+        stroke = "#555",
+        strokeWidth = 1.5,
+        strokeOpacity = 0.4,
+        strokeLinejoin,
+        strokeLinecap,
+        halo = "#fff",
+        haloWidth = 3,
+        curve = d3.curveBumpX,
+        dyNode = 50,
+      } = {}
+    ) {
+      const root =
+        path != null
+          ? d3.stratify().path(path)(data)
+          : id != null || parentId != null
+          ? d3.stratify().id(id).parentId(parentId)(data)
+          : d3.hierarchy(data, children);
 
-    const svg = d3.select("#mindmap")
-      .attr("width", width)
-      .attr("height", height);
+      if (sort != null) root.sort(sort);
+      const descendants = root.descendants();
+      const L = label == null ? null : descendants.map((d) => label(d.data, d));
+      const dx = dyNode;
+      const dy = height / (root.height + padding);
+      tree().nodeSize([dx, dy])(root);
 
-    const g = svg.append("g")
-      .attr("transform", `translate(${width / 2},${height / 2})`);
+      let x0 = Infinity;
+      let x1 = -x0;
+      root.each((d) => {
+        if (d.x > x1) x1 = d.x;
+        if (d.x < x0) x0 = d.x;
+      });
 
-    const treeLayout = d3.tree().nodeSize([100, 100]);
-    const root = d3.hierarchy(treeData);
+      if (width === undefined) width = x1 - x0 + dx * 2;
 
-    function update() {
-      // Compute the new tree layout
-      treeLayout(root);
+      const svg = d3
+        .create("svg")
+        .attr("viewBox", [x0 - dx, -dy * padding, width, height])
+        .attr("width", width)
+        .attr("height", height)
+        .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", 10);
 
-      const nodes = root.descendants();
-      const links = root.links();
+      // Add a group for zooming and panning
+      const zoomGroup = svg.append("g");
 
-      // Update links
-      const link = g.selectAll(".link")
-        .data(links, d => `${d.source.data.id}-${d.target.data.id}`);
+      svg.call(
+        d3.zoom()
+          .scaleExtent([0.5, 5]) // Zoom scale limits
+          .on("zoom", (event) => {
+            zoomGroup.attr("transform", event.transform);
+          })
+      );
 
-      link.enter()
-        .append("path")
-        .attr("class", "link")
-        .merge(link)
-        .attr("d", d3.linkVertical()
-          .x(d => d.x)
-          .y(d => d.y));
+      zoomGroup
+        .append("g")
+        .attr("fill", "none")
+        .attr("stroke", stroke)
+        .attr("stroke-opacity", strokeOpacity)
+        .attr("stroke-linecap", strokeLinecap)
+        .attr("stroke-linejoin", strokeLinejoin)
+        .attr("stroke-width", strokeWidth)
+        .selectAll("path")
+        .data(root.links())
+        .join("path")
+        .attr(
+          "d",
+          d3
+            .link(curve)
+            .x((d) => d.x)
+            .y((d) => height - d.y) // Flip y-axis to grow upward
+        );
 
-      link.exit().remove();
+      const node = zoomGroup
+        .append("g")
+        .selectAll("a")
+        .data(root.descendants())
+        .join("a")
+        .attr("xlink:href", link == null ? null : (d) => link(d.data, d))
+        .attr("target", link == null ? null : linkTarget)
+        .attr("transform", (d) => `translate(${d.x},${height - d.y})`)
+        .on("click", (event, d) => handleClick(event, d));
 
-      // Update nodes
-      const node = g.selectAll(".node")
-        .data(nodes, d => d.data.id);
-
-      const nodeEnter = node.enter()
+      node
         .append("circle")
-        .attr("class", "node")
-        .attr("r", 20)
-        .on("click", function (e, d) {
-          d3.selectAll(".node").classed("selected", false);
-          d3.select(this).classed("selected", true);
-          selectedNode = d;
-          e.stopPropagation();
-        });
+        .attr("fill", (d) => (d.children ? stroke : fill))
+        .attr("r", r);
 
-      nodeEnter.merge(node)
-        .attr("cx", d => d.x)
-        .attr("cy", d => d.y);
+      if (title != null) node.append("title").text((d) => title(d.data, d));
 
-      node.exit().remove();
+      if (L)
+        node
+          .append("text")
+          .attr("dy", "0.32em")
+          .attr("x", (d) => (d.children ? -6 : 6))
+          .attr("text-anchor", (d) => (d.children ? "end" : "start"))
+          .attr("paint-order", "stroke")
+          .attr("stroke", halo)
+          .attr("stroke-width", haloWidth)
+          .text((d, i) => L[i]);
 
-      // Update text labels
-      const text = g.selectAll(".label")
-        .data(nodes, d => d.data.id);
+      // Add event listener to unmark when clicking on empty space
+      svg.on("click", (event) => {
+        if (event.target === svg.node()) {
+          resetHighlight(); // Reset highlights when clicking on empty space
+        }
+      });
 
-      const textEnter = text.enter()
-        .append("text")
-        .attr("class", "label")
-        .attr("dy", -30)
-        .attr("text-anchor", "middle")
-        .text(d => d.data.name);
+      return svg.node();
 
-      textEnter.merge(text)
-        .attr("x", d => d.x)
-        .attr("y", d => d.y);
+      function handleClick(event, d) {
+        // Reset all previous highlights
+        resetHighlight();
 
-      text.exit().remove();
-    }
+        // Mark the clicked node (red)
+        d3.select(event.currentTarget).select("circle").classed("highlighted", true);
+        d3.select(event.currentTarget).select("text").classed("highlighted-text", true);
 
-    update();
+        // Mark the lines leading to the node (red)
+        svg
+          .selectAll("path")
+          .filter((link) => link.target === d || link.source === d)
+          .classed("highlighted-line", true);
 
-    // Button actions
-    d3.select("#add-branch").on("click", () => {
-      if (!selectedNode) return;
+        // Mark children (orange)
+        if (d.children) {
+          d.children.forEach((child) => {
+            svg
+              .selectAll("a")
+              .filter((node) => node === child)
+              .select("circle")
+              .classed("highlighted-child", true);
 
-      // Ensure `children` array exists
-      if (!selectedNode.data.children) {
-        selectedNode.data.children = [];
-        selectedNode.children = [];
+            svg
+              .selectAll("a")
+              .filter((node) => node === child)
+              .select("text")
+              .classed("highlighted-child-text", true);
+
+            svg
+              .selectAll("path")
+              .filter((link) => link.source === d && link.target === child)
+              .classed("highlighted-child-line", true);
+          });
+        }
       }
 
-      // Add a new child node
-      const newChild = { id: currentNodeId++, name: `Node ${currentNodeId}`, children: [] };
-      selectedNode.data.children.push(newChild);
+      function resetHighlight() {
+        svg.selectAll(".highlighted").classed("highlighted", false);
+        svg.selectAll(".highlighted-text").classed("highlighted-text", false);
+        svg.selectAll(".highlighted-line").classed("highlighted-line", false);
+        svg.selectAll(".highlighted-child").classed("highlighted-child", false);
+        svg.selectAll(".highlighted-child-text").classed("highlighted-child-text", false);
+        svg.selectAll(".highlighted-child-line").classed("highlighted-child-line", false);
+      }
+    }
 
-      // Recreate the hierarchy for the selected node
-      selectedNode.children = selectedNode.data.children.map(d3.hierarchy);
+    // Example data
+    const flare = {
+      name: "Root",
+      children: [
+        {
+          name: "Branch A",
+          children: [{ name: "Leaf A1" }, { name: "Leaf A2" }],
+        },
+        { name: "Branch B" },
+      ],
+    };
 
-      // Update the tree
-      update();
+    // Render the chart
+    const chart = Tree(flare, {
+      label: (d) => d.name,
+      width: 400,
+      height: 600,
+      dyNode: 50,
     });
 
-    d3.select("#delete-branch").on("click", () => {
-      if (!selectedNode || selectedNode === root) return;
-
-      const parent = selectedNode.parent;
-      parent.data.children = parent.data.children.filter(d => d.id !== selectedNode.data.id);
-      parent.children = parent.data.children.length ? parent.data.children.map(d3.hierarchy) : null;
-      selectedNode = null;
-      update();
-    });
-
-    // Deselect node on background click
-    svg.on("click", () => {
-      d3.selectAll(".node").classed("selected", false);
-      selectedNode = null;
-    });
+    // Append chart to the DOM
+    document.getElementById("demo").appendChild(chart);
   </script>
 </body>
 </html>
