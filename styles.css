@@ -1006,7 +1006,7 @@ input[type="checkbox"]:checked + .switch .indicator {
 }
 
 .popup .close:hover {
-  color: #06D85F;
+  color:  #E0D3AF;
 }
 
 .popup .content {
