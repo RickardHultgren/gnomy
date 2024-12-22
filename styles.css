@@ -981,11 +981,11 @@ input[type="checkbox"]:checked + .switch .indicator {
 }
 
 .popup {
-  margin: 70px auto;
-  padding: 20px;
-  background: #0f0;
+  margin: 10em auto;
+  padding: 2em;
+  background: #E0D3AF;
   border-radius: 5px;
-  width: 30%;
+  width: 80%;
   position: relative;
   transition: all 0.3s ease-in-out;
 }
