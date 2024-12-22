@@ -968,11 +968,11 @@ input[type="checkbox"]:checked + .switch .indicator {
   left: 0;
   width:100vw;
   height:100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.25);
   visibility: hidden;
   visibility: visible;
-  opacity: .5;
-  transition: opacity 500ms ease-in-out;
+  opacity: .25;
+  /*transition: opacity 500ms ease-in-out;*/
 }
 
 .overlay:target {
@@ -981,7 +981,7 @@ input[type="checkbox"]:checked + .switch .indicator {
 }
 
 .popup {
-  margin: 10em auto;
+  margin: 1em auto;
   padding: 2em;
   background: #E0D3AF;
   border-radius: 5px;
@@ -997,7 +997,7 @@ input[type="checkbox"]:checked + .switch .indicator {
 
 .popup .close {
   position: absolute;
-  top: 20%;
+  top: 1em;
   right: 20%;
   color: #ff3;
 }
