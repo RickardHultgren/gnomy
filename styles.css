@@ -968,7 +968,7 @@ input[type="checkbox"]:checked + .switch .indicator {
   left: 0;
   width:100vw;
   height:100vh;
-  background: rgba(200, 0, 200, 0.7);
+  background: rgba(0, 0, 0, 0.5);
   visibility: hidden;
   visibility: visible;
   opacity: .5;
