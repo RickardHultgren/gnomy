@@ -997,11 +997,8 @@ input[type="checkbox"]:checked + .switch .indicator {
 
 .popup .close {
   position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 30px;
-  font-weight: bold;
-  text-decoration: none;
+  top: 20%;
+  right: 20%;
   color: #ff3;
 }
 
