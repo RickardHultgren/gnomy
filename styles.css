@@ -966,7 +966,7 @@ input[type="checkbox"]:checked + .switch .indicator {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(200, 0, 200, 0.7);
   visibility: hidden;
   visibility: visible;
   opacity: 0;
@@ -981,7 +981,7 @@ input[type="checkbox"]:checked + .switch .indicator {
 .popup {
   margin: 70px auto;
   padding: 20px;
-  background: #fff;
+  background: #0f0;
   border-radius: 5px;
   width: 30%;
   position: relative;
@@ -1000,7 +1000,7 @@ input[type="checkbox"]:checked + .switch .indicator {
   font-size: 30px;
   font-weight: bold;
   text-decoration: none;
-  color: #333;
+  color: #ff3;
 }
 
 .popup .close:hover {
