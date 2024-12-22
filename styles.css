@@ -806,7 +806,7 @@ body, html {
 #frame {
   height: 100%;
   width: 100%;
-  display: absolute;
+  display: flex;
   flex-flow: column;
   height: 100%;
   /*display: flex;
