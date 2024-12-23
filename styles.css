@@ -989,6 +989,7 @@ input[type="checkbox"]:checked + .switch .indicator {
   position: relative;
   transition: all 0.3s ease-in-out;
   position: absolute;
+  z-index:22;
 }
 
 .popup h2 {
