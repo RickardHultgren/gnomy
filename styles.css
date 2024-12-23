@@ -4,6 +4,7 @@
 
 /* General Settings */
 body, html {
+  z-index:0;
   margin: 0em;
   padding: 0;
   /*height: 100%;*/
@@ -960,7 +961,7 @@ input[type="checkbox"]:checked + .switch .indicator {
 
 
 .overlay {
-  z-index: 40;*/
+  z-index: 20;*/
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1007,7 +1008,8 @@ input[type="checkbox"]:checked + .switch .indicator {
 }
 
 .popup .content {
-  max-height: 30%;
+  z-index: 21;
+  /*max-height: 30%;*/
   overflow: auto;
 }
 
@@ -1021,8 +1023,8 @@ input[type="checkbox"]:checked + .switch .indicator {
 }
 
 
-.node circle { fill: steelblue; cursor: pointer; }
+.node circle { fill: rgb(70, 180, 76); cursor: pointer; }
 .node text { font: 12px sans-serif; cursor: pointer; }
-.link { fill: none; stroke: #ccc; stroke-width: 2px; }
+.link { fill: none; stroke: #965a00; stroke-width: 2px; }
 .marked { fill: red; }
 .child { fill: orange; }
