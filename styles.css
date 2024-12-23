@@ -29,7 +29,18 @@ body, html {
     top:0;
     font-size: 3vw;
     height:auto;
-  }
+  /* General Settings */
+
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Lora', serif;
+  /*display: flex;*/
+  display:relative;
+  justify-content: center;
+  align-items: center;
+
+}
 
 /* Splash Screen Container */
 .splash-container {
@@ -595,18 +606,7 @@ padding-top:3.5%;
 
 
 
-/* General Settings */
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Lora', serif;
-  /*display: flex;*/
-  display:relative;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
-}
+
 
 /* Splash Screen Container */
 .splash-container {
