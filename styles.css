@@ -1000,11 +1000,11 @@ input[type="checkbox"]:checked + .switch .indicator {
   position: absolute;
   top: 1em;
   right: 20%;
-  color: #ff3;
+  color: #333;
 }
 
 .popup .close:hover {
-  color:  #E0D3AF;
+  color:  #ff3388;
 }
 
 .popup .content {
