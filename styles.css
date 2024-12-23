@@ -1024,7 +1024,7 @@ input[type="checkbox"]:checked + .switch .indicator {
 
 
 .node circle { fill: rgb(70, 180, 76); cursor: pointer; }
-.node text { font: 12px sans-serif; cursor: pointer; }
+.node text { font: 1em 'Lora', serif; cursor: pointer; }
 .link { fill: none; stroke: #965a00; stroke-width: 2px; }
 .marked { fill: red; }
 .child { fill: orange; }
