@@ -14,8 +14,22 @@ body, html {
   display: relative;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
-}
+  /*background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);*/
+/* Ensure body and html are 100% height */
+
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  /*display: absolute;*/
+  overflow: hidden;
+  /*justify-content: center;*/
+  /*align-items: flex-start; /* Align content to the top */
+  /*background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);*/
+  
+    top:0;
+    font-size: 3vw;
+    height:auto;
+  }
 
 /* Splash Screen Container */
 .splash-container {
@@ -780,28 +794,14 @@ background-color:#888888;*/
 
 
 
-body {
-  top:0;
-  font-size: 3vw;
-  height:auto;
-}
+
 @media screen and (min-width: 1600px) {
   body {
      top:0;
      font-size: 30px;
   }
 }
-/* Ensure body and html are 100% height */
-body, html {
-  height: 100vh;
-  width: 100vw;
-  margin: 0;
-  /*display: absolute;*/
-  overflow: hidden;
-  /*justify-content: center;*/
-  /*align-items: flex-start; /* Align content to the top */
-  /*background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);*/
-}
+
 
 /* The frame will take up the remaining space */
 #frame {
