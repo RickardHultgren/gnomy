@@ -1,10 +1,13 @@
 # Initialize the game
+```
 InitializeGame()
     LoadPlayerData()
     SetInitialInventory(keys=10, fruits=5, flowers=5)
     ShowWelcomeMessage()
+```
 
 # Main game loop
+```
 MainGameLoop()
     while GameIsRunning():
         DisplayPlayerStats(keys, fruits, flowers)
@@ -19,8 +22,11 @@ MainGameLoop()
         elif action == "End Game":
             EndGame()
             break
+```
 
 # Explore function
+*  *
+```
 Explore()
     encounter = RandomEncounter()
     if encounter == "Unlock New Area":
@@ -38,8 +44,10 @@ Explore()
     elif encounter == "Gain Skill":
         UpdateInventory(debit="keys", credit="fruits", amount=2)
         GainSkill()
+```
 
 # Trade function
+```
 TradeResources()
     tradeOption = GetPlayerInput(["Keys ↔ Fruits", "Flowers ↔ Keys", "Fruits ↔ Flowers"])
     if tradeOption == "Keys ↔ Fruits":
@@ -57,12 +65,16 @@ TradeResources()
             UpdateInventory(debit="fruits", credit="flowers", amount=1)
         else:
             NotifyPlayer("Not enough fruits!")
+```
 
 # Inventory check
+```
 CheckInventory()
     ShowInventoryDetails(keys, fruits, flowers)
+```
 
 # Update inventory using double-entry bookkeeping
+```
 UpdateInventory(debit, credit, amount)
     if debit == "keys":
         keys -= amount
@@ -79,8 +91,11 @@ UpdateInventory(debit, credit, amount)
         flowers += amount
 
     LogTransaction(debit, credit, amount)
+```
 
 # End the game
+```
 EndGame()
     SavePlayerData()
     ShowGoodbyeMessage()
+```
