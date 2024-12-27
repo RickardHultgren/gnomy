@@ -25,7 +25,11 @@ MainGameLoop()
 ```
 
 # Explore function
-*  *
+Purpose
+1. Where is Gnomy? At what tree or path?
+2. Who else is there?
+3. Explore what options there are.
+4. 
 ```
 Explore()
     encounter = RandomEncounter()
