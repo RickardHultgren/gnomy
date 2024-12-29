@@ -73,6 +73,11 @@
     }
     canvas {
       display: block;
+      color: #fff;
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
     }
     .bush {
       position: absolute;
@@ -146,6 +151,7 @@
 
     function drawText() {
   ctx.font = '20px Lora'; // Use Lora font
+  ctx.fillStyle = "white";
   ctx.fillStyle = '#000';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
