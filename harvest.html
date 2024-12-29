@@ -11,6 +11,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      overflow: hidden;
       background-color: #f0f0f0;
     }
     canvas {
@@ -65,7 +66,7 @@
 
       ctx.beginPath();
       ctx.arc(fruitX, fruitY, fruitSize, 0, Math.PI * 2);
-      ctx.fillStyle = '#00ff00';
+      ctx.fillStyle = '#ff8800';
       ctx.fill();
     }
 
@@ -74,7 +75,12 @@
       ctx.fillStyle = '#000';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      const text = fruitTurn === 1 ? "Inhale" : fruitTurn === 2 ? "Hold" : "Exhale";
+      const text = fruitTurn === 1 
+  ? `Inhale ${(4 - fruitSize).toFixed(1)}` 
+  : fruitTurn === 2 
+  ? `Hold ${(7 - fruitSize).toFixed(1)}` 
+  : `Exhale ${(8 - fruitSize).toFixed(1)}`;
+      //const text = fruitTurn === 1 ? `Inhale ${4-fruitSize.toFixed(1)}` : fruitTurn === 2 ? `Hold ${7-fruitSize.toFixed(1)}` : `Exhale ${8-fruitSize.toFixed(1)}`;
       ctx.fillText(text, centerX, centerY);
     }
 
@@ -85,7 +91,15 @@
       const fruitY = centerY + radius * Math.sin(fruitAngle);
 
       const distance = Math.sqrt((dotX - fruitX) ** 2 + (dotY - fruitY) ** 2);
-      return distance < 10 + fruitSize; // Collision if distance is less than sum of radii
+      if (fruitTurn === 1) {
+        return distance < 5 + fruitSize;
+      }
+      if (fruitTurn === 2) {
+        return distance < 8 + fruitSize;
+      }
+      if (fruitTurn === 3) {
+        return distance < 9 + fruitSize;
+      }            
     }
 
     function updateFruitSize(timestamp) {
@@ -96,9 +110,17 @@
       const deltaTime = (timestamp - lastTimestamp) / 1000; // Convert to seconds
       lastTimestamp = timestamp;
 
-      if (fruitSize < 10) {
+      if (fruitSize < 4 && fruitTurn===1) {
         fruitSize += fruitGrowthRate * deltaTime;
       }
+
+      if (fruitSize < 7 && fruitTurn===2) {
+        fruitSize += fruitGrowthRate * deltaTime;
+      }
+      
+      if (fruitSize < 8 && fruitTurn===3) {
+        fruitSize += fruitGrowthRate * deltaTime;
+      }      
     }
 
     function updateCanvas(timestamp) {
@@ -107,13 +129,17 @@
       drawDot();
       drawFruit();
       drawText();
-
-      if (checkCollision()) {
-        fruitSize = 0; // Reset fruit size
-        fruitTurn = (fruitTurn % 3) + 1; // Cycle through 1, 2, 3
-        fruitAngle = (fruitTurn - 1) * (Math.PI * 2 / 3); // Calculate new position (0, 120, 240 degrees)
-      }
-
+      if (
+  (fruitTurn === 1 && Math.abs(fruitSize - 4) < 0.1) ||
+  (fruitTurn === 2 && Math.abs(fruitSize - 7) < 0.1) ||
+  (fruitTurn === 3 && Math.abs(fruitSize - 8) < 0.1)
+) {
+  if (checkCollision()) {
+    fruitSize = 0; // Reset fruit size
+    fruitTurn = (fruitTurn % 3) + 1; // Cycle through 1, 2, 3
+    fruitAngle = (fruitTurn - 1) * (Math.PI * 2 / 3); // Calculate new position (0, 120, 240 degrees)
+  }
+}
       updateFruitSize(timestamp);
       requestAnimationFrame(updateCanvas);
     }
@@ -163,6 +189,11 @@
 
     // Initial draw and start animation
     requestAnimationFrame(updateCanvas);
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
   </script>
 </body>
 </html>
