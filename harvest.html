@@ -72,6 +72,7 @@
 
     }
     canvas {
+        z-index: 3; /* Ensure the bush is behind the canvas */
       display: block;
       color: #fff;
   text-align: center;
@@ -82,8 +83,8 @@
     .bush {
       pointer-events: none;
       position: absolute;
-      z-index: -1; /* Ensure the bush is behind the canvas */
-      z-index: 3; /* Ensure the bush is behind the canvas */
+      /*z-index: -1; /* Ensure the bush is behind the canvas */
+      z-index: 2; /* Ensure the bush is behind the canvas */
       width: 200px; /* Match circle diameter */
       height: 200px; /* Match circle diameter */
       background: url('bush.png') no-repeat center center;
