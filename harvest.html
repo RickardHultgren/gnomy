@@ -13,16 +13,76 @@
       height: 100vh;
       overflow: hidden;
       background-color: #f0f0f0;
+      border-image-slice:    42 42 42 42;
+    border-image-width:    42px 42px 42px 42px;
+    border-image-outset:    .5em .5em .5em .5em;
+    border-image-repeat:    round round;
+    border-image-source:    url("border.svg");
+    border-style:    solid;  
+ 
+    background: #3f5c38; /* Base green for the lawn */
+    background-image: 
+      /* Small, irregular dots for detailed grass texture */
+      radial-gradient(circle, #547c54 1px, transparent 0), 
+      radial-gradient(circle, #4f7949 1px, transparent 0),
+      radial-gradient(circle, #6a7247 1px, transparent 0),
+      radial-gradient(circle, #4d6a3d 1px, transparent 0),
+      radial-gradient(circle, #626e4b 2px, transparent 0),
+      
+      /* Medium-sized patches for natural variation */
+      radial-gradient(circle, #5b7743 3px, transparent 0),
+      radial-gradient(circle, #4f6d3f 3px, transparent 0),
+      radial-gradient(circle, #506838 4px, transparent 0),
+      radial-gradient(circle, #717556 4px, transparent 0),
+      
+      /* Larger blades and irregular shapes for layering */
+      radial-gradient(ellipse at top left, rgba(50, 80, 50, 0.8) 30%, transparent 60%), 
+      radial-gradient(ellipse at bottom right, rgba(92, 128, 81, 0.6) 20%, transparent 50%),
+      radial-gradient(ellipse at center, rgba(98, 126, 98, 0.5) 40%, transparent 70%),
+      
+      /* Linear gradient for overall shading and depth */
+      linear-gradient(135deg, #567046, #3f5c38, #2f4b2e);
+    
+    /* Sizes adjusted for irregular, interwoven effect */
+    background-size: 
+      0.2em 0.2em, 
+      .25em .25em, 
+      .3em .3em, 
+      .35em .35em, 
+      1.5em 1.5em, 
+      0.75em 0.75em, 
+      .5em .5em, 
+      0.88em 0.88em, 
+      .5em .5em, 
+      .25em .25em, 
+      100% 100%; /* Full coverage for shading */
+    
+    /* Positions randomized for natural look */
+    background-position: 
+      0 0, 
+      0.5em 1em, 
+      1.5em -0.5em, 
+      -1em 0.5em, 
+      2em 2em, 
+      -3em -2em, 
+      2em -2em, 
+      -1.5em 1em, 
+      1em -1em, 
+      0 0;
+
     }
     canvas {
       display: block;
     }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <canvas id="circleCanvas"></canvas>
 
   <script>
+    const logoWidth = 50;  // Adjust size as needed
+    const logoHeight = 50;
     const canvas = document.getElementById('circleCanvas');
     const ctx = canvas.getContext('2d');
 
@@ -50,14 +110,17 @@
       ctx.stroke();
     }
 
+    const gnomyLogo = new Image();
+    gnomyLogo.src = 'GnomyLogo.png'; // Path to your Gnomy logo image
+
     function drawDot() {
-      const dotX = centerX + radius * Math.cos(dotAngle);
-      const dotY = centerY + radius * Math.sin(dotAngle);
-      
-      ctx.beginPath();
-      ctx.arc(dotX, dotY, 10, 0, Math.PI * 2);
-      ctx.fillStyle = '#ff0000';
-      ctx.fill();
+        const dotX = centerX + radius * Math.cos(dotAngle) - logoWidth / 2;
+        const dotY = centerY + radius * Math.sin(dotAngle) - logoHeight / 2;
+
+        // Draw the image if it's loaded
+        if (gnomyLogo.complete) {
+            ctx.drawImage(gnomyLogo, dotX, dotY, logoWidth, logoHeight);
+        }
     }
 
     function drawFruit() {
@@ -71,36 +134,45 @@
     }
 
     function drawText() {
-      ctx.font = '20px Arial';
-      ctx.fillStyle = '#000';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      const text = fruitTurn === 1 
-  ? `Inhale ${(4 - fruitSize).toFixed(1)}` 
-  : fruitTurn === 2 
-  ? `Hold ${(7 - fruitSize).toFixed(1)}` 
-  : `Exhale ${(8 - fruitSize).toFixed(1)}`;
-      //const text = fruitTurn === 1 ? `Inhale ${4-fruitSize.toFixed(1)}` : fruitTurn === 2 ? `Hold ${7-fruitSize.toFixed(1)}` : `Exhale ${8-fruitSize.toFixed(1)}`;
-      ctx.fillText(text, centerX, centerY);
-    }
+  ctx.font = '20px Lora'; // Use Lora font
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
 
-    function checkCollision() {
-      const dotX = centerX + radius * Math.cos(dotAngle);
-      const dotY = centerY + radius * Math.sin(dotAngle);
-      const fruitX = centerX + radius * Math.cos(fruitAngle);
-      const fruitY = centerY + radius * Math.sin(fruitAngle);
+  // Main text for breathing phase
+  const mainText = fruitTurn === 1 
+    ? 'Inhale' 
+    : fruitTurn === 2 
+    ? 'Hold' 
+    : 'Exhale';
 
-      const distance = Math.sqrt((dotX - fruitX) ** 2 + (dotY - fruitY) ** 2);
-      if (fruitTurn === 1) {
-        return distance < 5 + fruitSize;
-      }
-      if (fruitTurn === 2) {
-        return distance < 8 + fruitSize;
-      }
-      if (fruitTurn === 3) {
-        return distance < 9 + fruitSize;
-      }            
-    }
+  // Counter rounded down to whole seconds
+  const timeRemaining = fruitTurn === 1 
+    ? 4 - Math.floor(fruitSize) 
+    : fruitTurn === 2 
+    ? 7 - Math.floor(fruitSize) 
+    : 8 - Math.floor(fruitSize);
+
+  // Draw main text at the center
+  ctx.fillText(mainText, centerX, centerY - 20);
+
+  // Draw timer on a new line
+  ctx.fillText(`${timeRemaining} seconds`, centerX, centerY + 20);
+}
+
+function checkCollision() {
+    const dotX = centerX + radius * Math.cos(dotAngle);
+    const dotY = centerY + radius * Math.sin(dotAngle);
+    const fruitX = centerX + radius * Math.cos(fruitAngle);
+    const fruitY = centerY + radius * Math.sin(fruitAngle);
+
+    const distance = Math.sqrt((dotX - fruitX) ** 2 + (dotY - fruitY) ** 2);
+    const threshold = fruitSize + 10; // Adjust collision threshold
+
+    return distance < threshold;
+}
+
+
 
     function updateFruitSize(timestamp) {
       if (!lastTimestamp) {
@@ -190,10 +262,36 @@
     // Initial draw and start animation
     requestAnimationFrame(updateCanvas);
 
+    function updateFruitSize(timestamp) {
+    if (!lastTimestamp) {
+        lastTimestamp = timestamp;
+        return;
+    }
+    const deltaTime = (timestamp - lastTimestamp) / 1000; // Convert to seconds
+    lastTimestamp = timestamp;
+
+    // Adjust size with cap
+    if (fruitTurn === 1 && fruitSize < 4) {
+        fruitSize = Math.min(fruitSize + fruitGrowthRate * deltaTime, 4);
+    } else if (fruitTurn === 2 && fruitSize < 7) {
+        fruitSize = Math.min(fruitSize + fruitGrowthRate * deltaTime, 7);
+    } else if (fruitTurn === 3 && fruitSize < 8) {
+        fruitSize = Math.min(fruitSize + fruitGrowthRate * deltaTime, 8);
+    }
+}
+
     window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Update center based on new dimensions
+    centerX = canvas.width / 2;
+    centerY = canvas.height / 2;
+
+    // Redraw everything
+    drawCircle();
+});
+
   </script>
 </body>
 </html>
