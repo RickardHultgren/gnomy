@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dot, Fruits, and Breathing Text</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="circleCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('circleCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas size to window size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = 100; // Radius of the circle
+
+    let dotAngle = 0; // Initial angle for the dot
+    let fruitAngle = 0; // Initial angle for the fruit (top of the circle)
+    let fruitTurn = 1; // Tracks the fruit cycle (1 = Inhale, 2 = Hold, 3 = Exhale)
+    let isDragging = false; // Track if the user is interacting
+    let fruitSize = 0; // Initial size of the fruit
+    const fruitGrowthRate = 2; // Pixels per second
+    let lastTimestamp = null; // For tracking time
+
+    function drawCircle() {
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    function drawDot() {
+      const dotX = centerX + radius * Math.cos(dotAngle);
+      const dotY = centerY + radius * Math.sin(dotAngle);
+      
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 10, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff0000';
+      ctx.fill();
+    }
+
+    function drawFruit() {
+      const fruitX = centerX + radius * Math.cos(fruitAngle);
+      const fruitY = centerY + radius * Math.sin(fruitAngle);
+
+      ctx.beginPath();
+      ctx.arc(fruitX, fruitY, fruitSize, 0, Math.PI * 2);
+      ctx.fillStyle = '#00ff00';
+      ctx.fill();
+    }
+
+    function drawText() {
+      ctx.font = '20px Arial';
+      ctx.fillStyle = '#000';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const text = fruitTurn === 1 ? "Inhale" : fruitTurn === 2 ? "Hold" : "Exhale";
+      ctx.fillText(text, centerX, centerY);
+    }
+
+    function checkCollision() {
+      const dotX = centerX + radius * Math.cos(dotAngle);
+      const dotY = centerY + radius * Math.sin(dotAngle);
+      const fruitX = centerX + radius * Math.cos(fruitAngle);
+      const fruitY = centerY + radius * Math.sin(fruitAngle);
+
+      const distance = Math.sqrt((dotX - fruitX) ** 2 + (dotY - fruitY) ** 2);
+      return distance < 10 + fruitSize; // Collision if distance is less than sum of radii
+    }
+
+    function updateFruitSize(timestamp) {
+      if (!lastTimestamp) {
+        lastTimestamp = timestamp;
+        return;
+      }
+      const deltaTime = (timestamp - lastTimestamp) / 1000; // Convert to seconds
+      lastTimestamp = timestamp;
+
+      if (fruitSize < 10) {
+        fruitSize += fruitGrowthRate * deltaTime;
+      }
+    }
+
+    function updateCanvas(timestamp) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawCircle();
+      drawDot();
+      drawFruit();
+      drawText();
+
+      if (checkCollision()) {
+        fruitSize = 0; // Reset fruit size
+        fruitTurn = (fruitTurn % 3) + 1; // Cycle through 1, 2, 3
+        fruitAngle = (fruitTurn - 1) * (Math.PI * 2 / 3); // Calculate new position (0, 120, 240 degrees)
+      }
+
+      updateFruitSize(timestamp);
+      requestAnimationFrame(updateCanvas);
+    }
+
+    canvas.addEventListener('mousedown', (event) => {
+      if (event.button === 0) { // Check if left mouse button is pressed
+        isDragging = true;
+      }
+    });
+
+    canvas.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    canvas.addEventListener('mousemove', (event) => {
+      if (isDragging) {
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+
+        // Calculate angle of mouse pointer relative to the center of the circle
+        const dx = mouseX - centerX;
+        const dy = mouseY - centerY;
+        dotAngle = Math.atan2(dy, dx);
+      }
+    });
+
+    canvas.addEventListener('touchstart', (event) => {
+      isDragging = true;
+      const touch = event.touches[0];
+      const dx = touch.clientX - centerX;
+      const dy = touch.clientY - centerY;
+      dotAngle = Math.atan2(dy, dx);
+    });
+
+    canvas.addEventListener('touchmove', (event) => {
+      if (isDragging) {
+        const touch = event.touches[0];
+        const dx = touch.clientX - centerX;
+        const dy = touch.clientY - centerY;
+        dotAngle = Math.atan2(dy, dx);
+      }
+    });
+
+    canvas.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    // Initial draw and start animation
+    requestAnimationFrame(updateCanvas);
+  </script>
+</body>
+</html>
