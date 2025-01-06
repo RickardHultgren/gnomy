@@ -1,0 +1,76 @@
+<html>
+<header>
+<style>
+body{
+background-color:#333;
+}
+
+    #buttons {
+      z-index:10;
+      width:100vw;
+      height:auto;
+      display: flex; /* Flexbox for horizontal layout */
+      /*display: relative; /* Flexbox for horizontal layout */
+      justify-content: space-around; /* Distribute items evenly */
+      align-items: center; /* Align items in the center vertically */
+      margin: 0; /* No margin */
+      }
+
+.tableMain {
+display: table;
+width: 100%;
+background-color: #333333;
+}
+
+.tableRow {
+display: table-row;
+color: #ffaa00;
+}
+
+.tableCell,
+.tableHead {
+border: 1px solid #ffaa00;;
+display: table-cell;
+padding-left: 5px;
+}
+
+.tableHeading {
+display: table-header-group;
+font-weight: bold;
+}
+
+.tableBody {
+display: table-row-group;
+}
+
+.body {
+margin: 0px;
+}
+</style>
+</header>
+<body>
+<div class="tableMain">
+<div class="tableBody">
+<div class="tableRow">
+  <div class="tableCell">
+    <h2>Header-1</h2>
+  </div>
+</div>
+<div class="tableRow">
+  <div class="tableCell">
+    <h2>Section-1</h2>
+  </div>
+</div>
+<div class="tableRow">
+  <div class="tableCell">
+    <h2>Section-2</h2>
+  </div>
+</div>
+</div>
+</div>
+<div id="buttons">
+<button>A</button>
+<button>B</button>
+<button>C</button>
+</div>
+</body>
