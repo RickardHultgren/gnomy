@@ -3,8 +3,11 @@
 <style>
 body{
 background-color:#333;
+font-color:#ffaa00;
 }
+#tableheader{
 
+}
     #buttons {
       z-index:10;
       width:100vw;
@@ -15,6 +18,25 @@ background-color:#333;
       align-items: center; /* Align items in the center vertically */
       margin: 0; /* No margin */
       }
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
 
 .tableMain {
 display: table;
@@ -51,6 +73,14 @@ margin: 0px;
 <body>
 <div class="tableMain">
 <div class="tableBody">
+    <div id="tableheader">Inventory</div>
+    <div class="tab">
+        <button class="tablinks" onclick="openCity(event, 'Keys')">Keys</button>
+        <button class="tablinks" onclick="openCity(event, 'Flowers')">Flowers</button>
+        <button class="tablinks" onclick="openCity(event, 'Fruits')">Fruits</button>
+    </div>
+    
+    
 <div class="tableRow">
   <div class="tableCell">
     <h2>Header-1</h2>
@@ -69,8 +99,7 @@ margin: 0px;
 </div>
 </div>
 <div id="buttons">
-<button>Keys</button>
-<button>Flower and Fruits</button>
+<button>Inventory</button>
 <button>Transactions</button>
 </div>
 </body>
