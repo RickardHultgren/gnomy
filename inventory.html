@@ -1,118 +1,126 @@
 <html>
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&display=swap" rel="stylesheet">
-<style>
+    <style>
+        html, body {
+            font-family: 'Lora', serif;
+            background-color: #333;
+            color: #ffaa00;
+        }
 
+        #tableheader {
+            background-color: #333;
+            font-color: #ffaa00;
+            font-family: 'Lora', serif;
+        }
 
-html, body {
-    font-family: 'Lora', serif;
+        #buttons {
+            z-index: 10;
+            width: 100vw;
+            height: auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 0;
+        }
 
-background-color:#333;
-color:#ffaa00;
-}
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ffaa00;
+            background-color: #444444;
+        }
 
-#tableheader{
-    background-color:#333;
-    font-color:#ffaa00;
-    font-family: 'Lora', serif;
-}
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            color: #ffaa00;
+        }
 
-#buttons {
-      z-index:10;
-      width:100vw;
-      height:auto;
-      display: flex; /* Flexbox for horizontal layout */
-      /*display: relative; /* Flexbox for horizontal layout */
-      justify-content: space-around; /* Distribute items evenly */
-      align-items: center; /* Align items in the center vertically */
-      margin: 0; /* No margin */
-      }
+        .tableMain {
+            display: table;
+            width: 100%;
+            background-color: #333333;
+        }
 
-/* Style the tab */
-.tab {
-  overflow: hidden;
-  border: 1px solid #ffaa00;
-  background-color: #444444;
-  
-}
+        .tableRow {
+            display: table-row;
+            color: #ffaa00;
+        }
 
-/* Style the buttons inside the tab */
-.tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-  /*font-size: 17px;*/
-  color:#ffaa00;
+        .tableCell,
+        .tableHead {
+            border: 1px solid #ffaa00;
+            display: table-cell;
+            padding-left: 5px;
+        }
 
-}
+        .tableHeading {
+            display: table-header-group;
+            font-weight: bold;
+        }
 
-.tableMain {
-display: table;
-width: 100%;
-background-color: #333333;
-}
+        .tableBody {
+            display: table-row-group;
+        }
 
-.tableRow {
-display: table-row;
-color: #ffaa00;
-}
-
-.tableCell,
-.tableHead {
-border: 1px solid #ffaa00;;
-display: table-cell;
-padding-left: 5px;
-}
-
-.tableHeading {
-display: table-header-group;
-font-weight: bold;
-}
-
-.tableBody {
-display: table-row-group;
-}
-
-.body {
-    
-margin: 0px;
-}
-</style>
+        .body {
+            margin: 0px;
+        }
+    </style>
 </head>
 <body>
-<div class="tableMain">
-<div class="tableBody">
-    <div id="tableheader">Inventory</div>
-    <div class="tab">
-        <button class="tablinks" onclick="openCity(event, 'Keys')">Keys</button>
-        <button class="tablinks" onclick="openCity(event, 'Flowers')">Flowers</button>
-        <button class="tablinks" onclick="openCity(event, 'Fruits')">Fruits</button>
+    <div class="tableMain">
+        <div class="tableBody">
+            <div id="tableheader">Inventory</div>
+            <div class="tab">
+                <button class="tablinks" onclick="showCategory('Keys')">Keys</button>
+                <button class="tablinks" onclick="showCategory('Flowers')">Flowers</button>
+                <button class="tablinks" onclick="showCategory('Fruits')">Fruits</button>
+            </div>
+            <div id="inventoryContent" class="tableBody"></div>
+        </div>
     </div>
-    
-    
-<div class="tableRow">
-  <div class="tableCell">
-    <h2>Header-1</h2>
-  </div>
-</div>
-<div class="tableRow">
-  <div class="tableCell">
-    <h2>Section-1</h2>
-  </div>
-</div>
-<div class="tableRow">
-  <div class="tableCell">
-    <h2>Section-2</h2>
-  </div>
-</div>
-</div>
-</div>
-<div id="buttons">
-<button>Inventory</button>
-<button>Transactions</button>
-</div>
+    <div id="buttons">
+        <button>Inventory</button>
+        <button>Transactions</button>
+    </div>
+
+    <script>
+        // Sample JSON data
+        const inventoryData = {
+            "inventory": {
+                "Keys": ["Car Key", "House Key", "Safe Key"],
+                "Flowers": ["Rose", "Tulip", "Lily"],
+                "Fruits": ["Apple", "Banana", "Cherry"]
+            }
+        };
+
+        // Function to show inventory items by category
+        function showCategory(category) {
+            const contentDiv = document.getElementById('inventoryContent');
+            contentDiv.innerHTML = ''; // Clear previous content
+
+            const items = inventoryData.inventory[category] || [];
+            items.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'tableRow';
+
+                const cell = document.createElement('div');
+                cell.className = 'tableCell';
+                cell.innerHTML = `<h2>${item}</h2>`;
+
+                row.appendChild(cell);
+                contentDiv.appendChild(row);
+            });
+        }
+
+        // Initialize with the first category
+        showCategory('Keys');
+    </script>
 </body>
+</html>
