@@ -1,14 +1,23 @@
 <html>
-<header>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&display=swap" rel="stylesheet">
 <style>
-body{
-background-color:#333;
-font-color:#ffaa00;
-}
-#tableheader{
 
+
+html, body {
+    font-family: 'Lora', serif;
+
+background-color:#333;
+color:#ffaa00;
 }
-    #buttons {
+
+#tableheader{
+    background-color:#333;
+    font-color:#ffaa00;
+    font-family: 'Lora', serif;
+}
+
+#buttons {
       z-index:10;
       width:100vw;
       height:auto;
@@ -22,8 +31,9 @@ font-color:#ffaa00;
 /* Style the tab */
 .tab {
   overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
+  border: 1px solid #ffaa00;
+  background-color: #444444;
+  
 }
 
 /* Style the buttons inside the tab */
@@ -35,7 +45,9 @@ font-color:#ffaa00;
   cursor: pointer;
   padding: 14px 16px;
   transition: 0.3s;
-  font-size: 17px;
+  /*font-size: 17px;*/
+  color:#ffaa00;
+
 }
 
 .tableMain {
@@ -66,10 +78,11 @@ display: table-row-group;
 }
 
 .body {
+    
 margin: 0px;
 }
 </style>
-</header>
+</head>
 <body>
 <div class="tableMain">
 <div class="tableBody">
