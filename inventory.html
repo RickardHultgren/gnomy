@@ -118,6 +118,192 @@
             background-color: #ffcc33;
         }
     </style>
+    <style>
+        html, body {
+            font-family: 'Lora', serif;
+            background-color: #333;
+            color: #ffaa00;
+            margin: 0;
+            padding: 0;
+        }
+    
+        #tableheader {
+            background-color: #333;
+            color: #ffaa00;
+        }
+    
+        #buttons {
+            z-index: 10;
+            width: 100vw;
+            height: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+    
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ffaa00;
+            background-color: #444444;
+        }
+    
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            color: #ffaa00;
+        }
+    
+        .tab button:hover {
+            background-color: #555555;
+        }
+    
+        .tableMain {
+            display: block;
+            width: 100%;
+            background-color: #333333;
+        }
+    
+        .tableRow {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 5px;
+            border-bottom: 1px solid #ffaa00;
+        }
+    
+        .tableCell {
+            flex: 1;
+            padding-left: 5px;
+        }
+    
+        .actionButton {
+            background-color: #ffaa00;
+            border: none;
+            padding: 8px 12px;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+    
+        .actionButton:hover {
+            background-color: #ffcc33;
+        }
+    
+        #popupForm, #addItemPopup, #editPopup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        #popupContent, #addItemContent, #editPopupContent {
+            background-color: #444;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            color: #ffaa00;
+            width: 90%;
+            max-width: 400px;
+        }
+    
+        #popupContent input, #addItemContent input, #editPopupContent input {
+            width: 95%;
+            padding: 0.8rem;
+            margin: 10px 0;
+            border: 1px solid #ffaa00;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+    
+        #popupContent button, #addItemContent button, #editPopupContent button {
+            padding: 0.8rem 1.5rem;
+            background-color: #ffaa00;
+            border: none;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+    
+        #popupContent button:hover, #addItemContent button:hover, #editPopupContent button:hover {
+            background-color: #ffcc33;
+        }
+    
+        /* Responsive Adjustments */
+        @media screen and (max-width: 768px) {
+            .tableRow {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+            }
+    
+            .tableCell {
+                padding: 5px 0;
+                text-align: center;
+            }
+    
+            .tab button {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+    
+            #buttons {
+                flex-direction: column;
+                padding: 10px;
+            }
+    
+            .actionButton {
+                padding: 10px;
+                margin: 5px;
+                font-size: 0.9rem;
+            }
+    
+            #popupContent, #addItemContent, #editPopupContent {
+                padding: 1rem;
+                width: 90%;
+                max-width: 320px;
+            }
+    
+            #popupContent input, #addItemContent input, #editPopupContent input {
+                font-size: 0.9rem;
+            }
+        }
+    
+        @media screen and (max-width: 480px) {
+            .tab button {
+                padding: 8px;
+                font-size: 0.8rem;
+            }
+    
+            .actionButton {
+                font-size: 0.8rem;
+                padding: 8px 10px;
+            }
+    
+            #popupContent, #addItemContent, #editPopupContent {
+                padding: 0.8rem;
+            }
+    
+            #popupContent input, #addItemContent input, #editPopupContent input {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+    
 </head>
 <body>
     <div id="popupForm">
