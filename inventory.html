@@ -157,37 +157,55 @@
         };
 
         function showCategory(category) {
-            const contentDiv = document.getElementById('inventoryContent');
-            contentDiv.innerHTML = '';
+        const contentDiv = document.getElementById('inventoryContent');
+        contentDiv.innerHTML = '';
 
-            const items = inventoryData.inventory[category] || [];
-            items.forEach((item, index) => {
-                const row = document.createElement('div');
-                row.className = 'tableRow';
+        const items = inventoryData.inventory[category] || [];
+        items.forEach((item, index) => {
+            const row = document.createElement('div');
+            row.className = 'tableRow';
 
-                const cell = document.createElement('div');
-                cell.className = 'tableCell';
-                cell.textContent = item;
+            const cell = document.createElement('div');
+            cell.className = 'tableCell';
+            cell.textContent = item;
 
-                const deleteButton = document.createElement('button');
-                deleteButton.className = 'actionButton';
-                deleteButton.textContent = 'Delete';
-                deleteButton.onclick = () => deleteItem(category, index);
+            // Add the Reachable checkbox only for Spells
+            if (category === 'Spells') {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `reachable-${index}`;
+                checkbox.className = 'reachableCheckbox';
 
-                row.appendChild(cell);
-                row.appendChild(deleteButton);
-                contentDiv.appendChild(row);
-            });
+                const checkboxLabel = document.createElement('label');
+                checkboxLabel.textContent = 'Reachable';
+                checkboxLabel.setAttribute('for', `reachable-${index}`);
 
-            const addButton = document.createElement('button');
-            addButton.className = 'actionButton';
-            addButton.textContent = 'Add';
-            addButton.onclick = () => addItem(category);
+                const checkboxContainer = document.createElement('div');
+                checkboxContainer.appendChild(checkbox);
+                checkboxContainer.appendChild(checkboxLabel);
 
-            contentDiv.appendChild(addButton);
-        }
+                row.appendChild(checkboxContainer);
+            }
 
-        function addItem(category) {
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'actionButton';
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = () => deleteItem(category, index);
+
+            row.appendChild(cell);
+            row.appendChild(deleteButton);
+            contentDiv.appendChild(row);
+        });
+
+        const addButton = document.createElement('button');
+        addButton.className = 'actionButton';
+        addButton.textContent = 'Add';
+        addButton.onclick = () => addItem(category);
+
+        contentDiv.appendChild(addButton);
+    }
+    
+    function addItem(category) {
             const newItem = prompt(`Add a new item to ${category}:`);
             if (newItem) {
                 inventoryData.inventory[category].push(newItem);
