@@ -75,7 +75,7 @@
             background-color: #ffcc33;
         }
 
-        #popupForm {
+        #popupForm, #addItemPopup, #editPopup {
             display: none;
             position: fixed;
             top: 0;
@@ -88,7 +88,7 @@
             align-items: center;
         }
 
-        #popupContent {
+        #popupContent, #addItemContent, #editPopupContent {
             background-color: #444;
             padding: 20px;
             border-radius: 10px;
@@ -97,7 +97,7 @@
             width: 300px;
         }
 
-        #popupContent input {
+        #popupContent input, #addItemContent input, #editPopupContent input {
             width: 90%;
             padding: 10px;
             margin: 10px 0;
@@ -105,7 +105,7 @@
             border-radius: 5px;
         }
 
-        #popupContent button {
+        #popupContent button, #addItemContent button, #editPopupContent button {
             padding: 10px 20px;
             background-color: #ffaa00;
             border: none;
@@ -114,7 +114,7 @@
             cursor: pointer;
         }
 
-        #popupContent button:hover {
+        #popupContent button:hover, #addItemContent button:hover, #editPopupContent button:hover {
             background-color: #ffcc33;
         }
     </style>
@@ -131,10 +131,32 @@
         </div>
     </div>
 
+    <div id="addItemPopup">
+        <div id="addItemContent">
+            <h2>Add New Item</h2>
+            <label for="newItemInput">Item Name:</label><br>
+            <input type="text" id="newItemInput" placeholder="Enter item name"><br>
+            <button onclick="submitNewItem()">Add Item</button>
+            <button onclick="closeAddItemPopup()">Cancel</button>
+        </div>
+    </div>
+
+    <div id="editPopup">
+        <div id="editPopupContent">
+            <h2>Edit Item</h2>
+            <label for="editItemInput">Item Name:</label><br>
+            <input type="text" id="editItemInput" placeholder="Enter new name"><br>
+            <button onclick="submitEdit()">Save</button>
+            <button onclick="closeEditPopup()">Cancel</button>
+        </div>
+    </div>
+
     <div class="tableMain">
         <div class="tableBody">
             <div id="garden">Context/Garden</div>
-            <div id="tree">Situation/Tree</div>            
+            <button class="actionButton" onclick="openEditPopup('garden')">Edit</button>
+            <div id="tree">Situation/Tree</div>
+            <button class="actionButton" onclick="openEditPopup('tree')">Edit</button>
             <div class="tab">
                 <button class="tablinks" onclick="showCategory('Spells')">Spells</button>
                 <button class="tablinks" onclick="showCategory('Flowers')">Flowers</button>
@@ -156,61 +178,80 @@
             }
         };
 
+        let currentCategory = '';
+        let editTarget = '';
+
         function showCategory(category) {
-        const contentDiv = document.getElementById('inventoryContent');
-        contentDiv.innerHTML = '';
+            const contentDiv = document.getElementById('inventoryContent');
+            contentDiv.innerHTML = '';
 
-        const items = inventoryData.inventory[category] || [];
-        items.forEach((item, index) => {
-            const row = document.createElement('div');
-            row.className = 'tableRow';
+            const items = inventoryData.inventory[category] || [];
+            items.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.className = 'tableRow';
 
-            const cell = document.createElement('div');
-            cell.className = 'tableCell';
-            cell.textContent = item;
+                const cell = document.createElement('div');
+                cell.className = 'tableCell';
+                cell.textContent = item;
 
-            // Add the Reachable checkbox only for Spells
-            if (category === 'Spells') {
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = `reachable-${index}`;
-                checkbox.className = 'reachableCheckbox';
+                if (category === 'Spells') {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `reachable-${index}`;
+                    checkbox.className = 'reachableCheckbox';
 
-                const checkboxLabel = document.createElement('label');
-                checkboxLabel.textContent = 'Reachable';
-                checkboxLabel.setAttribute('for', `reachable-${index}`);
+                    const label = document.createElement('label');
+                    label.textContent = 'Reachable';
+                    label.setAttribute('for', `reachable-${index}`);
 
-                const checkboxContainer = document.createElement('div');
-                checkboxContainer.appendChild(checkbox);
-                checkboxContainer.appendChild(checkboxLabel);
+                    const container = document.createElement('div');
+                    container.appendChild(checkbox);
+                    container.appendChild(label);
 
-                row.appendChild(checkboxContainer);
+                    row.appendChild(container);
+                }
+
+                const editButton = document.createElement('button');
+                editButton.className = 'actionButton';
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => openEditPopup(item, category, index);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'actionButton';
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteItem(category, index);
+
+                row.appendChild(cell);
+                row.appendChild(editButton);
+                row.appendChild(deleteButton);
+
+                contentDiv.appendChild(row);
+            });
+
+            const addButton = document.createElement('button');
+            addButton.className = 'actionButton';
+            addButton.textContent = 'Add';
+            addButton.onclick = () => addItem(category);
+
+            contentDiv.appendChild(addButton);
+        }
+
+        function addItem(category) {
+            currentCategory = category;
+            document.getElementById('addItemPopup').style.display = 'flex';
+        }
+
+        function submitNewItem() {
+            const newItem = document.getElementById('newItemInput').value;
+            if (newItem.trim()) {
+                inventoryData.inventory[currentCategory].push(newItem);
+                showCategory(currentCategory);
+                closeAddItemPopup();
             }
+        }
 
-            const deleteButton = document.createElement('button');
-            deleteButton.className = 'actionButton';
-            deleteButton.textContent = 'Delete';
-            deleteButton.onclick = () => deleteItem(category, index);
-
-            row.appendChild(cell);
-            row.appendChild(deleteButton);
-            contentDiv.appendChild(row);
-        });
-
-        const addButton = document.createElement('button');
-        addButton.className = 'actionButton';
-        addButton.textContent = 'Add';
-        addButton.onclick = () => addItem(category);
-
-        contentDiv.appendChild(addButton);
-    }
-    
-    function addItem(category) {
-            const newItem = prompt(`Add a new item to ${category}:`);
-            if (newItem) {
-                inventoryData.inventory[category].push(newItem);
-                showCategory(category);
-            }
+        function closeAddItemPopup() {
+            document.getElementById('addItemPopup').style.display = 'none';
         }
 
         function deleteItem(category, index) {
@@ -218,9 +259,25 @@
             showCategory(category);
         }
 
-        window.onload = function () {
-            document.getElementById('popupForm').style.display = 'flex';
-        };
+        function openEditPopup(item, category, index) {
+            editTarget = { item, category, index };
+            document.getElementById('editItemInput').value = item;
+            document.getElementById('editPopup').style.display = 'flex';
+        }
+
+        function submitEdit() {
+            const newName = document.getElementById('editItemInput').value;
+            if (newName.trim()) {
+                const { category, index } = editTarget;
+                inventoryData.inventory[category][index] = newName;
+                showCategory(category);
+                closeEditPopup();
+            }
+        }
+
+        function closeEditPopup() {
+            document.getElementById('editPopup').style.display = 'none';
+        }
 
         function submitPopup() {
             const gardenInput = document.getElementById('gardenInput').value;
@@ -230,12 +287,39 @@
                 document.getElementById('garden').textContent = gardenInput;
                 document.getElementById('tree').textContent = treeInput;
                 document.getElementById('popupForm').style.display = 'none';
-            } else {
-                alert('Please fill in both fields.');
             }
         }
 
         showCategory('Spells');
+    </script>
+       <script>
+        // Variables to track the currently edited item
+        let currentEditElementId = "";
+
+        // Function to open the popup for editing
+        function editItem(elementId) {
+            currentEditElementId = elementId;
+            const currentText = document.getElementById(elementId).textContent;
+            document.getElementById('editInput').value = currentText; // Populate the input with current text
+            document.getElementById('popupForm').style.display = 'flex';
+        }
+
+        // Function to save the edited value
+        function saveEdit() {
+            const newValue = document.getElementById('editInput').value.trim();
+            if (newValue) {
+                document.getElementById(currentEditElementId).textContent = newValue; // Update the text content
+                closePopup();
+            } else {
+                alert("Please enter a valid name.");
+            }
+        }
+
+        // Function to close the popup without saving
+        function closePopup() {
+            document.getElementById('popupForm').style.display = 'none';
+            currentEditElementId = ""; // Reset the current edit element
+        }
     </script>
 </body>
 </html>
