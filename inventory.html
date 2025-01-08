@@ -6,6 +6,8 @@
             font-family: 'Lora', serif;
             background-color: #333;
             color: #ffaa00;
+            margin: 0;
+            padding: 0;
         }
 
         #tableheader {
@@ -48,37 +50,93 @@
         }
 
         .tableRow {
-            display: table-row;
-            color: #ffaa00;
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            border-bottom: 1px solid #ffaa00;
         }
 
-        .tableCell,
-        .tableHead {
-            border: 1px solid #ffaa00;
-            display: table-cell;
+        .tableCell {
+            flex: 1;
             padding-left: 5px;
         }
 
-        .tableHeading {
-            display: table-header-group;
-            font-weight: bold;
+        .actionButton {
+            background-color: #ffaa00;
+            border: none;
+            padding: 5px 10px;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
         }
 
-        .tableBody {
-            display: table-row-group;
+        .actionButton:hover {
+            background-color: #ffcc33;
         }
 
-        .body {
-            margin: 0px;
+        #popupForm {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #popupContent {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: #ffaa00;
+            width: 300px;
+        }
+
+        #popupContent input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ffaa00;
+            border-radius: 5px;
+        }
+
+        #popupContent button {
+            padding: 10px 20px;
+            background-color: #ffaa00;
+            border: none;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #popupContent button:hover {
+            background-color: #ffcc33;
         }
     </style>
 </head>
 <body>
+    <div id="popupForm">
+        <div id="popupContent">
+            <h2>Enter Details</h2>
+            <label for="gardenInput">Garden/Context:</label><br>
+            <input type="text" id="gardenInput" placeholder="Enter Garden/Context"><br>
+            <label for="treeInput">Situation/Tree:</label><br>
+            <input type="text" id="treeInput" placeholder="Enter Situation/Tree"><br>
+            <button onclick="submitPopup()">Submit</button>
+        </div>
+    </div>
+
     <div class="tableMain">
         <div class="tableBody">
-            <div id="tableheader">Inventory</div>
+            <div id="garden">Context/Garden</div>
+            <div id="tree">Situation/Tree</div>            
             <div class="tab">
-                <button class="tablinks" onclick="showCategory('Keys')">Keys</button>
+                <button class="tablinks" onclick="showCategory('Spells')">Spells</button>
                 <button class="tablinks" onclick="showCategory('Flowers')">Flowers</button>
                 <button class="tablinks" onclick="showCategory('Fruits')">Fruits</button>
             </div>
@@ -86,41 +144,80 @@
         </div>
     </div>
     <div id="buttons">
-        <button>Inventory</button>
-        <button>Transactions</button>
+        <button>History</button>
     </div>
 
     <script>
-        // Sample JSON data
         const inventoryData = {
             "inventory": {
-                "Keys": ["Car Key", "House Key", "Safe Key"],
+                "Spells": ["Car Key", "House Key", "Safe Key"],
                 "Flowers": ["Rose", "Tulip", "Lily"],
                 "Fruits": ["Apple", "Banana", "Cherry"]
             }
         };
 
-        // Function to show inventory items by category
         function showCategory(category) {
             const contentDiv = document.getElementById('inventoryContent');
-            contentDiv.innerHTML = ''; // Clear previous content
+            contentDiv.innerHTML = '';
 
             const items = inventoryData.inventory[category] || [];
-            items.forEach(item => {
+            items.forEach((item, index) => {
                 const row = document.createElement('div');
                 row.className = 'tableRow';
 
                 const cell = document.createElement('div');
                 cell.className = 'tableCell';
-                cell.innerHTML = `<h2>${item}</h2>`;
+                cell.textContent = item;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'actionButton';
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteItem(category, index);
 
                 row.appendChild(cell);
+                row.appendChild(deleteButton);
                 contentDiv.appendChild(row);
             });
+
+            const addButton = document.createElement('button');
+            addButton.className = 'actionButton';
+            addButton.textContent = 'Add';
+            addButton.onclick = () => addItem(category);
+
+            contentDiv.appendChild(addButton);
         }
 
-        // Initialize with the first category
-        showCategory('Keys');
+        function addItem(category) {
+            const newItem = prompt(`Add a new item to ${category}:`);
+            if (newItem) {
+                inventoryData.inventory[category].push(newItem);
+                showCategory(category);
+            }
+        }
+
+        function deleteItem(category, index) {
+            inventoryData.inventory[category].splice(index, 1);
+            showCategory(category);
+        }
+
+        window.onload = function () {
+            document.getElementById('popupForm').style.display = 'flex';
+        };
+
+        function submitPopup() {
+            const gardenInput = document.getElementById('gardenInput').value;
+            const treeInput = document.getElementById('treeInput').value;
+
+            if (gardenInput && treeInput) {
+                document.getElementById('garden').textContent = gardenInput;
+                document.getElementById('tree').textContent = treeInput;
+                document.getElementById('popupForm').style.display = 'none';
+            } else {
+                alert('Please fill in both fields.');
+            }
+        }
+
+        showCategory('Spells');
     </script>
 </body>
 </html>
