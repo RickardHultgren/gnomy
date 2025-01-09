@@ -3,6 +3,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&display=swap" rel="stylesheet">
     <style>
         html, body {
+            width:100vw;
             font-family: 'Lora', serif;
             font-size:1rem;
             background-color: #333;
@@ -19,7 +20,7 @@
 
         #buttons {
             z-index: 10;
-            width: 100vw;
+            width: 100%;
             height: auto;
             display: flex;
             justify-content: space-around;
@@ -135,7 +136,7 @@
     
         #buttons {
             z-index: 10;
-            width: 100vw;
+            width: 100%;
             height: auto;
             display: flex;
             flex-wrap: wrap;
@@ -246,6 +247,9 @@
     
         /* Responsive Adjustments */
         @media screen and (max-width: 768px) {
+            body{
+                font-size:2rem;
+            }
             .tableRow {
                 flex-direction: column;
                 align-items: center;
