@@ -228,7 +228,7 @@
             margin: 10px 0;
             border: 1px solid #ffaa00;
             border-radius: 5px;
-            font-size: 1rem;
+            font-size: 1.5rem;
         }
     
         #popupContent button, #addItemContent button, #editPopupContent button {
@@ -238,7 +238,7 @@
             color: #333;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.5rem;
         }
     
         #popupContent button:hover, #addItemContent button:hover, #editPopupContent button:hover {
@@ -289,22 +289,61 @@
         }
     
         @media screen and (max-width: 480px) {
+            body{
+                font-size:2rem;
+            }
+            .tableRow {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+            }
+    
+            .tableCell {
+                padding: 5px 0;
+                text-align: center;
+            }
+    
             .tab button {
-                padding: 8px;
-                font-size: 0.8rem;
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+    
+            #buttons {
+                flex-direction: column;
+                padding: 10px;
             }
     
             .actionButton {
-                font-size: 0.8rem;
+                padding: 10px;
+                margin: 5px;
+                font-size: 0.9rem;
+            }
+    
+            #popupContent, #addItemContent, #editPopupContent {
+                padding: 1rem;
+                width: 90%;
+                max-width: 320px;
+            }
+    
+            #popupContent input, #addItemContent input, #editPopupContent input {
+                font-size: 0.9rem;
+            }            
+            .tab button {
+                padding: 8px;
+                font-size: 2.5rem;
+            }
+    
+            .actionButton {
+                font-size: 2.5rem;
                 padding: 8px 10px;
             }
     
             #popupContent, #addItemContent, #editPopupContent {
-                padding: 0.8rem;
+                padding: 2.5rem;
             }
     
             #popupContent input, #addItemContent input, #editPopupContent input {
-                font-size: 0.8rem;
+                font-size: 2.5rem;
             }
         }
     </style>
