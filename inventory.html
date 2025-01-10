@@ -426,8 +426,82 @@
 
         let currentCategory = '';
         let editTarget = '';
-
         function showCategory(category) {
+            const contentDiv = document.getElementById('inventoryContent');
+            contentDiv.innerHTML = '';
+
+            const items = inventoryData.inventory[category] || [];
+            items.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.className = 'tableRow';
+
+                const cell = document.createElement('div');
+                cell.className = 'tableCell';
+                cell.textContent = item;
+
+                if (category === 'Spells') {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `reachable-${index}`;
+                    checkbox.className = 'reachableCheckbox';
+
+                    const label = document.createElement('label');
+                    label.textContent = 'Reachable';
+                    label.setAttribute('for', `reachable-${index}`);
+
+                    const container = document.createElement('div');
+                    container.appendChild(checkbox);
+                    container.appendChild(label);
+
+                    row.appendChild(container);
+
+                    // Add event listener for checkbox changes
+                    checkbox.addEventListener('change', function () {
+                        const existingButton = document.getElementById(`go-there-${index}`);
+                        if (checkbox.checked) {
+                            // Add "Go There" button if not already present
+                            if (!existingButton) {
+                                const goThereButton = document.createElement('button');
+                                goThereButton.className = 'actionButton';
+                                goThereButton.textContent = 'Go There';
+                                goThereButton.id = `go-there-${index}`;
+                                goThereButton.onclick = () => alert(`Going to ${item}`);
+                                row.appendChild(goThereButton);
+                            }
+                        } else {
+                            // Remove the "Go There" button if it exists
+                            if (existingButton) {
+                                existingButton.remove();
+                            }
+                        }
+                    });
+                }
+
+                const editButton = document.createElement('button');
+                editButton.className = 'actionButton';
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => openEditPopup(item, category, index);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'actionButton';
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteItem(category, index);
+
+                row.appendChild(cell);
+                row.appendChild(editButton);
+                row.appendChild(deleteButton);
+
+                contentDiv.appendChild(row);
+            });
+
+            const addButton = document.createElement('button');
+            addButton.className = 'actionButton';
+            addButton.textContent = 'Add';
+            addButton.onclick = () => addItem(category);
+
+            contentDiv.appendChild(addButton);
+        }
+ /*       function showCategory(category) {
             const contentDiv = document.getElementById('inventoryContent');
             contentDiv.innerHTML = '';
 
@@ -481,7 +555,7 @@
 
             contentDiv.appendChild(addButton);
         }
-
+*/
         function addItem(category) {
             currentCategory = category;
             document.getElementById('addItemPopup').style.display = 'flex';
