@@ -393,7 +393,6 @@
             <button onclick="closeAddItemPopup()">Cancel</button>
         </div>
     </div>
-
     <div id="editPopup">
         <div id="editPopupContent">
             <h2>Edit Item</h2>
@@ -481,6 +480,8 @@
             });
         }
 
+
+        
         const editButton = document.createElement('button');
         editButton.className = 'actionButton';
         editButton.textContent = 'Edit';
@@ -565,5 +566,51 @@ function deleteItem(category, index) {
 }
 
 </script>    
+
+<script>
+function openEditPopup(item, category, index) {
+    // Display the popup
+    const editPopup = document.getElementById('editPopup');
+    editPopup.style.display = 'flex';
+
+    // Set the current item's name in the input field
+    const editItemInput = document.getElementById('editItemInput');
+    editItemInput.value = item;
+
+    // Save the category and index for reference
+    editPopup.dataset.category = category;
+    editPopup.dataset.index = index;
+}
+
+function submitEdit() {
+    const editPopup = document.getElementById('editPopup');
+    const category = editPopup.dataset.category;
+    const index = parseInt(editPopup.dataset.index, 10);
+
+    const editItemInput = document.getElementById('editItemInput');
+    const newItemName = editItemInput.value.trim();
+
+    if (newItemName) {
+        // Update the inventory with the new name
+        inventoryData.inventory[category][index] = newItemName;
+
+        // Close the popup
+        closeEditPopup();
+
+        // Refresh the displayed category
+        showCategory(category);
+    } else {
+        alert("Item name cannot be empty.");
+    }
+}
+
+function closeEditPopup() {
+    const editPopup = document.getElementById('editPopup');
+    editPopup.style.display = 'none';
+}
+
+
+</script>
+
 </body>
 </html>
