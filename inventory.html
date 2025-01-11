@@ -552,6 +552,18 @@ function markAsCurrentLocation(item, row) {
     
         showCategory('Spells');
     </script>
-    
+<script>
+function deleteItem(category, index) {
+    // Confirm the delete action with the user
+    const confirmDelete = confirm(`Are you sure you want to delete "${inventoryData.inventory[category][index]}"?`);
+    if (confirmDelete) {
+        // Remove the item from the inventory
+        inventoryData.inventory[category].splice(index, 1);
+        // Refresh the displayed category
+        showCategory(category);
+    }
+}
+
+</script>    
 </body>
 </html>
