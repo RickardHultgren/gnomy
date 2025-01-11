@@ -370,7 +370,13 @@
             }
         }
     </style>
-    
+    <style>
+        .tab button.active-header {
+            background-color: white;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <div id="popupForm">
@@ -378,8 +384,6 @@
             <h2>Enter Details</h2>
             <label for="gardenInput">Garden/Context:</label><br>
             <input type="text" id="gardenInput" placeholder="Enter Garden/Context"><br>
-            <label for="treeInput">Situation/Tree:</label><br>
-            <input type="text" id="treeInput" placeholder="Enter Situation/Tree"><br>
             <button onclick="submitPopup()">Submit</button>
         </div>
     </div>
@@ -406,9 +410,8 @@
     <div class="tableMain">
         <div class="tableBody">
             <div id="garden">Context/Garden</div>
-            
-            <div id="tree">Situation/Tree</div>
             <button class="actionButton" onclick="document.getElementById('popupForm').style.display = 'flex';">Edit</button>
+            <div id="current"></div>
             <div class="tab">
                 <button class="tablinks" onclick="showCategory('Spells')">Spells</button>
                 <button class="tablinks" onclick="showCategory('Flowers')">Flowers</button>
@@ -611,6 +614,130 @@ function closeEditPopup() {
 
 
 </script>
+<script>
+    function showCategory(category) {
+        const contentDiv = document.getElementById('inventoryContent');
+        contentDiv.innerHTML = '';
+    
+        // Clear active class from all headers
+        const tabButtons = document.querySelectorAll('.tab button');
+        tabButtons.forEach((button) => button.classList.remove('active-header'));
+    
+        // Set active class for the clicked header
+        const activeButton = [...tabButtons].find((button) => button.textContent === category);
+        if (activeButton) {
+            activeButton.classList.add('active-header');
+        }
+    
+        const items = inventoryData.inventory[category] || [];
+        items.forEach((item, index) => {
+            const row = document.createElement('div');
+            row.className = 'tableRow';
+    
+            const cell = document.createElement('div');
+            cell.className = 'tableCell';
+            cell.textContent = item;
+    
+            if (category === 'Spells') {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `reachable-${index}`;
+                checkbox.className = 'reachableCheckbox';
+    
+                const label = document.createElement('label');
+                label.textContent = 'Reachable';
+                label.setAttribute('for', `reachable-${index}`);
+    
+                const container = document.createElement('div');
+                container.appendChild(checkbox);
+                container.appendChild(label);
+    
+                row.appendChild(container);
+    
+                checkbox.addEventListener('change', function () {
+                    const existingButton = document.getElementById(`go-there-${index}`);
+                    if (checkbox.checked) {
+                        if (!existingButton) {
+                            const goThereButton = document.createElement('button');
+                            goThereButton.className = 'actionButton';
+                            goThereButton.textContent = 'Go There';
+                            goThereButton.id = `go-there-${index}`;
+                            goThereButton.onclick = () => markAsCurrentLocation(item, row);
+                            row.appendChild(goThereButton);
+                        }
+                    } else {
+                        if (existingButton) {
+                            existingButton.remove();
+                        }
+                    }
+                });
+            }
+    
+            const editButton = document.createElement('button');
+            editButton.className = 'actionButton';
+            editButton.textContent = 'Edit';
+            editButton.onclick = () => openEditPopup(item, category, index);
+    
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'actionButton';
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = () => deleteItem(category, index);
+    
+            row.appendChild(cell);
+            row.appendChild(editButton);
+            row.appendChild(deleteButton);
+    
+            contentDiv.appendChild(row);
+        });
+    
+        const addButton = document.createElement('button');
+        addButton.className = 'actionButton';
+        addButton.textContent = 'Add';
+        addButton.onclick = () => addItem(category);
+    
+        contentDiv.appendChild(addButton);
+    }
 
+    function markAsCurrentLocation(item, row) {
+    // Remove existing "current location" label
+    const previousCurrent = document.querySelector('.current-location');
+    if (previousCurrent) {
+        previousCurrent.classList.remove('current-location');
+        const currentLabel = previousCurrent.querySelector('.current-label');
+        if (currentLabel) {
+            currentLabel.remove();
+        }
+    }
+
+    // Add "current location" label to this row
+    row.classList.add('current-location');
+    const currentLabel = document.createElement('span');
+    currentLabel.className = 'current-label';
+    currentLabel.style.marginLeft = '10px';
+    currentLabel.textContent = ' (Current Location)';
+    row.querySelector('.tableCell').appendChild(currentLabel);
+
+    // Update the "current" div with the selected item's name
+    const currentDiv = document.getElementById('current');
+    currentDiv.textContent = `Current Location: ${item}`;
+}
+function submitPopup() {
+    // Get the input value
+    const gardenInput = document.getElementById('gardenInput').value.trim();
+
+    if (gardenInput) {
+        // Update the garden or context area
+        const gardenDiv = document.getElementById('garden');
+        gardenDiv.textContent = gardenInput;
+
+        // Hide the popup
+        document.getElementById('popupForm').style.display = 'none';
+    } else {
+        alert('Please enter a valid garden/context.');
+    }
+}
+
+
+    </script>
 </body>
 </html>
