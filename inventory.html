@@ -429,6 +429,7 @@
     </style>
 </head>
 <body>
+    <div id="contexts"></div>
     <div id="popupForm">
         <div id="popupContent">
             <h2>Enter Details</h2>
@@ -493,62 +494,110 @@
 
 let currentContextIndex = null;
 
-// Function to generate the scroll list and handle selection
-function createScrollList() {
-    // Create a container for the list
-    const listContainer = document.createElement("div");
-    listContainer.style.border = "1px solid #ccc";
-    listContainer.style.width = "200px";
-    listContainer.style.maxHeight = "150px";
-    listContainer.style.overflowY = "auto";
-    listContainer.style.padding = "10px";
-    listContainer.style.borderRadius = "5px";
-    listContainer.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
-    
-    // Add list items
-    contextData.Context.forEach((item, index) => {
-        const listItem = document.createElement("div");
-        listItem.textContent = item;
-        listItem.style.padding = "5px";
-        listItem.style.cursor = "pointer";
-        listItem.style.borderBottom = "1px solid #eee";
+function createDropdowns() {
+    // Get the container div
+    const container = document.getElementById("contexts");
 
-        // Highlight selected item
-        if (index === currentContextIndex) {
-            listItem.style.backgroundColor = "#f0f0f0";
-        }
+    // Create a dropdown for contexts
+    const contextDropdown = document.createElement("select");
+    contextDropdown.id = "contextDropdown";
 
-        // Handle click event for selection
-        listItem.addEventListener("click", () => {
-            currentContextIndex = index;
-            alert(`Selected context: ${item}`);
-            updateScrollList(); // Refresh the list to show the selected item
-        });
+    // Create a default option for context dropdown
+    const defaultContextOption = document.createElement("option");
+    defaultContextOption.textContent = "Select a context...";
+    defaultContextOption.value = "";
+    contextDropdown.appendChild(defaultContextOption);
 
-        listContainer.appendChild(listItem);
+    // Populate the context dropdown with options
+    contextData.Context.forEach((context) => {
+        const option = document.createElement("option");
+        option.textContent = context;
+        option.value = context; // Use context name as value
+        contextDropdown.appendChild(option);
     });
 
-    return listContainer;
+    // Append the context dropdown to the container
+    container.appendChild(contextDropdown);
+
+    // Create a dropdown for inventory
+    const inventoryDropdown = document.createElement("select");
+    inventoryDropdown.id = "inventoryDropdown";
+
+    // Create a default option for inventory dropdown
+    const defaultInventoryOption = document.createElement("option");
+    defaultInventoryOption.textContent = "Select an item...";
+    defaultInventoryOption.value = "";
+    inventoryDropdown.appendChild(defaultInventoryOption);
+
+    // Append the inventory dropdown to the container
+    container.appendChild(inventoryDropdown);
+
+    // Add an event listener to the context dropdown
+    contextDropdown.addEventListener("change", (event) => {
+        currentContext = event.target.value;
+
+        // Clear the inventory dropdown
+        inventoryDropdown.innerHTML = "";
+        const defaultOption = document.createElement("option");
+        defaultOption.textContent = "Select an item...";
+        defaultOption.value = "";
+        inventoryDropdown.appendChild(defaultOption);
+
+        // Populate the inventory dropdown based on the selected context
+        if (currentContext && inventoryData.inventory[currentContext]) {
+            inventoryData.inventory[currentContext].forEach((item) => {
+                const option = document.createElement("option");
+                option.textContent = item;
+                option.value = item;
+                inventoryDropdown.appendChild(option);
+            });
+        }
+    });
 }
 
-// Function to update the scroll list
-function updateScrollList() {
-    const container = document.getElementById("scrollListContainer");
-    container.innerHTML = ""; // Clear previous list
-    container.appendChild(createScrollList()); // Recreate the updated list
+// Call the function to create the dropdowns
+createDropdowns();
+
+
+function createDropdown() {
+    // Get the container div
+    const container = document.getElementById("contexts");
+
+    // Create a dropdown element
+    const dropdown = document.createElement("select");
+    dropdown.id = "contextDropdown";
+
+    // Create a default option
+    const defaultOption = document.createElement("option");
+    defaultOption.textContent = "Select a context...";
+    defaultOption.value = "";
+    dropdown.appendChild(defaultOption);
+
+    // Populate the dropdown with options from contextData
+    contextData.Context.forEach((context, index) => {
+        const option = document.createElement("option");
+        option.textContent = context;
+        option.value = index; // Use index as value to track the selected context
+        dropdown.appendChild(option);
+    });
+
+    // Add an event listener to handle selection changes
+    dropdown.addEventListener("change", (event) => {
+        currentContextIndex = event.target.value !== "" ? parseInt(event.target.value) : null;
+
+        if (currentContextIndex !== null) {
+            console.log(`Selected context: ${contextData.Context[currentContextIndex]}`);
+        } else {
+            console.log("No context selected.");
+        }
+    });
+
+    // Append the dropdown to the container
+    container.appendChild(dropdown);
 }
 
-// Initial setup
-window.onload = () => {
-    const app = document.getElementById("app"); // Assuming you have a div with id="app" in your HTML
-    const scrollListContainer = document.createElement("div");
-    scrollListContainer.id = "scrollListContainer";
-    app.appendChild(scrollListContainer);
-    updateScrollList();
-};
-
-    
-
+// Call the function to create the dropdown
+createDropdown();
         
 function markAsCurrentLocation(item, row) {
     // Remove existing "current location" label
