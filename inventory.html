@@ -133,6 +133,7 @@
             border-radius: 5px;
             cursor: pointer;
             margin-left: 5px;
+            font-size:1rem;
         }
 
         .actionButton:hover {
@@ -483,7 +484,71 @@
         };
     
         let currentLocationIndex = null;
+
+
+
+        const contextData = {
+    "Context": ["Home", "Work", "Hobby"],
+};
+
+let currentContextIndex = null;
+
+// Function to generate the scroll list and handle selection
+function createScrollList() {
+    // Create a container for the list
+    const listContainer = document.createElement("div");
+    listContainer.style.border = "1px solid #ccc";
+    listContainer.style.width = "200px";
+    listContainer.style.maxHeight = "150px";
+    listContainer.style.overflowY = "auto";
+    listContainer.style.padding = "10px";
+    listContainer.style.borderRadius = "5px";
+    listContainer.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
     
+    // Add list items
+    contextData.Context.forEach((item, index) => {
+        const listItem = document.createElement("div");
+        listItem.textContent = item;
+        listItem.style.padding = "5px";
+        listItem.style.cursor = "pointer";
+        listItem.style.borderBottom = "1px solid #eee";
+
+        // Highlight selected item
+        if (index === currentContextIndex) {
+            listItem.style.backgroundColor = "#f0f0f0";
+        }
+
+        // Handle click event for selection
+        listItem.addEventListener("click", () => {
+            currentContextIndex = index;
+            alert(`Selected context: ${item}`);
+            updateScrollList(); // Refresh the list to show the selected item
+        });
+
+        listContainer.appendChild(listItem);
+    });
+
+    return listContainer;
+}
+
+// Function to update the scroll list
+function updateScrollList() {
+    const container = document.getElementById("scrollListContainer");
+    container.innerHTML = ""; // Clear previous list
+    container.appendChild(createScrollList()); // Recreate the updated list
+}
+
+// Initial setup
+window.onload = () => {
+    const app = document.getElementById("app"); // Assuming you have a div with id="app" in your HTML
+    const scrollListContainer = document.createElement("div");
+    scrollListContainer.id = "scrollListContainer";
+    app.appendChild(scrollListContainer);
+    updateScrollList();
+};
+
+    
+
         
 function markAsCurrentLocation(item, row) {
     // Remove existing "current location" label
