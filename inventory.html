@@ -435,81 +435,7 @@
     
         let currentLocationIndex = null;
     
-        function showCategory(category) {
-    const contentDiv = document.getElementById('inventoryContent');
-    contentDiv.innerHTML = '';
-
-    const items = inventoryData.inventory[category] || [];
-    items.forEach((item, index) => {
-        const row = document.createElement('div');
-        row.className = 'tableRow';
-
-        const cell = document.createElement('div');
-        cell.className = 'tableCell';
-        cell.textContent = item;
-
-        if (category === 'Spells') {
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = `reachable-${index}`;
-            checkbox.className = 'reachableCheckbox';
-
-            const label = document.createElement('label');
-            label.textContent = 'Reachable';
-            label.setAttribute('for', `reachable-${index}`);
-
-            const container = document.createElement('div');
-            container.appendChild(checkbox);
-            container.appendChild(label);
-
-            row.appendChild(container);
-
-            checkbox.addEventListener('change', function () {
-                const existingButton = document.getElementById(`go-there-${index}`);
-                if (checkbox.checked) {
-                    if (!existingButton) {
-                        const goThereButton = document.createElement('button');
-                        goThereButton.className = 'actionButton';
-                        goThereButton.textContent = 'Go There';
-                        goThereButton.id = `go-there-${index}`;
-                        goThereButton.onclick = () => markAsCurrentLocation(item, row);
-                        row.appendChild(goThereButton);
-                    }
-                } else {
-                    if (existingButton) {
-                        existingButton.remove();
-                    }
-                }
-            });
-        }
-
-
         
-        const editButton = document.createElement('button');
-        editButton.className = 'actionButton';
-        editButton.textContent = 'Edit';
-        editButton.onclick = () => openEditPopup(item, category, index);
-
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'actionButton';
-        deleteButton.textContent = 'Delete';
-        deleteButton.onclick = () => deleteItem(category, index);
-
-        row.appendChild(cell);
-        row.appendChild(editButton);
-        row.appendChild(deleteButton);
-
-        contentDiv.appendChild(row);
-    });
-
-    const addButton = document.createElement('button');
-    addButton.className = 'actionButton';
-    addButton.textContent = 'Add';
-    addButton.onclick = () => addItem(category);
-
-    contentDiv.appendChild(addButton);
-}
-
 function markAsCurrentLocation(item, row) {
     // Remove existing "current location" label
     const previousCurrent = document.querySelector('.current-location');
@@ -615,6 +541,58 @@ function closeEditPopup() {
 
 </script>
 <script>
+    function addSliderInevitable(row) {
+        const sliderContainer = document.createElement('div');
+        sliderContainer.style.display = 'flex';
+        sliderContainer.style.alignItems = 'center';
+        sliderContainer.style.gap = '10px';
+
+        const leftText = document.createElement('span');
+        leftText.textContent = 'Inevitable';
+
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.min = '1';
+        slider.max = '5';
+        slider.value = '3'; // Default value
+        slider.style.margin = '0 10px';
+
+        const rightText = document.createElement('span');
+        rightText.textContent = 'By choice';
+
+        sliderContainer.appendChild(leftText);
+        sliderContainer.appendChild(slider);
+        sliderContainer.appendChild(rightText);
+
+        row.appendChild(sliderContainer);
+    }
+
+    function addSliderPersonal(row) {
+        const sliderContainer = document.createElement('div');
+        sliderContainer.style.display = 'flex';
+        sliderContainer.style.alignItems = 'center';
+        sliderContainer.style.gap = '10px';
+
+        const leftText = document.createElement('span');
+        leftText.textContent = 'Related to yourself';
+
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.min = '1';
+        slider.max = '5';
+        slider.value = '3'; // Default value
+        slider.style.margin = '0 10px';
+
+        const rightText = document.createElement('span');
+        rightText.textContent = 'Related to others';
+
+        sliderContainer.appendChild(leftText);
+        sliderContainer.appendChild(slider);
+        sliderContainer.appendChild(rightText);
+
+        row.appendChild(sliderContainer);
+    }
+
     function showCategory(category) {
         const contentDiv = document.getElementById('inventoryContent');
         contentDiv.innerHTML = '';
@@ -672,7 +650,51 @@ function closeEditPopup() {
                     }
                 });
             }
+            if (category === 'Flowers') {
+                addSliderPersonal(row);
+                addSliderInevitable(row);
+
+                const goalcheckbox = document.createElement('input');
+                goalcheckbox.type = 'checkbox';
+                goalcheckbox.id = `goal-${index}`;
+                goalcheckbox.className = 'goalCheckbox';
     
+                const goallabel = document.createElement('label');
+                goallabel.textContent = 'goal';
+                goallabel.setAttribute('for', `goal-${index}`);
+
+                goalcheckbox.id = `goal-${index}`;
+                goalcheckbox.className = 'goalCheckbox';
+                
+                const goalcontainer = document.createElement('div');
+                goalcontainer.appendChild(goalcheckbox);
+                goalcontainer.appendChild(goallabel);
+    
+                row.appendChild(goalcontainer);    
+
+
+
+
+                const feelingcheckbox = document.createElement('input');
+                feelingcheckbox.type = 'checkbox';
+                feelingcheckbox.id = `feeling-${index}`;
+                feelingcheckbox.className = 'feelingCheckbox';
+    
+                const feelinglabel = document.createElement('label');
+                feelinglabel.textContent = 'feeling';
+                feelinglabel.setAttribute('for', `feeling-${index}`);
+
+                feelingcheckbox.id = `feeling-${index}`;
+                feelingcheckbox.className = 'feelingCheckbox';
+                
+                const feelingcontainer = document.createElement('div');
+                feelingcontainer.appendChild(feelingcheckbox);
+                feelingcontainer.appendChild(feelinglabel);
+    
+                row.appendChild(feelingcontainer);    
+
+                
+            }
             const editButton = document.createElement('button');
             editButton.className = 'actionButton';
             editButton.textContent = 'Edit';
@@ -739,5 +761,7 @@ function submitPopup() {
 
 
     </script>
+
+
 </body>
 </html>
