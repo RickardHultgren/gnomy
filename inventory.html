@@ -3,6 +3,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&display=swap" rel="stylesheet">
     <style>
 
+
 .current-location .current-label {
     color: #ffaa00;
     font-weight: bold;
@@ -376,6 +377,14 @@
             color: #333;
             font-weight: bold;
         }
+
+
+.goalcontainer, .feelingcontainer {
+    display:inline-block;
+    width:100%;
+    background-color:#ff0000;
+
+}        
     </style>
 </head>
 <body>
@@ -669,7 +678,7 @@ function closeEditPopup() {
                 const goalcontainer = document.createElement('div');
                 goalcontainer.appendChild(goalcheckbox);
                 goalcontainer.appendChild(goallabel);
-    
+                goalcontainer.className = 'goalcontainer';
                 row.appendChild(goalcontainer);    
 
 
@@ -690,7 +699,7 @@ function closeEditPopup() {
                 const feelingcontainer = document.createElement('div');
                 feelingcontainer.appendChild(feelingcheckbox);
                 feelingcontainer.appendChild(feelinglabel);
-    
+                feelingcontainer.className = 'feelingcontainer';
                 row.appendChild(feelingcontainer);    
 
                 
