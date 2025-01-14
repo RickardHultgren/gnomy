@@ -551,21 +551,38 @@ button {
     <script>
 
 
-        
-        const inventoryData = {
-            "inventory": {
-                "Relatedness": ["Rose", "Tulip", "Lily"],
-                "Competence": ["Apple", "Banana", "Cherry"],
-                "Autonomy": ["Car Key", "House Key", "Safe Key"]
-            }
-        };
-    
+function createDatabase(inventoryData, situationData) {
+    const database = {};
+    let currentId = 1;
 
+    // Add items from inventoryData
+    for (const category in inventoryData.inventory) {
+        for (const item of inventoryData.inventory[category]) {
+            database[currentId] = item;
+            currentId++;
+        }
+    }
 
+    // Add items from situationData
+    for (const context in situationData.contexts) {
+        for (const item of situationData.contexts[context]) {
+            database[currentId] = item;
+            currentId++;
+        }
+    }
 
+    return database;
+}
 
+// Input Data
+const inventoryData = {
+    "inventory": {
+        "Relatedness": ["Rose", "Tulip", "Lily"],
+        "Competence": ["Apple", "Banana", "Cherry"],
+        "Autonomy": ["Car Key", "House Key", "Safe Key"]
+    }
+};
 
-let currentLocationIndex = null;
 const situationData = {
     "contexts": {
         "Home": ["Economy", "Food", "Cleaning"],
@@ -573,6 +590,19 @@ const situationData = {
         "Hobby": ["Football", "Painting"]
     }
 };
+
+// Create the database
+const database = createDatabase(inventoryData, situationData);
+console.log(database);
+
+
+
+let currentLocationIndex = null;
+
+const matchContextSituation = {
+    "match" : {}
+}
+
 
 const sliders = {}; // Store sliders for each situation
 
