@@ -856,6 +856,7 @@ createDropdown();
         
 function selectAutonomy(item, row) {
     // Remove existing "current location" label
+
     const previousCurrent = document.querySelector('.current-location');
     if (previousCurrent) {
         previousCurrent.classList.remove('current-location');
@@ -1058,12 +1059,18 @@ function closeEditPopup() {
                         previousRow.querySelector('.selected-text').remove(); // Remove "selected" text
                     }
                 }
+                // Get all elements with the class 'tableCell'
+                const tableCells = document.querySelectorAll('.tableRow');
 
+                // Loop through each element and set the background color
+                tableCells.forEach(function(cell) {
+                    cell.style.backgroundColor = '#333333';
+                });
                 // Select the current row
                 row.style.backgroundColor = '#888888'; // Set background color
                 const selectedText = document.createElement('span');
                 selectedText.className = 'selected-text';
-                selectedText.textContent = ' (selected)';
+                //selectedText.textContent = ' (selected)';
                 row.appendChild(selectedText); // Add "selected" text
 
                 // Update the current location in the div with id="current"
@@ -1129,49 +1136,7 @@ function closeEditPopup() {
 }
 
 let previouslySelectedRow = null; // Track the previously selected row
-function selectAutonomy(item, row) {
-    // Remove existing "current location" label
-    const previousCurrent = document.querySelector('.current-location');
-    if (previousCurrent) {
-        previousCurrent.classList.remove('current-location');
-        const currentLabel = previousCurrent.querySelector('.current-label');
-        if (currentLabel) {
-            currentLabel.remove();
-        }
-    }
 
-    // Add "current location" label to this row
-    row.classList.add('current-location');
-    const currentLabel = document.createElement('span');
-    currentLabel.className = 'current-label';
-    currentLabel.style.marginLeft = '10px';
-    currentLabel.textContent = ' (Current Location)';
-    row.querySelector('.tableCell').appendChild(currentLabel);
-}
-function setCurrentLocation(category, index) {
-    // Remove the current location label from the previous location
-    if (currentLocationIndex !== null) {
-        const previousRow = document.getElementById(`row-${category}-${currentLocationIndex}`);
-        if (previousRow) {
-            const previousLabel = previousRow.querySelector('.current-location');
-            if (previousLabel) {
-                previousLabel.remove();
-            }
-        }
-    }
-
-    // Set the new current location
-    currentLocationIndex = index;
-    const newRow = document.getElementById(`row-${category}-${index}`);
-    if (newRow) {
-        const newLabel = document.createElement('span');
-        newLabel.className = 'current-location';
-        newLabel.textContent = 'Current Location';
-        newRow.querySelector('.tableCell').appendChild(newLabel);
-    }
-
-    alert(`Current location set to: ${inventoryData.inventory[category][index]}`);
-}
 </script>
 
 
