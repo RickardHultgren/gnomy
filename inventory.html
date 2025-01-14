@@ -13,18 +13,18 @@
 
 .slider-right-text{
     font-family: 'Source Sans Pro', sans-serif;
-    font-size:1.5rem;
+    font-size:1rem;
 }
 
 .slider-left-text{
     font-family: 'Source Sans Pro', sans-serif;
-    font-size:1.5rem;
+    font-size:1rem;
 }
 
 /* Style for sliders */
 .slider-container {
     display: flex;
-    font-size:1.5rem;
+    font-size:1rem;
     align-items: center;
     gap: 10px;
     margin-top: 20px;
@@ -38,26 +38,26 @@
 /* Style for the context dropdown */
 .context-dropdown {
     padding: 10px;
-    font-size: 1.5rem;
+    font-size: 1rem;
     margin: 10px;
 }
 
 /* Style for the situation dropdown */
 .situation-dropdown {
     padding: 10px;
-    font-size: 1.5rem;
+    font-size: 1rem;
     margin: 10px;
 }
 
 /* Style for each dropdown option */
 .context-option, .situation-option {
-    font-size: 1.5rem;
+    font-size: 1rem;
 }
 
 /* Style for buttons */
 button {
     padding: 8px 15px;
-    font-size: 1.5rem;
+    font-size: 1rem;
     cursor: pointer;
     margin: 5px;
     border-radius: 5px;
@@ -97,13 +97,13 @@ button {
             color: #FAF3E0;
         }
 .reality{
-    font-size:1.5rem;
+    font-size:1rem;
     font-family:"Michroma";
     color:#4682B4;
 }
 
 .tale{
-    font-size:1.5rem;
+    font-size:1rem;
     font-family:"IM Fell English";
     color: #FFBF00;
 }
@@ -111,7 +111,7 @@ button {
 .current-location .current-label {
     color: #FAF3E0;
     font-weight: bold;
-    font-size: 1.1.5rem;
+    font-size: 1.1rem;
 }
 
         input[type=checkbox]
@@ -122,15 +122,15 @@ button {
   -webkit-transform: scale(2); /* Safari and Chrome */
   -o-transform: scale(2); /* Opera */
   transform: scale(2);
-  padding: 1.5rem;
-  margin-right:1.5rem;
+  padding: 1rem;
+  margin-right:1rem;
 }
 
         html, body {
             
             width:100vw;
             font-family: 'Source Sans Pro', sans-serif;
-            font-size:1.5rem;
+            font-size:1rem;
             background-color: #333;
             color: #FAF3E0;
             margin: 0;
@@ -148,7 +148,7 @@ button {
             align-items: center;
             margin: 0;
             
-            font-size: 1.5rem;
+            font-size: 1rem;
     
         }
 
@@ -214,7 +214,7 @@ button {
             border-radius: 5px;
             cursor: pointer;
             margin-left: 5px;
-            font-size:1.5rem;
+            font-size:1rem;
         }
 
         .actionButton:hover {
@@ -348,7 +348,7 @@ button {
     
         #popupContent, #addItemContent, #editPopupContent {
             background-color: #444;
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: 10px;
             text-align: center;
             color: #FAF3E0;
@@ -362,17 +362,17 @@ button {
             margin: 10px 0;
             border: 1px solid #FAF3E0;
             border-radius: 5px;
-            font-size: 1.5rem;
+            font-size: 1rem;
         }
     
         #popupContent button, #addItemContent button, #editPopupContent button {
-            padding: 0.8rem 1.5rem;
+            padding: 0.8rem 1rem;
             background-color: #FAF3E0;
             border: none;
             color: #333;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1rem;
         }
     
         #popupContent button:hover, #addItemContent button:hover, #editPopupContent button:hover {
@@ -382,7 +382,7 @@ button {
         /* Responsive Adjustments */
         @media screen and (max-width: 864px) {
             body{
-                font-size:1.5rem;
+                font-size:1rem;
             }
             .tableRow {
                 flex-direction: column;
@@ -424,7 +424,7 @@ button {
             }
     
             #popupContent, #addItemContent, #editPopupContent {
-                padding: 1.5rem;
+                padding: 1rem;
                 width: 90%;
                 max-width: 320px;
             }
@@ -436,7 +436,7 @@ button {
     
         @media screen and (max-width: 480px) {
             body{
-                font-size:1.5rem;
+                font-size:1rem;
             }
             .tableRow {
                 flex-direction: column;
@@ -466,7 +466,7 @@ button {
             }
     
             #popupContent, #addItemContent, #editPopupContent {
-                padding: 1.5rem;
+                padding: 1rem;
                 width: 90%;
                 max-width: 320px;
             }
@@ -550,57 +550,53 @@ button {
 
     <script>
 
+const database = {
+    1: "Rose",
+    2: "Tulip",
+    3: "Lily",
+    4: "Apple",
+    5: "Banana",
+    6: "Cherry",
+    7: "Car Key",
+    8: "House Key",
+    9: "Safe Key",
+    10: "Economy",
+    11: "Food",
+    12: "Cleaning",
+    13: "Challenges",
+    14: "Resources",
+    15: "Football",
+    16: "Painting"
+};
 
-function createDatabase(inventoryData, situationData) {
-    const database = {};
-    let currentId = 1;
-
-    // Add items from inventoryData
-    for (const category in inventoryData.inventory) {
-        for (const item of inventoryData.inventory[category]) {
-            database[currentId] = item;
-            currentId++;
-        }
-    }
-
-    // Add items from situationData
-    for (const context in situationData.contexts) {
-        for (const item of situationData.contexts[context]) {
-            database[currentId] = item;
-            currentId++;
-        }
-    }
-
-    return database;
-}
-
-// Input Data
+// Reconstruct inventoryData
 const inventoryData = {
     "inventory": {
-        "Relatedness": ["Rose", "Tulip", "Lily"],
-        "Competence": ["Apple", "Banana", "Cherry"],
-        "Autonomy": ["Car Key", "House Key", "Safe Key"]
+        "Relatedness": [database[1], database[2], database[3]],
+        "Competence": [database[4], database[5], database[6]],
+        "Autonomy": [database[7], database[8], database[9]]
     }
 };
 
+// Reconstruct situationData
 const situationData = {
     "contexts": {
-        "Home": ["Economy", "Food", "Cleaning"],
-        "Work": ["Challenges", "Resources"],
-        "Hobby": ["Football", "Painting"]
+        "Home": [database[10], database[11], database[12]],
+        "Work": [database[13], database[14]],
+        "Hobby": [database[15], database[16]]
     }
 };
 
-// Create the database
-const database = createDatabase(inventoryData, situationData);
-console.log(database);
+
 
 
 
 let currentLocationIndex = null;
 
-const matchContextSituation = {
-    "match" : {}
+const matchAutonomyFF = {
+    "match" : {
+
+    }
 }
 
 
@@ -858,7 +854,7 @@ function createDropdown() {
 // Call the function to create the dropdown
 createDropdown();
         
-function markAsCurrentLocation(item, row) {
+function selectAutonomy(item, row) {
     // Remove existing "current location" label
     const previousCurrent = document.querySelector('.current-location');
     if (previousCurrent) {
@@ -990,151 +986,150 @@ function closeEditPopup() {
     }
 
     function showCategory(category) {
-        const contentDiv = document.getElementById('inventoryContent');
-        contentDiv.innerHTML = '';
-    
-        // Clear active class from all headers
-        const tabButtons = document.querySelectorAll('.tab button');
-        tabButtons.forEach((button) => button.classList.remove('active-header'));
-    
-        // Set active class for the clicked header
-        const activeButton = [...tabButtons].find((button) => button.textContent === category);
-        if (activeButton) {
-            activeButton.classList.add('active-header');
-        }
-    
-        const items = inventoryData.inventory[category] || [];
-        items.forEach((item, index) => {
-            const row = document.createElement('div');
-            row.className = 'tableRow';
+    const contentDiv = document.getElementById('inventoryContent');
+    contentDiv.innerHTML = '';
 
-            const row2 = document.createElement('div');
-            row2.className = 'tableRow2';
+    // Clear active class from all headers
+    const tabButtons = document.querySelectorAll('.tab button');
+    tabButtons.forEach((button) => button.classList.remove('active-header'));
 
-            const row3 = document.createElement('div');
-            row3.className = 'tableRow3';
-
-            const row4 = document.createElement('div');
-            row4.className = 'tableRow4';
-
-            const row5 = document.createElement('div');
-            row5.className = 'tableRow5';
-            
-            const cell = document.createElement('div');
-            cell.className = 'tableCell';
-            cell.textContent = item;
-
-            const editButton = document.createElement('button');
-            editButton.className = 'actionButton';
-            editButton.textContent = 'Edit';
-            editButton.onclick = () => openEditPopup(item, category, index);
-    
-            const deleteButton = document.createElement('button');
-            deleteButton.className = 'actionButton';
-            deleteButton.textContent = 'Delete';
-            deleteButton.onclick = () => deleteItem(category, index);
-    
-            row.appendChild(cell);
-            row.appendChild(editButton);
-            row.appendChild(deleteButton);
-    
-            contentDiv.appendChild(row);            
-            contentDiv.appendChild(row2);     
-            contentDiv.appendChild(row3);     
-            contentDiv.appendChild(row4);     
-            contentDiv.appendChild(row5);     
-
-            if (category === 'Autonomy') {
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = `reachable-${index}`;
-                checkbox.className = 'reachableCheckbox';
-    
-                const label = document.createElement('label');
-                label.textContent = 'Reachable';
-                label.setAttribute('for', `reachable-${index}`);
-    
-                const container = document.createElement('div');
-                container.appendChild(checkbox);
-                container.appendChild(label);
-    
-                row.appendChild(container);
-    
-                checkbox.addEventListener('change', function () {
-                    const existingButton = document.getElementById(`go-there-${index}`);
-                    if (checkbox.checked) {
-                        if (!existingButton) {
-                            const goThereButton = document.createElement('button');
-                            goThereButton.className = 'actionButton';
-                            goThereButton.textContent = 'Go There';
-                            goThereButton.id = `go-there-${index}`;
-                            goThereButton.onclick = () => markAsCurrentLocation(item, row);
-                            row.appendChild(goThereButton);
-                        }
-                    } else {
-                        if (existingButton) {
-                            existingButton.remove();
-                        }
-                    }
-                });
-            }
-            if (category === 'Relatedness') {
-                addSliderPersonal(row2);
-                //addSliderInevitable(row3);
-
-                const goalcheckbox = document.createElement('input');
-                goalcheckbox.type = 'checkbox';
-                goalcheckbox.id = `goal-${index}`;
-                goalcheckbox.className = 'goalCheckbox';
-    
-                const goallabel = document.createElement('label');
-                goallabel.textContent = 'goal';
-                goallabel.setAttribute('for', `goal-${index}`);
-
-                goalcheckbox.id = `goal-${index}`;
-                goalcheckbox.className = 'goalCheckbox';
-                
-                const goalcontainer = document.createElement('div');
-                goalcontainer.appendChild(goalcheckbox);
-                goalcontainer.appendChild(goallabel);
-                goalcontainer.className = 'goalcontainer';
-                row4.appendChild(goalcontainer);    
-
-
-
-
-                const feelingcheckbox = document.createElement('input');
-                feelingcheckbox.type = 'checkbox';
-                feelingcheckbox.id = `feeling-${index}`;
-                feelingcheckbox.className = 'feelingCheckbox';
-    
-                const feelinglabel = document.createElement('label');
-                feelinglabel.textContent = 'feeling';
-                feelinglabel.setAttribute('for', `feeling-${index}`);
-
-                feelingcheckbox.id = `feeling-${index}`;
-                feelingcheckbox.className = 'feelingCheckbox';
-                
-                const feelingcontainer = document.createElement('div');
-                feelingcontainer.appendChild(feelingcheckbox);
-                feelingcontainer.appendChild(feelinglabel);
-                feelingcontainer.className = 'feelingcontainer';
-                row5.appendChild(feelingcontainer);    
-
-                
-            }
-
-        });
-    
-        const addButton = document.createElement('button');
-        addButton.className = 'actionButton';
-        addButton.textContent = 'Add';
-        addButton.onclick = () => addItem(category);
-    
-        contentDiv.appendChild(addButton);
+    // Set active class for the clicked header
+    const activeButton = [...tabButtons].find((button) => button.textContent === category);
+    if (activeButton) {
+        activeButton.classList.add('active-header');
     }
 
-function markAsCurrentLocation(item, row) {
+    // Get items for the category
+    const items = inventoryData.inventory[category] || [];
+
+    // Store currently selected autonomy index
+    let selectedAutonomyIndex = null;
+
+    items.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = 'tableRow';
+
+        const row2 = document.createElement('div');
+        row2.className = 'tableRow2';
+
+        const row4 = document.createElement('div');
+        row4.className = 'tableRow4';
+
+        const row5 = document.createElement('div');
+        row5.className = 'tableRow5';
+
+        // Cell with item name
+        const cell = document.createElement('div');
+        cell.className = 'tableCell';
+        cell.textContent = item;
+
+        // Edit and delete buttons
+        const editButton = document.createElement('button');
+        editButton.className = 'actionButton';
+        editButton.textContent = 'Edit';
+        editButton.onclick = () => openEditPopup(item, category, index);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'actionButton';
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = () => deleteItem(category, index);
+
+        // Append basic row elements
+        row.appendChild(cell);
+        row.appendChild(editButton);
+        row.appendChild(deleteButton);
+        contentDiv.appendChild(row);
+
+        // Additional logic for 'Autonomy'
+        if (category === 'Autonomy') {
+            const selectButtonId = `select-autonomy-${index}`;
+            const selectButton = document.createElement('button');
+            selectButton.className = 'actionButton';
+            selectButton.textContent = 'Select';
+            selectButton.id = selectButtonId;
+
+            // Set onclick behavior
+            selectButton.onclick = () => {
+                // Deselect the previously selected row (if any)
+                if (selectedAutonomyIndex !== null) {
+                    const previousRow = document.getElementById(`autonomy-row-${selectedAutonomyIndex}`);
+                    if (previousRow) {
+                        previousRow.style.backgroundColor = ''; // Reset background color
+                        previousRow.querySelector('.selected-text').remove(); // Remove "selected" text
+                    }
+                }
+
+                // Select the current row
+                row.style.backgroundColor = '#888888'; // Set background color
+                const selectedText = document.createElement('span');
+                selectedText.className = 'selected-text';
+                selectedText.textContent = ' (selected)';
+                row.appendChild(selectedText); // Add "selected" text
+
+                // Update the current location in the div with id="current"
+                const currentLocationDiv = document.getElementById('current');
+                currentLocationDiv.textContent = `Current selected item: ${item}`;
+
+                // Set the new selected autonomy index
+                selectedAutonomyIndex = index;
+            };
+
+            row.appendChild(selectButton); // Add the select button to the row
+        }
+
+
+        // Additional logic for 'Relatedness'
+        if (category === 'Relatedness') {
+            addSliderPersonal(row2);
+
+            const goalCheckbox = document.createElement('input');
+            goalCheckbox.type = 'checkbox';
+            goalCheckbox.id = `goal-${category}-${index}`;
+            goalCheckbox.className = 'goalCheckbox';
+
+            const goalLabel = document.createElement('label');
+            goalLabel.textContent = 'Goal';
+            goalLabel.setAttribute('for', goalCheckbox.id);
+
+            const goalContainer = document.createElement('div');
+            goalContainer.className = 'goalContainer';
+            goalContainer.appendChild(goalCheckbox);
+            goalContainer.appendChild(goalLabel);
+            row4.appendChild(goalContainer);
+
+            const feelingCheckbox = document.createElement('input');
+            feelingCheckbox.type = 'checkbox';
+            feelingCheckbox.id = `feeling-${category}-${index}`;
+            feelingCheckbox.className = 'feelingCheckbox';
+
+            const feelingLabel = document.createElement('label');
+            feelingLabel.textContent = 'Feeling';
+            feelingLabel.setAttribute('for', feelingCheckbox.id);
+
+            const feelingContainer = document.createElement('div');
+            feelingContainer.className = 'feelingContainer';
+            feelingContainer.appendChild(feelingCheckbox);
+            feelingContainer.appendChild(feelingLabel);
+            row5.appendChild(feelingContainer);
+        }
+
+        // Append additional rows for styling
+        contentDiv.appendChild(row2);
+        contentDiv.appendChild(row4);
+        contentDiv.appendChild(row5);
+    });
+
+    // Add "Add" button
+    const addButton = document.createElement('button');
+    addButton.className = 'actionButton';
+    addButton.textContent = 'Add';
+    addButton.onclick = () => addItem(category);
+
+    contentDiv.appendChild(addButton);
+}
+
+let previouslySelectedRow = null; // Track the previously selected row
+function selectAutonomy(item, row) {
     // Remove existing "current location" label
     const previousCurrent = document.querySelector('.current-location');
     if (previousCurrent) {
@@ -1144,7 +1139,6 @@ function markAsCurrentLocation(item, row) {
             currentLabel.remove();
         }
     }
-}
 
     // Add "current location" label to this row
     row.classList.add('current-location');
@@ -1153,13 +1147,32 @@ function markAsCurrentLocation(item, row) {
     currentLabel.style.marginLeft = '10px';
     currentLabel.textContent = ' (Current Location)';
     row.querySelector('.tableCell').appendChild(currentLabel);
+}
+function setCurrentLocation(category, index) {
+    // Remove the current location label from the previous location
+    if (currentLocationIndex !== null) {
+        const previousRow = document.getElementById(`row-${category}-${currentLocationIndex}`);
+        if (previousRow) {
+            const previousLabel = previousRow.querySelector('.current-location');
+            if (previousLabel) {
+                previousLabel.remove();
+            }
+        }
+    }
 
-    // Update the "current" div with the selected item's name
-    const currentDiv = document.getElementById('current');
-    currentDiv.textContent = `Current Location: ${item}`;
+    // Set the new current location
+    currentLocationIndex = index;
+    const newRow = document.getElementById(`row-${category}-${index}`);
+    if (newRow) {
+        const newLabel = document.createElement('span');
+        newLabel.className = 'current-location';
+        newLabel.textContent = 'Current Location';
+        newRow.querySelector('.tableCell').appendChild(newLabel);
+    }
 
-
-    </script>
+    alert(`Current location set to: ${inventoryData.inventory[category][index]}`);
+}
+</script>
 
 
 </body>
