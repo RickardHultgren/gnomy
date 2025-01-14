@@ -1,0 +1,606 @@
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <style>
+        #tableheader {
+            background-color: #333;
+            font-family: 'Lora', serif;
+        }        
+        #tableheader {
+            background-color: #333;
+            color: #ffaa00;
+        }
+.reality{
+    font-size:1rem;
+    font-family:"Michroma";
+    color:#00eeff;
+}
+
+.tale{
+    font-size:1rem;
+    font-family:"IM Fell English";
+    color: #ffaa00;
+}
+
+.current-location .current-label {
+    color: #ffaa00;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+        input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  transform: scale(2);
+  padding: 1rem;
+  margin-right:2rem;
+}
+
+        html, body {
+            
+            width:100vw;
+            font-family: 'Lora', serif;
+            font-size:2rem;
+            background-color: #333;
+            color: #ffaa00;
+            margin: 0;
+            padding: 0;
+        }
+
+
+
+        #buttons {
+            z-index: 10;
+            width: 100%;
+            height: auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 0;
+            
+            font-size: 2rem;
+    
+        }
+
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ffaa00;
+            background-color: #444444;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            color: #ffaa00;
+        }
+
+        .tableMain {
+            display: table;
+            width: 100%;
+            background-color: #333333;
+        }
+
+        .tableRow {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .tableRow2 {
+            display: flex;
+            justify-content: space-between;
+        }
+        .tableRow3 {
+            display: flex;
+            justify-content: space-between;
+        }
+        .tableRow4 {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .tableRow5 {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            border-bottom: 1px solid #ffaa00;
+        }
+
+
+        .tableCell {
+            flex: 1;
+            padding-left: 5px;
+        }
+
+        .actionButton {
+            background-color: #ffaa00;
+            border: none;
+            padding: 5px 10px;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+            font-size:1rem;
+        }
+
+        .actionButton:hover {
+            background-color: #ffcc33;
+        }
+
+        #popupForm, #addItemPopup, #editPopup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #popupContent, #addItemContent, #editPopupContent {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: #ffaa00;
+            width: 300px;
+        }
+
+        #popupContent input, #addItemContent input, #editPopupContent input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ffaa00;
+            border-radius: 5px;
+        }
+
+        #popupContent button, #addItemContent button, #editPopupContent button {
+            padding: 10px 20px;
+            background-color: #ffaa00;
+            border: none;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #popupContent button:hover, #addItemContent button:hover, #editPopupContent button:hover {
+            background-color: #ffcc33;
+        }
+    </style>
+    <style>
+        html, body {
+            font-family: 'Lora', serif;
+            background-color: #333;
+            color: #ffaa00;
+            margin: 0;
+            padding: 0;
+        }
+
+
+    
+        #buttons {
+            z-index: 10;
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+    
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ffaa00;
+            background-color: #444444;
+        }
+    
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            color: #ffaa00;
+        }
+    
+        .tab button:hover {
+            background-color: #555555;
+        }
+    
+        .tableMain {
+            display: block;
+            width: 100%;
+            background-color: #333333;
+        }
+    
+
+        .tableCell {
+            flex: 1;
+            padding-left: 5px;
+        }
+    
+        .actionButton {
+            background-color: #ffaa00;
+            border: none;
+            padding: 8px 12px;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+    
+        .actionButton:hover {
+            background-color: #ffcc33;
+        }
+    
+        #popupForm, #addItemPopup, #editPopup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        #popupContent, #addItemContent, #editPopupContent {
+            background-color: #444;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            color: #ffaa00;
+            width: 90%;
+            max-width: 400px;
+        }
+    
+        #popupContent input, #addItemContent input, #editPopupContent input {
+            width: 95%;
+            padding: 0.8rem;
+            margin: 10px 0;
+            border: 1px solid #ffaa00;
+            border-radius: 5px;
+            font-size: 1.5rem;
+        }
+    
+        #popupContent button, #addItemContent button, #editPopupContent button {
+            padding: 0.8rem 1.5rem;
+            background-color: #ffaa00;
+            border: none;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 2rem;
+        }
+    
+        #popupContent button:hover, #addItemContent button:hover, #editPopupContent button:hover {
+            background-color: #ffcc33;
+        }
+    
+        /* Responsive Adjustments */
+        @media screen and (max-width: 864px) {
+            body{
+                font-size:2rem;
+            }
+            .tableRow {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+            }
+    
+            .tableRow2 {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+            }
+            
+            .tableRow3 {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+            }         
+
+            .tableCell {
+                padding: 5px 0;
+                text-align: center;
+            }
+    
+            .tab button {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+    
+            #buttons {
+                flex-direction: column;
+                padding: 10px;
+            }
+    
+            .actionButton {
+                padding: 10px;
+                margin: 5px;
+                font-size: 0.9rem;
+            }
+    
+            #popupContent, #addItemContent, #editPopupContent {
+                padding: 1rem;
+                width: 90%;
+                max-width: 320px;
+            }
+    
+            #popupContent input, #addItemContent input, #editPopupContent input {
+                font-size: 0.9rem;
+            }
+        }
+    
+        @media screen and (max-width: 480px) {
+            body{
+                font-size:2rem;
+            }
+            .tableRow {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+            }
+    
+            .tableCell {
+                padding: 5px 0;
+                text-align: center;
+            }
+    
+            .tab button {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+    
+            #buttons {
+                flex-direction: column;
+                padding: 10px;
+            }
+    
+            .actionButton {
+                padding: 10px;
+                margin: 5px;
+                font-size: 0.9rem;
+            }
+    
+            #popupContent, #addItemContent, #editPopupContent {
+                padding: 1rem;
+                width: 90%;
+                max-width: 320px;
+            }
+    
+            #popupContent input, #addItemContent input, #editPopupContent input {
+                font-size: 0.9rem;
+            }            
+            .tab button {
+                padding: 8px;
+                font-size: 2.5rem;
+            }
+    
+            .actionButton {
+                font-size: 2.5rem;
+                padding: 8px 10px;
+            }
+    
+            #popupContent, #addItemContent, #editPopupContent {
+                padding: 2.5rem;
+            }
+    
+            #popupContent input, #addItemContent input, #editPopupContent input {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+    <style>
+        .tab button.active-header {
+            background-color: white;
+            color: #333;
+            font-weight: bold;
+        }
+
+
+.goalcontainer, .feelingcontainer {
+    /*display:block;
+    width:50vw;
+    background-color:#ff0000;*/
+
+}        
+    </style>
+</head>
+<body>
+    <div id="contexts"></div>
+    <div id="popupForm">
+        <div id="popupContent">
+            <h2>Enter Details</h2>
+            <label for="gardenInput">Garden/Context:</label><br>
+            <input type="text" id="gardenInput" placeholder="Enter Garden/Context"><br>
+            <button onclick="submitPopup()">Submit</button>
+        </div>
+    </div>
+
+    <div id="addItemPopup">
+        <div id="addItemContent">
+            <h2>Add New Item</h2>
+            <label for="newItemInput">Item Name:</label><br>
+            <input type="text" id="newItemInput" placeholder="Enter item name"><br>
+            <button onclick="submitNewItem()">Add Item</button>
+            <button onclick="closeAddItemPopup()">Cancel</button>
+        </div>
+    </div>
+    <div id="editPopup">
+        <div id="editPopupContent">
+            <h2>Edit Item</h2>
+            <label for="editItemInput">Item Name:</label><br>
+            <input type="text" id="editItemInput" placeholder="Enter new name"><br>
+            <button onclick="submitEdit()">Save</button>
+            <button onclick="closeEditPopup()">Cancel</button>
+        </div>
+    </div>
+
+    <div class="tableMain">
+        <div class="tableBody">
+            <div id="garden">Context/Garden</div>
+            <button class="actionButton" onclick="document.getElementById('popupForm').style.display = 'flex';">Edit</button>
+            <div id="current"></div>
+            <div class="tab">
+                <button class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span></button>
+                <button class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
+                <button class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
+            </div>
+            <div id="inventoryContent" class="tableBody"></div>
+        </div>
+    </div>
+    <div id="buttons">
+        <button>History</button>
+    </div>
+
+    <script>
+        const inventoryData = {
+            "contexts": {
+                "Home": {
+                    "Relatedness": ["Rose", "Tulip", "Lily"],
+                    "Competence": ["Apple", "Banana", "Cherry"],
+                    "Autonomy": ["House Key", "Safe Key"]
+                },
+                "Work": {
+                    "Relatedness": [],
+                    "Competence": [],
+                    "Autonomy": ["Car Key"]
+                },
+                "Hobby": {
+                    "Relatedness": [],
+                    "Competence": [],
+                    "Autonomy": ["Football"]
+                }
+            }
+        };
+    
+        let currentContext = null;
+    
+        function createDropdown() {
+            const container = document.getElementById("contexts");
+            const dropdown = document.createElement("select");
+            dropdown.id = "contextDropdown";
+    
+            const defaultOption = document.createElement("option");
+            defaultOption.textContent = "Select a context...";
+            defaultOption.value = "";
+            dropdown.appendChild(defaultOption);
+    
+            Object.keys(inventoryData.contexts).forEach((context) => {
+                const option = document.createElement("option");
+                option.textContent = context;
+                option.value = context;
+                dropdown.appendChild(option);
+            });
+    
+            dropdown.addEventListener("change", (event) => {
+                currentContext = event.target.value || null;
+    
+                if (currentContext) {
+                    console.log(`Selected context: ${currentContext}`);
+                    showCategory("Relatedness"); // Default category to show
+                } else {
+                    console.log("No context selected.");
+                    const contentDiv = document.getElementById('inventoryContent');
+                    contentDiv.innerHTML = ''; // Clear the table
+                }
+            });
+    
+            container.appendChild(dropdown);
+        }
+    
+        function showCategory(category) {
+            if (!currentContext) {
+                alert("Please select a context first.");
+                return;
+            }
+    
+            const contentDiv = document.getElementById('inventoryContent');
+            contentDiv.innerHTML = '';
+    
+            const items = inventoryData.contexts[currentContext][category] || [];
+            items.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.className = 'tableRow';
+    
+                const cell = document.createElement('div');
+                cell.className = 'tableCell';
+                cell.textContent = item;
+    
+                const editButton = document.createElement('button');
+                editButton.className = 'actionButton';
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => openEditPopup(item, category, index);
+    
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'actionButton';
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteItem(category, index);
+    
+                row.appendChild(cell);
+                row.appendChild(editButton);
+                row.appendChild(deleteButton);
+    
+                contentDiv.appendChild(row);
+            });
+    
+            const addButton = document.createElement('button');
+            addButton.className = 'actionButton';
+            addButton.textContent = 'Add';
+            addButton.onclick = () => addItem(category);
+            contentDiv.appendChild(addButton);
+        }
+    
+        function addItem(category) {
+            if (!currentContext) {
+                alert("Please select a context first.");
+                return;
+            }
+    
+            const newItem = prompt("Enter the new item name:");
+            if (newItem && newItem.trim()) {
+                inventoryData.contexts[currentContext][category].push(newItem.trim());
+                showCategory(category);
+            }
+        }
+    
+        function deleteItem(category, index) {
+            if (!currentContext) {
+                alert("Please select a context first.");
+                return;
+            }
+    
+            const confirmDelete = confirm(`Are you sure you want to delete "${inventoryData.contexts[currentContext][category][index]}"?`);
+            if (confirmDelete) {
+                inventoryData.contexts[currentContext][category].splice(index, 1);
+                showCategory(category);
+            }
+        }
+    
+        createDropdown(); // Initialize the dropdown
+    </script>
+    
+</body>
+</html>

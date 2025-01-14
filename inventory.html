@@ -464,9 +464,9 @@
             <button class="actionButton" onclick="document.getElementById('popupForm').style.display = 'flex';">Edit</button>
             <div id="current"></div>
             <div class="tab">
-                <button class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
                 <button class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span></button>
                 <button class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
+                <button class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
             </div>
             <div id="inventoryContent" class="tableBody"></div>
         </div>
@@ -478,13 +478,13 @@
     <script>
         const inventoryData = {
             "inventory": {
-                "Autonomy": ["Car Key", "House Key", "Safe Key"],
                 "Relatedness": ["Rose", "Tulip", "Lily"],
-                "Competence": ["Apple", "Banana", "Cherry"]
+                "Competence": ["Apple", "Banana", "Cherry"],
+                "Autonomy": ["Car Key", "House Key", "Safe Key"]
             }
         };
     
-        let currentLocationIndex = null;
+
 
 
 
@@ -492,6 +492,7 @@
     "Context": ["Home", "Work", "Hobby"],
 };
 
+let currentLocationIndex = null;
 let currentContextIndex = null;
 
 function createDropdowns() {
