@@ -7,61 +7,24 @@
 
 /* Style for the container holding the elements */
 #contexts {
-    font-family: Arial, sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     margin: 20px;
 }
 
-/* Style for the context dropdown */
-.context-dropdown {
-    padding: 10px;
-    font-size: 16px;
-    margin: 10px;
+.slider-right-text{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size:1.5rem;
 }
 
-/* Style for the situation dropdown */
-.situation-dropdown {
-    padding: 10px;
-    font-size: 16px;
-    margin: 10px;
-}
-
-/* Style for each dropdown option */
-.context-option, .situation-option {
-    font-size: 14px;
-}
-
-/* Style for buttons */
-button {
-    padding: 8px 15px;
-    font-size: 14px;
-    cursor: pointer;
-    margin: 5px;
-    border-radius: 5px;
-}
-
-.add-context-button {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.add-situation-button {
-    background-color: #008CBA;
-    color: white;
-}
-
-.delete-context-button {
-    background-color: #f44336;
-    color: white;
-}
-
-.delete-situation-button {
-    background-color: #ff9800;
-    color: white;
+.slider-left-text{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size:1.5rem;
 }
 
 /* Style for sliders */
 .slider-container {
     display: flex;
+    font-size:1.5rem;
     align-items: center;
     gap: 10px;
     margin-top: 20px;
@@ -71,9 +34,56 @@ button {
     width: 200px;
 }
 
-.slider-left-text, .slider-right-text {
-    font-size: 16px;
+
+/* Style for the context dropdown */
+.context-dropdown {
+    padding: 10px;
+    font-size: 1.5rem;
+    margin: 10px;
 }
+
+/* Style for the situation dropdown */
+.situation-dropdown {
+    padding: 10px;
+    font-size: 1.5rem;
+    margin: 10px;
+}
+
+/* Style for each dropdown option */
+.context-option, .situation-option {
+    font-size: 1.5rem;
+}
+
+/* Style for buttons */
+button {
+    padding: 8px 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.add-context-button {
+    background-color: #444444;
+    color:  #FAF3E0;
+}
+
+.add-situation-button {
+    background-color: #444444;
+    color:  #FAF3E0;
+}
+
+.delete-context-button {
+    background-color: #444444;
+    color:  #FAF3E0;
+}
+
+.delete-situation-button {
+    background-color: #444444;
+    color:  #FAF3E0;
+}
+
+
 
 /* Additional styles as needed */
 
@@ -522,6 +532,7 @@ button {
         </div>
     </div>
 
+    <span class="tale">Inventory</span>
     <div class="tableMain">
         <div class="tableBody">
             <div id="current"></div>
@@ -1093,7 +1104,7 @@ function closeEditPopup() {
         contentDiv.appendChild(addButton);
     }
 
-    function markAsCurrentLocation(item, row) {
+function markAsCurrentLocation(item, row) {
     // Remove existing "current location" label
     const previousCurrent = document.querySelector('.current-location');
     if (previousCurrent) {
@@ -1103,6 +1114,7 @@ function closeEditPopup() {
             currentLabel.remove();
         }
     }
+}
 
     // Add "current location" label to this row
     row.classList.add('current-location');
