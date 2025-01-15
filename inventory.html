@@ -1029,8 +1029,11 @@ function closeEditPopup() {
         contentDiv.appendChild(row);
         // Get the item ID from the database based on the item name
         const itemId = Object.keys(database).find(key => database[key] === item);
+        alert(Object.keys(database).find(key => database[key] === item))
+        var autonomyId = null;
         var checked = 0;
         if (category === 'Autonomy') {
+            autonomyId = itemId;
             const selectButton = document.createElement('button');
             selectButton.className = 'actionButton';
             selectButton.textContent = 'Select';
@@ -1132,7 +1135,8 @@ function closeEditPopup() {
                 // Iterate over matchAutonomyFF.match to find the matching ID
                 for (const key in matchAutonomyFF.match) {
                     alert('-9.5');
-                    alert(matchAutonomyFF.match);                    
+                    //alert(matchAutonomyFF.match); 
+                    alert("MatchAutonomyFF Object: " + JSON.stringify(matchAutonomyFF, null, 2));                  
                     if (matchAutonomyFF.match[key] === itemId) {
                         alert('-10');
                         row.style.backgroundColor = ''; // Reset background color
@@ -1147,7 +1151,8 @@ function closeEditPopup() {
                 if (checked === 0) {
                     row.style.backgroundColor = '#888888'; // Highlight selected
                     alert(itemId);
-                    matchAutonomyFF.match[selectedAutonomyItem] = itemId; // Update the match with item ID and name
+                    matchAutonomyFF.match[autonomyId] = itemId; // Update the match with item ID and name
+                    alert(matchAutonomyFF.match[autonomyId])
                     console.log(`Added match for item: ${item} (item ID: ${itemId})`);
                 }
                 checked = 0;
