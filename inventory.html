@@ -991,6 +991,9 @@ function closeEditPopup() {
     let selectedRIndex = null;
 
     items.forEach((item, index) => {
+        // Create constants for each row based on the database item
+        const itemConstant = database[Object.keys(database).find(key => database[key] === item)];
+
         const row = document.createElement('div');
         row.className = 'tableRow';
 
@@ -1024,8 +1027,9 @@ function closeEditPopup() {
         row.appendChild(editButton);
         row.appendChild(deleteButton);
         contentDiv.appendChild(row);
-
-        // Additional logic for 'Autonomy'
+        // Get the item ID from the database based on the item name
+        const itemId = Object.keys(database).find(key => database[key] === item);
+        var checked = 0;
         if (category === 'Autonomy') {
             const selectButton = document.createElement('button');
             selectButton.className = 'actionButton';
@@ -1033,18 +1037,42 @@ function closeEditPopup() {
 
             selectButton.onclick = () => {
                 const tableRows = document.querySelectorAll('#inventoryContent .tableRow');
-                if (selectedAutonomyIndex !== null && tableRows[selectedAutonomyIndex]) {
-                    const previousRow = tableRows[selectedAutonomyIndex];
-                    previousRow.style.backgroundColor = ''; // Reset background color
-                    if (previousRow) previousRow.style.backgroundColor = '#333333'; // Reset background
-                }
-                selectedAutonomyItem = item;
-                
-                row.style.backgroundColor = '#888888'; // Highlight selected
-                selectedAutonomyIndex = index;
 
-                const currentLocationDiv = document.getElementById('current');
-                currentLocationDiv.textContent = `Current selected item: ${item}`;
+                if (selectedAutonomyIndex === index) {
+                    console.log(`Deselecting item at index ${index}`);
+
+                    // Deselect the currently selected item
+                    row.style.backgroundColor = ''; // Reset background color
+                    selectedAutonomyIndex = null; // Clear the selected index
+                    selectedAutonomyItem = null; // Clear the selected item
+
+                    const currentLocationDiv = document.getElementById('current');
+                    if (currentLocationDiv) {
+                        currentLocationDiv.textContent = 'No item selected'; // Reset display
+                    } else {
+                        console.warn('Element with id "current" not found in the DOM.');
+                    }
+                } else {
+                    console.log(`Selecting item at index ${index}`);
+
+                    // Deselect the previously selected item if any
+                    if (selectedAutonomyIndex !== null && tableRows[selectedAutonomyIndex]) {
+                        const previousRow = tableRows[selectedAutonomyIndex];
+                        previousRow.style.backgroundColor = ''; // Reset previous background color
+                    }
+
+                    // Select the clicked item
+                    selectedAutonomyItem = item;
+                    row.style.backgroundColor = '#888888'; // Highlight selected
+                    selectedAutonomyIndex = index;
+
+                    const currentLocationDiv = document.getElementById('current');
+                    if (currentLocationDiv) {
+                        currentLocationDiv.textContent = `Current selected item: ${selectedAutonomyItem}`; // Update display
+                    } else {
+                        console.warn('Element with id "current" not found in the DOM.');
+                    }
+                }
             };
 
             row.appendChild(selectButton);
@@ -1056,11 +1084,36 @@ function closeEditPopup() {
             selectRButton.className = 'actionButton';
             selectRButton.textContent = 'Select';
 
-            selectRButton.onclick = () => {
-                row.style.backgroundColor = '#888888'; // Highlight selected
-                selectedRIndex = index;
-                matchAutonomyFF.match.selectedAutonomyItem = item;
+             
+                //const itemId = Object.keys(database).find(key => database[key] === item);
+                var checked = 0;
+                selectRButton.onclick = (event) => {
+                alert('-9');
+
+                // Iterate over matchAutonomyFF.match to find the matching ID
+                for (const key in matchAutonomyFF.match) {
+                    alert('-9.5');
+                    alert(matchAutonomyFF.match);                    
+                    if (matchAutonomyFF.match[key] === itemId) {
+                        alert('-10');
+                        row.style.backgroundColor = ''; // Reset background color
+                        //selectedRIndex = null; // Clear the selection
+                        delete matchAutonomyFF.match[key]; // Remove the matching key-value pair
+                        console.log(`Removed match for key: ${key} (item ID: ${itemId})`);
+                        checked = 1; // Mark as deselected
+                    }
+                }
+
+                // If the item is not found (i.e., it is not selected), select it
+                if (checked === 0) {
+                    row.style.backgroundColor = '#888888'; // Highlight selected
+                    matchAutonomyFF.match[itemId] = item; // Update the match with item ID and name
+                    console.log(`Added match for item: ${item} (item ID: ${itemId})`);
+                }
+                checked = 0;
             };
+
+
 
             row.appendChild(selectRButton);
         }
@@ -1106,6 +1159,7 @@ function closeEditPopup() {
 
     contentDiv.appendChild(addButton);
 }
+
 
 let previouslySelectedRow = null; // Track the previously selected row
 
