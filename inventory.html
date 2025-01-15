@@ -599,10 +599,10 @@ const currentSelectedAutonomy = null;
 //    }
 //}
 
-const matches = [
-    { id: 1, sheetA: 'itemA1', sheetB: 'itemB1' },
-    { id: 2, sheetA: 'itemA2', sheetB: 'itemB2' },
-    { id: 3, sheetA: 'itemA3', sheetB: 'itemB3' },
+//A = autonomy, RC = relatedness and competence
+const matches = 
+[
+    //{ id: 1, A: 'itemA1', RC: 'itemB1' },
 ];
 //Find all matches for a specific sheetA item:
 //const matchedItems = matches.filter(row => row.sheetA === 'itemA1');
@@ -1146,17 +1146,32 @@ function closeEditPopup() {
                 var already = 0;
                 selectRButton.onclick = () => {
                     for (const key in matchAutonomyFF.match) {
+                        //match
+                        const matchedItems = matches.filter(row => row.sheetA === 'itemA1');
                         if (matchAutonomyFF.match[key] === itemId && already === 0) {
                             row.style.backgroundColor = ''; // Reset background color
-                            delete matchAutonomyFF.match[key];
-                            console.log(`Removed match for key: ${key} (item ID: ${itemId})`);
+                            
+                            //match
+                            //delete matchAutonomyFF.match[key];
+                            //console.log(`Removed match for key: ${key} (item ID: ${itemId})`);
+                            const idToDelete = 2;
+                            const updatedMatches = matches.filter(match => match.id !== idToDelete);
+
                             already = 1;
                         }
                     }
 
                     if (already === 0) {
                         row.style.backgroundColor = '#888888';
-                        matchAutonomyFF.match[autonomyId] = itemId;
+                        //match
+
+                        let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+                        const addMatch = (A, RC) => {
+                            matches.push({ id: nextId, A, RC });
+                            nextId++; // Increment the ID counter
+                        };
+                        addMatch(autonomyId, itemId);
+                        
                         console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
                     }
 
