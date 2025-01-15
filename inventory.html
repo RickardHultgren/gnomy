@@ -1146,17 +1146,16 @@ function closeEditPopup() {
                 var already = 0;
                 selectRButton.onclick = () => {
                     for (const key in matchAutonomyFF.match) {
-                        //match
-                        const matchedItems = matches.filter(row => row.sheetA === 'itemA1');
-                        if (matchAutonomyFF.match[key] === itemId && already === 0) {
+                        //match done
+                        if (matches.filter(row => row.A === key); === itemId && already === 0) {
                             row.style.backgroundColor = ''; // Reset background color
                             
                             //match
                             //delete matchAutonomyFF.match[key];
-                            //console.log(`Removed match for key: ${key} (item ID: ${itemId})`);
-                            const idToDelete = 2;
+                            
+                            const idToDelete = key;
                             const updatedMatches = matches.filter(match => match.id !== idToDelete);
-
+                            console.log(`Removed match for key: ${key} (item ID: ${itemId})`);
                             already = 1;
                         }
                     }
