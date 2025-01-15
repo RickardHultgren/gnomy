@@ -589,7 +589,7 @@ const situationData = {
 
 
 
-
+var selectedAutonomyItem = null;
 
 let currentLocationIndex = null;
 const currentSelectedAutonomy = null;
@@ -1034,14 +1034,12 @@ function closeEditPopup() {
             selectButton.onclick = () => {
                 const tableRows = document.querySelectorAll('#inventoryContent .tableRow');
                 if (selectedAutonomyIndex !== null && tableRows[selectedAutonomyIndex]) {
-                //if (selectedAutonomyIndex !== null) {
-                    //alert(selectedAutonomyIndex)
-                        const previousRow = tableRows[selectedAutonomyIndex];
-                        previousRow.style.backgroundColor = ''; // Reset background color
-                  //  }
+                    const previousRow = tableRows[selectedAutonomyIndex];
+                    previousRow.style.backgroundColor = ''; // Reset background color
                     if (previousRow) previousRow.style.backgroundColor = '#333333'; // Reset background
                 }
-
+                selectedAutonomyItem = item;
+                
                 row.style.backgroundColor = '#888888'; // Highlight selected
                 selectedAutonomyIndex = index;
 
@@ -1061,6 +1059,7 @@ function closeEditPopup() {
             selectRButton.onclick = () => {
                 row.style.backgroundColor = '#888888'; // Highlight selected
                 selectedRIndex = index;
+                matchAutonomyFF.match.selectedAutonomyItem = item;
             };
 
             row.appendChild(selectRButton);
