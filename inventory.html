@@ -1147,13 +1147,13 @@ function closeEditPopup() {
                 selectRButton.onclick = () => {
                     for (const key in matchAutonomyFF.match) {
                         //match done
-                        if (matches.filter(row => row.A === key); === itemId && already === 0) {
+                        if (matches.filter(row => row.A === key) === itemId && already === 0) {
                             row.style.backgroundColor = ''; // Reset background color
                             
                             //match
                             //delete matchAutonomyFF.match[key];
                             
-                            const idToDelete = key;
+                            const idToDelete = itemId; //key;
                             const updatedMatches = matches.filter(match => match.id !== idToDelete);
                             console.log(`Removed match for key: ${key} (item ID: ${itemId})`);
                             already = 1;
