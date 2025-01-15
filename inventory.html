@@ -592,7 +592,7 @@ const situationData = {
 
 
 let currentLocationIndex = null;
-
+const currentSelectedAutonomy = null;
 const matchAutonomyFF = {
     "match" : {
 
@@ -854,23 +854,6 @@ function createDropdown() {
 // Call the function to create the dropdown
 createDropdown();
         
-function selectAutonomy(item, row) {
-    // Remove existing "current location" label
-
-    const previousCurrent = document.querySelector('.current-location');
-    if (previousCurrent) {
-        previousCurrent.classList.remove('current-location');
-        previousCurrent.querySelector('.current-label').remove();
-    }
-
-    // Add "current location" label to this row
-    row.classList.add('current-location');
-    const currentLabel = document.createElement('span');
-    currentLabel.className = 'current-label';
-    currentLabel.style.marginLeft = '10px';
-    currentLabel.textContent = ' (Current Location)';
-    row.querySelector('.tableCell').appendChild(currentLabel);
-}
     
         function setCurrentLocation(category, index) {
             // Remove the current location label from the previous location
@@ -1003,8 +986,9 @@ function closeEditPopup() {
     // Get items for the category
     const items = inventoryData.inventory[category] || [];
 
-    // Store currently selected autonomy index
+    // Store currently selected indices
     let selectedAutonomyIndex = null;
+    let selectedRIndex = null;
 
     items.forEach((item, index) => {
         const row = document.createElement('div');
@@ -1043,84 +1027,81 @@ function closeEditPopup() {
 
         // Additional logic for 'Autonomy'
         if (category === 'Autonomy') {
-            const selectButtonId = `select-autonomy-${index}`;
             const selectButton = document.createElement('button');
             selectButton.className = 'actionButton';
             selectButton.textContent = 'Select';
-            selectButton.id = selectButtonId;
 
-            // Set onclick behavior
             selectButton.onclick = () => {
-                // Deselect the previously selected row (if any)
-                if (selectedAutonomyIndex !== null) {
-                    const previousRow = document.getElementById(`autonomy-row-${selectedAutonomyIndex}`);
-                    if (previousRow) {
+                const tableRows = document.querySelectorAll('#inventoryContent .tableRow');
+                if (selectedAutonomyIndex !== null && tableRows[selectedAutonomyIndex]) {
+                //if (selectedAutonomyIndex !== null) {
+                    //alert(selectedAutonomyIndex)
+                        const previousRow = tableRows[selectedAutonomyIndex];
                         previousRow.style.backgroundColor = ''; // Reset background color
-                        previousRow.querySelector('.selected-text').remove(); // Remove "selected" text
-                    }
+                  //  }
+                    if (previousRow) previousRow.style.backgroundColor = '#333333'; // Reset background
                 }
-                // Get all elements with the class 'tableCell'
-                const tableCells = document.querySelectorAll('.tableRow');
 
-                // Loop through each element and set the background color
-                tableCells.forEach(function(cell) {
-                    cell.style.backgroundColor = '#333333';
-                });
-                // Select the current row
-                row.style.backgroundColor = '#888888'; // Set background color
-                const selectedText = document.createElement('span');
-                selectedText.className = 'selected-text';
-                //selectedText.textContent = ' (selected)';
-                row.appendChild(selectedText); // Add "selected" text
+                row.style.backgroundColor = '#888888'; // Highlight selected
+                selectedAutonomyIndex = index;
 
-                // Update the current location in the div with id="current"
                 const currentLocationDiv = document.getElementById('current');
                 currentLocationDiv.textContent = `Current selected item: ${item}`;
-
-                // Set the new selected autonomy index
-                selectedAutonomyIndex = index;
             };
 
-            row.appendChild(selectButton); // Add the select button to the row
+            row.appendChild(selectButton);
         }
-
 
         // Additional logic for 'Relatedness'
         if (category === 'Relatedness') {
-            addSliderPersonal(row2);
+            const selectRButton = document.createElement('button');
+            selectRButton.className = 'actionButton';
+            selectRButton.textContent = 'Select';
 
-            const goalCheckbox = document.createElement('input');
-            goalCheckbox.type = 'checkbox';
-            goalCheckbox.id = `goal-${category}-${index}`;
-            goalCheckbox.className = 'goalCheckbox';
+            selectRButton.onclick = () => {
+                if (selectedRIndex !== null) {
+                    const previousRow = document.querySelector(`#inventoryContent .tableRow:nth-child(${selectedRIndex + 1})`);
+                    if (previousRow) previousRow.style.backgroundColor = ''; // Reset background
+                }
 
-            const goalLabel = document.createElement('label');
-            goalLabel.textContent = 'Goal';
-            goalLabel.setAttribute('for', goalCheckbox.id);
+                row.style.backgroundColor = '#888888'; // Highlight selected
+                selectedRIndex = index;
 
-            const goalContainer = document.createElement('div');
-            goalContainer.className = 'goalContainer';
-            goalContainer.appendChild(goalCheckbox);
-            goalContainer.appendChild(goalLabel);
-            row4.appendChild(goalContainer);
+                const currentLocationDiv = document.getElementById('current');
+                currentLocationDiv.textContent = `Current selected item: ${item}`;
+            };
 
-            const feelingCheckbox = document.createElement('input');
-            feelingCheckbox.type = 'checkbox';
-            feelingCheckbox.id = `feeling-${category}-${index}`;
-            feelingCheckbox.className = 'feelingCheckbox';
-
-            const feelingLabel = document.createElement('label');
-            feelingLabel.textContent = 'Feeling';
-            feelingLabel.setAttribute('for', feelingCheckbox.id);
-
-            const feelingContainer = document.createElement('div');
-            feelingContainer.className = 'feelingContainer';
-            feelingContainer.appendChild(feelingCheckbox);
-            feelingContainer.appendChild(feelingLabel);
-            row5.appendChild(feelingContainer);
+            row.appendChild(selectRButton);
         }
 
-        // Append additional rows for styling
+        // Add slider
+        addSliderPersonal(row2);
+
+        // Add goal checkbox
+        const goalCheckbox = document.createElement('input');
+        goalCheckbox.type = 'checkbox';
+        goalCheckbox.className = 'goalCheckbox';
+
+        const goalLabel = document.createElement('label');
+        goalLabel.textContent = 'Goal';
+        const goalContainer = document.createElement('div');
+        goalContainer.appendChild(goalCheckbox);
+        goalContainer.appendChild(goalLabel);
+        row4.appendChild(goalContainer);
+
+        // Add feeling checkbox
+        const feelingCheckbox = document.createElement('input');
+        feelingCheckbox.type = 'checkbox';
+        feelingCheckbox.className = 'feelingCheckbox';
+
+        const feelingLabel = document.createElement('label');
+        feelingLabel.textContent = 'Feeling';
+        const feelingContainer = document.createElement('div');
+        feelingContainer.appendChild(feelingCheckbox);
+        feelingContainer.appendChild(feelingLabel);
+        row5.appendChild(feelingContainer);
+
+        // Append additional rows
         contentDiv.appendChild(row2);
         contentDiv.appendChild(row4);
         contentDiv.appendChild(row5);
