@@ -1059,16 +1059,8 @@ function closeEditPopup() {
             selectRButton.textContent = 'Select';
 
             selectRButton.onclick = () => {
-                if (selectedRIndex !== null) {
-                    const previousRow = document.querySelector(`#inventoryContent .tableRow:nth-child(${selectedRIndex + 1})`);
-                    if (previousRow) previousRow.style.backgroundColor = ''; // Reset background
-                }
-
                 row.style.backgroundColor = '#888888'; // Highlight selected
                 selectedRIndex = index;
-
-                const currentLocationDiv = document.getElementById('current');
-                currentLocationDiv.textContent = `Current selected item: ${item}`;
             };
 
             row.appendChild(selectRButton);
