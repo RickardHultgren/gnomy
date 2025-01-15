@@ -1145,7 +1145,7 @@ function closeEditPopup() {
                 
                 var already = 0;
                 selectRButton.onclick = () => {
-                    for (const key in matchAutonomyFF.match) {
+                    for (const key in Matches) {
                         //match done
                         if (matches.filter(row => row.A === key) === itemId && already === 0) {
                             row.style.backgroundColor = ''; // Reset background color
