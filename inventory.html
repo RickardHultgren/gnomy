@@ -593,11 +593,14 @@ var selectedAutonomyItem = null;
 
 let currentLocationIndex = null;
 const currentSelectedAutonomy = null;
-const matchAutonomyFF = {
+var matchAutonomyFF = {
     "match" : {
 
     }
 }
+
+
+var autonomyId = null;
 
 
 const sliders = {}; // Store sliders for each situation
@@ -1028,9 +1031,8 @@ function closeEditPopup() {
         row.appendChild(deleteButton);
         contentDiv.appendChild(row);
         // Get the item ID from the database based on the item name
-        const itemId = Object.keys(database).find(key => database[key] === item);
-        alert(Object.keys(database).find(key => database[key] === item))
-        var autonomyId = null;
+        var itemId = Object.keys(database).find(key => database[key] === item);
+        
         var checked = 0;
         if (category === 'Autonomy') {
             autonomyId = itemId;
@@ -1127,42 +1129,34 @@ function closeEditPopup() {
             selectRButton.textContent = 'Select';
 
              
-                //const itemId = Object.keys(database).find(key => database[key] === item);
-                var checked = 0;
-                selectRButton.onclick = (event) => {
-                alert('-9');
-
-                // Iterate over matchAutonomyFF.match to find the matching ID
-                for (const key in matchAutonomyFF.match) {
-                    alert('-9.5');
-                    //alert(matchAutonomyFF.match); 
-                    alert("MatchAutonomyFF Object: " + JSON.stringify(matchAutonomyFF, null, 2));                  
-                    if (matchAutonomyFF.match[key] === itemId) {
-                        alert('-10');
-                        row.style.backgroundColor = ''; // Reset background color
-                        //selectedRIndex = null; // Clear the selection
-                        delete matchAutonomyFF.match[key]; // Remove the matching key-value pair
-                        console.log(`Removed match for key: ${key} (item ID: ${itemId})`);
-                        checked = 1; // Mark as deselected
+                
+                var already = 0;
+                selectRButton.onclick = () => {
+                    for (const key in matchAutonomyFF.match) {
+                        if (matchAutonomyFF.match[key] === itemId && already === 0) {
+                            row.style.backgroundColor = ''; // Reset background color
+                            delete matchAutonomyFF.match[key];
+                            console.log(`Removed match for key: ${key} (item ID: ${itemId})`);
+                            already = 1;
+                        }
                     }
-                }
 
-                // If the item is not found (i.e., it is not selected), select it
-                if (checked === 0) {
-                    row.style.backgroundColor = '#888888'; // Highlight selected
-                    alert(itemId);
-                    matchAutonomyFF.match[autonomyId] = itemId; // Update the match with item ID and name
-                    alert(matchAutonomyFF.match[autonomyId])
-                    console.log(`Added match for item: ${item} (item ID: ${itemId})`);
-                }
-                checked = 0;
-            };
+                    if (already === 0) {
+                        row.style.backgroundColor = '#888888';
+                        matchAutonomyFF.match[autonomyId] = itemId;
+                        console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
+                    }
 
+                    already = 0;
 
+                    // Display the updated object
+                    alert(JSON.stringify(matchAutonomyFF, null, 2));
+                };
 
             row.appendChild(selectRButton);
-        }
 
+        }
+        
         // Add slider
         addSliderPersonal(row2);
 
