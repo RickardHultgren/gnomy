@@ -1005,7 +1005,7 @@ function closeEditPopup() {
     // Store currently selected indices
     let selectedAutonomyIndex = null;
     let selectedRIndex = null;
-
+    let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
     items.forEach((item, index) => {
         // Create constants for each row based on the database item
         const itemConstant = database[Object.keys(database).find(key => database[key] === item)];
@@ -1153,8 +1153,8 @@ function closeEditPopup() {
                             //match
                             //delete matchAutonomyFF.match[key];
                             
-                            const idToDelete = itemId; //key;
-                            const updatedMatches = matches.filter(match => match.id !== idToDelete);
+                            var idToDelete = itemId; //key;
+                            var updatedMatches = matches.filter(match => match.id !== idToDelete);
                             console.log(`Removed match for key: ${key} (item ID: ${itemId})`);
                             already = 1;
                         }
@@ -1164,20 +1164,16 @@ function closeEditPopup() {
                         row.style.backgroundColor = '#888888';
                         //match
 
-                        let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
-                        const addMatch = (A, RC) => {
-                            matches.push({ id: nextId, A, RC });
-                            nextId++; // Increment the ID counter
-                        };
-                        addMatch(autonomyId, itemId);
+                        
+                        matches.push({ id: nextId++, A: autonomyId, RC: itemId });
+                        console.log(`Added new match: A=${autonomyId}, RC=${itemId}`);
                         
                         //console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
                     }
 
                     already = 0;
 
-                    // Display the updated object
-                    alert(matches);
+
                 };
 
             row.appendChild(selectRButton);
