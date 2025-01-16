@@ -106,6 +106,7 @@ button {
     font-size:1rem;
     font-family:"IM Fell English";
     color: #FFBF00;
+    display:none;
 }
 
 .current-location .current-label {
@@ -537,9 +538,9 @@ button {
         <div class="tableBody">
             <div id="current"></div>
             <div class="tab">
-                <button class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span></button>
-                <button class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
-                <button class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
+                <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
+                <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span></button>
+                <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
             </div>
             <div id="inventoryContent" class="tableBody"></div>
         </div>
@@ -1048,6 +1049,12 @@ function closeEditPopup() {
         var itemId = Object.keys(database).find(key => database[key] === item);
         
         var checked = 0;
+        document.getElementById("autonomyHead").style.color = "#4682B4";
+        document.getElementById("autonomyHead").style.backgroundColor ="#444444";
+        document.getElementById("relatednessHead").style.color = "#4682B4";
+        document.getElementById("relatednessHead").style.backgroundColor ="#444444";
+        document.getElementById("competenceHead").style.color = "#4682B4";
+        document.getElementById("competenceHead").style.backgroundColor ="#444444";        
         if (category === 'Autonomy') {
             
             const selectButton = document.createElement('button');
@@ -1115,6 +1122,8 @@ function closeEditPopup() {
 
         // Additional logic for 'Relatedness'
         if (category === 'Relatedness') {
+            document.getElementById("relatednessHead").style.color = "#004D40";
+            document.getElementById("relatednessHead").style.backgroundColor ="#FAF3E0";
             const selectRButton = document.createElement('button');
             selectRButton.className = 'actionButton';
             selectRButton.textContent = 'Select';
@@ -1176,6 +1185,8 @@ function closeEditPopup() {
 
         // Additional logic for 'Competence'
         if (category === 'Competence') {
+            document.getElementById("competenceHead").style.color = "#004D40";
+            document.getElementById(competencesHead).style.backgroundColor ="#FAF3E0";
             const selectCButton = document.createElement('button');
             selectCButton.className = 'actionButton';
             selectCButton.textContent = 'Select';
