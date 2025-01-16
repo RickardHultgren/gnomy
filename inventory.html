@@ -1012,6 +1012,7 @@ function closeEditPopup() {
 
         const row = document.createElement('div');
         row.className = 'tableRow';
+        
 
         const row2 = document.createElement('div');
         row2.className = 'tableRow2';
@@ -1042,62 +1043,39 @@ function closeEditPopup() {
         row.appendChild(cell);
         row.appendChild(editButton);
         row.appendChild(deleteButton);
-        contentDiv.appendChild(row);
+
         // Get the item ID from the database based on the item name
         var itemId = Object.keys(database).find(key => database[key] === item);
         
         var checked = 0;
         if (category === 'Autonomy') {
-            autonomyId = itemId;
+            
             const selectButton = document.createElement('button');
             selectButton.className = 'actionButton';
             selectButton.textContent = 'Select';
             if (selectedAutonomyItem === database[itemId]) {
                 const tableRows = document.querySelectorAll('#inventoryContent .tableRow');
+                // Select the clicked item
+                selectedAutonomyItem = item;
+                row.style.backgroundColor = '#888888'; // Highlight selected
+                selectedAutonomyIndex = index;
 
-                if (selectedAutonomyIndex === index) {
-                    console.log(`Deselecting item at index ${index}`);
-
-                    // Deselect the currently selected item
-                    row.style.backgroundColor = ''; // Reset background color
-                    selectedAutonomyIndex = null; // Clear the selected index
-                    //selectedAutonomyItem = null; // Clear the selected item
-
-                    const currentLocationDiv = document.getElementById('current');
-                    if (currentLocationDiv) {
-                        currentLocationDiv.textContent = 'No item selected'; // Reset display
-                    } else {
-                        console.warn('Element with id "current" not found in the DOM.');
-                    }
+                const currentLocationDiv = document.getElementById('current');
+                if (currentLocationDiv) {
+                    currentLocationDiv.textContent = `Current selected item: ${selectedAutonomyItem}`; // Update display
                 } else {
-                    console.log(`Selecting item at index ${index}`);
-
-                    // Deselect the previously selected item if any
-                    if (selectedAutonomyIndex !== null && tableRows[selectedAutonomyIndex]) {
-                        const previousRow = tableRows[selectedAutonomyIndex];
-                        previousRow.style.backgroundColor = ''; // Reset previous background color
-                    }
-
-                    // Select the clicked item
-                    selectedAutonomyItem = item;
-                    row.style.backgroundColor = '#888888'; // Highlight selected
-                    selectedAutonomyIndex = index;
-
-                    const currentLocationDiv = document.getElementById('current');
-                    if (currentLocationDiv) {
-                        currentLocationDiv.textContent = `Current selected item: ${selectedAutonomyItem}`; // Update display
-                    } else {
-                        console.warn('Element with id "current" not found in the DOM.');
-                    }
+                    console.warn('Element with id "current" not found in the DOM.');
                 }
+                
 
             }
             selectButton.onclick = () => {
+                autonomyId = itemId;
                 const tableRows = document.querySelectorAll('#inventoryContent .tableRow');
 
                 if (selectedAutonomyIndex === index) {
                     console.log(`Deselecting item at index ${index}`);
-
+                    autonomyId = null;
                     // Deselect the currently selected item
                     row.style.backgroundColor = ''; // Reset background color
                     selectedAutonomyIndex = null; // Clear the selected index
@@ -1116,13 +1094,13 @@ function closeEditPopup() {
                     if (selectedAutonomyIndex !== null && tableRows[selectedAutonomyIndex]) {
                         const previousRow = tableRows[selectedAutonomyIndex];
                         previousRow.style.backgroundColor = ''; // Reset previous background color
+
                     }
 
                     // Select the clicked item
                     selectedAutonomyItem = item;
                     row.style.backgroundColor = '#888888'; // Highlight selected
                     selectedAutonomyIndex = index;
-
                     const currentLocationDiv = document.getElementById('current');
                     if (currentLocationDiv) {
                         currentLocationDiv.textContent = `Current selected item: ${selectedAutonomyItem}`; // Update display
@@ -1140,23 +1118,33 @@ function closeEditPopup() {
             const selectRButton = document.createElement('button');
             selectRButton.className = 'actionButton';
             selectRButton.textContent = 'Select';
-
+            matches.forEach((match, index) => {
+                if (match.A === autonomyId && match.RC === itemId) {
              
+                   row.style.backgroundColor = '#888888'; // Highlight selected
                 
-                var already = 0;
-                selectRButton.onclick = () => {
+                }
+            });
+                
 
+            
+            
+                
+            var already = 0;
+            selectRButton.onclick = () => {
+                if (autonomyId === null) {alert("Please select an autonomy")}
+                else{
                     matches.forEach((match, index) => {
                     if (match.A === autonomyId && match.RC === itemId && already === 0) {
-                        // Reset the background color of the matched row (if needed)
-                        row.style.backgroundColor = ''; // Reset background color
+                            // Reset the background color of the matched row (if needed)
+                            row.style.backgroundColor = ''; // Reset background color
 
-                        // Remove the match from the array
-                        matches.splice(index, 1);
-                        console.log(`Removed match for autonomyId: ${autonomyId} and itemId: ${itemId}`);
-                        already = 1; // Prevent multiple deletions
-                    }
-                });
+                            // Remove the match from the array
+                            matches.splice(index, 1);
+                            console.log(`Removed match for autonomyId: ${autonomyId} and itemId: ${itemId}`);
+                            already = 1; // Prevent multiple deletions
+                            }
+                    });
 
 
 
@@ -1168,7 +1156,7 @@ function closeEditPopup() {
                         row.style.backgroundColor = '#888888';
                         //match
 
-                        
+                            
                         // Add new match
                         let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
                         matches.push({ id: nextId, A: autonomyId, RC: itemId });
@@ -1180,10 +1168,71 @@ function closeEditPopup() {
                     // Display the updated object
                     console.log(matches)
                 };
+            };
 
             row.appendChild(selectRButton);
 
         }
+
+        // Additional logic for 'Competence'
+        if (category === 'Competence') {
+            const selectCButton = document.createElement('button');
+            selectCButton.className = 'actionButton';
+            selectCButton.textContent = 'Select';
+
+            matches.forEach((match, index) => {
+            if (match.A === autonomyId && match.RC === itemId) {
+             
+             row.style.backgroundColor = '#888888'; // Highlight selected
+             
+             }
+            });             
+
+                        
+                
+                var already = 0;
+                selectCButton.onclick = () => {
+                    if (autonomyId === null) {alert("Please select an autonomy")}
+                    else{
+                        matches.forEach((match, index) => {
+                        if (match.A === autonomyId && match.RC === itemId && already === 0) {
+                            // Reset the background color of the matched row (if needed)
+                            row.style.backgroundColor = ''; // Reset background color
+
+                            // Remove the match from the array
+                            matches.splice(index, 1);
+                            console.log(`Removed match for autonomyId: ${autonomyId} and itemId: ${itemId}`);
+                            already = 1; // Prevent multiple deletions
+                            }
+                        });
+
+
+
+
+                        // Find the matching item in the matches array
+                        const matchingIndex = matches.findIndex(match => match.A === autonomyId && match.RC === itemId);
+
+                        if (already === 0) {
+                            row.style.backgroundColor = '#888888';
+                            //match
+
+                            
+                            // Add new match
+                            let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+                            matches.push({ id: nextId, A: autonomyId, RC: itemId });
+                            //console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
+                        }
+
+                        already = 0;
+
+                        // Display the updated object
+                        console.log(matches)
+                    };
+                };
+
+            row.appendChild(selectCButton);
+
+        }        
         
         // Add slider
         addSliderPersonal(row2);
@@ -1212,7 +1261,8 @@ function closeEditPopup() {
         feelingContainer.appendChild(feelingLabel);
         row5.appendChild(feelingContainer);
 
-        // Append additional rows
+        // Append rows
+        contentDiv.appendChild(row);
         contentDiv.appendChild(row2);
         contentDiv.appendChild(row4);
         contentDiv.appendChild(row5);
