@@ -538,8 +538,8 @@ button {
         <div class="tableBody">
             <div id="current"></div>
             <div class="tab">
-                <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
-                <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span></button>
+                <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button> = 
+                <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span></button> + 
                 <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
             </div>
             <div id="inventoryContent" class="tableBody"></div>
@@ -1056,7 +1056,8 @@ function closeEditPopup() {
         document.getElementById("competenceHead").style.color = "#4682B4";
         document.getElementById("competenceHead").style.backgroundColor ="#444444";        
         if (category === 'Autonomy') {
-            
+            document.getElementById("autonomyHead").style.color = "#004D40";
+            document.getElementById("autonomyHead").style.backgroundColor ="#FAF3E0";
             const selectButton = document.createElement('button');
             selectButton.className = 'actionButton';
             selectButton.textContent = 'Select';
@@ -1180,13 +1181,37 @@ function closeEditPopup() {
             };
 
             row.appendChild(selectRButton);
+            // Add slider
+            addSliderPersonal(row2);
+            // Add goal checkbox
+            const goalCheckbox = document.createElement('input');
+            goalCheckbox.type = 'checkbox';
+            goalCheckbox.className = 'goalCheckbox';
+
+            const goalLabel = document.createElement('label');
+            goalLabel.textContent = 'Goal';
+            const goalContainer = document.createElement('div');
+            goalContainer.appendChild(goalCheckbox);
+            goalContainer.appendChild(goalLabel);
+            row4.appendChild(goalContainer);            
+        // Add feeling checkbox
+        const feelingCheckbox = document.createElement('input');
+        feelingCheckbox.type = 'checkbox';
+        feelingCheckbox.className = 'feelingCheckbox';
+
+        const feelingLabel = document.createElement('label');
+        feelingLabel.textContent = 'Feeling';
+        const feelingContainer = document.createElement('div');
+        feelingContainer.appendChild(feelingCheckbox);
+        feelingContainer.appendChild(feelingLabel);
+        row5.appendChild(feelingContainer);
 
         }
 
         // Additional logic for 'Competence'
         if (category === 'Competence') {
             document.getElementById("competenceHead").style.color = "#004D40";
-            document.getElementById(competencesHead).style.backgroundColor ="#FAF3E0";
+            document.getElementById("competenceHead").style.backgroundColor ="#FAF3E0";
             const selectCButton = document.createElement('button');
             selectCButton.className = 'actionButton';
             selectCButton.textContent = 'Select';
@@ -1245,32 +1270,10 @@ function closeEditPopup() {
 
         }        
         
-        // Add slider
-        addSliderPersonal(row2);
 
-        // Add goal checkbox
-        const goalCheckbox = document.createElement('input');
-        goalCheckbox.type = 'checkbox';
-        goalCheckbox.className = 'goalCheckbox';
 
-        const goalLabel = document.createElement('label');
-        goalLabel.textContent = 'Goal';
-        const goalContainer = document.createElement('div');
-        goalContainer.appendChild(goalCheckbox);
-        goalContainer.appendChild(goalLabel);
-        row4.appendChild(goalContainer);
+ 
 
-        // Add feeling checkbox
-        const feelingCheckbox = document.createElement('input');
-        feelingCheckbox.type = 'checkbox';
-        feelingCheckbox.className = 'feelingCheckbox';
-
-        const feelingLabel = document.createElement('label');
-        feelingLabel.textContent = 'Feeling';
-        const feelingContainer = document.createElement('div');
-        feelingContainer.appendChild(feelingCheckbox);
-        feelingContainer.appendChild(feelingLabel);
-        row5.appendChild(feelingContainer);
 
         // Append rows
         contentDiv.appendChild(row);
