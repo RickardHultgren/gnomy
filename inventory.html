@@ -1145,35 +1145,40 @@ function closeEditPopup() {
                 
                 var already = 0;
                 selectRButton.onclick = () => {
-                    for (const key in matches) {
-                        //match done
-                        if (matches.filter(row => row.A === key) === itemId && already === 0) {
-                            row.style.backgroundColor = ''; // Reset background color
-                            
-                            //match
-                            //delete matchAutonomyFF.match[key];
-                            
-                            var idToDelete = itemId; //key;
-                            var updatedMatches = matches.filter(match => match.id !== idToDelete);
-                            console.log(`Removed match for key: ${key} (item ID: ${itemId})`);
-                            already = 1;
-                        }
+
+                    matches.forEach((match, index) => {
+                    if (match.A === autonomyId && match.RC === itemId && already === 0) {
+                        // Reset the background color of the matched row (if needed)
+                        row.style.backgroundColor = ''; // Reset background color
+
+                        // Remove the match from the array
+                        matches.splice(index, 1);
+                        console.log(`Removed match for autonomyId: ${autonomyId} and itemId: ${itemId}`);
+                        already = 1; // Prevent multiple deletions
                     }
+                });
+
+
+
+
+                    // Find the matching item in the matches array
+                    const matchingIndex = matches.findIndex(match => match.A === autonomyId && match.RC === itemId);
 
                     if (already === 0) {
                         row.style.backgroundColor = '#888888';
                         //match
 
                         
-                        matches.push({ id: nextId++, A: autonomyId, RC: itemId });
-                        console.log(`Added new match: A=${autonomyId}, RC=${itemId}`);
-                        
+                        // Add new match
+                        let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+                        matches.push({ id: nextId, A: autonomyId, RC: itemId });
                         //console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
                     }
 
                     already = 0;
 
-
+                    // Display the updated object
+                    console.log(matches)
                 };
 
             row.appendChild(selectRButton);
