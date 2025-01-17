@@ -536,6 +536,41 @@ h1 {
 
 
 
+
+
+
+
+
+
+html {
+  font-size: 16px; /* Default font size for reference */
+}
+
+body {
+  font-size: 1rem; /* Default body font size */
+}
+
+/* Dynamic font size adjustment */
+@media (max-width: 1200px) {
+  html {
+    font-size: 15px; /* Slightly smaller for medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: calc(14px + 0.5vw); /* Dynamic adjustment for smaller devices */
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: calc(12px + 1vw); /* Larger adjustment for very small screens */
+  }
+}
+
+
+
     </style>
 </head>
 <body>
