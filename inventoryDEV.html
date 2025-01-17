@@ -2,35 +2,117 @@
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Orbitron:wght@400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <style>
+
+/* Style for the container holding the elements */
+#contexts {
+    font-family: 'Source Sans Pro', sans-serif;
+    margin: 20px;
+}
+
+.slider-right-text{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size:1rem;
+}
+
+.slider-left-text{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size:1rem;
+}
+
+/* Style for sliders */
+.slider-container {
+    display: flex;
+    font-size:1rem;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.slider {
+    width: 200px;
+}
+
+
+/* Style for the context dropdown */
+.context-dropdown {
+    padding: 10px;
+    font-size: 1rem;
+    margin: 10px;
+}
+
+/* Style for the situation dropdown */
+.situation-dropdown {
+    padding: 10px;
+    font-size: 1rem;
+    margin: 10px;
+}
+
+/* Style for each dropdown option */
+.context-option, .situation-option {
+    font-size: 1rem;
+}
+
+/* Style for buttons */
+button {
+    padding: 8px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.add-context-button {
+    background-color: #444444;
+    color:  #FAF3E0;
+}
+
+.add-situation-button {
+    background-color: #444444;
+    color:  #FAF3E0;
+}
+
+.delete-context-button {
+    background-color: #444444;
+    color:  #FAF3E0;
+}
+
+.delete-situation-button {
+    background-color: #444444;
+    color:  #FAF3E0;
+}
+
+
+
+/* Additional styles as needed */
+
+
         #tableheader {
             background-color: #333;
-            font-family: 'Lora', serif;
+            font-family: 'Source Sans Pro', sans-serif;
         }        
         #tableheader {
             background-color: #333;
-            color: #ffaa00;
+            color: #FAF3E0;
         }
 .reality{
     font-size:1rem;
     font-family:"Michroma";
-    color:#00eeff;
+    color:#4682B4;
 }
 
 .tale{
     font-size:1rem;
     font-family:"IM Fell English";
-    color: #ffaa00;
+    color: #FFBF00;
+    display:none;
 }
 
 .current-location .current-label {
-    color: #ffaa00;
+    color: #FAF3E0;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
         input[type=checkbox]
@@ -42,16 +124,16 @@
   -o-transform: scale(2); /* Opera */
   transform: scale(2);
   padding: 1rem;
-  margin-right:2rem;
+  margin-right:1rem;
 }
 
         html, body {
             
             width:100vw;
-            font-family: 'Lora', serif;
-            font-size:2rem;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size:1rem;
             background-color: #333;
-            color: #ffaa00;
+            color: #FAF3E0;
             margin: 0;
             padding: 0;
         }
@@ -67,13 +149,13 @@
             align-items: center;
             margin: 0;
             
-            font-size: 2rem;
+            font-size: 1rem;
     
         }
 
         .tab {
             overflow: hidden;
-            border: 1px solid #ffaa00;
+            border: 1px solid #FAF3E0;
             background-color: #444444;
         }
 
@@ -85,7 +167,7 @@
             cursor: pointer;
             padding: 14px 16px;
             transition: 0.3s;
-            color: #ffaa00;
+            color: #FAF3E0;
         }
 
         .tableMain {
@@ -116,7 +198,7 @@
             display: flex;
             justify-content: space-between;
             padding: 5px;
-            border-bottom: 1px solid #ffaa00;
+            border-bottom: 1px solid #FAF3E0;
         }
 
 
@@ -126,7 +208,7 @@
         }
 
         .actionButton {
-            background-color: #ffaa00;
+            background-color: #FAF3E0;
             border: none;
             padding: 5px 10px;
             color: #333;
@@ -158,7 +240,7 @@
             padding: 20px;
             border-radius: 10px;
             text-align: center;
-            color: #ffaa00;
+            color: #FAF3E0;
             width: 300px;
         }
 
@@ -166,13 +248,13 @@
             width: 90%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #ffaa00;
+            border: 1px solid #FAF3E0;
             border-radius: 5px;
         }
 
         #popupContent button, #addItemContent button, #editPopupContent button {
             padding: 10px 20px;
-            background-color: #ffaa00;
+            background-color: #FAF3E0;
             border: none;
             color: #333;
             border-radius: 5px;
@@ -185,9 +267,9 @@
     </style>
     <style>
         html, body {
-            font-family: 'Lora', serif;
+            font-family: 'Source Sans Pro', sans-serif;
             background-color: #333;
-            color: #ffaa00;
+            color: #FAF3E0;
             margin: 0;
             padding: 0;
         }
@@ -207,7 +289,7 @@
     
         .tab {
             overflow: hidden;
-            border: 1px solid #ffaa00;
+            border: 1px solid #FAF3E0;
             background-color: #444444;
         }
     
@@ -219,7 +301,7 @@
             cursor: pointer;
             padding: 14px 16px;
             transition: 0.3s;
-            color: #ffaa00;
+            color: #FAF3E0;
         }
     
         .tab button:hover {
@@ -239,7 +321,7 @@
         }
     
         .actionButton {
-            background-color: #ffaa00;
+            background-color: #FAF3E0;
             border: none;
             padding: 8px 12px;
             color: #333;
@@ -267,10 +349,10 @@
     
         #popupContent, #addItemContent, #editPopupContent {
             background-color: #444;
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: 10px;
             text-align: center;
-            color: #ffaa00;
+            color: #FAF3E0;
             width: 90%;
             max-width: 400px;
         }
@@ -279,19 +361,19 @@
             width: 95%;
             padding: 0.8rem;
             margin: 10px 0;
-            border: 1px solid #ffaa00;
+            border: 1px solid #FAF3E0;
             border-radius: 5px;
-            font-size: 1.5rem;
+            font-size: 1rem;
         }
     
         #popupContent button, #addItemContent button, #editPopupContent button {
-            padding: 0.8rem 1.5rem;
-            background-color: #ffaa00;
+            padding: 0.8rem 1rem;
+            background-color: #FAF3E0;
             border: none;
             color: #333;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 2rem;
+            font-size: 1rem;
         }
     
         #popupContent button:hover, #addItemContent button:hover, #editPopupContent button:hover {
@@ -301,7 +383,7 @@
         /* Responsive Adjustments */
         @media screen and (max-width: 864px) {
             body{
-                font-size:2rem;
+                font-size:1rem;
             }
             .tableRow {
                 flex-direction: column;
@@ -355,7 +437,7 @@
     
         @media screen and (max-width: 480px) {
             body{
-                font-size:2rem;
+                font-size:1rem;
             }
             .tableRow {
                 flex-direction: column;
@@ -426,18 +508,39 @@
     background-color:#ff0000;*/
 
 }        
+html { font-size: calc(1em + 1vw); }
+@media screen and (min-width: 50em) {
+  html {
+    font-size: 2vw;
+  }
+}
+@media screen and (min-width: 75em) {
+  html {
+    font-size: 1.5em;
+  }
+}
+body {
+  padding: 1.5rem;
+}
+p {
+  line-height: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+h1 {
+  font-size: 2rem;
+  line-height: 2rem;
+  margin-top: calc((1.5rem - 2rem) + 1.5rem);
+  margin-bottom: 1.5rem;
+}
+
+
+
+
     </style>
 </head>
 <body>
     <div id="contexts"></div>
-    <div id="popupForm">
-        <div id="popupContent">
-            <h2>Enter Details</h2>
-            <label for="gardenInput">Garden/Context:</label><br>
-            <input type="text" id="gardenInput" placeholder="Enter Garden/Context"><br>
-            <button onclick="submitPopup()">Submit</button>
-        </div>
-    </div>
+
 
     <div id="addItemPopup">
         <div id="addItemContent">
@@ -458,149 +561,772 @@
         </div>
     </div>
 
+    <span class="tale">Inventory</span>
     <div class="tableMain">
         <div class="tableBody">
-            <div id="garden">Context/Garden</div>
-            <button class="actionButton" onclick="document.getElementById('popupForm').style.display = 'flex';">Edit</button>
             <div id="current"></div>
             <div class="tab">
-                <button class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span></button>
-                <button class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
-                <button class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
+                <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button><span style="            background-color: inherit;
+                float: left;
+                vertical-align: middle;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+                color: #FAF3E0;">=</span>
+                <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span></button><span style="            background-color: inherit;
+                float: left;
+                vertical-align: middle;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+                color: #FAF3E0;">+</span>
+                <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
             </div>
             <div id="inventoryContent" class="tableBody"></div>
         </div>
     </div>
     <div id="buttons">
-        <button>History</button>
+        <button style="display:none">History</button>
     </div>
 
     <script>
-        const inventoryData = {
-            "contexts": {
-                "Home": {
-                    "Relatedness": ["Rose", "Tulip", "Lily"],
-                    "Competence": ["Apple", "Banana", "Cherry"],
-                    "Autonomy": ["House Key", "Safe Key"]
-                },
-                "Work": {
-                    "Relatedness": [],
-                    "Competence": [],
-                    "Autonomy": ["Car Key"]
-                },
-                "Hobby": {
-                    "Relatedness": [],
-                    "Competence": [],
-                    "Autonomy": ["Football"]
-                }
+
+const database = {
+    1: "Create a portrait of my neighbour",
+    2: "I have the permission to paint my neighbour",
+    3: "I'm a hobby painter",
+};
+
+// Reconstruct inventoryData
+const inventoryData = {
+    "inventory": {
+        "Relatedness": [database[1]],
+        "Competence": [database[3]],
+        "Autonomy": [database[2]]
+    }
+};
+
+// Reconstruct situationData
+const situationData = {
+    "contexts": {
+        "Home": [database[10], database[11], database[12]],
+        "Work": [database[13], database[14]],
+        "Hobby": [database[15], database[16]]
+    }
+};
+
+
+
+var selectedAutonomyItem = null;
+
+let currentLocationIndex = null;
+const currentSelectedAutonomy = null;
+//var matchAutonomyFF = {
+//    "match" : {
+
+//    }
+//}
+
+//A = autonomy, RC = relatedness and competence
+const matches = 
+[
+    //{ id: 1, A: 'itemA1', RC: 'itemB1' },
+];
+//Find all matches for a specific sheetA item:
+//const matchedItems = matches.filter(row => row.sheetA === 'itemA1');
+//
+//const newMatch = { id: 4, sheetA: 'itemA4', sheetB: 'itemB4' };
+//matches.push(newMatch);
+//
+//const idToDelete = 2;
+//const updatedMatches = matches.filter(match => match.id !== idToDelete);
+
+var autonomyId = null;
+
+
+const sliders = {}; // Store sliders for each situation
+
+function addSliderInevitable(situation) {
+    const sliderContainer = document.createElement('div');
+    sliderContainer.classList.add('slider-container');  // Add class for styling
+    sliderContainer.id = `slider-${situation}`; // Unique ID for each slider
+
+    const leftText = document.createElement('span');
+    leftText.classList.add('slider-left-text');  // Add class for styling
+    leftText.textContent = 'Inevitable';
+
+    const slider = document.createElement('input');
+    slider.classList.add('slider');  // Add class for styling
+    slider.type = 'range';
+    slider.min = '1';
+    slider.max = '5';
+    slider.value = '3'; // Default value
+    slider.style.margin = '0 10px';
+
+    const rightText = document.createElement('span');
+    rightText.classList.add('slider-right-text');  // Add class for styling
+    rightText.textContent = 'By choice';
+
+    sliderContainer.appendChild(leftText);
+    sliderContainer.appendChild(slider);
+    sliderContainer.appendChild(rightText);
+
+    sliders[situation] = sliderContainer; // Store the slider container
+}
+
+function updateDropdowns(contextDropdown, situationDropdown, selectedContext) {
+    // Clear and update the situation dropdown
+    situationDropdown.innerHTML = "";
+    const defaultOption = document.createElement("option");
+    defaultOption.textContent = "Select a situation...";
+    defaultOption.value = "";
+    situationDropdown.appendChild(defaultOption);
+
+    if (selectedContext && situationData.contexts[selectedContext]) {
+        situationData.contexts[selectedContext].forEach((situation) => {
+            const option = document.createElement("option");
+            option.classList.add('situation-option');  // Add class for styling
+            option.textContent = situation;
+            option.value = situation;
+            situationDropdown.appendChild(option);
+
+            // Create a slider for each situation if not already created
+            if (!sliders[situation]) {
+                addSliderInevitable(situation);
             }
-        };
-    
-        let currentContext = null;
-    
-        function createDropdown() {
-            const container = document.getElementById("contexts");
-            const dropdown = document.createElement("select");
-            dropdown.id = "contextDropdown";
-    
+        });
+    }
+}
+
+function createDropdowns() {
+    const container = document.getElementById("contexts");
+
+    // Context dropdown
+    const contextDropdown = document.createElement("select");
+    contextDropdown.classList.add('context-dropdown');  // Add class for styling
+    contextDropdown.id = "contextDropdown";
+    const defaultContextOption = document.createElement("option");
+    defaultContextOption.textContent = "Select a context...";
+    defaultContextOption.value = "";
+    contextDropdown.appendChild(defaultContextOption);
+    Object.keys(situationData.contexts).forEach((context) => {
+        const option = document.createElement("option");
+        option.classList.add('context-option');  // Add class for styling
+        option.textContent = context;
+        option.value = context;
+        contextDropdown.appendChild(option);
+    });
+    container.appendChild(contextDropdown);
+
+    // Situation dropdown
+    const situationDropdown = document.createElement("select");
+    situationDropdown.classList.add('situation-dropdown');  // Add class for styling
+    situationDropdown.id = "situationDropdown";
+    const defaultSituationOption = document.createElement("option");
+    defaultSituationOption.textContent = "Select a situation...";
+    defaultSituationOption.value = "";
+    situationDropdown.appendChild(defaultSituationOption);
+    container.appendChild(situationDropdown);
+
+    // Slider container
+    const sliderContainer = document.createElement("div");
+    sliderContainer.classList.add('slider-container');  // Add class for styling
+    sliderContainer.id = "sliderContainer";
+    container.appendChild(sliderContainer);
+
+    // Add Context Button
+    const addContextButton = document.createElement("button");
+    addContextButton.classList.add('add-context-button');  // Add class for styling
+    addContextButton.textContent = "Add Context";
+    container.appendChild(addContextButton);
+
+    // Add Situation Button
+    const addSituationButton = document.createElement("button");
+    addSituationButton.classList.add('add-situation-button');  // Add class for styling
+    addSituationButton.textContent = "Add Situation";
+    container.appendChild(addSituationButton);
+
+    // Delete Context Button
+    const deleteContextButton = document.createElement("button");
+    deleteContextButton.classList.add('delete-context-button');  // Add class for styling
+    deleteContextButton.textContent = "Delete Context";
+    container.appendChild(deleteContextButton);
+
+    // Delete Situation Button
+    const deleteSituationButton = document.createElement("button");
+    deleteSituationButton.classList.add('delete-situation-button');  // Add class for styling
+    deleteSituationButton.textContent = "Delete Situation";
+    container.appendChild(deleteSituationButton);
+
+    // Context dropdown change listener
+    contextDropdown.addEventListener("change", (event) => {
+        const selectedContext = event.target.value;
+        updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+    });
+
+    // Situation dropdown change listener
+    situationDropdown.addEventListener("change", (event) => {
+        const selectedSituation = event.target.value;
+        const sliderContainerDiv = document.getElementById("sliderContainer");
+        sliderContainerDiv.innerHTML = ""; // Clear previous slider
+        if (sliders[selectedSituation]) {
+            sliderContainerDiv.appendChild(sliders[selectedSituation]);
+        }
+    });
+
+    // Add Context Button Listener
+    addContextButton.addEventListener("click", () => {
+        const newContextName = prompt("Enter a name for the new context:");
+        if (newContextName && !situationData.contexts[newContextName]) {
+            situationData.contexts[newContextName] = [];
+            const option = document.createElement("option");
+            option.classList.add('context-option');  // Add class for styling
+            option.textContent = newContextName;
+            option.value = newContextName;
+            contextDropdown.appendChild(option);
+            contextDropdown.value = newContextName;
+            updateDropdowns(contextDropdown, situationDropdown, newContextName);
+        } else if (situationData.contexts[newContextName]) {
+            alert("This context already exists.");
+        }
+    });
+
+    // Add Situation Button Listener
+    addSituationButton.addEventListener("click", () => {
+        const selectedContext = contextDropdown.value;
+        if (!selectedContext) {
+            alert("Please select a context first.");
+            return;
+        }
+        const newSituationName = prompt("Enter a name for the new situation:");
+        if (newSituationName && !situationData.contexts[selectedContext].includes(newSituationName)) {
+            situationData.contexts[selectedContext].push(newSituationName);
+            updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+        } else if (situationData.contexts[selectedContext].includes(newSituationName)) {
+            alert("This situation already exists in the selected context.");
+        }
+    });
+
+    // Delete Context Button Listener
+    deleteContextButton.addEventListener("click", () => {
+        const selectedContext = contextDropdown.value;
+        if (!selectedContext) {
+            alert("Please select a context to delete.");
+            return;
+        }
+        const confirmDelete = confirm(`Are you sure you want to delete the context "${selectedContext}"?`);
+        if (confirmDelete) {
+            delete situationData.contexts[selectedContext];
+            contextDropdown.innerHTML = "";
             const defaultOption = document.createElement("option");
             defaultOption.textContent = "Select a context...";
             defaultOption.value = "";
-            dropdown.appendChild(defaultOption);
-    
-            Object.keys(inventoryData.contexts).forEach((context) => {
+            contextDropdown.appendChild(defaultOption);
+            Object.keys(situationData.contexts).forEach((context) => {
                 const option = document.createElement("option");
+                option.classList.add('context-option');  // Add class for styling
                 option.textContent = context;
                 option.value = context;
-                dropdown.appendChild(option);
+                contextDropdown.appendChild(option);
             });
-    
-            dropdown.addEventListener("change", (event) => {
-                currentContext = event.target.value || null;
-    
-                if (currentContext) {
-                    console.log(`Selected context: ${currentContext}`);
-                    showCategory("Relatedness"); // Default category to show
-                } else {
-                    console.log("No context selected.");
-                    const contentDiv = document.getElementById('inventoryContent');
-                    contentDiv.innerHTML = ''; // Clear the table
-                }
-            });
-    
-            container.appendChild(dropdown);
+            updateDropdowns(contextDropdown, situationDropdown, "");
         }
+    });
+
+    // Delete Situation Button Listener
+    deleteSituationButton.addEventListener("click", () => {
+        const selectedContext = contextDropdown.value;
+        const selectedSituation = situationDropdown.value;
+        if (!selectedContext) {
+            alert("Please select a context first.");
+            return;
+        }
+        if (!selectedSituation) {
+            alert("Please select a situation to delete.");
+            return;
+        }
+        const confirmDelete = confirm(`Are you sure you want to delete the situation "${selectedSituation}" from the "${selectedContext}" context?`);
+        if (confirmDelete) {
+            const index = situationData.contexts[selectedContext].indexOf(selectedSituation);
+            if (index !== -1) {
+                situationData.contexts[selectedContext].splice(index, 1);
+                updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+            }
+        }
+    });
+}
+// Initialize the dropdowns and buttons
+createDropdowns();
+
+function createDropdown() {
+    // Get the container div
+    const container = document.getElementById("contexts");
+
+    // Create a dropdown element
+    const dropdown = document.createElement("select");
+    dropdown.id = "contextDropdown";
+
+    // Create a default option
+    const defaultOption = document.createElement("option");
+    defaultOption.textContent = "Select a context...";
+    defaultOption.value = "";
+    dropdown.appendChild(defaultOption);
+
+    // Populate the dropdown with options from contextData
+    contextData.Context.forEach((context, index) => {
+        const option = document.createElement("option");
+        option.textContent = context;
+        option.value = index; // Use index as value to track the selected context
+        dropdown.appendChild(option);
+    });
+
+    // Add an event listener to handle selection changes
+    dropdown.addEventListener("change", (event) => {
+        currentContextIndex = event.target.value !== "" ? parseInt(event.target.value) : null;
+
+        if (currentContextIndex !== null) {
+            console.log(`Selected context: ${contextData.Context[currentContextIndex]}`);
+        } else {
+            console.log("No context selected.");
+        }
+    });
+
+    // Append the dropdown to the container
+    container.appendChild(dropdown);
+}
+
+// Call the function to create the dropdown
+createDropdown();
+        
     
-        function showCategory(category) {
-            if (!currentContext) {
-                alert("Please select a context first.");
-                return;
+        function setCurrentLocation(category, index) {
+            // Remove the current location label from the previous location
+            if (currentLocationIndex !== null) {
+                const previousLabel = document.getElementById(`current-location-${currentLocationIndex}`);
+                if (previousLabel) {
+                    previousLabel.textContent = '';
+                }
             }
     
-            const contentDiv = document.getElementById('inventoryContent');
-            contentDiv.innerHTML = '';
+            // Set the new current location
+            currentLocationIndex = index;
+            const newLabel = document.getElementById(`current-location-${index}`);
+            if (newLabel) {
+                newLabel.textContent = 'Current Location';
+            }
     
-            const items = inventoryData.contexts[currentContext][category] || [];
-            items.forEach((item, index) => {
-                const row = document.createElement('div');
-                row.className = 'tableRow';
-    
-                const cell = document.createElement('div');
-                cell.className = 'tableCell';
-                cell.textContent = item;
-    
-                const editButton = document.createElement('button');
-                editButton.className = 'actionButton';
-                editButton.textContent = 'Edit';
-                editButton.onclick = () => openEditPopup(item, category, index);
-    
-                const deleteButton = document.createElement('button');
-                deleteButton.className = 'actionButton';
-                deleteButton.textContent = 'Delete';
-                deleteButton.onclick = () => deleteItem(category, index);
-    
-                row.appendChild(cell);
-                row.appendChild(editButton);
-                row.appendChild(deleteButton);
-    
-                contentDiv.appendChild(row);
-            });
-    
-            const addButton = document.createElement('button');
-            addButton.className = 'actionButton';
-            addButton.textContent = 'Add';
-            addButton.onclick = () => addItem(category);
-            contentDiv.appendChild(addButton);
+            alert(`Current location set to: ${inventoryData.inventory[category][index]}`);
         }
     
         function addItem(category) {
-            if (!currentContext) {
-                alert("Please select a context first.");
-                return;
-            }
-    
             const newItem = prompt("Enter the new item name:");
             if (newItem && newItem.trim()) {
-                inventoryData.contexts[currentContext][category].push(newItem.trim());
+                inventoryData.inventory[category].push(newItem.trim());
                 showCategory(category);
             }
         }
     
-        function deleteItem(category, index) {
-            if (!currentContext) {
-                alert("Please select a context first.");
-                return;
-            }
-    
-            const confirmDelete = confirm(`Are you sure you want to delete "${inventoryData.contexts[currentContext][category][index]}"?`);
-            if (confirmDelete) {
-                inventoryData.contexts[currentContext][category].splice(index, 1);
-                showCategory(category);
-            }
-        }
-    
-        createDropdown(); // Initialize the dropdown
+        showCategory('Autonomy');
     </script>
-    
+<script>
+function deleteItem(category, index) {
+    // Confirm the delete action with the user
+    const confirmDelete = confirm(`Are you sure you want to delete "${inventoryData.inventory[category][index]}"?`);
+    if (confirmDelete) {
+        // Remove the item from the inventory
+        inventoryData.inventory[category].splice(index, 1);
+        // Refresh the displayed category
+        showCategory(category);
+    }
+}
+
+</script>    
+
+<script>
+function openEditPopup(item, category, index) {
+    // Display the popup
+    const editPopup = document.getElementById('editPopup');
+    editPopup.style.display = 'flex';
+
+    // Set the current item's name in the input field
+    const editItemInput = document.getElementById('editItemInput');
+    editItemInput.value = item;
+
+    // Save the category and index for reference
+    editPopup.dataset.category = category;
+    editPopup.dataset.index = index;
+}
+
+function submitEdit() {
+    const editPopup = document.getElementById('editPopup');
+    const category = editPopup.dataset.category;
+    const index = parseInt(editPopup.dataset.index, 10);
+
+    const editItemInput = document.getElementById('editItemInput');
+    const newItemName = editItemInput.value.trim();
+
+    if (newItemName) {
+        // Update the inventory with the new name
+        inventoryData.inventory[category][index] = newItemName;
+
+        // Close the popup
+        closeEditPopup();
+
+        // Refresh the displayed category
+        showCategory(category);
+    } else {
+        alert("Item name cannot be empty.");
+    }
+}
+
+function closeEditPopup() {
+    const editPopup = document.getElementById('editPopup');
+    editPopup.style.display = 'none';
+}
+
+
+</script>
+<script>
+    function addSliderPersonal(row) {
+        const sliderContainer = document.createElement('div');
+        sliderContainer.style.display = 'flex';
+        sliderContainer.style.alignItems = 'center';
+        sliderContainer.style.gap = '10px';
+
+        const leftText = document.createElement('span');
+        leftText.textContent = 'Related to yourself';
+
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.min = '1';
+        slider.max = '5';
+        slider.value = '3'; // Default value
+        slider.style.margin = '0 10px';
+
+        const rightText = document.createElement('span');
+        rightText.textContent = 'Related to others';
+
+        sliderContainer.appendChild(leftText);
+        sliderContainer.appendChild(slider);
+        sliderContainer.appendChild(rightText);
+
+        row.appendChild(sliderContainer);
+    }
+
+    function showCategory(category) {
+    const contentDiv = document.getElementById('inventoryContent');
+    contentDiv.innerHTML = '';
+
+    // Clear active class from all headers
+    const tabButtons = document.querySelectorAll('.tab button');
+    tabButtons.forEach((button) => button.classList.remove('active-header'));
+
+    // Set active class for the clicked header
+    const activeButton = [...tabButtons].find((button) => button.textContent === category);
+    if (activeButton) {
+        activeButton.classList.add('active-header');
+    }
+
+    // Get items for the category
+    const items = inventoryData.inventory[category] || [];
+
+    // Store currently selected indices
+    let selectedAutonomyIndex = null;
+    let selectedRIndex = null;
+    let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+    items.forEach((item, index) => {
+        // Create constants for each row based on the database item
+        const itemConstant = database[Object.keys(database).find(key => database[key] === item)];
+
+        const row = document.createElement('div');
+        row.className = 'tableRow';
+        
+
+        const row2 = document.createElement('div');
+        row2.className = 'tableRow2';
+
+        const row4 = document.createElement('div');
+        row4.className = 'tableRow4';
+
+        const row5 = document.createElement('div');
+        row5.className = 'tableRow5';
+
+        // Cell with item name
+        const cell = document.createElement('div');
+        cell.className = 'tableCell';
+        cell.textContent = item;
+
+        // Edit and delete buttons
+        const editButton = document.createElement('button');
+        editButton.className = 'actionButton';
+        editButton.textContent = 'Edit';
+        editButton.onclick = () => openEditPopup(item, category, index);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'actionButton';
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = () => deleteItem(category, index);
+
+        // Append basic row elements
+        row.appendChild(cell);
+        row.appendChild(editButton);
+        row.appendChild(deleteButton);
+
+        // Get the item ID from the database based on the item name
+        var itemId = Object.keys(database).find(key => database[key] === item);
+        
+        var checked = 0;
+        document.getElementById("autonomyHead").style.color = "#4682B4";
+        document.getElementById("autonomyHead").style.backgroundColor ="#444444";
+        document.getElementById("relatednessHead").style.color = "#4682B4";
+        document.getElementById("relatednessHead").style.backgroundColor ="#444444";
+        document.getElementById("competenceHead").style.color = "#4682B4";
+        document.getElementById("competenceHead").style.backgroundColor ="#444444";        
+        if (category === 'Autonomy') {
+            document.getElementById("autonomyHead").style.color = "#004D40";
+            document.getElementById("autonomyHead").style.backgroundColor ="#FAF3E0";
+            const selectButton = document.createElement('button');
+            selectButton.className = 'actionButton';
+            selectButton.textContent = 'Select';
+            if (selectedAutonomyItem === database[itemId]) {
+                const tableRows = document.querySelectorAll('#inventoryContent .tableRow');
+                // Select the clicked item
+                selectedAutonomyItem = item;
+                row.style.backgroundColor = '#888888'; // Highlight selected
+                selectedAutonomyIndex = index;
+
+                const currentLocationDiv = document.getElementById('current');
+                if (currentLocationDiv) {
+                    currentLocationDiv.textContent = `Current selected item: ${selectedAutonomyItem}`; // Update display
+                } else {
+                    console.warn('Element with id "current" not found in the DOM.');
+                }
+                
+
+            }
+            selectButton.onclick = () => {
+                autonomyId = itemId;
+                const tableRows = document.querySelectorAll('#inventoryContent .tableRow');
+
+                if (selectedAutonomyIndex === index) {
+                    console.log(`Deselecting item at index ${index}`);
+                    autonomyId = null;
+                    // Deselect the currently selected item
+                    row.style.backgroundColor = ''; // Reset background color
+                    selectedAutonomyIndex = null; // Clear the selected index
+                    //selectedAutonomyItem = null; // Clear the selected item
+
+                    const currentLocationDiv = document.getElementById('current');
+                    if (currentLocationDiv) {
+                        currentLocationDiv.textContent = 'No item selected'; // Reset display
+                    } else {
+                        console.warn('Element with id "current" not found in the DOM.');
+                    }
+                } else {
+                    console.log(`Selecting item at index ${index}`);
+
+                    // Deselect the previously selected item if any
+                    if (selectedAutonomyIndex !== null && tableRows[selectedAutonomyIndex]) {
+                        const previousRow = tableRows[selectedAutonomyIndex];
+                        previousRow.style.backgroundColor = ''; // Reset previous background color
+
+                    }
+
+                    // Select the clicked item
+                    selectedAutonomyItem = item;
+                    row.style.backgroundColor = '#888888'; // Highlight selected
+                    selectedAutonomyIndex = index;
+                    const currentLocationDiv = document.getElementById('current');
+                    if (currentLocationDiv) {
+                        currentLocationDiv.textContent = `Current selected item: ${selectedAutonomyItem}`; // Update display
+                    } else {
+                        console.warn('Element with id "current" not found in the DOM.');
+                    }
+                }
+            };
+
+            row.appendChild(selectButton);
+        }
+
+        // Additional logic for 'Relatedness'
+        if (category === 'Relatedness') {
+            document.getElementById("relatednessHead").style.color = "#004D40";
+            document.getElementById("relatednessHead").style.backgroundColor ="#FAF3E0";
+            const selectRButton = document.createElement('button');
+            selectRButton.className = 'actionButton';
+            selectRButton.textContent = 'Select';
+            matches.forEach((match, index) => {
+                if (match.A === autonomyId && match.RC === itemId) {
+             
+                   row.style.backgroundColor = '#888888'; // Highlight selected
+                
+                }
+            });
+                
+
+            
+            
+                
+            var already = 0;
+            selectRButton.onclick = () => {
+                if (autonomyId === null) {alert("Please select an autonomy")}
+                else{
+                    matches.forEach((match, index) => {
+                    if (match.A === autonomyId && match.RC === itemId && already === 0) {
+                            // Reset the background color of the matched row (if needed)
+                            row.style.backgroundColor = ''; // Reset background color
+
+                            // Remove the match from the array
+                            matches.splice(index, 1);
+                            console.log(`Removed match for autonomyId: ${autonomyId} and itemId: ${itemId}`);
+                            already = 1; // Prevent multiple deletions
+                            }
+                    });
+
+
+
+
+                    // Find the matching item in the matches array
+                    const matchingIndex = matches.findIndex(match => match.A === autonomyId && match.RC === itemId);
+
+                    if (already === 0) {
+                        row.style.backgroundColor = '#888888';
+                        //match
+
+                            
+                        // Add new match
+                        let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+                        matches.push({ id: nextId, A: autonomyId, RC: itemId });
+                        //console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
+                    }
+
+                    already = 0;
+
+                    // Display the updated object
+                    console.log(matches)
+                };
+            };
+
+            row.appendChild(selectRButton);
+            // Add slider
+            addSliderPersonal(row2);
+            // Add goal checkbox
+            const goalCheckbox = document.createElement('input');
+            goalCheckbox.type = 'checkbox';
+            goalCheckbox.className = 'goalCheckbox';
+
+            const goalLabel = document.createElement('label');
+            goalLabel.textContent = 'Goal';
+            const goalContainer = document.createElement('div');
+            goalContainer.appendChild(goalCheckbox);
+            goalContainer.appendChild(goalLabel);
+            row4.appendChild(goalContainer);            
+        // Add feeling checkbox
+        const feelingCheckbox = document.createElement('input');
+        feelingCheckbox.type = 'checkbox';
+        feelingCheckbox.className = 'feelingCheckbox';
+
+        const feelingLabel = document.createElement('label');
+        feelingLabel.textContent = 'Feeling';
+        const feelingContainer = document.createElement('div');
+        feelingContainer.appendChild(feelingCheckbox);
+        feelingContainer.appendChild(feelingLabel);
+        row5.appendChild(feelingContainer);
+
+        }
+
+        // Additional logic for 'Competence'
+        if (category === 'Competence') {
+            document.getElementById("competenceHead").style.color = "#004D40";
+            document.getElementById("competenceHead").style.backgroundColor ="#FAF3E0";
+            const selectCButton = document.createElement('button');
+            selectCButton.className = 'actionButton';
+            selectCButton.textContent = 'Select';
+
+            matches.forEach((match, index) => {
+            if (match.A === autonomyId && match.RC === itemId) {
+             
+             row.style.backgroundColor = '#888888'; // Highlight selected
+             
+             }
+            });             
+
+                        
+                
+                var already = 0;
+                selectCButton.onclick = () => {
+                    if (autonomyId === null) {alert("Please select an autonomy")}
+                    else{
+                        matches.forEach((match, index) => {
+                        if (match.A === autonomyId && match.RC === itemId && already === 0) {
+                            // Reset the background color of the matched row (if needed)
+                            row.style.backgroundColor = ''; // Reset background color
+
+                            // Remove the match from the array
+                            matches.splice(index, 1);
+                            console.log(`Removed match for autonomyId: ${autonomyId} and itemId: ${itemId}`);
+                            already = 1; // Prevent multiple deletions
+                            }
+                        });
+
+
+
+
+                        // Find the matching item in the matches array
+                        const matchingIndex = matches.findIndex(match => match.A === autonomyId && match.RC === itemId);
+
+                        if (already === 0) {
+                            row.style.backgroundColor = '#888888';
+                            //match
+
+                            
+                            // Add new match
+                            let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+                            matches.push({ id: nextId, A: autonomyId, RC: itemId });
+                            //console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
+                        }
+
+                        already = 0;
+
+                        // Display the updated object
+                        console.log(matches)
+                    };
+                };
+
+            row.appendChild(selectCButton);
+
+        }        
+        
+
+
+ 
+
+
+        // Append rows
+        contentDiv.appendChild(row);
+        contentDiv.appendChild(row2);
+        contentDiv.appendChild(row4);
+        contentDiv.appendChild(row5);
+    });
+
+    // Add "Add" button
+    const addButton = document.createElement('button');
+    addButton.className = 'actionButton';
+    addButton.textContent = 'Add';
+    addButton.onclick = () => addItem(category);
+
+    contentDiv.appendChild(addButton);
+}
+
+
+let previouslySelectedRow = null; // Track the previously selected row
+
+</script>
+
+
 </body>
 </html>
