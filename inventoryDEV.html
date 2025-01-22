@@ -186,6 +186,16 @@ button {
             justify-content: space-between;
         }
 
+        .tableRowEdit {
+            display: flex;
+            justify-content: space-between;
+        }        
+
+        .tableRow1 {
+            display: flex;
+            justify-content: space-between;
+        }
+
         .tableRow2 {
             display: flex;
             justify-content: space-between;
@@ -197,14 +207,10 @@ button {
         .tableRow4 {
             display: flex;
             justify-content: space-between;
-        }
-
-        .tableRow5 {
-            display: flex;
-            justify-content: space-between;
             padding: 5px;
             border-bottom: 1px solid #FAF3E0;
         }
+
 
 
         .tableCell {
@@ -641,6 +647,7 @@ const database = {
     1: "Create a portrait of my neighbour",
     2: "I have the permission to paint my neighbour",
     3: "I'm a hobby painter",
+    4: "Painting",
 };
 
 // Reconstruct inventoryData
@@ -655,13 +662,20 @@ const inventoryData = {
 // Reconstruct situationData
 const situationData = {
     "contexts": {
-        "Home": [database[10], database[11], database[12]],
-        "Work": [database[13], database[14]],
-        "Hobby": [database[15], database[16]]
+        "Home": [],
+        "Work": [],
+        "Hobby": [database[4]]
     }
 };
 
-
+const ladderData = {
+    "ladder": {
+        "1": [database[1]],
+        "2": [database[1]],
+        "3": [database[1]],
+        "4": [database[1]]        
+    }
+};
 
 var selectedAutonomyItem = null;
 
@@ -1033,31 +1047,7 @@ function closeEditPopup() {
 
 </script>
 <script>
-    function addSliderPersonal(row) {
-        const sliderContainer = document.createElement('div');
-        sliderContainer.style.display = 'flex';
-        sliderContainer.style.alignItems = 'center';
-        sliderContainer.style.gap = '10px';
 
-        const leftText = document.createElement('span');
-        leftText.textContent = 'Related to yourself';
-
-        const slider = document.createElement('input');
-        slider.type = 'range';
-        slider.min = '1';
-        slider.max = '5';
-        slider.value = '3'; // Default value
-        slider.style.margin = '0 10px';
-
-        const rightText = document.createElement('span');
-        rightText.textContent = 'Related to others';
-
-        sliderContainer.appendChild(leftText);
-        sliderContainer.appendChild(slider);
-        sliderContainer.appendChild(rightText);
-
-        row.appendChild(sliderContainer);
-    }
 
     function showCategory(category) {
     const contentDiv = document.getElementById('inventoryContent');
@@ -1086,17 +1076,41 @@ function closeEditPopup() {
 
         const row = document.createElement('div');
         row.className = 'tableRow';
-        
 
+        const rowedit = document.createElement('div');
+        row.className = 'tableRowEdit';
+
+        const row1 = document.createElement('div');
+        row1.className = 'tableRow1';
+        const Checkbox1 = document.createElement('input');
+        Checkbox1.type = 'checkbox';
+        Checkbox1.className = 'Checkbox';
+        const Checkbox1Label = document.createElement('label');
+        
         const row2 = document.createElement('div');
         row2.className = 'tableRow2';
-
+        const Checkbox2 = document.createElement('input');
+        Checkbox2.type = 'checkbox';
+        Checkbox2.className = 'Checkbox';
+        const Checkbox2Label = document.createElement('label');
+        
+        const row3 = document.createElement('div');
+        row3.className = 'tableRow3';
+        const Checkbox3 = document.createElement('input');
+        Checkbox3.type = 'checkbox';
+        Checkbox3.className = 'Checkbox';
+        const Checkbox3Label = document.createElement('label');
+        
         const row4 = document.createElement('div');
         row4.className = 'tableRow4';
-
-        const row5 = document.createElement('div');
-        row5.className = 'tableRow5';
-
+        const Checkbox4 = document.createElement('input');
+        Checkbox4.type = 'checkbox';
+        Checkbox4.className = 'Checkbox';
+        const Checkbox4Label = document.createElement('label');
+        
+        
+        
+        
         // Cell with item name
         const cell = document.createElement('div');
         cell.className = 'tableCell';
@@ -1114,9 +1128,9 @@ function closeEditPopup() {
         deleteButton.onclick = () => deleteItem(category, index);
 
         // Append basic row elements
-        row.appendChild(cell);
-        row.appendChild(editButton);
-        row.appendChild(deleteButton);
+        rowedit.appendChild(cell);
+        rowedit.appendChild(editButton);
+        rowedit.appendChild(deleteButton);
 
         // Get the item ID from the database based on the item name
         var itemId = Object.keys(database).find(key => database[key] === item);
@@ -1190,8 +1204,17 @@ function closeEditPopup() {
                     }
                 }
             };
-
             row.appendChild(selectButton);
+            
+            
+
+            Checkbox1Label.textContent = 'Feeling';
+            Checkbox2Label.textContent = 'Feeling';
+            Checkbox3Label.textContent = 'Feeling';
+            Checkbox4Label.textContent = 'Feeling';
+
+         
+        
         }
 
         // Additional logic for 'Relatedness'
@@ -1254,31 +1277,18 @@ function closeEditPopup() {
             };
 
             row.appendChild(selectRButton);
-            // Add slider
-            addSliderPersonal(row2);
-            // Add goal checkbox
-            const goalCheckbox = document.createElement('input');
-            goalCheckbox.type = 'checkbox';
-            goalCheckbox.className = 'goalCheckbox';
 
-            const goalLabel = document.createElement('label');
-            goalLabel.textContent = 'Goal';
-            const goalContainer = document.createElement('div');
-            goalContainer.appendChild(goalCheckbox);
-            goalContainer.appendChild(goalLabel);
-            row4.appendChild(goalContainer);            
-        // Add feeling checkbox
-        const feelingCheckbox = document.createElement('input');
-        feelingCheckbox.type = 'checkbox';
-        feelingCheckbox.className = 'feelingCheckbox';
 
-        const feelingLabel = document.createElement('label');
-        feelingLabel.textContent = 'Feeling';
-        const feelingContainer = document.createElement('div');
-        feelingContainer.appendChild(feelingCheckbox);
-        feelingContainer.appendChild(feelingLabel);
-        row5.appendChild(feelingContainer);
 
+            // Set the label text for the checkbox
+
+            Checkbox1Label.textContent = 'Feeling';
+            Checkbox2Label.textContent = 'Feeling';
+            Checkbox3Label.textContent = 'Feeling';
+            Checkbox4Label.textContent = 'Feeling';
+
+        
+        
         }
 
         // Additional logic for 'Competence'
@@ -1341,8 +1351,113 @@ function closeEditPopup() {
 
             row.appendChild(selectCButton);
 
+            Checkbox1Label.textContent = 'Feeling';
+            Checkbox2Label.textContent = 'Feeling';
+            Checkbox3Label.textContent = 'Feeling';
+            Checkbox4Label.textContent = 'Feeling';
+
+
         }        
+
+            // Check if the item exists in ladderData.ladder["1"]
+            if (ladderData.ladder["1"].includes(item)) {
+                Checkbox1.checked = true;
+            } else {
+                Checkbox1.checked = false;
+            }
+            Checkbox1.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    // Add the item to ladderData.ladder["1"] if checked
+                    ladderData.ladder["1"].push(item.trim());
+                } else {
+                    // Remove the item from ladderData.ladder["1"] if unchecked
+                    const index = ladderData.ladder["1"].indexOf(item);
+                    if (index > -1) {
+                        ladderData.ladder["1"].splice(index, 1);
+                    }
+                }
+            });
+
+            // Check if the item exists in ladderData.ladder["2"]
+            if (ladderData.ladder["2"].includes(item)) {
+                Checkbox2.checked = true;
+            } else {
+                Checkbox2.checked = false;
+            }
+            Checkbox2.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    // Add the item to ladderData.ladder["2"] if checked
+                    ladderData.ladder["2"].push(item.trim());
+                } else {
+                    // Remove the item from ladderData.ladder["2"] if unchecked
+                    const index = ladderData.ladder["2"].indexOf(item);
+                    if (index > -2) {
+                        ladderData.ladder["2"].splice(index, 2);
+                    }
+                }
+            });
+
+            // Check if the item exists in ladderData.ladder["3"]
+            if (ladderData.ladder["3"].includes(item)) {
+                Checkbox3.checked = true;
+            } else {
+                Checkbox3.checked = false;
+            }
+            Checkbox3.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    // Add the item to ladderData.ladder["3"] if checked
+                    ladderData.ladder["3"].push(item.trim());
+                } else {
+                    // Remove the item from ladderData.ladder["3"] if unchecked
+                    const index = ladderData.ladder["3"].indexOf(item);
+                    if (index > -3) {
+                        ladderData.ladder["3"].splice(index, 3);
+                    }
+                }
+            });
+
+
+            // Check if the item exists in ladderData.ladder["4"]
+            if (ladderData.ladder["4"].includes(item)) {
+                Checkbox4.checked = true;
+            } else {
+                Checkbox4.checked = false;
+            }
+            Checkbox4.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    // Add the item to ladderData.ladder["4"] if checked
+                    ladderData.ladder["4"].push(item.trim());
+                } else {
+                    // Remove the item from ladderData.ladder["4"] if unchecked
+                    const index = ladderData.ladder["4"].indexOf(item);
+                    if (index > -4) {
+                        ladderData.ladder["4"].splice(index, 4);
+                    }
+                }
+            });        
         
+        const box1Container = document.createElement('div');
+        box1Container.appendChild(Checkbox1);
+        box1Container.appendChild(Checkbox1Label);
+        row1.appendChild(box1Container);
+
+        
+        const box2Container = document.createElement('div');
+        box2Container.appendChild(Checkbox2);
+        box2Container.appendChild(Checkbox2Label);
+        row2.appendChild(box2Container);
+
+        
+        const box3Container = document.createElement('div');
+        box3Container.appendChild(Checkbox3);
+        box3Container.appendChild(Checkbox3Label);
+        row3.appendChild(box3Container);
+
+        
+        const box4Container = document.createElement('div');
+        box4Container.appendChild(Checkbox4);
+        box4Container.appendChild(Checkbox4Label);
+        row4.appendChild(box4Container);
 
 
  
@@ -1350,9 +1465,11 @@ function closeEditPopup() {
 
         // Append rows
         contentDiv.appendChild(row);
+        contentDiv.appendChild(rowedit);        
+        contentDiv.appendChild(row1);
         contentDiv.appendChild(row2);
+        contentDiv.appendChild(row3);
         contentDiv.appendChild(row4);
-        contentDiv.appendChild(row5);
     });
 
     // Add "Add" button
