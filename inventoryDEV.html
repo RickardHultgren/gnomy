@@ -672,12 +672,12 @@ body {
 
 const database = {
     1: "Create a portrait of my neighbour",
-    2: "I have the permission to paint my neighbour",
+    2: "I have the permission to paint an image of my neighbour",
     3: "I'm a hobby painter",
     4: "Painting",
 };
 
-
+let nextKey = Object.keys(database).length + 1;
 
 const inventoryData = {
     "inventory": {
@@ -1045,11 +1045,48 @@ createDropdown();
         function addItem(category) {
             const newItem = prompt("Enter the new item name:");
             if (newItem && newItem.trim()) {
-                inventoryData.inventory[category].push(newItem.trim());
-                showCategory(category);
+                const trimmedItem = newItem.trim();
+
+                // Add to the database
+                database[nextKey] = trimmedItem;
+
+                // Add to the inventoryData category
+                inventoryData.inventory[category].push(trimmedItem);
+
+                // Sort the category
+                inventoryData.inventory[category].sort((a, b) => a.localeCompare(b));
+
+                // Increment the key for the next addition
+                
+                if (category === 'Autonomy') {
+//NOW add autonomySubCategory
+//const autonomySubCategory = {
+   // "subCategory": {
+      //  "My": [database[2]],
+    //    "Borrowed": [],
+  //      "Lent": []
+  
+//    }
+//};
+
+                    const trimmedItem = newItem.trim();
+                    const new2Item = prompt("My, Borrowed or Lent:");
+                    // Add to the inventoryData category
+                    autonomySubCategory.subCategory[new2Item].push(trimmedItem);
+
+                    // Sort the category
+                    autonomySubCategory.subCategory[new2Item].sort((a, b) => a.localeCompare(b));
+
+                    // Increment the key for the next addition
+
+                    }
+                nextKey++;
+
+                showCategory(category); // Refresh or display the updated category
+                
             }
         }
-    
+
         showCategory('Autonomy');
     </script>
 <script>
@@ -1139,7 +1176,7 @@ function showCategory(category) {
         row.className = 'tableRow';
         row.textContent = item; // Render the sorted item
         
-        contentDiv.appendChild(row);
+       //contentDiv.appendChild(row);
     });
 
     // Store currently selected indices
