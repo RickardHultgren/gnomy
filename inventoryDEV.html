@@ -196,6 +196,11 @@ button {
             justify-content: space-between;
         }
 
+        .autonomyRow {
+            display: flex;
+            justify-content: space-between;
+        }        
+
         .tableRow2 {
             display: flex;
             justify-content: space-between;
@@ -588,8 +593,9 @@ body {
 </head>
 <body>
 
-    <div><button>Submit an Inquiry of Autonomy</button>
-    <button>Submit a Quote of Relatedness and Competence</button></div>
+    <div><!--button>Submit an Inquiry of Autonomy</button>
+    <button>Submit a Quote of Relatedness and Competence</button>
+    <button>Give Your Autonomy as a Gift</button></div-->
     <div id="contexts"></div>
 
 
@@ -637,6 +643,24 @@ body {
                 color: #FAF3E0;">+</span>
                 <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
             </div>
+            Track Your Autonomy:
+
+            Click the “Autonomy” tab to add autonomy in one of three categories:
+            Your Autonomy: Actions you can take directly.
+            Borrowed Autonomy: Authority or freedom granted to you by someone else.
+            Lended Autonomy: Authority or freedom you’ve shared with someone else.
+            Click “Add Autonomy” and describe the new autonomy you’ve found, borrowed, or lended.
+            Connect Competence and Relatedness:
+            
+            After adding autonomy, switch to the “Competence” or “Relatedness” tab to link relevant competencies and relationships to the selected autonomy.
+            For example, if you’ve borrowed autonomy to lead a project, you might link the teamwork skills and shared goals involved.
+            Plan Your Next Steps:
+            
+            Once autonomy is connected to competencies and relatedness, click “Add to To-Do List.” This will create a task for you to accomplish and let you write a custom thank-you message that will appear once the task is completed.
+            Complete Tasks and Reflect:
+            
+            When you’ve finished a task, go to the To-Do List tab, check off the completed task, and view your personalized thank-you message. This small moment of celebration reinforces the value of progress and reflection.            
+
             <div id="inventoryContent" class="tableBody"></div>
         </div>
     </div>
@@ -653,14 +677,16 @@ const database = {
     4: "Painting",
 };
 
-// Reconstruct inventoryData
+
+
 const inventoryData = {
     "inventory": {
-        "Relatedness": [database[1]],
-        "Competence": [database[3]],
-        "Autonomy": [database[2]]
+        "Relatedness": [database[1]].sort((a, b) => a.localeCompare(b)),
+        "Competence": [database[3]].sort((a, b) => a.localeCompare(b)),
+        "Autonomy": [database[2]].sort((a, b) => a.localeCompare(b)),
     }
 };
+
 
 // Reconstruct situationData
 const situationData = {
@@ -679,6 +705,41 @@ const ladderData = {
         "4": [database[1]]        
     }
 };
+
+
+
+const autonomySubCategory = {
+    "subCategory": {
+        "My": [database[2]],
+        "Borrowed": [],
+        "Lent": []
+    }
+};
+
+
+
+inventoryData.inventory["Autonomy"] = [
+    ...autonomySubCategory.subCategory["My"],
+    ...autonomySubCategory.subCategory["Borrowed"],
+    ...autonomySubCategory.subCategory["Lent"]
+].sort((a, b) => a.localeCompare(b));
+
+
+function sortSubCategory() {
+    // Sort the subcategories under 'My', 'Borrowed', and 'Lent' alphabetically
+    Object.keys(autonomySubCategory.subCategory).forEach((key) => {
+        autonomySubCategory.subCategory[key].sort((a, b) => a.localeCompare(b));
+    });
+
+    console.log('Sorted autonomySubCategory:', autonomySubCategory);
+}
+
+// Call the function to sort the subcategories
+sortSubCategory();
+
+
+
+
 
 var selectedAutonomyItem = null;
 
@@ -1052,22 +1113,34 @@ function closeEditPopup() {
 <script>
 
 
-    function showCategory(category) {
+function showCategory(category) {
     const contentDiv = document.getElementById('inventoryContent');
+    
+    
     contentDiv.innerHTML = '';
 
     // Clear active class from all headers
     const tabButtons = document.querySelectorAll('.tab button');
+
     tabButtons.forEach((button) => button.classList.remove('active-header'));
 
     // Set active class for the clicked header
     const activeButton = [...tabButtons].find((button) => button.textContent === category);
+
     if (activeButton) {
         activeButton.classList.add('active-header');
     }
 
     // Get items for the category
     const items = inventoryData.inventory[category] || [];
+
+    items.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = 'tableRow';
+        row.textContent = item; // Render the sorted item
+        
+        contentDiv.appendChild(row);
+    });
 
     // Store currently selected indices
     let selectedAutonomyIndex = null;
@@ -1083,13 +1156,17 @@ function closeEditPopup() {
         const rowedit = document.createElement('div');
         row.className = 'tableRowEdit';
 
+        const rowAutonomy = document.createElement('div');
+        const autocell = document.createElement('div');
+        rowAutonomy.className = 'autonomyRow';
+
         const row1 = document.createElement('div');
         row1.className = 'tableRow1';
         const Checkbox1 = document.createElement('input');
         Checkbox1.type = 'checkbox';
         Checkbox1.className = 'Checkbox';
         const Checkbox1Label = document.createElement('label');
-        
+
         const row2 = document.createElement('div');
         row2.className = 'tableRow2';
         const Checkbox2 = document.createElement('input');
@@ -1208,8 +1285,17 @@ function closeEditPopup() {
                 }
             };
             row.appendChild(selectButton);
-            
-            
+            autocell.textContent = ''
+            if (autonomySubCategory.subCategory["My"].includes(item)) {
+                autocell.textContent = 'Category My: ';
+            }
+            if (autonomySubCategory.subCategory["Borrowed"].includes(item)) {
+                autocell.textContent = 'Category Borrowed: ';
+            }
+            if (autonomySubCategory.subCategory["Lent"].includes(item)) {
+                autocell.textContent = 'Category Lent: ';
+            }
+            rowAutonomy.appendChild(autocell);
 
             Checkbox1Label.textContent = 'Feeling';
             Checkbox1Label.textContent = 'Inclusion: Can you be yourself here?';
@@ -1363,8 +1449,10 @@ function closeEditPopup() {
 
         }        
 
-            // Check if the item exists in ladderData.ladder["1"]
-            if (ladderData.ladder["1"].includes(item)) {
+
+ 
+        // Check if the item exists in ladderData.ladder["1"]
+        if (ladderData.ladder["1"].includes(item)) {
                 Checkbox1.checked = true;
             } else {
                 Checkbox1.checked = false;
@@ -1469,6 +1557,9 @@ function closeEditPopup() {
 
         // Append rows
         contentDiv.appendChild(row);
+        if (category === 'Autonomy') {
+            contentDiv.appendChild(rowAutonomy);
+        }
         contentDiv.appendChild(rowedit);        
         contentDiv.appendChild(row1);
         contentDiv.appendChild(row2);
