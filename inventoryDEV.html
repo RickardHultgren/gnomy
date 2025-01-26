@@ -239,7 +239,7 @@ button {
             background-color: #ffcc33;
         }
 
-        #popupForm, #addItemPopup, #editPopup {
+        #popupForm, #addItemPopup, #editPopup, #ToDoListPopup, #addToDoPopup {
             display: none;
             position: fixed;
             top: 0;
@@ -608,6 +608,7 @@ body {
             <button onclick="closeAddItemPopup()">Cancel</button>
         </div>
     </div>
+
     <div id="editPopup">
         <div id="editPopupContent">
             <h2>Edit Item</h2>
@@ -616,6 +617,36 @@ body {
             <button onclick="submitEdit()">Save</button>
             <button onclick="closeEditPopup()">Cancel</button>
         </div>
+    </div>
+
+    <div id="addToDoPopup">
+        <div id="addToDoPopupContent">
+            <h2>Add to the To-Do-List</h2>
+            <div id="theSelected"></div>
+            <label for="editItemInput">Thank-You-message after execution:</label><br>
+            <input type="text" id="editItemInput" placeholder="Enter new name"><br>
+            <button onclick="submitAddToDo()">Save</button>
+            <button onclick="closeAddToDo()">Cancel</button>
+        </div>
+    </div>
+
+    <div id="ToDoListPopup">
+        <div id="ToDoListPopup">
+            <h2>To-Do-List</h2>
+            <label for="editItemInput">Item Name:</label><br>
+            <input type="text" id="editItemInput" placeholder="Enter new name"><br>
+            <button onclick="submitToDoList()">Save</button>
+            <button onclick="closeToDoList()">Cancel</button>
+        </div>
+    </div>
+
+    <div id="ToDo">
+        <button id="ToDoList">
+            Show To-Do-List
+        </button>
+        <button id="addToDo">
+            Add to the To-Do-List
+        </button>
     </div>
 
     <span class="tale">Inventory</span>
@@ -752,18 +783,23 @@ const currentSelectedAutonomy = null;
 //}
 
 //A = autonomy, RC = relatedness and competence
-const matches = 
+const matchesSelected = 
 [
     //{ id: 1, A: 'itemA1', RC: 'itemB1' },
 ];
-//Find all matches for a specific sheetA item:
-//const matchedItems = matches.filter(row => row.sheetA === 'itemA1');
+
+const matchesToDo = 
+[
+    //{ id: 1, A: 'itemA1', thanks: 'Lorwm ipsun' },
+];
+//Find all matchesSelected for a specific sheetA item:
+//const matchedItems = matchesSelected.filter(row => row.sheetA === 'itemA1');
 //
 //const newMatch = { id: 4, sheetA: 'itemA4', sheetB: 'itemB4' };
-//matches.push(newMatch);
+//matchesSelected.push(newMatch);
 //
 //const idToDelete = 2;
-//const updatedMatches = matches.filter(match => match.id !== idToDelete);
+//const updatedmatchesSelected = matchesSelected.filter(match => match.id !== idToDelete);
 
 var autonomyId = null;
 
@@ -1059,15 +1095,6 @@ createDropdown();
                 // Increment the key for the next addition
                 
                 if (category === 'Autonomy') {
-//NOW add autonomySubCategory
-//const autonomySubCategory = {
-   // "subCategory": {
-      //  "My": [database[2]],
-    //    "Borrowed": [],
-  //      "Lent": []
-  
-//    }
-//};
 
                     const trimmedItem = newItem.trim();
                     const new2Item = prompt("My, Borrowed or Lent:");
@@ -1182,7 +1209,7 @@ function showCategory(category) {
     // Store currently selected indices
     let selectedAutonomyIndex = null;
     let selectedRIndex = null;
-    let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+    let nextId = matchesSelected.reduce((max, match) => Math.max(max, match.id), 0) + 1;
     items.forEach((item, index) => {
         // Create constants for each row based on the database item
         const itemConstant = database[Object.keys(database).find(key => database[key] === item)];
@@ -1351,7 +1378,7 @@ function showCategory(category) {
             const selectRButton = document.createElement('button');
             selectRButton.className = 'actionButton';
             selectRButton.textContent = 'Select';
-            matches.forEach((match, index) => {
+            matchesSelected.forEach((match, index) => {
                 if (match.A === autonomyId && match.RC === itemId) {
              
                    row.style.backgroundColor = '#888888'; // Highlight selected
@@ -1367,13 +1394,13 @@ function showCategory(category) {
             selectRButton.onclick = () => {
                 if (autonomyId === null) {alert("Please select an autonomy")}
                 else{
-                    matches.forEach((match, index) => {
+                    matchesSelected.forEach((match, index) => {
                     if (match.A === autonomyId && match.RC === itemId && already === 0) {
                             // Reset the background color of the matched row (if needed)
                             row.style.backgroundColor = ''; // Reset background color
 
                             // Remove the match from the array
-                            matches.splice(index, 1);
+                            matchesSelected.splice(index, 1);
                             console.log(`Removed match for autonomyId: ${autonomyId} and itemId: ${itemId}`);
                             already = 1; // Prevent multiple deletions
                             }
@@ -1382,8 +1409,8 @@ function showCategory(category) {
 
 
 
-                    // Find the matching item in the matches array
-                    const matchingIndex = matches.findIndex(match => match.A === autonomyId && match.RC === itemId);
+                    // Find the matching item in the matchesSelected array
+                    const matchingIndex = matchesSelected.findIndex(match => match.A === autonomyId && match.RC === itemId);
 
                     if (already === 0) {
                         row.style.backgroundColor = '#888888';
@@ -1391,15 +1418,15 @@ function showCategory(category) {
 
                             
                         // Add new match
-                        let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
-                        matches.push({ id: nextId, A: autonomyId, RC: itemId });
+                        let nextId = matchesSelected.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+                        matchesSelected.push({ id: nextId, A: autonomyId, RC: itemId });
                         //console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
                     }
 
                     already = 0;
 
                     // Display the updated object
-                    console.log(matches)
+                    console.log(matchesSelected)
                 };
             };
 
@@ -1426,7 +1453,7 @@ function showCategory(category) {
             selectCButton.className = 'actionButton';
             selectCButton.textContent = 'Select';
 
-            matches.forEach((match, index) => {
+            matchesSelected.forEach((match, index) => {
             if (match.A === autonomyId && match.RC === itemId) {
              
              row.style.backgroundColor = '#888888'; // Highlight selected
@@ -1440,13 +1467,13 @@ function showCategory(category) {
                 selectCButton.onclick = () => {
                     if (autonomyId === null) {alert("Please select an autonomy")}
                     else{
-                        matches.forEach((match, index) => {
+                        matchesSelected.forEach((match, index) => {
                         if (match.A === autonomyId && match.RC === itemId && already === 0) {
                             // Reset the background color of the matched row (if needed)
                             row.style.backgroundColor = ''; // Reset background color
 
                             // Remove the match from the array
-                            matches.splice(index, 1);
+                            matchesSelected.splice(index, 1);
                             console.log(`Removed match for autonomyId: ${autonomyId} and itemId: ${itemId}`);
                             already = 1; // Prevent multiple deletions
                             }
@@ -1455,8 +1482,8 @@ function showCategory(category) {
 
 
 
-                        // Find the matching item in the matches array
-                        const matchingIndex = matches.findIndex(match => match.A === autonomyId && match.RC === itemId);
+                        // Find the matching item in the matchesSelected array
+                        const matchingIndex = matchesSelected.findIndex(match => match.A === autonomyId && match.RC === itemId);
 
                         if (already === 0) {
                             row.style.backgroundColor = '#888888';
@@ -1464,15 +1491,15 @@ function showCategory(category) {
 
                             
                             // Add new match
-                            let nextId = matches.reduce((max, match) => Math.max(max, match.id), 0) + 1;
-                            matches.push({ id: nextId, A: autonomyId, RC: itemId });
+                            let nextId = matchesSelected.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+                            matchesSelected.push({ id: nextId, A: autonomyId, RC: itemId });
                             //console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
                         }
 
                         already = 0;
 
                         // Display the updated object
-                        console.log(matches)
+                        console.log(matchesSelected)
                     };
                 };
 
@@ -1594,28 +1621,53 @@ function showCategory(category) {
 
         // Append rows
         contentDiv.appendChild(row);
-        if (category === 'Autonomy') {
-            contentDiv.appendChild(rowAutonomy);
-        }
+        contentDiv.appendChild(rowAutonomy);
         contentDiv.appendChild(rowedit);        
         contentDiv.appendChild(row1);
         contentDiv.appendChild(row2);
         contentDiv.appendChild(row3);
         contentDiv.appendChild(row4);
-    });
 
+    });
     // Add "Add" button
     const addButton = document.createElement('button');
+    addButton.onclick = () => addItem(category);    
     addButton.className = 'actionButton';
     addButton.textContent = 'Add';
-    addButton.onclick = () => addItem(category);
+    
 
     contentDiv.appendChild(addButton);
+
+    
 }
 
 
 let previouslySelectedRow = null; // Track the previously selected row
 
+</script>
+<script>
+
+function addToDo(itemId){
+    // Store currently selected indices
+    //let ToDoAutonomyIndex = null;
+    let nextId = matchesToDo.reduce((max, matchToDo) => Math.max(max, matchToDo.id), 0) + 1;    
+    const thanks = prompt("What thank you message would you like to receive when achieving the goal?:");
+    matchesSelected.push({ id: nextId, A: itemId, thanks: thanks });
+    //Is index 
+    // needed?
+}
+
+function ToDoList(itemID){
+//pair autonomy
+
+    matchesSelected.forEach((match, index) => {
+                if (match.A === autonomyId && match.RC === itemId) {
+             
+                   row.style.backgroundColor = '#888888'; // Highlight selected
+                
+                }
+            });
+}
 </script>
 
 
