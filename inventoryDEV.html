@@ -1698,6 +1698,15 @@ function ToDoList(){
                 
         }
     });
+        //Modify
+        const addButton = document.createElement('button');
+    addButton.onclick = () => addItem(category);    
+    addButton.className = 'actionButton';
+    addButton.textContent = 'Add';
+    
+
+    contentDiv.appendChild(addButton);
+
 }
 </script>
 
