@@ -625,13 +625,13 @@ body {
             <div id="theSelected"></div>
             <label for="editItemInput">Thank-You-message after execution:</label><br>
             <input type="text" id="editItemInput" placeholder="Enter new name"><br>
-            <button onclick="submitAddToDo()">Save</button>
-            <button onclick="closeAddToDo()">Cancel</button>
+            <button onclick="addToDo();">Save</button>
+            <button onclick="ToDoList();">Cancel</button>
         </div>
     </div>
 
     <div id="ToDoListPopup">
-        <div id="ToDoListPopup">
+        <div id="ToDoListPopupContent">
             <h2>To-Do-List</h2>
             <label for="editItemInput">Item Name:</label><br>
             <input type="text" id="editItemInput" placeholder="Enter new name"><br>
@@ -641,10 +641,11 @@ body {
     </div>
 
     <div id="ToDo">
-        <button id="ToDoList">
+        <button id="ToDoList" onclick="openToDoList();">
             Show To-Do-List
+            
         </button>
-        <button id="addToDo">
+        <button id="addToDo" onclick="openAddToDo();">
             Add to the To-Do-List
         </button>
     </div>
@@ -700,7 +701,7 @@ body {
     </div>
 
     <script>
-
+theItemId = null;
 const database = {
     1: "Create a portrait of my neighbour",
     2: "I have the permission to paint an image of my neighbour",
@@ -1145,6 +1146,30 @@ function openEditPopup(item, category, index) {
     editPopup.dataset.index = index;
 }
 
+function openAddToDo() {
+    // Display the popup
+    const addToDoPopup = document.getElementById('addToDoPopup');
+    addToDoPopup.style.display = 'block';
+
+}
+
+function openToDoList() {
+    // Display the popup
+    const ToDoListPopup = document.getElementById('ToDoListPopup');
+    ToDoListPopup.style.display = 'block';
+//Modify
+    // Add "Add" button
+    const addButton = document.createElement('button');
+    addButton.onclick = () => addItem(category);    
+    addButton.className = 'actionButton';
+    addButton.textContent = 'Add';
+    
+
+    contentDiv.appendChild(addButton);
+
+
+}
+
 function submitEdit() {
     const editPopup = document.getElementById('editPopup');
     const category = editPopup.dataset.category;
@@ -1211,6 +1236,7 @@ function showCategory(category) {
     let selectedRIndex = null;
     let nextId = matchesSelected.reduce((max, match) => Math.max(max, match.id), 0) + 1;
     items.forEach((item, index) => {
+    
         // Create constants for each row based on the database item
         const itemConstant = database[Object.keys(database).find(key => database[key] === item)];
 
@@ -1278,7 +1304,7 @@ function showCategory(category) {
 
         // Get the item ID from the database based on the item name
         var itemId = Object.keys(database).find(key => database[key] === item);
-        
+        theItemId = Object.keys(database).find(key => database[key] === item);
         var checked = 0;
         document.getElementById("autonomyHead").style.color = "#4682B4";
         document.getElementById("autonomyHead").style.backgroundColor ="#444444";
@@ -1591,7 +1617,7 @@ function showCategory(category) {
                     }
                 }
             });        
-        
+
         const box1Container = document.createElement('div');
         box1Container.appendChild(Checkbox1);
         box1Container.appendChild(Checkbox1Label);
@@ -1647,26 +1673,30 @@ let previouslySelectedRow = null; // Track the previously selected row
 </script>
 <script>
 
-function addToDo(itemId){
+function addToDo(){
+alert("test");
     // Store currently selected indices
     //let ToDoAutonomyIndex = null;
+    const addToDoPopup = document.getElementById('addToDoPopup');
+    addToDoPopup.style.display = 'block';
     let nextId = matchesToDo.reduce((max, matchToDo) => Math.max(max, matchToDo.id), 0) + 1;    
     const thanks = prompt("What thank you message would you like to receive when achieving the goal?:");
-    matchesSelected.push({ id: nextId, A: itemId, thanks: thanks });
+    matchesSelected.push({ id: nextId, A: theItemId, thanks: thanks });
     //Is index 
     // needed?
 }
 
-function ToDoList(itemID){
+function ToDoList(){
 //pair autonomy
-
+    const ToDoListPopup = document.getElementById('addToDoPopup');
+    ToDoListPopup.style.display = 'block';
     matchesSelected.forEach((match, index) => {
-                if (match.A === autonomyId && match.RC === itemId) {
+    if (match.A === autonomyId && match.RC === theItemId) {
              
-                   row.style.backgroundColor = '#888888'; // Highlight selected
+        row.style.backgroundColor = '#888888'; // Highlight selected
                 
-                }
-            });
+        }
+    });
 }
 </script>
 
