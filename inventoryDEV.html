@@ -1157,17 +1157,7 @@ function openToDoList() {
     // Display the popup
     const ToDoListPopup = document.getElementById('ToDoListPopup');
     ToDoListPopup.style.display = 'block';
-//Modify
-    // Add "Add" button
-    const addButton = document.createElement('button');
-    addButton.onclick = () => addItem(category);    
-    addButton.className = 'actionButton';
-    addButton.textContent = 'Add';
     
-
-    contentDiv.appendChild(addButton);
-
-
 }
 
 function submitEdit() {
@@ -1684,6 +1674,17 @@ alert("test");
     matchesSelected.push({ id: nextId, A: theItemId, thanks: thanks });
     //Is index 
     // needed?
+    // Add "Add" button
+    //Modify
+    const addButton = document.createElement('button');
+    addButton.onclick = () => addItem(category);    
+    addButton.className = 'actionButton';
+    addButton.textContent = 'Add';
+    
+
+    contentDiv.appendChild(addButton);
+
+
 }
 
 function ToDoList(){
