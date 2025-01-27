@@ -239,7 +239,7 @@ button {
             background-color: #ffcc33;
         }
 
-        #popupForm, #addItemPopup, #editPopup, #ToDoListPopup, #addToDoPopup {
+        #popupForm, #addItemPopup, #editPopup, #ToDoListPopup, #addToDoPopup, #showThanks  {
             display: none;
             position: fixed;
             top: 0;
@@ -252,7 +252,7 @@ button {
             align-items: center;
         }
 
-        #popupContent, #addItemContent, #editPopupContent {
+        #popupContent, #addItemContent, #editPopupContent, #showThanksContent {
             background-color: #444;
             padding: 20px;
             border-radius: 10px;
@@ -620,34 +620,41 @@ body {
     </div>
 
     <div id="addToDoPopup">
-        <div id="addToDoPopupContent">
+        <!--div id="addToDoPopupContent">
             <h2>Add to the To-Do-List</h2>
             <div id="theSelected"></div>
             <label for="editItemInput">Thank-You-message after execution:</label><br>
             <input type="text" id="editItemInput" placeholder="Enter new name"><br>
-            <button onclick="addToDo();">Save</button>
-            <button onclick="ToDoList();">Cancel</button>
-        </div>
+            <button onclick="submitAddToDo();">Save</button>
+            <button onclick="document.getElementById( 'addToDoPopup' ).style.display = 'none';">Cancel</button>
+        </div-->
     </div>
 
     <div id="ToDoListPopup">
-        <div id="ToDoListPopupContent">
+        <!--div id="ToDoListPopupContent">
             <h2>To-Do-List</h2>
-            <label for="editItemInput">Item Name:</label><br>
-            <input type="text" id="editItemInput" placeholder="Enter new name"><br>
-            <button onclick="submitToDoList()">Save</button>
-            <button onclick="closeToDoList()">Cancel</button>
-        </div>
+            <button onclick="submitToDoList()">Done</button>
+            <button onclick="document.getElementById( 'ToDoListPopup' ).style.display = 'none';">Cancel</button>
+            htmltest
+        </div-->
     </div>
 
     <div id="ToDo">
-        <button id="ToDoList" onclick="openToDoList();">
-            Show To-Do-List
+            <button id="ToDoList" onclick="openToDoList();">
+                Show To-Do-List
             
-        </button>
-        <button id="addToDo" onclick="openAddToDo();">
+            </button>
+            <button id="addToDo" onclick="openAddToDo();">
             Add to the To-Do-List
-        </button>
+        </div>
+    </div>
+
+    <div id="showThanks">
+        <div id="showThanksContent">
+            <h2>Edit Item</h2>
+            <label for="editItemInput">Message from Yourself:</label><br>
+            <button onclick="document.getElementById( 'showThanks' ).style.display = 'none';">Cancel</button>
+        </div>
     </div>
 
     <span class="tale">Inventory</span>
@@ -675,24 +682,7 @@ body {
                 color: #FAF3E0;">+</span>
                 <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
             </div>
-            Track Your Autonomy:
-
-            Click the “Autonomy” tab to add autonomy in one of three categories:
-            Your Autonomy: Actions you can take directly.
-            Borrowed Autonomy: Authority or freedom granted to you by someone else.
-            Lended Autonomy: Authority or freedom you’ve shared with someone else.
-            Click “Add Autonomy” and describe the new autonomy you’ve found, borrowed, or lended.
-            Connect Competence and Relatedness:
             
-            After adding autonomy, switch to the “Competence” or “Relatedness” tab to link relevant competencies and relationships to the selected autonomy.
-            For example, if you’ve borrowed autonomy to lead a project, you might link the teamwork skills and shared goals involved.
-            Plan Your Next Steps:
-            
-            Once autonomy is connected to competencies and relatedness, click “Add to To-Do List.” This will create a task for you to accomplish and let you write a custom thank-you message that will appear once the task is completed.
-            Complete Tasks and Reflect:
-            
-            When you’ve finished a task, go to the To-Do List tab, check off the completed task, and view your personalized thank-you message. This small moment of celebration reinforces the value of progress and reflection.            
-
             <div id="inventoryContent" class="tableBody"></div>
         </div>
     </div>
@@ -701,7 +691,8 @@ body {
     </div>
 
     <script>
-theItemId = null;
+var theItemId = null ;
+
 const database = {
     1: "Create a portrait of my neighbour",
     2: "I have the permission to paint an image of my neighbour",
@@ -791,7 +782,7 @@ const matchesSelected =
 
 const matchesToDo = 
 [
-    //{ id: 1, A: 'itemA1', thanks: 'Lorwm ipsun' },
+    { id: 1, A: 'itemA1', thanks: 'Lorem ipsum' },
 ];
 //Find all matchesSelected for a specific sheetA item:
 //const matchedItems = matchesSelected.filter(row => row.sheetA === 'itemA1');
@@ -1149,16 +1140,142 @@ function openEditPopup(item, category, index) {
 function openAddToDo() {
     // Display the popup
     const addToDoPopup = document.getElementById('addToDoPopup');
-    addToDoPopup.style.display = 'block';
+    //addToDoPopup.style.display = 'block';
+
+    // Store currently selected indices
+    //let ToDoAutonomyIndex = null;
+
+    const addItemContent = document.getElementById('v');
+    let nextId = matchesToDo.reduce((max, matchToDo) => Math.max(max, matchToDo.id), 0) + 1;    
+    const thanks = prompt("What thank you message would you like to receive when achieving the goal?:");
+    matchesToDo.push({ id: nextId, A: selectedAutonomyItem, thanks: thanks });
+    //Is index 
+    // needed?
+    // Add "Add" button
+    //Modify
+    //const addButton = document.createElement('button');
+    //addButton.onclick = () => addItem(category);    
+    //addButton.className = 'actionButton';
+    //addButton.textContent = 'Add';
+    
+
+    //contentDiv.appendChild(addButton);
+
 
 }
+
+function showThanks(match) {
+    // Get the popup and content elements
+    var showThanks = document.getElementById('showThanks');
+    var showThanksContent = document.getElementById('showThanksContent');
+
+    // Clear previous content
+    showThanksContent.innerHTML = ''; // Clears all child elements of showThanksContent
+
+    // Display the popup
+    showThanks.style.display = 'block';
+
+    // Create new content
+    var thanksItem = document.createElement('div');
+    thanksItem.textContent = `Message: ${match.thanks}`;
+
+    var thanksButton = document.createElement('button');
+    thanksButton.className = 'actionButton';
+    thanksButton.textContent = 'Done!';
+    thanksButton.onclick = () => {
+        // Hide the popup
+        showThanks.style.display = 'block';
+        // Remove the item from matchesToDo
+        var index = matchesToDo.indexOf(match);
+        if (index !== -1) {
+            matchesToDo.splice(index, 1);
+        }
+        showThanks.style.display = 'none';
+    };
+
+    // Append the new elements to the content container
+    showThanksContent.appendChild(thanksItem);
+    showThanksContent.appendChild(thanksButton);
+}
+
 
 function openToDoList() {
-    // Display the popup
     const ToDoListPopup = document.getElementById('ToDoListPopup');
+    
+    // Clear previous content
+    ToDoListPopup.innerHTML = ''; // Clears all child elements of ToDoListPopup
+    
+    // Show the popup
     ToDoListPopup.style.display = 'block';
     
+    // Create the content container
+    var ToDoListPopupContent = document.createElement('div');
+    
+    // Add the Cancel button
+    var cancelButton = document.createElement('button');
+    cancelButton.className = 'actionButton';
+    cancelButton.textContent = 'Cancel';
+    cancelButton.onclick = () => {
+        ToDoListPopup.style.display = 'none';
+    };
+    ToDoListPopupContent.appendChild(cancelButton);
+    
+    // Add the to-do list items
+    matchesToDo.forEach((match, index) => {
+        var todoitem = document.createElement('div');
+        todoitem.textContent = `Autonomy: ${match.A}`;//; Response: ${match.thanks}`;
+        ToDoListPopupContent.appendChild(todoitem);
+        
+        var thanksButton = document.createElement('button');
+        thanksButton.onclick = () => showThanks(match);    
+        thanksButton.className = 'actionButton';
+        thanksButton.textContent = 'Done!';
+        ToDoListPopupContent.appendChild(thanksButton);
+    });
+    
+    // Append the content container to the popup
+    ToDoListPopup.appendChild(ToDoListPopupContent);
 }
+
+function submitAddToDo() {
+    const submitAddToDo = document.getElementById('submitAddToDo');
+    var already = 0;
+    var messageText = prompt("Enter a name for the new context:");
+    matchesSelected.forEach((match, index) => {
+        if (match.A === autonomyId ) {//&& match.RC === itemId && already === 0) {
+                messageText.textContent = 'Is already in the to-do-list.';
+                already=1;
+            } 
+        });
+        if (already===0){
+            var messageText = prompt("Enter a thank you message:");
+            matchesToDo.push({ id: index, A: autonomyId, thanks: messageText });
+            messageText.textContent = `Autonomy: ${match.A}; Response: ${messageTex}`;
+        }
+    submitAddToDo.appendChild(messageText);
+    //Find the matching item in the matchesSelected array
+    const matchingIndex = matchesSelected.findIndex(match => match.A === autonomyId && match.RC === itemId);
+
+    if (already === 0) {
+        //match
+
+                            
+                        // Add new match
+                        let nextId = matchesSelected.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+                        matchesSelected.push({ id: nextId, A: autonomyId, RC: itemId });
+                        //console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
+        }
+
+        already = 0;
+
+        // Display the updated object
+        console.log(matchesSelected)
+    };
+
+
+  
+
+
 
 function submitEdit() {
     const editPopup = document.getElementById('editPopup');
@@ -1294,7 +1411,7 @@ function showCategory(category) {
 
         // Get the item ID from the database based on the item name
         var itemId = Object.keys(database).find(key => database[key] === item);
-        theItemId = Object.keys(database).find(key => database[key] === item);
+        theItemId = itemId ;
         var checked = 0;
         document.getElementById("autonomyHead").style.color = "#4682B4";
         document.getElementById("autonomyHead").style.backgroundColor ="#444444";
@@ -1662,53 +1779,6 @@ let previouslySelectedRow = null; // Track the previously selected row
 
 </script>
 <script>
-
-function addToDo(){
-alert("test");
-    // Store currently selected indices
-    //let ToDoAutonomyIndex = null;
-    const addToDoPopup = document.getElementById('addToDoPopup');
-    addToDoPopup.style.display = 'block';
-    let nextId = matchesToDo.reduce((max, matchToDo) => Math.max(max, matchToDo.id), 0) + 1;    
-    const thanks = prompt("What thank you message would you like to receive when achieving the goal?:");
-    matchesSelected.push({ id: nextId, A: theItemId, thanks: thanks });
-    //Is index 
-    // needed?
-    // Add "Add" button
-    //Modify
-    const addButton = document.createElement('button');
-    addButton.onclick = () => addItem(category);    
-    addButton.className = 'actionButton';
-    addButton.textContent = 'Add';
-    
-
-    contentDiv.appendChild(addButton);
-
-
-}
-
-function ToDoList(){
-//pair autonomy
-    const ToDoListPopup = document.getElementById('addToDoPopup');
-    ToDoListPopup.style.display = 'block';
-    matchesSelected.forEach((match, index) => {
-    if (match.A === autonomyId && match.RC === theItemId) {
-             
-        row.style.backgroundColor = '#888888'; // Highlight selected
-                
-        }
-    });
-        //Modify
-        const addButton = document.createElement('button');
-    addButton.onclick = () => addItem(category);    
-    addButton.className = 'actionButton';
-    addButton.textContent = 'Add';
-    
-
-    contentDiv.appendChild(addButton);
-
-}
-</script>
 
 
 </body>
