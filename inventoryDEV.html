@@ -691,6 +691,7 @@ body {
     </div>
 
     <script>
+
 var theItemId = null ;
 
 const database = {
@@ -782,7 +783,7 @@ const matchesSelected =
 
 const matchesToDo = 
 [
-    { id: 1, A: 'itemA1', thanks: 'Lorem ipsum' },
+    { id: 1, A: 'itemA1', thanks: 'I did it!!!', resultContext: 'Result Context', resultSituation: 'Result Situation' },
 ];
 //Find all matchesSelected for a specific sheetA item:
 //const matchedItems = matchesSelected.filter(row => row.sheetA === 'itemA1');
@@ -989,6 +990,9 @@ function createDropdowns() {
     deleteSituationButton.addEventListener("click", () => {
         const selectedContext = contextDropdown.value;
         const selectedSituation = situationDropdown.value;
+        theSelectedContext = selectedContext ;
+        theSelectedSituation = selectedSituation;
+        
         if (!selectedContext) {
             alert("Please select a context first.");
             return;
@@ -1148,7 +1152,10 @@ function openAddToDo() {
     const addItemContent = document.getElementById('v');
     let nextId = matchesToDo.reduce((max, matchToDo) => Math.max(max, matchToDo.id), 0) + 1;    
     const thanks = prompt("What thank you message would you like to receive when achieving the goal?:");
-    matchesToDo.push({ id: nextId, A: selectedAutonomyItem, thanks: thanks });
+    const theSelectedContext = document.getElementById("contextDropdown");
+    const theSelectedSituation = document.getElementById("situationDropdown");
+    matchesToDo.push({ id: nextId, A: selectedAutonomyItem, thanks: thanks, resultContext: theSelectedContext.value, resultSituation: theSelectedSituation.value });
+
     //Is index 
     // needed?
     // Add "Add" button
@@ -1176,9 +1183,12 @@ function showThanks(match) {
     showThanks.style.display = 'block';
 
     // Create new content
-    var thanksItem = document.createElement('div');
-    thanksItem.textContent = `Message: ${match.thanks}`;
-
+    var thanksItem1 = document.createElement('div');
+    var thanksItem2 = document.createElement('div');
+    var thanksItem3 = document.createElement('div');
+    thanksItem1.textContent = `Resulted Context: ${match.resultContext}`;
+    thanksItem2.textContent = `Resulted Situation: ${match.resultSituation}`;
+    thanksItem3.textContent = `Message: ${match.thanks}`;
     var thanksButton = document.createElement('button');
     thanksButton.className = 'actionButton';
     thanksButton.textContent = 'Done!';
@@ -1194,7 +1204,9 @@ function showThanks(match) {
     };
 
     // Append the new elements to the content container
-    showThanksContent.appendChild(thanksItem);
+    showThanksContent.appendChild(thanksItem1);
+    showThanksContent.appendChild(thanksItem2);
+    showThanksContent.appendChild(thanksItem3);
     showThanksContent.appendChild(thanksButton);
 }
 
@@ -1250,6 +1262,7 @@ function submitAddToDo() {
         if (already===0){
             var messageText = prompt("Enter a thank you message:");
             matchesToDo.push({ id: index, A: autonomyId, thanks: messageText });
+            
             messageText.textContent = `Autonomy: ${match.A}; Response: ${messageTex}`;
         }
     submitAddToDo.appendChild(messageText);
