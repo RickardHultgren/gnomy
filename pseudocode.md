@@ -3,55 +3,57 @@
 ## Mind Sketch
 
 ```
-BEGIN Process_Mindset
+BEGIN Handeling_Situation
 
-    Step_1A:
-        FOR_DEC_Facts()
-        Check_Situation()
-        Ladder_Observe()
-        RAIN_Recognize()
-        IF Stimuli_Present THEN
-            Influence_Attention()
-
-    IF Rational_Mind THEN
-        Step_1B (Optional):
+    Defining_Feelings_Goals:
+        Step_1A:
             FOR_DEC_Facts()
-            Ladder_Selecting_Data()
-            RAIN_Allow_Accept()
-            IF Naming_Objects_Sensations THEN
-                Foster_Conscious_Attention()
+            Check_Situation()
+            Ladder_Observe()
+            RAIN_Recognize()
+            IF Stimuli_Present THEN
+                Influence_Attention()
 
-    Step_2A:
-        FOR_DEC_Facts()
-        Ladder_Make_Interpretations()
-        RAIN_Investigate()
-        IF Core_Values_Present THEN
-            Filter_Information()
+        IF Including_Mindset THEN
+            Step_1B (Optional):
+                FOR_DEC_Facts()
+                Ladder_Selecting_Data()
+                RAIN_Allow_Accept()
+                IF Naming_Objects_Sensations THEN
+                    Foster_Conscious_Attention()
 
-    IF Rational_Mind THEN
-        Step_2B (Optional):
+        Step_2A:
             FOR_DEC_Facts()
             Ladder_Make_Interpretations()
-            RAIN_Non_Identify()
-            Let_Go_Fixed_Interpretations()
+            RAIN_Investigate()
+            IF Core_Values_Present THEN
+                Filter_Information()
 
-    Step_3A:
-        FOR_DEC_Options()
-        Ladder_Making_Assumptions()
+        IF Including_Mindset THEN
+            Step_2B (Optional):
+                FOR_DEC_Facts()
+                Ladder_Make_Interpretations()
+                RAIN_Non_Identify()
+                Let_Go_Fixed_Interpretations()
 
-    IF Rational_Mind THEN
-        Step_3B (Optional):
-            FOR_DEC_Risk()
-            Ladder_Making_Conclusions()
+    Defining_Competence:
+        Step_3A:
+            FOR_DEC_Options()
+            Ladder_Making_Assumptions()
 
-    Step_4A:
-        FOR_DEC_Decide()
-        Ladder_Making_Beliefs()
+        IF Including_Mindset THEN
+            Step_3B (Optional):
+                FOR_DEC_Risk()
+                Ladder_Making_Conclusions()
 
-    IF Rational_Mind THEN
-        Step_4B (Optional):
-            FOR_DEC_Execute_Rationally()
-            Ladder_Action()
+        Step_4A:
+            FOR_DEC_Decide()
+            Ladder_Making_Beliefs()
+
+        IF Including_Mindset THEN
+            Step_4B (Optional):
+                FOR_DEC_Execute_Rationally()
+                Ladder_Action()
 
 END Process_Mindset
 ```
