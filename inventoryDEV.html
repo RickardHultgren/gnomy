@@ -6,66 +6,33 @@
 <style>
 
 /* Style for the container holding the elements */
-input, button, select, option, .situation-option, .context-option {
+input, button, select, option, .situation-option, .context-option, #contexts {
     font-family: 'Nunito', sans-serif;
  }
 
-/* Style for the container holding the elements */
-#contexts {
+.slider-right-text, .slider-left-text, .slider-container {
     font-family: 'Nunito', sans-serif;
-    margin: 20px;
-}
-
-.slider-right-text{
-    font-family: 'Nunito', sans-serif;
-    font-size:1rem;
-}
-
-.slider-left-text{
-    font-family: 'Nunito', sans-serif;
-    font-size:1rem;
-}
-
-/* Style for sliders */
-.slider-container {
-    display: flex;
     font-size:1rem;
     align-items: center;
-    gap: 10px;
+    /*gap: 10px; -> flex: 1 0 10px;*/
     margin-top: 20px;
+
 }
 
 .slider {
     width: 200px;
 }
 
-
 /* Style for the context dropdown */
-.context-dropdown {
-    padding: 10px;
+.context-dropdown, .situation-dropdown {
+    padding: 0.25rem;
     font-size: 1rem;
-    margin: 10px;
+    margin: 0.25rem;
 }
 
-/* Style for the situation dropdown */
-.situation-dropdown {
-    padding: 10px;
-    font-size: 1rem;
-    margin: 10px;
-}
 
-/* Style for each dropdown option */
-.context-option, .situation-option {
+.context-option, .situation-option, button {
     font-size: 1rem;
-}
-
-/* Style for buttons */
-button {
-    padding: 8px 15px;
-    font-size: 1rem;
-    cursor: pointer;
-    margin: 5px;
-    border-radius: 5px;
 }
 
 .add-context-button {
