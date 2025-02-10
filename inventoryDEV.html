@@ -1,9 +1,12 @@
-<html>
+"<html>
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Orbitron:wght@400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 <style>
+
+
+
 
 .slider-right-text, .slider-left-text, .slider-container {
     font-family: 'Nunito', sans-serif;
@@ -31,13 +34,13 @@ font-size: 1em;
     cursor: pointer;
     font-family: 'Nunito', sans-serif;
 font-size: 1em;
-    margin: 0 0.25rem 0.25rem 0;
+    margin: 0 1em .25em 0;
     border-radius: 5px;
 }
 
 button:hover {
-            background-color: #ffcc33;
-        }
+    background-color: #ffcc33;
+}
 
 .add-context-button. .add-situation-button, .delete-context-button, .delete-situation-button {
     background-color: #444444;
@@ -47,9 +50,9 @@ button:hover {
 
 /* Additional styles as needed */
 #tableheader {
-            font-family: 'Nunito', sans-serif;
-            background-color: #333;
-            color: #FAF3E0;
+    font-family: 'Nunito', sans-serif;
+    background-color: #333;
+    color: #FAF3E0;
 }
 
 .reality{
@@ -69,10 +72,10 @@ font-size: 1em;
     color: #FAF3E0;
     font-weight: bold;
     font-family: 'Nunito', sans-serif;
-font-size: 1em;
+    font-size: 1em;
 }
 
-        input[type=checkbox]
+input[type=checkbox]
 {
   /* Double-sized Checkboxes */
   -ms-transform: scale(2); /* IE */
@@ -81,20 +84,26 @@ font-size: 1em;
   -o-transform: scale(2); /* Opera */
   transform: scale(2);
   padding: 1rem;
-  margin-right:1rem;
+  margin: 0 1rem 0 0;
+  width: 1.5rem !important;
+  vertical-align:middle;
+    position: relative;
+    *top: 1px;
+    *overflow: hidden;
+    position: relative;
+    text-align-last:left;
 }
 
+
+
 html, body {
-            
             width:auto;
             height:auto;
             font-family: 'Nunito', sans-serif;
             font-size: 1rem;    font-size: 2vw;    font-size: calc(1rem + .5vw);
-
             background-color: #333;
             color: #FAF3E0;
             margin: 0;
-            
 }
 
 body {
@@ -117,7 +126,7 @@ body {
             padding: 14px 16px;
             transition: 0.3s;
             color: #FAF3E0;
-            margin:1vw;
+            margin:0.5em;
             
         }
 
@@ -158,8 +167,9 @@ body {
         .tableRow4 {
             display: flex;
             justify-content: space-between;
-            padding: 5px;
+            padding-bottom: 5px;
             border-bottom: 1px solid #FAF3E0;
+            text-align-last:left;
         }
 
 
@@ -169,17 +179,6 @@ body {
             padding-left: 5px;
         }
 
-        .actionButton {
-            background-color: #FAF3E0;
-            border: none;
-            padding: 5px 10px;
-            color: #333;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 5px;
-            font-family: 'Nunito', sans-serif;
-            /*font-size: 1rem;*/
-        }
 
         #popupForm, #addItemPopup, #editPopup, #ToDoListPopup, #addToDoPopup, #showThanks  {
             display: none;
@@ -206,7 +205,7 @@ body {
         #popupContent input, #addItemContent input, #editPopupContent input {
             width: 90%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 1em 0;
             border: 1px solid #FAF3E0;
             border-radius: 5px;
         }
@@ -1031,9 +1030,7 @@ function showCategory(category) {
         Checkbox4.className = 'Checkbox';
         const Checkbox4Label = document.createElement('label');
         
-        
-        
-        
+
         // Cell with item name
         const cell = document.createElement('div');
         cell.className = 'tableCell';
@@ -1395,6 +1392,7 @@ function showCategory(category) {
         row4.appendChild(box4Container);
 
 
+
  
 
 
@@ -1406,6 +1404,7 @@ function showCategory(category) {
         contentDiv.appendChild(row2);
         contentDiv.appendChild(row3);
         contentDiv.appendChild(row4);
+        
 
     });
     // Add "Add" button
@@ -1429,3 +1428,4 @@ let previouslySelectedRow = null; // Track the previously selected row
 
 </body>
 </html>
+"
