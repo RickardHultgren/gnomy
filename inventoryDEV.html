@@ -288,7 +288,7 @@ body {
             <button onclick="document.getElementById( 'showThanks' ).style.display = 'none';">Cancel</button>
         </div>
     </div>
-
+    <div id="map"></div>
     <span class="tale">Inventory</span>
     <div class="tableMain">
         <div class="tableBody">
@@ -393,13 +393,7 @@ var selectedAutonomyItem = null;
 
 let currentLocationIndex = null;
 const currentSelectedAutonomy = null;
-//var matchAutonomyFF = {
-//    "match" : {
 
-//    }
-//}
-
-//A = autonomy, RC = relatedness and competence
 const matchesSelected = 
 [
     //{ id: 1, A: 'itemA1', RC: 'itemB1' },
@@ -409,17 +403,7 @@ const matchesToDo =
 [
     { id: 1, A: 'itemA1', thanks: 'I did it!!!', resultContext: 'Result Context', resultSituation: 'Result Situation' },
 ];
-//Find all matchesSelected for a specific sheetA item:
-//const matchedItems = matchesSelected.filter(row => row.sheetA === 'itemA1');
-//
-//const newMatch = { id: 4, sheetA: 'itemA4', sheetB: 'itemB4' };
-//matchesSelected.push(newMatch);
-//
-//const idToDelete = 2;
-//const updatedmatchesSelected = matchesSelected.filter(match => match.id !== idToDelete);
-
 var autonomyId = null;
-
 
 const sliders = {}; // Store sliders for each situation
 
@@ -768,10 +752,6 @@ function openEditPopup(item, category, index) {
 function openAddToDo() {
     // Display the popup
     const addToDoPopup = document.getElementById('addToDoPopup');
-    //addToDoPopup.style.display = 'block';
-
-    // Store currently selected indices
-    //let ToDoAutonomyIndex = null;
 
     const addItemContent = document.getElementById('v');
     let nextId = matchesToDo.reduce((max, matchToDo) => Math.max(max, matchToDo.id), 0) + 1;    
@@ -779,19 +759,6 @@ function openAddToDo() {
     const theSelectedContext = document.getElementById("contextDropdown");
     const theSelectedSituation = document.getElementById("situationDropdown");
     matchesToDo.push({ id: nextId, A: selectedAutonomyItem, thanks: thanks, resultContext: theSelectedContext.value, resultSituation: theSelectedSituation.value });
-
-    //Is index 
-    // needed?
-    // Add "Add" button
-    //Modify
-    //const addButton = document.createElement('button');
-    //addButton.onclick = () => addItem(category);    
-    //addButton.className = 'actionButton';
-    //addButton.textContent = 'Add';
-    
-
-    //contentDiv.appendChild(addButton);
-
 
 }
 
@@ -1415,9 +1382,65 @@ function showCategory(category) {
 let previouslySelectedRow = null; // Track the previously selected row
 
 </script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
+    // Function to create D3 nodes when a situation is selected
+function updateMapWithNodes(selectedSituation) {
+    // Clear previous nodes
+    d3.select("#map").selectAll("*").remove();
+
+    // Find the corresponding situation link
+    const linkKey = Object.keys(situationLinks).find(key => situationLinks[key].from.includes(selectedSituation));
+
+    if (linkKey) {
+        const fromText = situationLinks[linkKey].from[0]; // Get "from" value
+        const toText = situationLinks[linkKey].to[0]; // Get "to" value
+
+        const svg = d3.select("#map")
+            .append("svg")
+            .attr("width", 400)
+            .attr("height", 200);
+
+        // Define node data
+        const nodes = [
+            { id: "from", text: fromText, x: 100, y: 100 },
+            { id: "to", text: toText, x: 300, y: 100 }
+        ];
+
+        // Create circles (nodes)
+        svg.selectAll("circle")
+            .data(nodes)
+            .enter()
+            .append("circle")
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y)
+            .attr("r", 20)
+            .style("fill", "#69b3a2");
+
+        // Add text labels
+        svg.selectAll("text")
+            .data(nodes)
+            .enter()
+            .append("text")
+            .attr("x", d => d.x)
+            .attr("y", d => d.y + 5)
+            .attr("text-anchor", "middle")
+            .style("fill", "white")
+            .style("font-size", "12px")
+            .style("font-family", "Arial")
+            .text(d => d.text);
+    }
+}
+
+// Modify the event listener for situationDropdown to call updateMapWithNodes
+const situationDropdown = document.getElementById("situationDropdown");
+
+situationDropdown.addEventListener("change", (event) => {
+    const selectedSituation = event.target.value;
+    updateMapWithNodes(selectedSituation);
+});
+</script>
 
 
 </body>
 </html>
-"
