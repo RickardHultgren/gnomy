@@ -5,110 +5,64 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Orbitron:wght@400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 <style>
 
-/* Style for the container holding the elements */
-input, button, select, option, .situation-option, .context-option {
-    font-family: 'Nunito', sans-serif;
- }
 
-/* Style for the container holding the elements */
-#contexts {
-    font-family: 'Nunito', sans-serif;
-    margin: 20px;
-}
 
-.slider-right-text{
-    font-family: 'Nunito', sans-serif;
-    font-size:1rem;
-}
 
-.slider-left-text{
+.slider-right-text, .slider-left-text, .slider-container {
     font-family: 'Nunito', sans-serif;
-    font-size:1rem;
-}
-
-/* Style for sliders */
-.slider-container {
-    display: flex;
-    font-size:1rem;
+font-size: 1em;
     align-items: center;
-    gap: 10px;
+    /*gap: 10px; -> flex: 1 0 10px;*/
     margin-top: 20px;
+
 }
 
 .slider {
     width: 200px;
 }
 
-
 /* Style for the context dropdown */
-.context-dropdown {
-    padding: 10px;
-    font-size: 1rem;
-    margin: 10px;
+.context-dropdown, .situation-dropdown {
+    padding: 0.25rem;
+    font-family: 'Nunito', sans-serif;
+font-size: 1em;
+    margin: 0 0.25rem 0.25rem 0;
 }
 
-/* Style for the situation dropdown */
-.situation-dropdown {
-    padding: 10px;
-    font-size: 1rem;
-    margin: 10px;
-}
 
-/* Style for each dropdown option */
-.context-option, .situation-option {
-    font-size: 1rem;
-}
-
-/* Style for buttons */
-button {
-    padding: 8px 15px;
-    font-size: 1rem;
+.context-option, .situation-option, button {
     cursor: pointer;
-    margin: 5px;
+    font-family: 'Nunito', sans-serif;
+font-size: 1em;
+    margin: 0 1em .25em 0;
     border-radius: 5px;
 }
 
-.add-context-button {
-    background-color: #444444;
-    color:  #FAF3E0;
+button:hover {
+    background-color: #ffcc33;
 }
 
-.add-situation-button {
+.add-context-button. .add-situation-button, .delete-context-button, .delete-situation-button {
     background-color: #444444;
     color:  #FAF3E0;
+    margin: 0 0.25rem 0.25rem 0;
 }
-
-.delete-context-button {
-    background-color: #444444;
-    color:  #FAF3E0;
-}
-
-.delete-situation-button {
-    background-color: #444444;
-    color:  #FAF3E0;
-}
-
-
 
 /* Additional styles as needed */
+#tableheader {
+    font-family: 'Nunito', sans-serif;
+    background-color: #333;
+    color: #FAF3E0;
+}
 
-
-        #tableheader {
-            background-color: #333;
-            font-family: 'Nunito', sans-serif;
-        }        
-        #tableheader {
-            background-color: #333;
-            color: #FAF3E0;
-        }
 .reality{
-    font-size:1rem;
+font-size: 1em;
     font-family:"Michroma";
-    color:#4682B4;
+    color:#67bbff;
 }
 
 .tale{
-    font-size:1rem;
+font-size: 1em;
     font-family:"IM Fell English";
     color: #FFBF00;
     display:none;
@@ -117,10 +71,11 @@ button {
 .current-location .current-label {
     color: #FAF3E0;
     font-weight: bold;
-    font-size: 1.1rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1em;
 }
 
-        input[type=checkbox]
+input[type=checkbox]
 {
   /* Double-sized Checkboxes */
   -ms-transform: scale(2); /* IE */
@@ -129,34 +84,32 @@ button {
   -o-transform: scale(2); /* Opera */
   transform: scale(2);
   padding: 1rem;
-  margin-right:1rem;
+  margin: 0 1rem 0 0;
+  width: 1.5rem !important;
+  vertical-align:middle;
+    position: relative;
+    *top: 1px;
+    *overflow: hidden;
+    position: relative;
+    text-align-last:left;
 }
 
-        html, body {
-            
-            width:100vw;
+
+
+html, body {
+            width:auto;
+            height:auto;
             font-family: 'Nunito', sans-serif;
-            font-size:1rem;
+            font-size: 1rem;    font-size: 2vw;    font-size: calc(1.1rem + .5vw);
             background-color: #333;
             color: #FAF3E0;
             margin: 0;
-            padding: 0;
-        }
+}
 
+body {
+    padding: calc(.25rem + 2vw);
+}
 
-
-        #buttons {
-            z-index: 10;
-            width: 100%;
-            height: auto;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin: 0;
-            font-family: 'Nunito', sans-serif;
-            /*font-size: 1rem;*/
-    
-        }
 
         .tab {
             overflow: hidden;
@@ -173,6 +126,8 @@ button {
             padding: 14px 16px;
             transition: 0.3s;
             color: #FAF3E0;
+            margin:0.5em;
+            
         }
 
         .tableMain {
@@ -212,8 +167,9 @@ button {
         .tableRow4 {
             display: flex;
             justify-content: space-between;
-            padding: 5px;
+            padding-bottom: 5px;
             border-bottom: 1px solid #FAF3E0;
+            text-align-last:left;
         }
 
 
@@ -223,21 +179,6 @@ button {
             padding-left: 5px;
         }
 
-        .actionButton {
-            background-color: #FAF3E0;
-            border: none;
-            padding: 5px 10px;
-            color: #333;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 5px;
-            font-family: 'Nunito', sans-serif;
-            /*font-size: 1rem;*/
-        }
-
-        .actionButton:hover {
-            background-color: #ffcc33;
-        }
 
         #popupForm, #addItemPopup, #editPopup, #ToDoListPopup, #addToDoPopup, #showThanks  {
             display: none;
@@ -264,7 +205,7 @@ button {
         #popupContent input, #addItemContent input, #editPopupContent input {
             width: 90%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 1em 0;
             border: 1px solid #FAF3E0;
             border-radius: 5px;
         }
@@ -278,316 +219,7 @@ button {
             cursor: pointer;
         }
 
-        #popupContent button:hover, #addItemContent button:hover, #editPopupContent button:hover {
-            background-color: #ffcc33;
-        }
-    </style>
-    <style>
-        html, body {
-            font-family: 'Nunito', sans-serif;
-            background-color: #333;
-            color: #FAF3E0;
-            margin: 0;
-            padding: 0;
-        }
-
-
     
-        #buttons {
-            z-index: 10;
-            width: 100%;
-            height: auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-        }
-    
-        .tab {
-            overflow: hidden;
-            border: 1px solid #FAF3E0;
-            background-color: #444444;
-        }
-    
-        .tab button {
-            background-color: inherit;
-            float: left;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-            color: #FAF3E0;
-        }
-    
-        .tab button:hover {
-            background-color: #555555;
-        }
-    
-        .tableMain {
-            display: block;
-            width: 100%;
-            background-color: #333333;
-        }
-    
-
-        .tableCell {
-            flex: 1;
-            padding-left: 5px;
-        }
-    
-        .actionButton {
-            background-color: #FAF3E0;
-            border: none;
-            padding: 8px 12px;
-            color: #333;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 5px;
-        }
-    
-        .actionButton:hover {
-            background-color: #ffcc33;
-        }
-    
-        #popupForm, #addItemPopup, #editPopup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-    
-        #popupContent, #addItemContent, #editPopupContent {
-            background-color: #444;
-            padding: 1rem;
-            border-radius: 10px;
-            text-align: center;
-            color: #FAF3E0;
-            width: 90%;
-            max-width: 400px;
-        }
-    
-        #popupContent input, #addItemContent input, #editPopupContent input {
-            width: 95%;
-            padding: 0.8rem;
-            margin: 10px 0;
-            border: 1px solid #FAF3E0;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-    
-        #popupContent button, #addItemContent button, #editPopupContent button {
-            padding: 0.8rem 1rem;
-            background-color: #FAF3E0;
-            border: none;
-            color: #333;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: 'Nunito', sans-serif;
-            /*font-size: 1rem;*/
-        }
-    
-        #popupContent button:hover, #addItemContent button:hover, #editPopupContent button:hover {
-            background-color: #ffcc33;
-        }
-    
-        /* Responsive Adjustments */
-        @media screen and (max-width: 864px) {
-            body{
-                font-size:1rem;
-            }
-            .tableRow {
-                flex-direction: column;
-                align-items: center;
-                padding: 10px;
-            }
-    
-            .tableRow2 {
-                flex-direction: column;
-                align-items: center;
-                padding: 10px;
-            }
-            
-            .tableRow3 {
-                flex-direction: column;
-                align-items: center;
-                padding: 10px;
-            }         
-
-            .tableCell {
-                padding: 5px 0;
-                text-align: center;
-            }
-    
-            .tab button {
-                font-size: 0.9rem;
-                padding: 10px;
-            }
-    
-            #buttons {
-                flex-direction: column;
-                padding: 10px;
-            }
-    
-            .actionButton {
-                padding: 10px;
-                margin: 5px;
-                font-size: 0.9rem;
-            }
-    
-            #popupContent, #addItemContent, #editPopupContent {
-                padding: 1rem;
-                width: 90%;
-                max-width: 320px;
-            }
-    
-            #popupContent input, #addItemContent input, #editPopupContent input {
-                font-size: 0.9rem;
-            }
-        }
-    
-        @media screen and (max-width: 480px) {
-            body{
-                font-size:1rem;
-            }
-            .tableRow {
-                flex-direction: column;
-                align-items: center;
-                padding: 10px;
-            }
-    
-            .tableCell {
-                padding: 5px 0;
-                text-align: center;
-            }
-    
-            .tab button {
-                font-size: 0.9rem;
-                padding: 10px;
-            }
-    
-            #buttons {
-                flex-direction: column;
-                padding: 10px;
-            }
-    
-            .actionButton {
-                padding: 10px;
-                margin: 5px;
-                font-size: 0.9rem;
-            }
-    
-            #popupContent, #addItemContent, #editPopupContent {
-                padding: 1rem;
-                width: 90%;
-                max-width: 320px;
-            }
-    
-            #popupContent input, #addItemContent input, #editPopupContent input {
-                font-size: 0.9rem;
-            }            
-            .tab button {
-                padding: 8px;
-                font-size: 2.5rem;
-            }
-    
-            .actionButton {
-                font-size: 2.5rem;
-                padding: 8px 10px;
-            }
-    
-            #popupContent, #addItemContent, #editPopupContent {
-                padding: 2.5rem;
-            }
-    
-            #popupContent input, #addItemContent input, #editPopupContent input {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
-    <style>
-        .tab button.active-header {
-            background-color: white;
-            color: #333;
-            font-weight: bold;
-        }
-
-
-.goalcontainer, .feelingcontainer {
-    /*display:block;
-    width:50vw;
-    background-color:#ff0000;*/
-
-}        
-html { font-size: calc(1em + 1vw); }
-@media screen and (min-width: 50em) {
-  html {
-    font-size: 2vw;
-  }
-}
-@media screen and (min-width: 75em) {
-  html {
-    font-size: 1.5em;
-  }
-}
-body {
-  padding: 1.5rem;
-}
-p {
-  line-height: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-h1 {
-  font-size: 2rem;
-  line-height: 2rem;
-  margin-top: calc((1.5rem - 2rem) + 1.5rem);
-  margin-bottom: 1.5rem;
-}
-
-
-
-
-
-
-
-
-
-
-html {
-  font-size: 16px; /* Default font size for reference */
-}
-
-body {
-  font-size: 1rem; /* Default body font size */
-}
-
-/* Dynamic font size adjustment */
-@media (max-width: 1200px) {
-  html {
-    font-size: calc(24px + 0.5vw); /* Slightly smaller for medium screens */
-  }
-}
-
-@media (max-width: 768px) {
-  html {
-    font-size: calc(20px + 0.75vw); /* Dynamic adjustment for smaller devices */
-  }
-}
-
-@media (max-width: 480px) {
-  html {
-    font-size: calc(16px + 1vw); /* Larger adjustment for very small screens */
-  }
-}
-
-
 
     </style>
 </head>
@@ -662,24 +294,8 @@ body {
         <div class="tableBody">
             <div id="current"></div>
             <div class="tab">
-                <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button><span style="            background-color: inherit;
-                float: left;
-                vertical-align: middle;
-                border: none;
-                outline: none;
-                cursor: pointer;
-                padding: 14px 16px;
-                transition: 0.3s;
-                color: #FAF3E0;">=</span>
-                <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span></button><span style="            background-color: inherit;
-                float: left;
-                vertical-align: middle;
-                border: none;
-                outline: none;
-                cursor: pointer;
-                padding: 14px 16px;
-                transition: 0.3s;
-                color: #FAF3E0;">+</span>
+                <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
+                <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span>
                 <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
             </div>
             
@@ -1398,9 +1014,7 @@ function showCategory(category) {
         Checkbox4.className = 'Checkbox';
         const Checkbox4Label = document.createElement('label');
         
-        
-        
-        
+
         // Cell with item name
         const cell = document.createElement('div');
         cell.className = 'tableCell';
@@ -1762,6 +1376,7 @@ function showCategory(category) {
         row4.appendChild(box4Container);
 
 
+
  
 
 
@@ -1773,6 +1388,7 @@ function showCategory(category) {
         contentDiv.appendChild(row2);
         contentDiv.appendChild(row3);
         contentDiv.appendChild(row4);
+        
 
     });
     // Add "Add" button
