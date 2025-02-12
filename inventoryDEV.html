@@ -5,8 +5,10 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Orbitron:wght@400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 <style>
 
-
-
+.space{
+    border-bottom: 1px solid #FAF3E0;
+    margin: 0.25em 0em 1em 0em;
+}
 
 .slider-right-text, .slider-left-text, .slider-container {
     font-family: 'Nunito', sans-serif;
@@ -34,7 +36,7 @@ font-size: 1em;
     cursor: pointer;
     font-family: 'Nunito', sans-serif;
 font-size: 1em;
-    margin: 0 1em .25em 0;
+    margin: 0 .75em 1.25em 0;
     border-radius: 5px;
 }
 
@@ -229,7 +231,13 @@ body {
     <button>Submit a Quote of Relatedness and Competence</button>
     <button>Give Your Autonomy as a Gift</button></div-->
     <div id="contexts"></div>
+    <div class="space"></div>
 
+    <div id="hud">
+        <button id="addLink" onclick="addLink();">Add Link to Tree</button>
+    </div>
+    <div id="map">
+    </div>
 
     <div id="addItemPopup">
         <div id="addItemContent">
@@ -288,7 +296,7 @@ body {
             <button onclick="document.getElementById( 'showThanks' ).style.display = 'none';">Cancel</button>
         </div>
     </div>
-    <div id="map"></div>
+    <div class="space"></div>
     <span class="tale">Inventory</span>
     <div class="tableMain">
         <div class="tableBody">
@@ -307,6 +315,8 @@ body {
     </div>
 
     <script>
+
+var selectedLink = null ;
 
 var theItemId = null ;
 
@@ -1383,64 +1393,144 @@ let previouslySelectedRow = null; // Track the previously selected row
 
 </script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
 <script>
-    // Function to create D3 nodes when a situation is selected
-function updateMapWithNodes(selectedSituation) {
-    // Clear previous nodes
-    d3.select("#map").selectAll("*").remove();
+    // Assuming "database" is already defined
+    const situationData = {
+        "contexts": {
+            "Home": [],
+            "Work": [],
+            "Hobby": [database[4], database[5]]
+        }
+    };
 
-    // Find the corresponding situation link
-    const linkKey = Object.keys(situationLinks).find(key => situationLinks[key].from.includes(selectedSituation));
+    // Object to store situation links
+    const situationLinks = { 
+        "1": { "from": [database[4]], "to": [database[5]] }
+    };
 
-    if (linkKey) {
-        const fromText = situationLinks[linkKey].from[0]; // Get "from" value
-        const toText = situationLinks[linkKey].to[0]; // Get "to" value
+    // Function to update the D3 map when a new link is added
+    function updateMapWithNodes(selectedSituation) {
+        // Clear previous nodes
+        d3.select("#map").selectAll("*").remove();
+
+        // Find all links where 'from' matches selectedSituation
+        const relevantLinks = Object.entries(situationLinks)
+            .filter(([_, link]) => link.from.includes(selectedSituation));
+
+        if (relevantLinks.length === 0) {
+            alert("No linked situations found.");
+            return;
+        }
 
         const svg = d3.select("#map")
             .append("svg")
             .attr("width", 400)
             .attr("height", 200);
 
-        // Define node data
-        const nodes = [
-            { id: "from", text: fromText, x: 100, y: 100 },
-            { id: "to", text: toText, x: 300, y: 100 }
-        ];
+        relevantLinks.forEach(([key, link], index) => {
+            const fromText = link.from[0];
+            const toText = link.to[0];
 
-        // Create circles (nodes)
-        svg.selectAll("circle")
-            .data(nodes)
-            .enter()
-            .append("circle")
-            .attr("cx", d => d.x)
-            .attr("cy", d => d.y)
-            .attr("r", 20)
-            .style("fill", "#69b3a2");
+            // Define node data
+            const nodes = [
+                { id: `from${key}`, text: fromText, x: 100, y: 100 + index * 50 },
+                { id: `to${key}`, text: toText, x: 300, y: 100 + index * 50 }
+            ];
 
-        // Add text labels
-        svg.selectAll("text")
-            .data(nodes)
-            .enter()
-            .append("text")
-            .attr("x", d => d.x)
-            .attr("y", d => d.y + 5)
-            .attr("text-anchor", "middle")
-            .style("fill", "white")
-            .style("font-size", "12px")
-            .style("font-family", "Arial")
-            .text(d => d.text);
+            // Create circles (nodes)
+            svg.selectAll(`circle${key}`)
+                .data(nodes)
+                .enter()
+                .append("circle")
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .attr("r", 20)
+                .style("fill", "#69b3a2");
+
+            // Add text labels
+            svg.selectAll(`text${key}`)
+                .data(nodes)
+                .enter()
+                .append("text")
+                .attr("x", d => d.x)
+                .attr("y", d => d.y + 5)
+                .attr("text-anchor", "middle")
+                .style("fill", "white")
+                .style("font-size", "12px")
+                .style("font-family", "Arial")
+                .text(d => d.text);
+
+            // Create links (lines)
+            svg.append("line")
+                .attr("x1", nodes[0].x)
+                .attr("y1", nodes[0].y)
+                .attr("x2", nodes[1].x)
+                .attr("y2", nodes[1].y)
+                .attr("stroke", "black")
+                .attr("stroke-width", 2);
+        });
     }
-}
 
-// Modify the event listener for situationDropdown to call updateMapWithNodes
-const situationDropdown = document.getElementById("situationDropdown");
+    // Function to add a new situation link and update the D3 map
+    function addLink() {
+        // Get the selected value from the dropdown
+        const dropdown = document.getElementById("situationDropdown");
+        if (!dropdown) {
+            alert("Dropdown not found!");
+            return;
+        }
+        const fromValue = dropdown.value;
 
-situationDropdown.addEventListener("change", (event) => {
-    const selectedSituation = event.target.value;
-    updateMapWithNodes(selectedSituation);
-});
+        // Gather all available situations
+        const allSituations = Object.values(situationData.contexts).flat();
+
+        if (allSituations.length === 0) {
+            alert("No situations available to select.");
+            return;
+        }
+
+        // Create a selection prompt for the user
+        let options = allSituations.map((item, index) => `${index + 1}. ${item}`).join("\n");
+        let choice = prompt(`Select a situation:\n${options}`);
+
+        // Convert input to an index and validate
+        let index = parseInt(choice, 10) - 1;
+        if (isNaN(index) || index < 0 || index >= allSituations.length) {
+            alert("Invalid selection. Please try again.");
+            return;
+        }
+
+        // Get the selected situation
+        const selectedSituation = allSituations[index];
+
+        // Generate a new key for situationLinks
+        const newKey = (Object.keys(situationLinks).length + 1).toString();
+
+        // Add the new link
+        situationLinks[newKey] = {
+            "from": [fromValue],  // Store from as selected dropdown value
+            "to": [selectedSituation]
+        };
+
+        console.log("New situation link added:", situationLinks);
+
+        // Update the map with the new situation link
+        updateMapWithNodes(fromValue);
+    }
+
+    // Modify the event listener for situationDropdown to update the D3 map
+    document.addEventListener("DOMContentLoaded", () => {
+        const situationDropdown = document.getElementById("situationDropdown");
+
+        if (situationDropdown) {
+            situationDropdown.addEventListener("change", (event) => {
+                const selectedSituation = event.target.value;
+                updateMapWithNodes(selectedSituation);
+            });
+        }
+    });
 </script>
-
-
 </body>
 </html>
