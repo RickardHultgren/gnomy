@@ -6,7 +6,7 @@
 <style>
 
 .space{
-    border-bottom: 1px solid #FAF3E0;
+    border-bottom: 1px solid #B87333;
     margin: 0.25em 0em 1em 0em;
 }
 
@@ -40,7 +40,35 @@ font-size: 1em;
     border-radius: 5px;
 }
 
+button {
+    background-color: #a67844;
+    color: #f8f4e3;
+    color: #a67844;
+    color: 	#B87333;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-color: #a67844;
+    border-color: 	#B87333;
+    border-width: 2px;
+    border-radius: 5px;
+    /*cursor: pointer;*/
+    transition: background-color 0.3s ease;
+
+    background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
+    -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0,0%,100%,.6) 0%, hsla(0,0%,100%,0) 100%),
+    -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
+    -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
+    
+    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
+    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
+    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.2) 2.2%),
+    
+    -webkit-radial-gradient( 50% 50%, 200% 50%, hsla(0,0%,90%,1) 5%, hsla(0,0%,85%,1) 30%, hsla(0,0%,60%,1) 100%);
+    
+}
+
 button:hover {
+    color: #876338;
     background-color: #ffcc33;
 }
 
@@ -106,6 +134,22 @@ html, body {
             background-color: #333;
             color: #FAF3E0;
             margin: 0;
+            background:
+  radial-gradient(rgba(255,255,255,0.1) 30%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 60%, rgba(0,0,0,0) 0) 0 0,
+  radial-gradient(rgba(255,255,255,0.05) 20%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 0) 50px 50px,
+  radial-gradient(rgba(255,255,255,0.07) 25%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0) 60%, rgba(0,0,0,0) 0) 0 120px,
+  radial-gradient(rgba(255,255,255,0.06) 15%, rgba(0,0,0,0.3) 25%, rgba(0,0,0,0) 40%, rgba(0,0,0,0) 0) -130px -170px,
+  radial-gradient(rgba(255,255,255,0.08) 15%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0) 45%, rgba(0,0,0,0) 0) 130px 370px,
+  radial-gradient(rgba(255,255,255,0.04) 15%, rgba(0,0,0,0.2) 30%, rgba(0,0,0,0) 45%, rgba(0,0,0,0) 0) 0 0,
+  linear-gradient(45deg, #0d0d0d 0%, #1a1a1a 25%, #262626 50%, #121212 75%, #1a1a1a 100%);
+background-size: 470px 470px, 970px 970px, 410px 410px, 610px 610px, 530px 530px, 730px 730px, 100% 100%;
+background-color: #121212;
+    height: 100vh;
+
+    /* Visual styling for the surface */
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);            
 }
 
 body {
@@ -315,7 +359,7 @@ body {
     </div>
 
     <script>
-
+let fromItem = null;
 var selectedLink = null ;
 
 var theItemId = null ;
@@ -1393,144 +1437,169 @@ let previouslySelectedRow = null; // Track the previously selected row
 
 </script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="https://d3js.org/d3.v7.min.js"></script>
-
 <script>
-    // Assuming "database" is already defined
-    const situationData = {
-        "contexts": {
-            "Home": [],
-            "Work": [],
-            "Hobby": [database[4], database[5]]
-        }
-    };
-
-    // Object to store situation links
-    const situationLinks = { 
-        "1": { "from": [database[4]], "to": [database[5]] }
-    };
-
-    // Function to update the D3 map when a new link is added
+    // Function to create D3 nodes when a situation is selected
     function updateMapWithNodes(selectedSituation) {
-        // Clear previous nodes
-        d3.select("#map").selectAll("*").remove();
+    // Clear previous visualization
+    d3.select("#map").selectAll("*").remove();
 
-        // Find all links where 'from' matches selectedSituation
-        const relevantLinks = Object.entries(situationLinks)
-            .filter(([_, link]) => link.from.includes(selectedSituation));
+    // Find all links where "from" matches the selected situation
+    const links = Object.keys(situationLinks)
+        .filter(key => situationLinks[key].from.includes(selectedSituation))
+        .map(key => situationLinks[key]); 
 
-        if (relevantLinks.length === 0) {
-            alert("No linked situations found.");
-            return;
-        }
-
-        const svg = d3.select("#map")
-            .append("svg")
-            .attr("width", 400)
-            .attr("height", 200);
-
-        relevantLinks.forEach(([key, link], index) => {
-            const fromText = link.from[0];
-            const toText = link.to[0];
-
-            // Define node data
-            const nodes = [
-                { id: `from${key}`, text: fromText, x: 100, y: 100 + index * 50 },
-                { id: `to${key}`, text: toText, x: 300, y: 100 + index * 50 }
-            ];
-
-            // Create circles (nodes)
-            svg.selectAll(`circle${key}`)
-                .data(nodes)
-                .enter()
-                .append("circle")
-                .attr("cx", d => d.x)
-                .attr("cy", d => d.y)
-                .attr("r", 20)
-                .style("fill", "#69b3a2");
-
-            // Add text labels
-            svg.selectAll(`text${key}`)
-                .data(nodes)
-                .enter()
-                .append("text")
-                .attr("x", d => d.x)
-                .attr("y", d => d.y + 5)
-                .attr("text-anchor", "middle")
-                .style("fill", "white")
-                .style("font-size", "12px")
-                .style("font-family", "Arial")
-                .text(d => d.text);
-
-            // Create links (lines)
-            svg.append("line")
-                .attr("x1", nodes[0].x)
-                .attr("y1", nodes[0].y)
-                .attr("x2", nodes[1].x)
-                .attr("y2", nodes[1].y)
-                .attr("stroke", "black")
-                .attr("stroke-width", 2);
-        });
+    // If no links found, stop execution
+    if (links.length === 0) {
+        console.log("No links found for the selected situation.");
+        return;
     }
 
-    // Function to add a new situation link and update the D3 map
-    function addLink() {
-        // Get the selected value from the dropdown
-        const dropdown = document.getElementById("situationDropdown");
-        if (!dropdown) {
-            alert("Dropdown not found!");
-            return;
-        }
-        const fromValue = dropdown.value;
+    // Get unique "from" text (should be the same for all matching links)
+    const fromText = links[0].from[0]; 
 
-        // Gather all available situations
-        const allSituations = Object.values(situationData.contexts).flat();
+    // Get all unique "to" situations from the matching links
+    const toTexts = [...new Set(links.flatMap(link => link.to))];
 
-        if (allSituations.length === 0) {
-            alert("No situations available to select.");
-            return;
-        }
+    // Create an SVG container
+    const width = 500;
+    const height = 300;
+    const svg = d3.select("#map")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
 
-        // Create a selection prompt for the user
-        let options = allSituations.map((item, index) => `${index + 1}. ${item}`).join("\n");
-        let choice = prompt(`Select a situation:\n${options}`);
+    // Define the center position for the "from" node
+    const centerX = width / 2;
+    const centerY = height / 2;
 
-        // Convert input to an index and validate
-        let index = parseInt(choice, 10) - 1;
-        if (isNaN(index) || index < 0 || index >= allSituations.length) {
-            alert("Invalid selection. Please try again.");
-            return;
-        }
+    // Define the data for all nodes
+    const nodes = [
+        { id: "from", text: fromText, x: centerX, y: centerY } // Center node
+    ];
 
-        // Get the selected situation
-        const selectedSituation = allSituations[index];
+    // Define spacing for the "to" nodes (placing them in a circular layout)
+    const radius = 100;
+    const angleStep = (2 * Math.PI) / toTexts.length; // Evenly distribute around circle
 
-        // Generate a new key for situationLinks
-        const newKey = (Object.keys(situationLinks).length + 1).toString();
+    toTexts.forEach((toText, index) => {
+        const angle = index * angleStep; // Calculate angle for placement
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
 
-        // Add the new link
-        situationLinks[newKey] = {
-            "from": [fromValue],  // Store from as selected dropdown value
-            "to": [selectedSituation]
-        };
-
-        console.log("New situation link added:", situationLinks);
-
-        // Update the map with the new situation link
-        updateMapWithNodes(fromValue);
-    }
-
-    // Modify the event listener for situationDropdown to update the D3 map
-    document.addEventListener("DOMContentLoaded", () => {
-        const situationDropdown = document.getElementById("situationDropdown");
-
-        if (situationDropdown) {
-            situationDropdown.addEventListener("change", (event) => {
-                const selectedSituation = event.target.value;
-                updateMapWithNodes(selectedSituation);
-            });
-        }
+        nodes.push({ id: "to" + index, text: toText, x, y }); // Add each "to" node
     });
+
+    // Create lines connecting "from" node to each "to" node
+    svg.selectAll("line")
+        .data(nodes.slice(1)) // Exclude "from" node
+        .enter()
+        .append("line")
+        .attr("x1", centerX)
+        .attr("y1", centerY)
+        .attr("x2", d => d.x)
+        .attr("y2", d => d.y)
+        .attr("stroke", "#555")
+        .attr("stroke-width", 3); // Make lines thick
+
+    // Create circles (nodes)
+    svg.selectAll("circle")
+        .data(nodes)
+        .enter()
+        .append("circle")
+        .attr("cx", d => d.x)
+        .attr("cy", d => d.y)
+        .attr("r", 20)
+        .style("fill", (d, i) => (i === 0 ? "#ff5733" : "#69b3a2")); // Center node different color
+
+    // Add text labels
+    svg.selectAll("text")
+        .data(nodes)
+        .enter()
+        .append("text")
+        .attr("x", d => d.x)
+        .attr("y", d => d.y + 5)
+        .attr("text-anchor", "middle")
+        .style("fill", "white")
+        .style("font-size", "12px")
+        .style("font-family", "Arial")
+        .text(d => d.text);
+}
+
+// Modify the event listener for situationDropdown to call updateMapWithNodes
+const situationDropdown = document.getElementById("situationDropdown");
+
+situationDropdown.addEventListener("change", (event) => {
+    const selectedSituation = event.target.value;
+    updateMapWithNodes(selectedSituation);
+});
 </script>
+<script>
+
+
+function addLink() {
+    // Get the selected value from the dropdown
+    const dropdown = document.getElementById("situationDropdown");
+    if (!dropdown) {
+        alert("Dropdown not found!");
+        return;
+    }
+    const fromValue = dropdown.value;
+    
+    // Validate fromValue exists in the database
+    // Loop through the database to find a matching value
+    for (const key in database) { 
+        if (database.hasOwnProperty(key)) { // Ensure key exists in object
+            if (database[key] === fromValue) { // Check if value matches selected dropdown value
+                fromItem = key; // Assign the key to fromItem
+                break; // Exit loop once a match is found
+            }
+        }
+    }
+    if (!fromItem) {
+        alert("Invalid 'from' selection!");
+        return;
+    }
+    //fromItem = document.getElementById("situationDropdown").value;
+
+    // Gather all available situations
+    const allSituations = Object.values(situationData.contexts).flat();
+    
+    if (allSituations.length === 0) {
+        alert("No situations available to select.");
+        return;
+    }
+
+    // Create a selection prompt for the user
+    let options = allSituations.map((item, index) => `${index + 1}. ${item}`).join("\n");
+    let choice = prompt(`Select a situation:\n${options}`);
+
+    // Convert input to an index and validate
+    let index = parseInt(choice, 10) - 1;
+    if (isNaN(index) || index < 0 || index >= allSituations.length) {
+        alert("Invalid selection. Please try again.");
+        return;
+    }
+
+    // Get the selected situation
+    const selectedSituation = allSituations[index];
+
+    // Generate a new key for situationLinks
+    const newKey = (Object.keys(situationLinks).length + 1).toString();
+    
+    // Add the new link
+    situationLinks[newKey] = {
+        "from": [database[fromItem]],
+        "to": [selectedSituation]
+    };
+
+    console.log("New situation link added:", situationLinks);
+
+    updateMapWithNodes(database[fromItem]);
+}
+
+
+
+</script>
+
 </body>
 </html>
