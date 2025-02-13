@@ -4,9 +4,59 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Orbitron:wght@400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
+#logoID {
+  font-family: 'Amatic SC', cursive; /* Use the Amatic SC font */
+  font-size: 1.5em; /* Adjust size as needed */
+  letter-spacing: -0.5px; /* Slightly reduced letter spacing */
+  color: #ffffff; /* Set text color */
+  text-align: center; /* Center align text */
+  font-weight: bold;
+  /*margin: 20px;*/
+}
+
+#panic-button {
+            background-color: #A50021;
+            color: white;
+            width:2em;
+            border-color: #aaaaaa; 
+            font-size:1em;  
+            
+            background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0, 33%, 56%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0, 34%, 42%, 0.6) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0, 36%, 40%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0, 35%, 37%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0, 46%, 62%, 0.2) 2.2%),
+            
+            -webkit-radial-gradient( 50% 50%, 200% 50%, rgb(255, 123, 123) 5%, rgb(255, 135, 135) 30%, rgb(211, 145, 145) 100%);
+            width:3rem; height:3rem;
+            float:right;
+        }
+            
+          
+          #panic-button:hover {
+            background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0, 33%, 56%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0, 72%, 34%, 0.6) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0, 78%, 30%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0, 83%, 28%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0, 46%, 62%, 0.2) 2.2%),
+            
+            -webkit-radial-gradient( 50% 50%, 200% 50%, rgb(255, 0, 0) 5%, rgb(255, 135, 135) 30%, rgb(252, 45, 45) 100%);
+        }
 
 
+        #contexts{
+display:flex;
 
+        }
+
+        #moreButton{}
 .space{
     border-bottom: 1px solid #B87333;
     margin: 0.25em 0em 1em 0em;
@@ -313,13 +363,47 @@ body {
 </head>
 <body>
 
-    <div><!--button>Submit an Inquiry of Autonomy</button>
+    <div style="padding: 0.5em 0.5em 0.5em 0.5em; inline-block; ">
+        <span id="logoID">Gnomy<!--hr style="border:1px solid #FFD700"></hr--></span>
+    
+            
+        <button style="width:3rem; height:3rem;float:right;">
+        <!-- Game Menu -->
+        <!--div id="game-menu">
+            <button id="btn-settings">Settings</button>
+            <button id="btn-stats">Stats</button>
+            <button id="btn-play-map">Play Map</button>
+        </div-->                
+                &#9776;
+        </button>
+
+        <button id="panic-button" onclick="location.href='panic.html';">
+            !
+            </button>
+
+    </div>
+
+        <!--button>Submit an Inquiry of Autonomy</button>
     <button>Submit a Quote of Relatedness and Competence</button>
     <button>Give Your Autonomy as a Gift</button></div-->
     <div id="frame">
         <div id="contexts"></div>
+        <div id="subContainer" style="display:none; padding-left:0.5em; padding-right:0.5em;"></div>
         <div class="space"></div>
-
+        <div id="inventory">
+            <span class="tale">Inventory</span>
+            <div class="tableMain">
+                <div class="tableBody">
+                    <div id="current"></div>
+                    <div class="tab">
+                        <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
+                        <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span>
+                        <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
+                    </div>
+                <div id="inventoryContent" class="tableBody"></div>
+            </div>
+        </div>
+        <div class="space"></div>        
         <div id="hud">
             <button id="addLink" onclick="addLink();">Add Link to Tree</button>
             <div id="ToDo">
@@ -335,6 +419,8 @@ body {
             </div>
 
         </div>
+
+
 
         <div id="addItemPopup">
             <div id="addItemContent">
@@ -385,24 +471,10 @@ body {
             </div>
         </div>
         <div class="space"></div>
-        <div id="inventory">
-        <span class="tale">Inventory</span>
-        <div class="tableMain">
-            <div class="tableBody">
-                <div id="current"></div>
-                <div class="tab">
-                    <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
-                    <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span>
-                    <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
-                </div>
-                
-                <div id="inventoryContent" class="tableBody"></div>
-            </div>
-        </div>
         <div id="buttons">
             <button style="display:none">History</button>
         </div>
-        </div>
+    </div>
     </div>
     <script>
 let fromItem = null;
@@ -610,11 +682,6 @@ function createDropdowns() {
     container.appendChild(sliderContainer);
 
     // Sub-container for buttons
-    const subContainer = document.createElement("div");
-    subContainer.id = "subContainer";
-    subContainer.style.display = "none"; // Initially hidden
-    container.appendChild(subContainer);
-
     // More Button
     const moreButton = document.createElement("button");
     moreButton.id = "moreButton";
