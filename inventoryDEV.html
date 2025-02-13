@@ -5,14 +5,24 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Orbitron:wght@400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 <style>
 
+
+
 .space{
     border-bottom: 1px solid #B87333;
     margin: 0.25em 0em 1em 0em;
 }
 
+#Container, #moreButton{
+display:inline-block;
+}    
+
+
 .slider-right-text, .slider-left-text, .slider-container {
     font-family: 'Nunito', sans-serif;
+
     
+
+
 font-size: 1em;
     align-items: center;
     /*gap: 10px; -> flex: 1 0 10px;*/
@@ -168,8 +178,11 @@ background-size:
   150px 150px;
 background-blend-mode: overlay, overlay, overlay, overlay, overlay, normal, multiply, multiply, multiply;
 */
+}
 
-background-color: #2a2a2a; /* Light beige background */
+#frame{
+margin:1em;
+    background-color: #2a2a2a; /* Light beige background */
   background-image: 
     linear-gradient(70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%),
     linear-gradient(-70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%);
@@ -299,90 +312,91 @@ body {
     <div><!--button>Submit an Inquiry of Autonomy</button>
     <button>Submit a Quote of Relatedness and Competence</button>
     <button>Give Your Autonomy as a Gift</button></div-->
-    <div id="contexts"></div>
-    <div class="space"></div>
+    <div id="frame">
+        <div id="contexts"></div>
+        <div class="space"></div>
 
-    <div id="hud">
-        <button id="addLink" onclick="addLink();">Add Link to Tree</button>
-    </div>
-    <div id="map">
-    </div>
-
-    <div id="addItemPopup">
-        <div id="addItemContent">
-            <h2>Add New Item</h2>
-            <label for="newItemInput">Item Name:</label><br>
-            <input type="text" id="newItemInput" placeholder="Enter item name"><br>
-            <button onclick="submitNewItem()">Add Item</button>
-            <button onclick="closeAddItemPopup()">Cancel</button>
+        <div id="hud">
+            <button id="addLink" onclick="addLink();">Add Link to Tree</button>
         </div>
-    </div>
-
-    <div id="editPopup">
-        <div id="editPopupContent">
-            <h2>Edit Item</h2>
-            <label for="editItemInput">Item Name:</label><br>
-            <input type="text" id="editItemInput" placeholder="Enter new name"><br>
-            <button onclick="submitEdit()">Save</button>
-            <button onclick="closeEditPopup()">Cancel</button>
+        <div id="map">
         </div>
-    </div>
 
-    <div id="addToDoPopup">
-        <!--div id="addToDoPopupContent">
-            <h2>Add to the To-Do-List</h2>
-            <div id="theSelected"></div>
-            <label for="editItemInput">Thank-You-message after execution:</label><br>
-            <input type="text" id="editItemInput" placeholder="Enter new name"><br>
-            <button onclick="submitAddToDo();">Save</button>
-            <button onclick="document.getElementById( 'addToDoPopup' ).style.display = 'none';">Cancel</button>
-        </div-->
-    </div>
-
-    <div id="ToDoListPopup">
-        <!--div id="ToDoListPopupContent">
-            <h2>To-Do-List</h2>
-            <button onclick="submitToDoList()">Done</button>
-            <button onclick="document.getElementById( 'ToDoListPopup' ).style.display = 'none';">Cancel</button>
-            htmltest
-        </div-->
-    </div>
-
-    <div id="ToDo">
-            <button id="ToDoList" onclick="openToDoList();">
-                Show To-Do-List
-            
-            </button>
-            <button id="addToDo" onclick="openAddToDo();">
-            Add to the To-Do-List
-        </div>
-    </div>
-
-    <div id="showThanks">
-        <div id="showThanksContent">
-            <h2>Edit Item</h2>
-            <label for="editItemInput">Message from Yourself:</label><br>
-            <button onclick="document.getElementById( 'showThanks' ).style.display = 'none';">Cancel</button>
-        </div>
-    </div>
-    <div class="space"></div>
-    <span class="tale">Inventory</span>
-    <div class="tableMain">
-        <div class="tableBody">
-            <div id="current"></div>
-            <div class="tab">
-                <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
-                <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span>
-                <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
+        <div id="addItemPopup">
+            <div id="addItemContent">
+                <h2>Add New Item</h2>
+                <label for="newItemInput">Item Name:</label><br>
+                <input type="text" id="newItemInput" placeholder="Enter item name"><br>
+                <button onclick="submitNewItem()">Add Item</button>
+                <button onclick="closeAddItemPopup()">Cancel</button>
             </div>
-            
-            <div id="inventoryContent" class="tableBody"></div>
+        </div>
+
+        <div id="editPopup">
+            <div id="editPopupContent">
+                <h2>Edit Item</h2>
+                <label for="editItemInput">Item Name:</label><br>
+                <input type="text" id="editItemInput" placeholder="Enter new name"><br>
+                <button onclick="submitEdit()">Save</button>
+                <button onclick="closeEditPopup()">Cancel</button>
+            </div>
+        </div>
+
+        <div id="addToDoPopup">
+            <!--div id="addToDoPopupContent">
+                <h2>Add to the To-Do-List</h2>
+                <div id="theSelected"></div>
+                <label for="editItemInput">Thank-You-message after execution:</label><br>
+                <input type="text" id="editItemInput" placeholder="Enter new name"><br>
+                <button onclick="submitAddToDo();">Save</button>
+                <button onclick="document.getElementById( 'addToDoPopup' ).style.display = 'none';">Cancel</button>
+            </div-->
+        </div>
+
+        <div id="ToDoListPopup">
+            <!--div id="ToDoListPopupContent">
+                <h2>To-Do-List</h2>
+                <button onclick="submitToDoList()">Done</button>
+                <button onclick="document.getElementById( 'ToDoListPopup' ).style.display = 'none';">Cancel</button>
+                htmltest
+            </div-->
+        </div>
+
+        <div id="ToDo">
+                <button id="ToDoList" onclick="openToDoList();">
+                    Show To-Do-List
+                
+                </button>
+                <button id="addToDo" onclick="openAddToDo();">
+                Add to the To-Do-List
+
+        </div>
+
+        <div id="showThanks">
+            <div id="showThanksContent">
+                <h2>Edit Item</h2>
+                <label for="editItemInput">Message from Yourself:</label><br>
+                <button onclick="document.getElementById( 'showThanks' ).style.display = 'none';">Cancel</button>
+            </div>
+        </div>
+        <div class="space"></div>
+        <span class="tale">Inventory</span>
+        <div class="tableMain">
+            <div class="tableBody">
+                <div id="current"></div>
+                <div class="tab">
+                    <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
+                    <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span>
+                    <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
+                </div>
+                
+                <div id="inventoryContent" class="tableBody"></div>
+            </div>
+        </div>
+        <div id="buttons">
+            <button style="display:none">History</button>
         </div>
     </div>
-    <div id="buttons">
-        <button style="display:none">History</button>
-    </div>
-
     <script>
 let fromItem = null;
 var selectedLink = null ;
@@ -596,6 +610,7 @@ function createDropdowns() {
 
     // More Button
     const moreButton = document.createElement("button");
+    moreButton.id = "moreButton";
     moreButton.textContent = "\u22EE"; 
     container.appendChild(moreButton);
 
