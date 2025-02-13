@@ -537,117 +537,118 @@ function updateDropdowns(contextDropdown, situationDropdown, selectedContext) {
 function createDropdowns() {
     const container = document.getElementById("contexts");
 
+    if (!container) {
+        console.error("Container element with ID 'contexts' not found.");
+        return;
+    }
+
     // Context dropdown
     const contextDropdown = document.createElement("select");
-    contextDropdown.classList.add('context-dropdown');  // Add class for styling
+    contextDropdown.classList.add('context-dropdown'); 
     contextDropdown.id = "contextDropdown";
+
     const defaultContextOption = document.createElement("option");
     defaultContextOption.textContent = "Select a context...";
     defaultContextOption.value = "";
     contextDropdown.appendChild(defaultContextOption);
-    Object.keys(situationData.contexts).forEach((context) => {
-        const option = document.createElement("option");
-        option.classList.add('context-option');  // Add class for styling
-        option.textContent = context;
-        option.value = context;
-        contextDropdown.appendChild(option);
-    });
+
+    if (situationData && situationData.contexts) {
+        Object.keys(situationData.contexts).forEach((context) => {
+            const option = document.createElement("option");
+            option.classList.add('context-option');
+            option.textContent = context;
+            option.value = context;
+            contextDropdown.appendChild(option);
+        });
+    } else {
+        console.error("situationData or its 'contexts' property is undefined.");
+    }
+
     container.appendChild(contextDropdown);
 
     // Situation dropdown
     const situationDropdown = document.createElement("select");
-    situationDropdown.classList.add('situation-dropdown');  // Add class for styling
+    situationDropdown.classList.add('situation-dropdown'); 
     situationDropdown.id = "situationDropdown";
+
     const defaultSituationOption = document.createElement("option");
     defaultSituationOption.textContent = "Select a situation...";
     defaultSituationOption.value = "";
     situationDropdown.appendChild(defaultSituationOption);
+    
     container.appendChild(situationDropdown);
-
-    const moreButton = document.createElement("button");
-    moreButton.onclick = () => {
-        var mButton = document.getElementById("subContainer");    
-        const mButtonDisplay = window.getComputedStyle(mButton).display;
-
-        if (mButtonDisplay !== 'none') {
-            // If mButton is displayed, hide subContainer
-            document.getElementById("subContainer").style.display = 'none';
-        } else {
-        // If mButton is hidden, show subContainer
-        document.getElementById("subContainer").style.display = 'block';
-    }
-    container.appendChild(moreButton);
 
     // Slider container
     const sliderContainer = document.createElement("div");
-    sliderContainer.classList.add('slider-container');  // Add class for styling
+    sliderContainer.classList.add('slider-container');  
     sliderContainer.id = "sliderContainer";
     container.appendChild(sliderContainer);
 
-    // Slider container
+    // Sub-container for buttons
     const subContainer = document.createElement("div");
     subContainer.id = "subContainer";
+    subContainer.style.display = "none"; // Initially hidden
     container.appendChild(subContainer);
 
-    // Add Context Button
-    const addContextButton = document.createElement("button");
-    addContextButton.classList.add('add-context-button');  // Add class for styling
-    addContextButton.textContent = "Add Context";
-    subContainer.appendChild(addContextButton);
+    // More Button
+    const moreButton = document.createElement("button");
+    moreButton.textContent = "More"; 
+    container.appendChild(moreButton);
 
-    // Add Situation Button
-    const addSituationButton = document.createElement("button");
-    addSituationButton.classList.add('add-situation-button');  // Add class for styling
-    addSituationButton.textContent = "Add Situation";
-    subContainer.appendChild(addSituationButton);
+    moreButton.onclick = () => {
+        subContainer.style.display = subContainer.style.display === 'none' ? 'block' : 'none';
+    };
 
-    // Delete Context Button
-    const deleteContextButton = document.createElement("button");
-    deleteContextButton.classList.add('delete-context-button');  // Add class for styling
-    deleteContextButton.textContent = "Delete Context";
-    subContainer.appendChild(deleteContextButton);
+    // Create Buttons
+    const buttons = [
+        { text: "Add Context", class: "add-context-button", action: addContext },
+        { text: "Add Situation", class: "add-situation-button", action: addSituation },
+        { text: "Delete Context", class: "delete-context-button", action: deleteContext },
+        { text: "Delete Situation", class: "delete-situation-button", action: deleteSituation }
+    ];
 
-    // Delete Situation Button
-    const deleteSituationButton = document.createElement("button");
-    deleteSituationButton.classList.add('delete-situation-button');  // Add class for styling
-    deleteSituationButton.textContent = "Delete Situation";
-    subContainer.appendChild(deleteSituationButton);
+    buttons.forEach(({ text, class: className, action }) => {
+        const button = document.createElement("button");
+        button.classList.add(className);
+        button.textContent = text;
+        button.addEventListener("click", action);
+        subContainer.appendChild(button);
+    });
 
-    // Context dropdown change listener
+    // Dropdown event listeners
     contextDropdown.addEventListener("change", (event) => {
         const selectedContext = event.target.value;
         updateDropdowns(contextDropdown, situationDropdown, selectedContext);
     });
 
-    // Situation dropdown change listener
     situationDropdown.addEventListener("change", (event) => {
         const selectedSituation = event.target.value;
         const sliderContainerDiv = document.getElementById("sliderContainer");
-        sliderContainerDiv.innerHTML = ""; // Clear previous slider
-        if (sliders[selectedSituation]) {
+        sliderContainerDiv.innerHTML = ""; 
+
+        if (sliders && sliders[selectedSituation]) {
             sliderContainerDiv.appendChild(sliders[selectedSituation]);
         }
     });
 
-    // Add Context Button Listener
-    addContextButton.addEventListener("click", () => {
+    // Functions for button actions
+    function addContext() {
         const newContextName = prompt("Enter a name for the new context:");
         if (newContextName && !situationData.contexts[newContextName]) {
             situationData.contexts[newContextName] = [];
             const option = document.createElement("option");
-            option.classList.add('context-option');  // Add class for styling
+            option.classList.add('context-option');
             option.textContent = newContextName;
             option.value = newContextName;
             contextDropdown.appendChild(option);
             contextDropdown.value = newContextName;
             updateDropdowns(contextDropdown, situationDropdown, newContextName);
-        } else if (situationData.contexts[newContextName]) {
+        } else {
             alert("This context already exists.");
         }
-    });
+    }
 
-    // Add Situation Button Listener
-    addSituationButton.addEventListener("click", () => {
+    function addSituation() {
         const selectedContext = contextDropdown.value;
         if (!selectedContext) {
             alert("Please select a context first.");
@@ -657,44 +658,27 @@ function createDropdowns() {
         if (newSituationName && !situationData.contexts[selectedContext].includes(newSituationName)) {
             situationData.contexts[selectedContext].push(newSituationName);
             updateDropdowns(contextDropdown, situationDropdown, selectedContext);
-        } else if (situationData.contexts[selectedContext].includes(newSituationName)) {
+        } else {
             alert("This situation already exists in the selected context.");
         }
-    });
+    }
 
-    // Delete Context Button Listener
-    deleteContextButton.addEventListener("click", () => {
+    function deleteContext() {
         const selectedContext = contextDropdown.value;
         if (!selectedContext) {
             alert("Please select a context to delete.");
             return;
         }
-        const confirmDelete = confirm(`Are you sure you want to delete the context "${selectedContext}"?`);
-        if (confirmDelete) {
+        if (confirm(`Are you sure you want to delete the context "${selectedContext}"?`)) {
             delete situationData.contexts[selectedContext];
-            contextDropdown.innerHTML = "";
-            const defaultOption = document.createElement("option");
-            defaultOption.textContent = "Select a context...";
-            defaultOption.value = "";
-            contextDropdown.appendChild(defaultOption);
-            Object.keys(situationData.contexts).forEach((context) => {
-                const option = document.createElement("option");
-                option.classList.add('context-option');  // Add class for styling
-                option.textContent = context;
-                option.value = context;
-                contextDropdown.appendChild(option);
-            });
             updateDropdowns(contextDropdown, situationDropdown, "");
         }
-    });
+    }
 
-    // Delete Situation Button Listener
-    deleteSituationButton.addEventListener("click", () => {
+    function deleteSituation() {
         const selectedContext = contextDropdown.value;
         const selectedSituation = situationDropdown.value;
-        theSelectedContext = selectedContext ;
-        theSelectedSituation = selectedSituation;
-        
+
         if (!selectedContext) {
             alert("Please select a context first.");
             return;
@@ -703,18 +687,19 @@ function createDropdowns() {
             alert("Please select a situation to delete.");
             return;
         }
-        const confirmDelete = confirm(`Are you sure you want to delete the situation "${selectedSituation}" from the "${selectedContext}" context?`);
-        if (confirmDelete) {
+        if (confirm(`Are you sure you want to delete the situation "${selectedSituation}" from the "${selectedContext}" context?`)) {
             const index = situationData.contexts[selectedContext].indexOf(selectedSituation);
             if (index !== -1) {
                 situationData.contexts[selectedContext].splice(index, 1);
                 updateDropdowns(contextDropdown, situationDropdown, selectedContext);
             }
         }
-    });
+    }
 }
-// Initialize the dropdowns and buttons
+
+// Initialize
 createDropdowns();
+
 
 function createDropdown() {
     // Get the container div
