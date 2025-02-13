@@ -12,6 +12,7 @@
 
 .slider-right-text, .slider-left-text, .slider-container {
     font-family: 'Nunito', sans-serif;
+    
 font-size: 1em;
     align-items: center;
     /*gap: 10px; -> flex: 1 0 10px;*/
@@ -27,7 +28,7 @@ font-size: 1em;
 display:none;
 }
 /* Style for the context dropdown */
-.context-dropdown, .situation-dropdown {
+.context-dropdown, .situation-dropdown,.context-dropdown * , .situation-dropdown * {
     padding: 0.25rem;
     font-family: 'Nunito', sans-serif;
     font-family:"IM Fell English";
@@ -38,13 +39,14 @@ font-size: 1em;
 
 .context-option, .situation-option, button {
     cursor: pointer;
-    font-family: 'Nunito', sans-serif;
+    font-family:"IM Fell English";
 font-size: 1em;
     margin: 0 .75em 1.25em 0;
     border-radius: 5px;
 }
 
 button {
+    font-family: 'Nunito', sans-serif;
     background-color: #a67844;
     color: #f8f4e3;
 
@@ -139,6 +141,7 @@ html, body {
             width:auto;
             height:auto;
             font-family: 'Nunito', sans-serif;
+            font-family:"IM Fell English";
             font-size: 1rem;    font-size: 2vw;    font-size: calc(1.1rem + .5vw);
             background-color: #151515;
             color: #FAF3E0;
