@@ -5,6 +5,59 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Orbitron:wght@400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
+
+.metal{  
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.1) 10%,
+      transparent 10%,
+      transparent 20%,
+      rgba(0, 0, 0, 0.1) 20%,
+      rgba(0, 0, 0, 0.1) 30%,
+      transparent 30%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.1) 40%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 50%,
+      transparent 60%,
+      rgba(0, 0, 0, 0.1) 60%,
+      rgba(0, 0, 0, 0.1) 70%,
+      transparent 70%,
+      transparent 80%,
+      rgba(255, 255, 255, 0.1) 80%,
+      rgba(255, 255, 255, 0.1) 90%,
+      transparent 90%,
+      transparent 100%
+    ),
+    linear-gradient(
+      180deg,
+      hsl(19, 60%, 20%) 0%,
+      hsl(19, 60%, 25%) 50%,
+      hsl(19, 60%, 20%) 100%
+    );
+  background-size: 4px 4px, 100% 100%;
+  box-shadow: inset 0 0.5em 0.5em rgba(0, 0, 0, 0.5);
+  border: 1px solid #3a1f0d;
+  border-radius: 5px;
+  padding-top:0.5em;
+  transform: translateY(-100%);
+  animation: slide-down 1s forwards;
+}
+
+
+
+/* Slide-down animation */
+@keyframes slide-down {
+  to {
+    transform: translateY(0);
+  }
+}
+
+.metal.show {
+    transform: translateY(0) rotateY(0deg);
+     z-index: 0;
+}
 #logoID {
   font-family: 'Amatic SC', cursive; /* Use the Amatic SC font */
   font-size: 1.5em; /* Adjust size as needed */
@@ -52,14 +105,17 @@
 
 
         #contexts{
-display:flex;
-
+z-index:2;
+            display:flex;
+.brushed-copper.show {
+  animation: descend 2s forwards;
+}
         }
 
         #moreButton{}
 .space{
     border-bottom: 1px solid #B87333;
-    margin: 0.25em 0em 1em 0em;
+    margin: 0em 0em 0em 0em;
 }
 
 #contexts, #hud, #inventory{
@@ -96,6 +152,7 @@ display:none;
 font-size: 1em;
     margin: 0 0.25rem 0.25rem 0;
     width:10em;
+    height:2em;
 }
 
 
@@ -388,7 +445,7 @@ body {
     <button>Give Your Autonomy as a Gift</button></div-->
     <div id="frame">
         <div id="contexts"></div>
-        <div id="subContainer" style="display:none; padding-left:0.5em; padding-right:0.5em;"></div>
+        <div id="subContainer" class="metal" style="display:none; padding-left:0.5em; padding-right:0.5em;"></div>
         <div class="space"></div>
         <div id="inventory">
             <span class="tale">Inventory</span>
@@ -679,7 +736,7 @@ function createDropdowns() {
     const sliderContainer = document.createElement("div");
     sliderContainer.classList.add('slider-container');  
     sliderContainer.id = "sliderContainer";
-    container.appendChild(sliderContainer);
+    //container.appendChild(sliderContainer);
 
     // Sub-container for buttons
     // More Button
