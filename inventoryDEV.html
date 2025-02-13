@@ -23,6 +23,9 @@ font-size: 1em;
     width: 200px;
 }
 
+#subContainer {
+display:none;
+}
 /* Style for the context dropdown */
 .context-dropdown, .situation-dropdown {
     padding: 0.25rem;
@@ -136,17 +139,19 @@ html, body {
             height:auto;
             font-family: 'Nunito', sans-serif;
             font-size: 1rem;    font-size: 2vw;    font-size: calc(1.1rem + .5vw);
-            background-color: #111111;
+            background-color: #151515;
             color: #FAF3E0;
             margin: 0;
-            background:
-  radial-gradient(rgba(60, 60, 60, 0.15) 20%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0) 60%) 0 0,
-  radial-gradient(rgba(50, 50, 50, 0.1) 15%, rgba(0, 0, 0, 0.35) 30%, rgba(0, 0, 0, 0) 50%) 120px 80px,
-  radial-gradient(rgba(40, 40, 40, 0.12) 25%, rgba(0, 0, 0, 0.4) 45%, rgba(0, 0, 0, 0) 65%) -100px -50px,
-  radial-gradient(rgba(30, 30, 30, 0.08) 20%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0) 55%) 180px 200px,
-  radial-gradient(rgba(50, 50, 50, 0.06) 10%, rgba(0, 0, 0, 0.25) 30%, rgba(0, 0, 0, 0) 50%) -50px -120px,
+/*            background:
+  radial-gradient(rgba(60, 60, 60, 0.2) 20%, rgba(0, 0, 0, 0.5) 40%, rgba(0, 0, 0, 0) 60%) 0 0,
+  radial-gradient(rgba(50, 50, 50, 0.15) 15%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0) 50%) 120px 80px,
+  radial-gradient(rgba(40, 40, 40, 0.2) 25%, rgba(0, 0, 0, 0.5) 45%, rgba(0, 0, 0, 0) 65%) -100px -50px,
+  radial-gradient(rgba(30, 30, 30, 0.15) 20%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0) 55%) 180px 200px,
+  radial-gradient(rgba(50, 50, 50, 0.1) 10%, rgba(0, 0, 0, 0.3) 30%, rgba(0, 0, 0, 0) 50%) -50px -120px,
   linear-gradient(145deg, #0f0f0f 0%, #1a1a1a 30%, #222222 50%, #141414 70%, #1a1a1a 100%),
-  repeating-radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0.05) 5%, rgba(0, 0, 0, 0) 10%);
+  repeating-radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.1) 3%, rgba(0, 0, 0, 0) 6%) 50px 50px,
+  repeating-radial-gradient(circle, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.3) 2%, rgba(0, 0, 0, 0) 5%) 30px 30px,
+  repeating-radial-gradient(circle, rgba(50, 50, 50, 0.1) 0%, rgba(0, 0, 0, 0.3) 1.5%, rgba(0, 0, 0, 0) 3%) 20px 20px;
 background-size: 
   500px 500px, 
   900px 900px, 
@@ -154,15 +159,18 @@ background-size:
   700px 700px, 
   600px 600px, 
   100% 100%, 
-  1200px 1200px;
-background-blend-mode: overlay, overlay, overlay, overlay, overlay, normal, multiply;
-background-color: #121212;
-    height: 100vh;
+  400px 400px,
+  300px 300px,
+  150px 150px;
+background-blend-mode: overlay, overlay, overlay, overlay, overlay, normal, multiply, multiply, multiply;
+*/
 
-    /* Visual styling for the surface */
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);            
+background-color: #2a2a2a; /* Light beige background */
+  background-image: 
+    linear-gradient(70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%),
+    linear-gradient(-70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%);
+    /*radial-gradient(circle at center, #444444 25%, transparent 2.5%);*/
+  background-size: .5em 1.5em, .5em 1.5em;/*, .333em .333em;        */
 }
 
 body {
@@ -556,35 +564,54 @@ function createDropdowns() {
     situationDropdown.appendChild(defaultSituationOption);
     container.appendChild(situationDropdown);
 
+    const moreButton = document.createElement("button");
+    moreButton.onclick = () => {
+        var mButton = document.getElementById("subContainer");    
+        const mButtonDisplay = window.getComputedStyle(mButton).display;
+
+        if (mButtonDisplay !== 'none') {
+            // If mButton is displayed, hide subContainer
+            document.getElementById("subContainer").style.display = 'none';
+        } else {
+        // If mButton is hidden, show subContainer
+        document.getElementById("subContainer").style.display = 'block';
+    }
+    container.appendChild(moreButton);
+
     // Slider container
     const sliderContainer = document.createElement("div");
     sliderContainer.classList.add('slider-container');  // Add class for styling
     sliderContainer.id = "sliderContainer";
     container.appendChild(sliderContainer);
 
+    // Slider container
+    const subContainer = document.createElement("div");
+    subContainer.id = "subContainer";
+    container.appendChild(subContainer);
+
     // Add Context Button
     const addContextButton = document.createElement("button");
     addContextButton.classList.add('add-context-button');  // Add class for styling
     addContextButton.textContent = "Add Context";
-    container.appendChild(addContextButton);
+    subContainer.appendChild(addContextButton);
 
     // Add Situation Button
     const addSituationButton = document.createElement("button");
     addSituationButton.classList.add('add-situation-button');  // Add class for styling
     addSituationButton.textContent = "Add Situation";
-    container.appendChild(addSituationButton);
+    subContainer.appendChild(addSituationButton);
 
     // Delete Context Button
     const deleteContextButton = document.createElement("button");
     deleteContextButton.classList.add('delete-context-button');  // Add class for styling
     deleteContextButton.textContent = "Delete Context";
-    container.appendChild(deleteContextButton);
+    subContainer.appendChild(deleteContextButton);
 
     // Delete Situation Button
     const deleteSituationButton = document.createElement("button");
     deleteSituationButton.classList.add('delete-situation-button');  // Add class for styling
     deleteSituationButton.textContent = "Delete Situation";
-    container.appendChild(deleteSituationButton);
+    subContainer.appendChild(deleteSituationButton);
 
     // Context dropdown change listener
     contextDropdown.addEventListener("change", (event) => {
@@ -1082,11 +1109,11 @@ function showCategory(category) {
         var itemId = Object.keys(database).find(key => database[key] === item);
         theItemId = itemId ;
         var checked = 0;
-        document.getElementById("autonomyHead").style.color = "#4682B4";
+        document.getElementById("autonomyHead").style.color = "#444444";
         document.getElementById("autonomyHead").style.backgroundColor ="#444444";
-        document.getElementById("relatednessHead").style.color = "#4682B4";
+        document.getElementById("relatednessHead").style.color = "#444444";
         document.getElementById("relatednessHead").style.backgroundColor ="#444444";
-        document.getElementById("competenceHead").style.color = "#4682B4";
+        document.getElementById("competenceHead").style.color = "#444444";
         document.getElementById("competenceHead").style.backgroundColor ="#444444";        
         if (category === 'Autonomy') {
             document.getElementById("autonomyHead").style.color = "#004D40";
