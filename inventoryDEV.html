@@ -6,6 +6,21 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
 
+#square{
+    width:100%;
+    padding-top:100%;
+    background-color: #ff0000;
+    position: relative;
+}
+
+#hud{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
 .metal{  
     background: linear-gradient(
       90deg,
@@ -99,6 +114,8 @@ z-index:2;
 .space{
     border-bottom: 1px solid #B87333;
     margin: 0em 0em 0em 0em;
+    padding:0em;
+    height:0em;
 }
 
 #contexts, #hud, #inventory{
@@ -460,21 +477,17 @@ body {
             </div>
         </div>
     </div>
-    <div class="space"></div>        
+    <div class="space"></div>   
+    <div id="square">
         <div id="hud">
             <button id="addLink" onclick="addLink();">Add Link to Tree</button>
             <div id="ToDo">
-                <button id="ToDoList" onclick="openToDoList();">
-                    Show To-Do-List
-                
-                </button>
-                <button id="addToDo" onclick="openAddToDo();">
-                Add to the To-Do-List
+                <button id="ToDoList" onclick="openToDoList();">Show To-Do-List</button>
+                <button id="addToDo" onclick="openAddToDo();">Add to the To-Do-List</button>
                 <div id="map">
                 </div>
         
             </div>
-
         </div>
         <div id="buttons">
             <button style="display:none">History</button>
