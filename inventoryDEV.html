@@ -41,23 +41,8 @@
   border: 1px solid #3a1f0d;
   border-radius: 5px;
   padding-top:0.5em;
-  transform: translateY(-100%);
-  transition: transform 1s ease-in-out, opacity 0.5s ease-in;
 }
 
-
-
-/* Slide-down animation */
-@keyframes slide-down {
-  to {
-    transform: translateY(0);
-  }
-}
-
-.metal.show {
-     transform: translateY(0) rotateY(0deg);
-     z-index: 0;
-}
 #logoID {
   font-family: 'Amatic SC', cursive; /* Use the Amatic SC font */
   font-size: 1.5em; /* Adjust size as needed */
@@ -107,9 +92,7 @@
         #contexts{
 z-index:2;
             display:flex;
-.brushed-copper.show {
-  animation: descend 2s forwards;
-}
+
         }
 
         #moreButton{}
@@ -141,9 +124,23 @@ font-size: 1em;
     width: 200px;
 }
 
-#subContainer {
-display:none;
+#subContainer, #subInventory {
+    margin-right:1.5em;
+    /* No display: none; */
+    visibility: hidden; /* Start as hidden */
+    position: absolute; /* Prevent layout shift */
+    transform-origin: top center;
+    transform: rotateX(90deg); /* Start flipped */
+    transition: transform 0.3s ease-in-out, visibility 0s 0.3s; /* Delay hiding */
 }
+
+#subContainer.show, #subInventory.show {
+    margin-right:1.5em;    
+    visibility: visible;
+    transform: rotateX(0deg);
+    transition: transform 0.3s ease-in-out;
+}
+
 /* Style for the context dropdown */
 .context-dropdown, .situation-dropdown,.context-dropdown * , .situation-dropdown * {
     padding: 0.25rem;
@@ -445,22 +442,25 @@ body {
     <button>Give Your Autonomy as a Gift</button></div-->
     <div id="frame">
         <div id="contexts"></div>
-        <div id="subContainer" class="metal" style="display:none; padding-left:0.5em; padding-right:0.5em;"></div>
+        <div id="subContainer" class="metal" style="padding-left:0.5em; padding-right:0.5em;"></div>
         <div class="space"></div>
         <div id="inventory">
-            <span class="tale">Inventory</span>
-            <div class="tableMain">
-                <div class="tableBody">
-                    <div id="current"></div>
-                    <div class="tab">
-                        <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
-                        <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span>
-                        <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
-                    </div>
-                <div id="inventoryContent" class="tableBody"></div>
+            <span><button id="toggleButton">Inventory</button></span>
+            <div id="subInventory" class="metal">
+                <div class="tableMain">
+                    <div class="tableBody">
+                        <div id="current"></div>
+                        <div class="tab">
+                            <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
+                            <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span>
+                            <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
+                        </div>
+                    <div id="inventoryContent" class="tableBody"></div>
+                </div>
             </div>
         </div>
-        <div class="space"></div>        
+    </div>
+    <div class="space"></div>        
         <div id="hud">
             <button id="addLink" onclick="addLink();">Add Link to Tree</button>
             <div id="ToDo">
@@ -476,20 +476,25 @@ body {
             </div>
 
         </div>
+        <div id="buttons">
+            <button style="display:none">History</button>
+        </div>
+    </div>
+
+</div>
 
 
-
-        <div id="addItemPopup">
-            <div id="addItemContent">
+    <div id="addItemPopup">
+        <div id="addItemContent">
                 <h2>Add New Item</h2>
                 <label for="newItemInput">Item Name:</label><br>
                 <input type="text" id="newItemInput" placeholder="Enter item name"><br>
                 <button onclick="submitNewItem()">Add Item</button>
                 <button onclick="closeAddItemPopup()">Cancel</button>
-            </div>
         </div>
+    </div>
 
-        <div id="editPopup">
+    <div id="editPopup">
             <div id="editPopupContent">
                 <h2>Edit Item</h2>
                 <label for="editItemInput">Item Name:</label><br>
@@ -497,9 +502,9 @@ body {
                 <button onclick="submitEdit()">Save</button>
                 <button onclick="closeEditPopup()">Cancel</button>
             </div>
-        </div>
+    </div>
 
-        <div id="addToDoPopup">
+    <div id="addToDoPopup">
             <!--div id="addToDoPopupContent">
                 <h2>Add to the To-Do-List</h2>
                 <div id="theSelected"></div>
@@ -508,30 +513,24 @@ body {
                 <button onclick="submitAddToDo();">Save</button>
                 <button onclick="document.getElementById( 'addToDoPopup' ).style.display = 'none';">Cancel</button>
             </div-->
-        </div>
+    </div>
 
-        <div id="ToDoListPopup">
+    <div id="ToDoListPopup">
             <!--div id="ToDoListPopupContent">
                 <h2>To-Do-List</h2>
                 <button onclick="submitToDoList()">Done</button>
                 <button onclick="document.getElementById( 'ToDoListPopup' ).style.display = 'none';">Cancel</button>
                 htmltest
             </div-->
-        </div>
+    </div>
 
 
-        <div id="showThanks">
+    <div id="showThanks">
             <div id="showThanksContent">
                 <h2>Edit Item</h2>
                 <label for="editItemInput">Message from Yourself:</label><br>
                 <button onclick="document.getElementById( 'showThanks' ).style.display = 'none';">Cancel</button>
             </div>
-        </div>
-        <div class="space"></div>
-        <div id="buttons">
-            <button style="display:none">History</button>
-        </div>
-    </div>
     </div>
     <script>
 let fromItem = null;
@@ -746,8 +745,21 @@ function createDropdowns() {
     container.appendChild(moreButton);
 
     moreButton.onclick = () => {
-        subContainer.style.display = subContainer.style.display === 'none' ? 'block' : 'none';
+        const subContainer = document.getElementById("subContainer");
+
+        if (!subContainer.classList.contains('show')) {
+            // Ensure it's visible before animation starts
+            subContainer.style.visibility = 'visible';
+            subContainer.style.position = 'absolute'; // Prevent layout shift
+            subContainer.classList.add('show'); // Start flip animation
+        } else {
+            subContainer.classList.remove('show'); // Flip out animation
+            setTimeout(() => {
+                subContainer.style.visibility = 'hidden'; // Hide after animation
+            }, 1000); // Matches transition duration (1s)
+        }
     };
+
 
     // Create Buttons
     const buttons = [
@@ -780,6 +792,25 @@ function createDropdowns() {
             sliderContainerDiv.appendChild(sliders[selectedSituation]);
         }
     });
+
+    function toggleSubInventory() {
+    const subInventory = document.getElementById("subInventory");
+
+    if (!subInventory.classList.contains('show')) {
+        // Ensure visibility before animation
+        subInventory.style.visibility = 'visible';
+        subInventory.style.position = 'absolute'; // Prevent layout shift
+        subInventory.classList.add('show'); // Start flip animation
+    } else {
+        subInventory.classList.remove('show'); // Flip-out animation
+        setTimeout(() => {
+            subInventory.style.visibility = 'hidden'; // Hide after animation
+        }, 1000); // Matches transition duration (1s)
+    }
+}
+
+// Attach function to a button
+document.getElementById("toggleButton").onclick = toggleSubInventory;   
 
     // Functions for button actions
     function addContext() {
