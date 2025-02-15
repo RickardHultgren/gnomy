@@ -6,32 +6,45 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
 
+#squares{
+    width:auto;
+    height:auto;
+    background-color: #ffff00;
+    position: relative;
+    display:flex;
+
+}
+
 #squareLeft{
     width:50%;
-    padding-top:40%;
-    background-color: #ff0000;
+    padding-top:50%;
+    background-color: #000;
     position: relative;
+    border-right:1px solid #aaaaaa;
 }
+
 #squareRight{
     width:auto;
     padding-top:auto;
-    background-color: #ff0000;
+    background-color: #000;
     position: relative;
 }
 
 #hudLeft{
     position: absolute;
-    top: 0;
+    background-color: #ff0000;
+    top: 1em;
     left: 0;
-    bottom: 0;
+    bottom: 1em;
     right: 0;
 }
 
 #hudRight{
     position: absolute;
-    top: 0;
+    background-color: #0088ff;
+    top: 1em;
     left: 0;
-    bottom: 0;
+    bottom: 1em;
     right: 0;
 }
 
@@ -329,6 +342,7 @@ padding:0em;
     /*radial-gradient(circle at center, #444444 25%, transparent 2.5%);*/
   background-size: .5em 1.5em, .5em 1.5em;/*, .333em .333em;        */
   border: 1px solid #B87333;
+  padding-bottom:0em;
 }
 
 body {
@@ -494,30 +508,25 @@ body {
         </div>
     </div>
     <div class="space"></div>   
-    <div id="squareLeft">
-        <div id="hudLeft">
+    <div id="squares">
+        <div id="squareLeft">
             <button id="addLink" onclick="addLink();">Add Link to Tree</button>
-            <div id="ToDo">
-                <button id="ToDoList" onclick="openToDoList();">Show To-Do-List</button>
-                <button id="addToDo" onclick="openAddToDo();">Add to the To-Do-List</button>
-                <div id="map">
-                </div>
-        
+            <div id="hudLeft">
+                <div id="map"></div>
             </div>
         </div>
-        <div id="hudRight">
-            <div id="squareRight">
-                <button id="addLink" onclick="addLink();">Add Link to Tree</button>
+        <div id="squareRight">
+            <div id="hudRight">
                 <div id="ToDo">
-                    <button id="ToDoList" onclick="openToDoList();">Show To-Do-List</button>
-                    <button id="addToDo" onclick="openAddToDo();">Add to the To-Do-List</button>
                     <div id="map">
                     </div>
-            
                 </div>    
+            </div>
+            <button id="ToDoList" onclick="openToDoList();">Show To-Do-List</button>
+            <button id="addToDo" onclick="openAddToDo();">Add to the To-Do-List</button>
         </div>
         <div id="buttons">
-            <button style="display:none">History</button>
+                <button style="display:none">History</button>
         </div>
     </div>
 
