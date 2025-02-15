@@ -6,6 +6,96 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
 
+#map{
+    width:100%;
+    height:100%;
+    background-color: #3f5c38; /* Base green for the lawn */
+background-image: 
+
+  /* Fine grass speckles for texture */
+  radial-gradient(circle, rgba(74, 107, 63, 0.2) 2px, transparent 0),
+  radial-gradient(circle, rgba(93, 124, 79, 0.15) 2px, transparent 0),
+  radial-gradient(circle, rgba(63, 96, 51, 0.2) 3px, transparent 0),
+
+  /* Soft organic patches to add depth */
+  radial-gradient(circle, rgba(80, 106, 61, 0.2) 4px, transparent 0),
+  radial-gradient(circle, rgba(96, 122, 74, 0.15) 5px, transparent 0),
+  radial-gradient(circle, rgba(76, 115, 66, 0.2) 6px, transparent 0),
+
+  /* Subtle shading for smooth blending */
+  linear-gradient(120deg, rgba(50, 80, 50, 0.2) 20%, transparent 80%),
+  linear-gradient(60deg, rgba(92, 128, 81, 0.15) 25%, transparent 75%),
+
+  /* Light overall gradient for smooth color variation */
+  linear-gradient(135deg, #4b6a3f 35%, #3f5c38 55%, #2e472b 85%);
+
+background-size: 
+  0.2em 0.2em, 
+  .3em .3em, 
+  .4em .4em, 
+  1em 1em, 
+  1.5em 1.5em, 
+  0.75em 0.75em, 
+  .9em .9em, 
+  100% 100%; /* Overall shading */
+
+background-position: 
+  0 0, 
+  0.5em 1em, 
+  1.2em -0.8em, 
+  -1em 0.5em, 
+  2em 2em, 
+  -2.5em -2em, 
+  1.5em -2em, 
+  -1.3em 1em;
+
+
+}
+
+#theTree{
+    width:100%;
+    height:100%;
+    background-color: #3f5c38; /* Base green for the lawn */
+background-image: 
+
+  /* Fine grass speckles for texture */
+  radial-gradient(circle, rgba(74, 107, 63, 0.2) 2px, transparent 0),
+  radial-gradient(circle, rgba(93, 124, 79, 0.15) 2px, transparent 0),
+  radial-gradient(circle, rgba(63, 96, 51, 0.2) 3px, transparent 0),
+
+  /* Soft organic patches to add depth */
+  radial-gradient(circle, rgba(80, 106, 61, 0.2) 4px, transparent 0),
+  radial-gradient(circle, rgba(96, 122, 74, 0.15) 5px, transparent 0),
+  radial-gradient(circle, rgba(76, 115, 66, 0.2) 6px, transparent 0),
+
+  /* Subtle shading for smooth blending */
+  linear-gradient(120deg, rgba(50, 80, 50, 0.2) 20%, transparent 80%),
+  linear-gradient(60deg, rgba(92, 128, 81, 0.15) 25%, transparent 75%),
+
+  /* Light overall gradient for smooth color variation */
+  linear-gradient(135deg, #4b6a3f 35%, #3f5c38 55%, #2e472b 85%);
+
+background-size: 
+  0.2em 0.2em, 
+  .3em .3em, 
+  .4em .4em, 
+  1em 1em, 
+  1.5em 1.5em, 
+  0.75em 0.75em, 
+  .9em .9em, 
+  100% 100%; /* Overall shading */
+
+background-position: 
+  0 0, 
+  0.5em 1em, 
+  1.2em -0.8em, 
+  -1em 0.5em, 
+  2em 2em, 
+  -2.5em -2em, 
+  1.5em -2em, 
+  -1.3em 1em;
+}
+
 #squares{
     width:auto;
     height:auto;
@@ -24,7 +114,7 @@
 }
 
 #squareRight{
-    width:auto;
+    width:50%;
     padding-top:auto;
     background-color: #000;
     position: relative;
@@ -33,18 +123,18 @@
 #hudLeft{
     position: absolute;
     background-color: #ff0000;
-    top: 1em;
+    top: 3em;
     left: 0;
-    bottom: 1em;
+    bottom: 3em;
     right: 0;
 }
 
 #hudRight{
     position: absolute;
     background-color: #0088ff;
-    top: 1em;
+    top: 3em;
     left: 0;
-    bottom: 1em;
+    bottom: 3em;
     right: 0;
 }
 
@@ -518,7 +608,7 @@ body {
         <div id="squareRight">
             <div id="hudRight">
                 <div id="ToDo">
-                    <div id="map">
+                    <div id="theTree">
                     </div>
                 </div>    
             </div>

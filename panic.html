@@ -1,291 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gnomy Countdown with D3.js</title>
-    <style>
-        .glow {
-  font-size: 80px;
-  color: #fff;
-  text-align: center;
-  -webkit-animation: glow 1s ease-in-out infinite alternate;
-  -moz-animation: glow 1s ease-in-out infinite alternate;
-  animation: glow 1s ease-in-out infinite alternate;
-}
-
-@-webkit-keyframes glow {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #008cff, 0 0 40px #008cff, 0 0 50px #008cff, 0 0 60px #008cff, 0 0 70px #008cff;
-  }
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #7A99B3, 0 0 40px #7A99B3, 0 0 50px #7A99B3, 0 0 60px #7A99B3, 0 0 70px #7A99B3, 0 0 80px #7A99B3;
-  }
-}
-
-.gnomy {
-
-    /*box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); /* Example shadow */
-    /*border-radius: 8px; /* Optional: round the corners */
-
-}
-
-.countdown {
-  font-size: 80px;
-  color: #fff;
-  text-align: center;
-  -webkit-animation: glow 1s ease-in-out infinite alternate;
-  -moz-animation: glow 1s ease-in-out infinite alternate;
-  animation: glow 1s ease-in-out infinite alternate;
-}
-
-@-webkit-keyframes countdown {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #008cff, 0 0 40px #008cff, 0 0 50px #008cff, 0 0 60px #008cff, 0 0 70px #008cff;
-  }
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #7A99B3, 0 0 40px #7A99B3, 0 0 50px #7A99B3, 0 0 60px #7A99B3, 0 0 70px #7A99B3, 0 0 80px #7A99B3;
-  }
-}
-
-body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(to bottom right, #1b1c2d, #2a3c4d);
-            margin: 0;
-            overflow: hidden;
-            height: 100vh; /* Center vertically */
-        }
-        .container {
-            width: 400px; 
-            height: 400px;
-            border: 2px solid #6593a2; 
-            position: relative;
-            background-color: #645452;
-            background-image: url(border.jpg);
-            background-repeat: no-repeat;
-            background-size: 100% 100%;          
-            background-position: center;  
-            padding: 2em;
-        }
-        svg {
-            background: #338833;
-            background-image: radial-gradient(#224422 1px, transparent 0);
-            background-size: 1em 1em;
-            background-position: -19px -19px;
-            width: 100%;
-            height: 100%;
-        }
-        .countdown {
-            font-size: 48px;
-            font-weight: bold;
-            fill: #ffffff;
-        }
-        button {
-            transition: background-color 0.3s;
-            background-color: #6593a2;
-            color: white;
-            padding: 0.25em;
-            border: 2px solid white;
-            border-color: #98c6d5;
-            border-radius: 0.25em;
-            cursor: pointer;
-        }
-        svg {
-    background: #427958; /* Softer green for lawn */
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dot, Fruits, and Breathing Text</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #f0f0f0;
+      border-image-slice:    42 42 42 42;
+    border-image-width:    42px 42px 42px 42px;
+    border-image-outset:    .5em .5em .5em .5em;
+    border-image-repeat:    round round;
+    border-image-source:    url("border.svg");
+    border-style:    solid;  
+ 
+    background: #3f5c38; /* Base green for the lawn */
     background-image: 
-        radial-gradient(circle, #426142 1px, transparent 0), /* Dark green dots */
-        radial-gradient(circle, #5f8a54 1px, transparent 0), /* Lighter green dots */
-        radial-gradient(circle, #465c46 1px, transparent 0), /* Yellow dots */
-        radial-gradient(circle, #447044 1px, transparent 0), /* Orange dots */
-        radial-gradient(circle, #546b46 1px, transparent 0); /* Pink dots */
-    background-size: 1em 1em, 2em 2em, 1.5em 1.5em, 1.25em 1.25em, 0.5em 0.5em, 4em;/* Adjust dot sizes */
-    background-position: 0 0, 1em 1em, 0.5em 0.5em, 1.5em 1.5em, 2em 2em; /* Adjust dot positions */
+      /* Small, irregular dots for detailed grass texture */
+      radial-gradient(circle, #547c54 1px, transparent 0), 
+      radial-gradient(circle, #4f7949 1px, transparent 0),
+      radial-gradient(circle, #6a7247 1px, transparent 0),
+      radial-gradient(circle, #4d6a3d 1px, transparent 0),
+      radial-gradient(circle, #626e4b 2px, transparent 0),
+      
+      /* Medium-sized patches for natural variation */
+      radial-gradient(circle, #5b7743 3px, transparent 0),
+      radial-gradient(circle, #4f6d3f 3px, transparent 0),
+      radial-gradient(circle, #506838 4px, transparent 0),
+      radial-gradient(circle, #717556 4px, transparent 0),
+      
+      /* Larger blades and irregular shapes for layering */
+      radial-gradient(ellipse at top left, rgba(50, 80, 50, 0.8) 30%, transparent 60%), 
+      radial-gradient(ellipse at bottom right, rgba(92, 128, 81, 0.6) 20%, transparent 50%),
+      radial-gradient(ellipse at center, rgba(98, 126, 98, 0.5) 40%, transparent 70%),
+      
+      /* Linear gradient for overall shading and depth */
+      linear-gradient(135deg, #567046, #3f5c38, #2f4b2e);
     
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-        }
-        .countdown {
-            font-size: 48px;
-            font-weight: 500;
-            fill: #FFDD99; /* Soothing yellow text */
-            transition: fill 0.6s ease, font-size 0.6s ease;
-        }
-        button {
-            transition: background-color 0.3s ease;
-            background-color: #5D8AA8;
-            color: #ffffff;
-            padding: 0.5em 1em;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-        }
-        button:hover {
-            background-color: #7A99B3; /* Slight hover effect */
-        }
-        #hud-text {
-            font-size: 24px;
-            font-weight: 600;
-            color: #FFDD99;
-            color:#eaf4fc;
-            text-align: center;
-            margin-bottom: 1em;
-            background-color: #3B3A3A;
-            padding: 10px;
-            border-radius: 8px;
+    /* Sizes adjusted for irregular, interwoven effect */
+    background-size: 
+      0.2em 0.2em, 
+      .25em .25em, 
+      .3em .3em, 
+      .35em .35em, 
+      1.5em 1.5em, 
+      0.75em 0.75em, 
+      .5em .5em, 
+      0.88em 0.88em, 
+      .5em .5em, 
+      .25em .25em, 
+      100% 100%; /* Full coverage for shading */
+    
+    /* Positions randomized for natural look */
+    background-position: 
+      0 0, 
+      0.5em 1em, 
+      1.5em -0.5em, 
+      -1em 0.5em, 
+      2em 2em, 
+      -3em -2em, 
+      2em -2em, 
+      -1.5em 1em, 
+      1em -1em, 
+      0 0;
 
-            .glow {
-  font-size: 80px;
-  color: #fff;
+    }
+    canvas {
+        z-index: 3; /* Ensure the bush is behind the canvas */
+      display: block;
+      color: #fff;
   text-align: center;
   -webkit-animation: glow 1s ease-in-out infinite alternate;
   -moz-animation: glow 1s ease-in-out infinite alternate;
   animation: glow 1s ease-in-out infinite alternate;
-}
-
-@-webkit-keyframes glow {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #008cff, 0 0 40px #008cff, 0 0 50px #008cff, 0 0 60px #008cff, 0 0 70px #008cff;
-  }
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #7A99B3, 0 0 40px #7A99B3, 0 0 50px #7A99B3, 0 0 60px #7A99B3, 0 0 70px #7A99B3, 0 0 80px #7A99B3;
-  }
-}
-
-        }
-    </style>
+    }
+    .bush {
+      pointer-events: none;
+      position: absolute;
+      /*z-index: -1; /* Ensure the bush is behind the canvas */
+      z-index: 2; /* Ensure the bush is behind the canvas */
+      width: 200px; /* Match circle diameter */
+      height: 200px; /* Match circle diameter */
+      background: url('bush.png') no-repeat center center;
+      background-size: cover;
+      top: calc(50vh - 100px); /* Center the bush */
+      left: calc(50vw - 100px); /* Center the bush */
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-<div style="display:block;">
-    <div style="text-align:left; width:420px; background-color: #645452; border: 10px solid transparent; padding: 15px; border-image: url(border.jpg) 30 stretch;">
-        <a href="homescreen.html">
-            <!--button>Home Screen</button-->
-        </a>
-    </div>
-            background-color: #5D8AA8;
-            <div id="hud-text" style="height: 1.5em; width: auto; border: 2px solid #ffffff; color: #ffff00; text-align:center;background-color: #645452; border: 10px solid transparent; padding: 15px; border-image: url(border.jpg) 30 stretch;color:#7A99B3; color:#eaf4fc;" class="glow"></div>
-    <div class="container">
-        
-        <svg></svg>
-    </div>
+    <div class="bush"></div>
+    <canvas id="circleCanvas"></canvas>
 
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script>
-        // Set up the SVG container
-        const svg = d3.select("svg");
+  <script>
+    const logoWidth = 50;  // Adjust size as needed
+    const logoHeight = 50;
+    const canvas = document.getElementById('circleCanvas');
+    const ctx = canvas.getContext('2d');
 
-        // Define Gnomy logo properties
-        const logoWidth = 50;
-        const logoHeight = 50;
-        let initialX = 20;
-        let initialY = 20;
+    // Set canvas size to window size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-        // Append Gnomy logo image to the SVG
-        const gnomyLogo = svg.append("image")
-            .attr("xlink:href", 'GnomyLogo.png') 
-            .attr("class", "gnomy")
-            .attr("x", initialX)
-            .attr("y", initialY)
-            .attr("width", logoWidth)
-            .attr("height", logoHeight);
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = 100; // Radius of the circle
 
-        // Define drag behavior
-        const drag = d3.drag()
-            .on("start", function () {
-                d3.select(this).raise().classed("active", true);
-            })
-            .on("drag", function (event) {
-                d3.select(this)
-                    .attr("x", Math.max(0, Math.min(event.x, 600 - logoWidth)))
-                    .attr("y", Math.max(0, Math.min(event.y, 600 - logoHeight)));
-            })
-            .on("end", function () {
-                d3.select(this).classed("active", false);
-            });
+    let dotAngle = 0; // Initial angle for the dot
+    let fruitAngle = 0; // Initial angle for the fruit (top of the circle)
+    let fruitTurn = 1; // Tracks the fruit cycle (1 = Inhale, 2 = Hold, 3 = Exhale)
+    let isDragging = false; // Track if the user is interacting
+    let fruitSize = 0; // Initial size of the fruit
+    const fruitGrowthRate = 2; // Pixels per second
+    let lastTimestamp = null; // For tracking time
 
-        // Apply the drag behavior to the logo
-        gnomyLogo.call(drag);
+    function drawCircle() {
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
 
-        // Function to start the first countdown from 4 to 0
-        function startFirstCountdown() {
-            const countdownText1 = svg.append("text")
-                .attr("class", "countdown")
-                .attr("x", 300)
-                .attr("y", 50)
-                .text(4);
-            d3.select("#hud-text").text("Inhale");
+    const gnomyLogo = new Image();
+    gnomyLogo.src = 'GnomyLogo.png'; // Path to your Gnomy logo image
 
-            let countdownValue1 = 4;
-            const countdownInterval1 = setInterval(() => {
-                countdownValue1--;
-                countdownText1.text(countdownValue1);
+    function drawDot() {
+        const dotX = centerX + radius * Math.cos(dotAngle) - logoWidth / 2;
+        const dotY = centerY + radius * Math.sin(dotAngle) - logoHeight / 2;
 
-                if (countdownValue1 < 1) {
-                    clearInterval(countdownInterval1);
-                    setTimeout(() => {
-                        svg.selectAll(".countdown").remove();
-                        startSecondCountdown();
-                    }, 1000);
-                }
-            }, 1000);
+        // Draw the image if it's loaded
+        if (gnomyLogo.complete) {
+            ctx.drawImage(gnomyLogo, dotX, dotY, logoWidth, logoHeight);
         }
+    }
 
-        // Function to start the second countdown from 7 to 0
-        function startSecondCountdown() {
-            const countdownText2 = svg.append("text")
-                .attr("class", "countdown")
-                .attr("x", 300)
-                .attr("y", 300)
-                .text(7);
-            d3.select("#hud-text").text("Hold Breath");
+    function drawFruit() {
+      const fruitX = centerX + radius * Math.cos(fruitAngle);
+      const fruitY = centerY + radius * Math.sin(fruitAngle);
 
-            let countdownValue2 = 7;
-            const countdownInterval2 = setInterval(() => {
-                countdownValue2--;
-                countdownText2.text(countdownValue2);
+      ctx.beginPath();
+      ctx.arc(fruitX, fruitY, fruitSize, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff8800';
+      ctx.fill();
+    }
 
-                if (countdownValue2 < 1) {
-                    clearInterval(countdownInterval2);
-                    setTimeout(() => {
-                        svg.selectAll(".countdown").remove();
-                        startThirdCountdown();
-                    }, 1000);
-                }
-            }, 1000);
-        }
+    function drawText() {
+  ctx.font = 'bold 20px Lora'; // Use Lora font
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
 
-        // Function to start the third countdown from 8 to 0
-        function startThirdCountdown() {
-            const countdownText3 = svg.append("text")
-                .attr("class", "countdown")
-                .attr("x", 10)
-                .attr("y", 50)
-                .text(8);
-            d3.select("#hud-text").text("Exhale");
+  // Main text for breathing phase
+  const mainText = fruitTurn === 1 
+    ? 'Inhale' 
+    : fruitTurn === 2 
+    ? 'Hold' 
+    : 'Exhale';
 
-            let countdownValue3 = 8;
-            const countdownInterval3 = setInterval(() => {
-                countdownValue3--;
-                countdownText3.text(countdownValue3);
+  // Counter rounded down to whole seconds
+  const timeRemaining = fruitTurn === 1 
+    ? 4 - Math.floor(fruitSize) 
+    : fruitTurn === 2 
+    ? 7 - Math.floor(fruitSize) 
+    : 8 - Math.floor(fruitSize);
 
-                if (countdownValue3 < 1) {
-                    clearInterval(countdownInterval3);
-                    setTimeout(() => {
-                        svg.selectAll(".countdown").remove();
-                        startFirstCountdown();
-                    }, 1000);
-                }
-            }, 1000);
-        }
+  // Draw main text at the center
+  ctx.fillText(mainText, centerX, centerY - 20);
 
-        // Start the countdown loop
-        startFirstCountdown();
-    </script>
-</div>
+  // Draw timer on a new line
+  ctx.fillText(`${timeRemaining} seconds`, centerX, centerY + 20);
+}
+
+function checkCollision() {
+    const dotX = centerX + radius * Math.cos(dotAngle);
+    const dotY = centerY + radius * Math.sin(dotAngle);
+    const fruitX = centerX + radius * Math.cos(fruitAngle);
+    const fruitY = centerY + radius * Math.sin(fruitAngle);
+
+    const distance = Math.sqrt((dotX - fruitX) ** 2 + (dotY - fruitY) ** 2);
+    const threshold = fruitSize + 10; // Adjust collision threshold
+
+    return distance < threshold;
+}
+
+
+
+    function updateFruitSize(timestamp) {
+      if (!lastTimestamp) {
+        lastTimestamp = timestamp;
+        return;
+      }
+      const deltaTime = (timestamp - lastTimestamp) / 1000; // Convert to seconds
+      lastTimestamp = timestamp;
+
+      if (fruitSize < 4 && fruitTurn===1) {
+        fruitSize += fruitGrowthRate * deltaTime;
+      }
+
+      if (fruitSize < 7 && fruitTurn===2) {
+        fruitSize += fruitGrowthRate * deltaTime;
+      }
+      
+      if (fruitSize < 8 && fruitTurn===3) {
+        fruitSize += fruitGrowthRate * deltaTime;
+      }      
+    }
+
+    function updateCanvas(timestamp) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawCircle();
+      drawDot();
+      drawFruit();
+      drawText();
+      if (
+  (fruitTurn === 1 && Math.abs(fruitSize - 4) < 0.1) ||
+  (fruitTurn === 2 && Math.abs(fruitSize - 7) < 0.1) ||
+  (fruitTurn === 3 && Math.abs(fruitSize - 8) < 0.1)
+) {
+  if (checkCollision()) {
+    fruitSize = 0; // Reset fruit size
+    fruitTurn = (fruitTurn % 3) + 1; // Cycle through 1, 2, 3
+    fruitAngle = (fruitTurn - 1) * (Math.PI * 2 / 3); // Calculate new position (0, 120, 240 degrees)
+  }
+}
+      updateFruitSize(timestamp);
+      requestAnimationFrame(updateCanvas);
+    }
+
+    canvas.addEventListener('mousedown', (event) => {
+      if (event.button === 0) { // Check if left mouse button is pressed
+        isDragging = true;
+      }
+    });
+
+    canvas.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    canvas.addEventListener('mousemove', (event) => {
+      if (isDragging) {
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+
+        // Calculate angle of mouse pointer relative to the center of the circle
+        const dx = mouseX - centerX;
+        const dy = mouseY - centerY;
+        dotAngle = Math.atan2(dy, dx);
+      }
+    });
+
+    canvas.addEventListener('touchstart', (event) => {
+      isDragging = true;
+      const touch = event.touches[0];
+      const dx = touch.clientX - centerX;
+      const dy = touch.clientY - centerY;
+      dotAngle = Math.atan2(dy, dx);
+    });
+
+    canvas.addEventListener('touchmove', (event) => {
+      if (isDragging) {
+        const touch = event.touches[0];
+        const dx = touch.clientX - centerX;
+        const dy = touch.clientY - centerY;
+        dotAngle = Math.atan2(dy, dx);
+      }
+    });
+
+    canvas.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    // Initial draw and start animation
+    requestAnimationFrame(updateCanvas);
+
+    function updateFruitSize(timestamp) {
+    if (!lastTimestamp) {
+        lastTimestamp = timestamp;
+        return;
+    }
+    const deltaTime = (timestamp - lastTimestamp) / 1000; // Convert to seconds
+    lastTimestamp = timestamp;
+
+    // Adjust size with cap
+    if (fruitTurn === 1 && fruitSize < 4) {
+        fruitSize = Math.min(fruitSize + fruitGrowthRate * deltaTime, 4);
+    } else if (fruitTurn === 2 && fruitSize < 7) {
+        fruitSize = Math.min(fruitSize + fruitGrowthRate * deltaTime, 7);
+    } else if (fruitTurn === 3 && fruitSize < 8) {
+        fruitSize = Math.min(fruitSize + fruitGrowthRate * deltaTime, 8);
+    }
+}
+
+    window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Update center based on new dimensions
+    centerX = canvas.width / 2;
+    centerY = canvas.height / 2;
+
+    // Redraw everything
+    drawCircle();
+});
+
+  </script>
 </body>
-</html> 
-
+</html>
