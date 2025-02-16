@@ -67,7 +67,7 @@
 
 #hudRight{
     position: absolute;
-    background-color: ##88ff00;
+    background-color: #88ff00;
     top: 3em;
     left: 0;
     bottom: 3em;
@@ -550,7 +550,7 @@ body {
                         <!--svg width="600" height="400"></svg-->
 
                         
-                        <svg id="treeSvg" width="600" height="400" style="background-color:#0088ff;""></svg>
+                        <svg id="treeSvg" style="background-color:#0088ff; width:100%; height:100%;""></svg>
 
                         <script>
                           let treeData = {
@@ -564,8 +564,8 @@ body {
                             ],
                           };
                       
-                          const width = 600;
-                          const height = 400;
+                          const width = document.getElementById('theTree').offsetWidth;
+                          const height = document.getElementById('theTree').offsetHeight;
                       
                           const svg = d3.select("#treeSvg");
                           const treeLayout = d3.tree().size([width, height - 100]);
