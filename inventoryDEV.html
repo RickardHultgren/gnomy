@@ -16,12 +16,12 @@
 #map{
     width:100%;
     height:100%;
-    background: #fffef0;
+    background: #aab99b;
     background-size: 2em 2em;
-    background-image:
+    /*background-image:
     linear-gradient(to right, #dab795 1px, transparent 1px),
-    linear-gradient(to bottom, #dab795 1px, transparent 1px);
-    box-shadow: 2px 3px 20px black, 0 0 60px #8a4d0f inset;
+    linear-gradient(to bottom, #dab795 1px, transparent 1px);*/
+    box-shadow: 2px 3px 20px black, 0 0 60px #335116 inset;
     /*border: 3px double #c79665; */
 }
 
@@ -1816,127 +1816,112 @@ let previouslySelectedRow = null; // Track the previously selected row
 </script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
-    // Function to create D3 nodes when a situation is selected
     function updateMapWithNodes(selectedSituation) {
-    // Clear previous visualization
-    d3.select("#map").selectAll("*").remove();
+        // Clear previous visualization
+        d3.select("#map").selectAll("*").remove();
 
-    // Find all links where "from" matches the selected situation
-    const links = Object.keys(situationLinks)
-        .filter(key => situationLinks[key].from.includes(selectedSituation))
-        .map(key => situationLinks[key]); 
+        // Find all links where "from" matches the selected situation
+        const links = Object.keys(situationLinks)
+            .filter(key => situationLinks[key].from.includes(selectedSituation))
+            .map(key => situationLinks[key]); 
 
-    // If no links found, stop execution
-    if (links.length === 0) {
-        console.log("No links found for the selected situation.");
-        return;
+        if (links.length === 0) {
+            console.log("No links found for the selected situation.");
+            return;
+        }
+
+        const fromText = links[0].from[0]; 
+        const toTexts = [...new Set(links.flatMap(link => link.to))];
+
+        // Create an SVG container
+        const width = 500;
+        const height = 300;
+        const svg = d3.select("#map")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        const nodes = [
+            { id: "from", text: fromText, x: centerX, y: centerY }
+        ];
+
+        const radius = 100;
+        const angleStep = (2 * Math.PI) / toTexts.length;
+
+        toTexts.forEach((toText, index) => {
+            const angle = index * angleStep;
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            nodes.push({ id: "to" + index, text: toText, x, y });
+        });
+
+        // Create tree-shaped nodes instead of simple circles
+        nodes.forEach(d => {
+            const crownTop = { x: d.x, y: d.y - 10, r: 10 };
+            const crownBottom = { x: d.x, y: d.y + 5, r: 15 };
+            const trunkBottomY = d.y + 35; // Bottom of the trunk
+
+            // Append tree crowns (two circles)
+            svg.append("circle")
+                .attr("cx", crownTop.x)
+                .attr("cy", crownTop.y)
+                .attr("r", crownTop.r)
+                .style("fill", "#2f9000");
+
+            svg.append("circle")
+                .attr("cx", crownBottom.x)
+                .attr("cy", crownBottom.y)
+                .attr("r", crownBottom.r)
+                .style("fill", "#2f9000");
+
+            // Append trunk (line)
+            svg.append("line")
+                .attr("x1", d.x)
+                .attr("y1", d.y + 15)
+                .attr("x2", d.x)
+                .attr("y2", trunkBottomY)
+                .attr("stroke", "#8B4513")
+                .attr("stroke-width", 7);
+
+            // Save the trunk bottom coordinate for link connections
+            d.trunkBottomY = trunkBottomY;
+        });
+
+        // Draw connecting lines **from the bottom of the trunk**
+        svg.selectAll("line.link")
+            .data(nodes.slice(1)) // Exclude "from" node
+            .enter()
+            .append("line")
+            .attr("class", "link")
+            .attr("x1", centerX)
+            .attr("y1", nodes[0].trunkBottomY)  // Start from the bottom of center tree's trunk
+            .attr("x2", d => d.x)
+            .attr("y2", d => d.trunkBottomY)  // Connect to the bottom of each "to" tree trunk
+            .attr("stroke", "#443300")
+            .attr("stroke-width", 4);
+
+        // Add text labels
+        svg.selectAll("text")
+            .data(nodes)
+            .enter()
+            .append("text")
+            .attr("x", d => d.x)
+            .attr("y", d => d.trunkBottomY + 15)  // Position text below the trunk
+            .attr("text-anchor", "middle")
+            .style("fill", "black")
+            .style("font-size", "12px")
+            .style("font-family", "Arial")
+            .text(d => d.text);
     }
 
-    // Get unique "from" text (should be the same for all matching links)
-    const fromText = links[0].from[0]; 
-
-    // Get all unique "to" situations from the matching links
-    const toTexts = [...new Set(links.flatMap(link => link.to))];
-
-    // Create an SVG container
-    const width = 500;
-    const height = 300;
-    const svg = d3.select("#map")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-    // Define the center position for the "from" node
-    const centerX = width / 2;
-    const centerY = height / 2;
-
-    // Define the data for all nodes
-    const nodes = [
-        { id: "from", text: fromText, x: centerX, y: centerY } // Center node
-    ];
-
-    // Define spacing for the "to" nodes (placing them in a circular layout)
-    const radius = 100;
-    const angleStep = (2 * Math.PI) / toTexts.length; // Evenly distribute around circle
-
-    toTexts.forEach((toText, index) => {
-        const angle = index * angleStep; // Calculate angle for placement
-        const x = centerX + radius * Math.cos(angle);
-        const y = centerY + radius * Math.sin(angle);
-
-        nodes.push({ id: "to" + index, text: toText, x, y }); // Add each "to" node
+    // Event listener for situationDropdown
+    const situationDropdown = document.getElementById("situationDropdown");
+    situationDropdown.addEventListener("change", (event) => {
+        updateMapWithNodes(event.target.value);
     });
-
-    // Create lines connecting "from" node to each "to" node
-    svg.selectAll("line")
-        .data(nodes.slice(1)) // Exclude "from" node
-        .enter()
-        .append("line")
-        .attr("x1", centerX)
-        .attr("y1", centerY)
-        .attr("x2", d => d.x)
-        .attr("y2", d => d.y)
-        .attr("stroke", "#555")
-        .attr("stroke-width", 3); // Make lines thick
-
-
-// Define the tree structure (two circles and a stem)
-const treeDataPic = [
-  { x: 200, y: 75, r: 10 },  // First circle (crown)
-  { x: 200, y: 90, r: 15 },  // Second circle (crown)
-];
-
-svg.selectAll("circle")
-  .data(treeDataPic)
-  .enter()
-  .append("circle")
-  .attr("cx", d => d.x)
-  .attr("cy", d => d.y)
-  .attr("r", d => d.r)
-  .style("fill", "#69b3a2");  // Tree crown color
-
-// Add a stem (line) connecting the two circles downward
-svg.append("line")
-  .attr("x1", 200)  // Midpoint between circles
-  .attr("y1", 100)   // Slightly below the circles
-  .attr("x2", 200)  // Vertical line
-  .attr("y2", 115)  // Extending downward
-  .attr("stroke", "#8B4513")  // Brown stem
-  .attr("stroke-width", 5);
-
-
-
-    // Create circles (nodes)
-    svg.selectAll("circle")
-        .data(nodes)
-        .enter()
-        .append("circle")
-        .attr("cx", d => d.x)
-        .attr("cy", d => d.y)
-        .attr("r", 20)
-        .style("fill", (d, i) => (i === 0 ? "#ff5733" : "#69b3a2")); // Center node different color
-
-    // Add text labels
-    svg.selectAll("text")
-        .data(nodes)
-        .enter()
-        .append("text")
-        .attr("x", d => d.x)
-        .attr("y", d => d.y + 5)
-        .attr("text-anchor", "middle")
-        .style("fill", "white")
-        .style("font-size", "12px")
-        .style("font-family", "Arial")
-        .text(d => d.text);
-}
-
-// Modify the event listener for situationDropdown to call updateMapWithNodes
-const situationDropdown = document.getElementById("situationDropdown");
-
-situationDropdown.addEventListener("change", (event) => {
-    const selectedSituation = event.target.value;
-    updateMapWithNodes(selectedSituation);
-});
 </script>
 <script>
 
