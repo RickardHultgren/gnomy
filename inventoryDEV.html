@@ -6,94 +6,32 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
 
+
+    .node circle { fill: #008800; cursor: pointer; }
+    .node text { font: 12px sans-serif; cursor: pointer; }
+    .link { fill: none; stroke: #ccc; stroke-width: 2px; }
+    .marked { fill: red; }
+    .child { fill: orange; }
+
 #map{
     width:100%;
     height:100%;
-    background-color: #3f5c38; /* Base green for the lawn */
-background-image: 
-
-  /* Fine grass speckles for texture */
-  radial-gradient(circle, rgba(74, 107, 63, 0.2) 2px, transparent 0),
-  radial-gradient(circle, rgba(93, 124, 79, 0.15) 2px, transparent 0),
-  radial-gradient(circle, rgba(63, 96, 51, 0.2) 3px, transparent 0),
-
-  /* Soft organic patches to add depth */
-  radial-gradient(circle, rgba(80, 106, 61, 0.2) 4px, transparent 0),
-  radial-gradient(circle, rgba(96, 122, 74, 0.15) 5px, transparent 0),
-  radial-gradient(circle, rgba(76, 115, 66, 0.2) 6px, transparent 0),
-
-  /* Subtle shading for smooth blending */
-  linear-gradient(120deg, rgba(50, 80, 50, 0.2) 20%, transparent 80%),
-  linear-gradient(60deg, rgba(92, 128, 81, 0.15) 25%, transparent 75%),
-
-  /* Light overall gradient for smooth color variation */
-  linear-gradient(135deg, #4b6a3f 35%, #3f5c38 55%, #2e472b 85%);
-
-background-size: 
-  0.2em 0.2em, 
-  .3em .3em, 
-  .4em .4em, 
-  1em 1em, 
-  1.5em 1.5em, 
-  0.75em 0.75em, 
-  .9em .9em, 
-  100% 100%; /* Overall shading */
-
-background-position: 
-  0 0, 
-  0.5em 1em, 
-  1.2em -0.8em, 
-  -1em 0.5em, 
-  2em 2em, 
-  -2.5em -2em, 
-  1.5em -2em, 
-  -1.3em 1em;
-
-
+    background: #fffef0;
+    background-size: 2em 2em;
+    background-image:
+    linear-gradient(to right, #dab795 1px, transparent 1px),
+    linear-gradient(to bottom, #dab795 1px, transparent 1px);
+    box-shadow: 2px 3px 20px black, 0 0 60px #8a4d0f inset;
+    /*border: 3px double #c79665; */
 }
 
 #theTree{
     width:100%;
     height:100%;
-    background-color: #3f5c38; /* Base green for the lawn */
-background-image: 
+ /* List */
+#62cff4, #2c67f2
 
-  /* Fine grass speckles for texture */
-  radial-gradient(circle, rgba(74, 107, 63, 0.2) 2px, transparent 0),
-  radial-gradient(circle, rgba(93, 124, 79, 0.15) 2px, transparent 0),
-  radial-gradient(circle, rgba(63, 96, 51, 0.2) 3px, transparent 0),
 
-  /* Soft organic patches to add depth */
-  radial-gradient(circle, rgba(80, 106, 61, 0.2) 4px, transparent 0),
-  radial-gradient(circle, rgba(96, 122, 74, 0.15) 5px, transparent 0),
-  radial-gradient(circle, rgba(76, 115, 66, 0.2) 6px, transparent 0),
-
-  /* Subtle shading for smooth blending */
-  linear-gradient(120deg, rgba(50, 80, 50, 0.2) 20%, transparent 80%),
-  linear-gradient(60deg, rgba(92, 128, 81, 0.15) 25%, transparent 75%),
-
-  /* Light overall gradient for smooth color variation */
-  linear-gradient(135deg, #4b6a3f 35%, #3f5c38 55%, #2e472b 85%);
-
-background-size: 
-  0.2em 0.2em, 
-  .3em .3em, 
-  .4em .4em, 
-  1em 1em, 
-  1.5em 1.5em, 
-  0.75em 0.75em, 
-  .9em .9em, 
-  100% 100%; /* Overall shading */
-
-background-position: 
-  0 0, 
-  0.5em 1em, 
-  1.2em -0.8em, 
-  -1em 0.5em, 
-  2em 2em, 
-  -2.5em -2em, 
-  1.5em -2em, 
-  -1.3em 1em;
 }
 
 #squares{
@@ -609,7 +547,102 @@ body {
             <div id="hudRight">
                 <div id="ToDo">
                     <div id="theTree">
-                    </div>
+                        <button id="addNodeButton">Add Node</button>
+                        <!--svg width="600" height="400"></svg-->
+
+                        <button id="addNodeButton">Add Node</button>
+                        <svg width="300" height="300" id="treeSVG"></svg>
+                    
+                        <script>
+                            let treeData = {
+                                name: "Root",
+                                children: [
+                                    {
+                                        name: "Branch A",
+                                        children: [{ name: "Leaf A1" }, { name: "Leaf A2" }],
+                                    },
+                                    { name: "Branch B" },
+                                ],
+                            };
+                    
+                            const width = 300, height = 300;
+                            const svg = d3.select("#treeSVG"),
+                                  g = svg.append("g").attr("transform", "translate(50,50)");
+                    
+                            const treeLayout = d3.tree().size([width - 100, height - 150]);
+                    
+                            let markedNode = null;
+                    
+                            function updateTree() {
+                                const root = d3.hierarchy(treeData);
+                                treeLayout(root);
+                    
+                                const nodes = g.selectAll(".node")
+                                    .data(root.descendants(), d => d.data.name);
+                    
+                                const nodeEnter = nodes.enter()
+                                    .append("g")
+                                    .attr("class", "node")
+                                    .attr("transform", d => `translate(${d.x},${d.y})`)
+                                    .on("click", (event, d) => {
+                                        markedNode = d;
+                                        markBranch(d);
+                                    });
+                    
+                                nodeEnter.append("circle")
+                                    .attr("r", 5);
+                    
+                                nodeEnter.append("text")
+                                    .attr("dy", -8)
+                                    .text(d => d.data.name);
+                    
+                                nodes.merge(nodeEnter)
+                                    .transition()
+                                    .duration(500)
+                                    .attr("transform", d => `translate(${d.x},${d.y})`);
+                    
+                                nodes.exit().remove();
+                    
+                                const links = g.selectAll(".link")
+                                    .data(root.links(), d => `${d.source.data.name}-${d.target.data.name}`);
+                    
+                                links.enter()
+                                    .insert("path", "g")
+                                    .attr("class", "link")
+                                    .merge(links)
+                                    .transition()
+                                    .duration(500)
+                                    .attr("d", d3.linkVertical()
+                                        .x(d => d.x)
+                                        .y(d => d.y));
+                    
+                                links.exit().remove();
+                            }
+                    
+                            function markBranch(d) {
+                                g.selectAll(".node circle").classed("marked", false);
+                                g.selectAll(".node text").classed("marked", false);
+                                g.selectAll(".link").classed("marked", false);
+                    
+                                d3.select(this).select("circle").classed("marked", true);
+                                
+                                d.ancestors().forEach(ancestor => {
+                                    g.selectAll(".node").filter(node => node === ancestor).select("circle").classed("marked", true);
+                                });
+                            }
+                    
+                            function addNode() {
+                                if (markedNode) {
+                                    if (!markedNode.data.children) markedNode.data.children = [];
+                                    markedNode.data.children.push({ name: "New Node" });
+                                    updateTree();
+                                }
+                            }
+                    
+                            document.getElementById("addNodeButton").addEventListener("click", addNode);
+                    
+                            updateTree();
+                        </script>                    </div>
                 </div>    
             </div>
             <button id="ToDoList" onclick="openToDoList();">Show To-Do-List</button>
@@ -1846,6 +1879,33 @@ let previouslySelectedRow = null; // Track the previously selected row
         .attr("stroke", "#555")
         .attr("stroke-width", 3); // Make lines thick
 
+
+// Define the tree structure (two circles and a stem)
+const treeDataPic = [
+  { x: 200, y: 75, r: 10 },  // First circle (crown)
+  { x: 200, y: 90, r: 15 },  // Second circle (crown)
+];
+
+svg.selectAll("circle")
+  .data(treeDataPic)
+  .enter()
+  .append("circle")
+  .attr("cx", d => d.x)
+  .attr("cy", d => d.y)
+  .attr("r", d => d.r)
+  .style("fill", "#69b3a2");  // Tree crown color
+
+// Add a stem (line) connecting the two circles downward
+svg.append("line")
+  .attr("x1", 200)  // Midpoint between circles
+  .attr("y1", 100)   // Slightly below the circles
+  .attr("x2", 200)  // Vertical line
+  .attr("y2", 115)  // Extending downward
+  .attr("stroke", "#8B4513")  // Brown stem
+  .attr("stroke-width", 5);
+
+
+
     // Create circles (nodes)
     svg.selectAll("circle")
         .data(nodes)
@@ -1945,6 +2005,124 @@ function addLink() {
 
 
 </script>
+<script>
+// Define the tree data structure with a root node and its children
+let treeData = {
+    name: "Root",
+    children: [
+      {
+        name: "Branch A",
+        children: [{ name: "Leaf A1" }, { name: "Leaf A2" }], // Branch A has two leaf nodes
+      },
+      { name: "Branch B" }, // Branch B has no children
+    ],
+};
 
+// Get the computed styles of the SVG element to dynamically determine width
+const computedStyle = window.getComputedStyle(treeSVG);
+const width = computedStyle.getPropertyValue("width"); // Extract width from computed styles
+
+// Set height equal to width (assuming a square aspect ratio)
+const height = width;
+
+// Select the SVG element using D3.js
+const svg = d3.select("svg");
+
+// Create a tree layout with specified dimensions
+const treeLayout = d3.tree().size([width, height - 100]);
+
+// Variable to keep track of the currently selected (marked) node
+let markedNode = null;
+
+// Function to update and render the tree visualization
+function updateTree() {
+    // Convert the treeData object into a D3 hierarchy structure
+    const root = d3.hierarchy(treeData);
+    
+    // Compute tree layout positions
+    treeLayout(root);
+
+    // Bind the hierarchical data to the nodes and create new elements as needed
+    const nodes = svg.selectAll(".node")
+                     .data(root.descendants(), (d) => d.data.name); // Use name as key for data binding
+
+    // Create new node elements
+    const nodeEnter = nodes.enter()
+                           .append("g") // Append group element for each node
+                           .attr("class", "node")
+                           .attr("transform", (d) => `translate(${d.x},${height - d.y})`) // Position the nodes
+                           .on("click", (event, d) => { // Add click event listener to mark node
+                               markedNode = d;
+                               markBranch(d);
+                           });
+
+    // Append circle to represent each node
+    nodeEnter.append("circle").attr("r", 15); // Small circle for each node
+    
+    // Append text label for each node
+    nodeEnter.append("text")
+             .attr("dy", -8) // Position text above the circle
+             .text((d) => d.data.name); // Display node name
+
+    // Merge new and existing nodes, updating their positions
+    nodes.merge(nodeEnter)
+         .transition()
+         .duration(500) // Smooth animation
+         .attr("transform", (d) => `translate(${d.x},${height - d.y})`);
+
+    // Remove nodes that no longer exist in data
+    nodes.exit().remove();
+
+    // Bind data to links (lines connecting parent-child nodes)
+    const links = svg.selectAll(".link")
+                     .data(root.links(), (d) => `${d.source.data.name}-${d.target.data.name}`);
+
+    // Create new links and update existing ones
+    links.enter()
+         .insert("path", "g") // Insert path elements for links
+         .attr("class", "link") // Assign class for styling
+         .merge(links)
+         .transition()
+         .duration(500) // Smooth animation
+         .attr("d", d3.linkVertical() // Define link path as a vertical link
+                          .x((d) => d.x)
+                          .y((d) => height - d.y)
+          );
+
+    // Remove any unnecessary links
+    links.exit().remove();
+}
+
+// Function to mark a branch when a node is clicked
+function markBranch(d) {
+    // Remove all existing markings from nodes and links
+    svg.selectAll(".node circle").classed("marked", false).classed("child", false);
+    svg.selectAll(".node text").classed("marked", false).classed("child", false);
+    svg.selectAll(".link").classed("marked", false).classed("child", false);
+
+    // Mark the selected node
+    d3.select(d3.select(`.node circle:nth-of-type(${d.depth + 1})`).node())
+      .classed("marked", true);
+
+    // Mark all ancestors of the selected node
+    d3.selectAll(d.ancestors().reverse()).selectAll(".node").classed("marked", true);
+}
+
+// Function to add a new node as a child of the currently marked node
+function addNode() {
+    if (markedNode) { // Ensure a node is selected
+        if (!markedNode.data.children) markedNode.data.children = []; // Initialize children array if empty
+        markedNode.data.children.push({ name: "new node" }); // Add a new child node
+        updateTree(); // Re-render the tree with the new node
+    }
+}
+
+// Attach event listener to button for adding a new node
+document.getElementById("addNodeButton").addEventListener("click", addNode);
+
+// Initial tree rendering
+updateTree();
+
+</script>
 </body>
 </html>
