@@ -44,7 +44,8 @@
 }
 
 #squareLeft{
-    width:50%;
+    width:50vh;
+    width-min:50%;
     padding-top:50%;
     background-color: #000;
     position: relative;
@@ -52,7 +53,8 @@
 }
 
 #squareRight{
-    width:50%;
+    width:50vh;
+    width-min:50%;
     padding-top:auto;
     background-color: #000;
     position: relative;
@@ -162,7 +164,7 @@
 
 
         #contexts{
-z-index:3;
+            z-index:3;
             display:flex;
 
         }
@@ -652,9 +654,6 @@ body {
             </div>
             <button id="ToDoList" onclick="openToDoList();">Show To-Do-List</button>
             <button id="addToDo" onclick="openAddToDo();">Add to the To-Do-List</button>
-        </div>
-        <div id="buttons">
-                <button style="display:none">History</button>
         </div>
     </div>
 
