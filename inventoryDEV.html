@@ -35,16 +35,18 @@
 #squares{
     width:auto;
     height:auto;
-    background-color: #ffff00;
+    background-color: #000;
     position: relative;
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
 padding:0;
 }
 
 #squareLeft{
-    width:49.5%;
+    width:49.8%;
     padding-top:50%;
     background-color: #000;
     position: relative;
@@ -52,7 +54,7 @@ padding:0;
 }
 
 #squareRight{
-    width:49.5%;
+    width:49.8%;
     padding-top:50%;
     background-color: #000;
     position: relative;
@@ -297,13 +299,14 @@ button:hover {
 font-size: 1em;
     font-family:"Michroma";
     color:#67bbff;
+    display:none;
 }
 
 .tale{
 font-size: 1em;
     font-family:"IM Fell English";
     color: #FFBF00;
-    display:none;
+    
 }
 
 .current-location .current-label {
@@ -848,7 +851,7 @@ function updateDropdowns(contextDropdown, situationDropdown, selectedContext) {
     // Clear and update the situation dropdown
     situationDropdown.innerHTML = "";
     const defaultOption = document.createElement("option");
-    defaultOption.textContent = "Select a situation...";
+    defaultOption.textContent = "Select a tree";
     defaultOption.value = "";
     situationDropdown.appendChild(defaultOption);
 
@@ -882,7 +885,7 @@ function createDropdowns() {
     contextDropdown.id = "contextDropdown";
 
     const defaultContextOption = document.createElement("option");
-    defaultContextOption.textContent = "Select a context...";
+    defaultContextOption.textContent = "Select a garden...";
     defaultContextOption.value = "";
     contextDropdown.appendChild(defaultContextOption);
 
