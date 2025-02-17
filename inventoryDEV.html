@@ -44,9 +44,7 @@ padding:0;
 }
 
 #squareLeft{
-    min-width:49.5%;
-    width:auto;
-    max-width:calc(100%);
+    width:49.5%;
     padding-top:50%;
     background-color: #000;
     position: relative;
@@ -54,12 +52,16 @@ padding:0;
 }
 
 #squareRight{
-    min-width:49.5%;
-    width:auto;
-    max-width:calc(100%);
+    width:49.5%;
     padding-top:50%;
     background-color: #000;
     position: relative;
+}
+
+@media (max-aspect-ratio: 3/2) {
+    #squareRight, #squareLeft {
+        width:100%;
+    }
 }
 
 #hudLeft{
@@ -1841,8 +1843,10 @@ let previouslySelectedRow = null; // Track the previously selected row
         const toTexts = [...new Set(links.flatMap(link => link.to))];
 
         // Create an SVG container
-        const width = 500;
-        const height = 300;
+        //const width = 500;
+        const width = document.getElementById('map').offsetWidth;
+        //const height = 300;
+        const height = document.getElementById('map').offsetHeight;
         const svg = d3.select("#map")
             .append("svg")
             .attr("width", width)
