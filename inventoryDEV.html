@@ -562,7 +562,7 @@ body {
                         <!--svg width="600" height="400"></svg-->
 
                         
-                        <svg id="treeSvg" style="background-color:#0088ff; width:100%; height:100%;""></svg>
+                        <svg id="treeSvg" style="background-color:#008800; width:100%; height:100%;""></svg>
 
                         <script>
                           let treeData = {
@@ -585,54 +585,70 @@ body {
                           let markedNode = null;
                       
                           function updateTree() {
-                            const root = d3.hierarchy(treeData);
-                            treeLayout(root);
-                      
-                            // Update nodes
-                            const nodes = svg.selectAll(".node").data(root.descendants(), (d) => d.data.name);
-                      
-                            const nodeEnter = nodes
-                              .enter()
-                              .append("g")
-                              .attr("class", "node")
-                              .attr("transform", (d) => `translate(${d.x},${height - d.y})`)
-                              .on("click", (event, d) => {
-                                markedNode = d;
-                                markBranch(d);
-                              });
-                      
-                            nodeEnter.append("circle").attr("r", 5);
-                            nodeEnter.append("text").attr("dy", -8).text((d) => d.data.name);
-                      
-                            nodes
-                              .merge(nodeEnter)
-                              .transition()
-                              .duration(500)
-                              .attr("transform", (d) => `translate(${d.x},${height - d.y})`);
-                      
-                            nodes.exit().remove();
-                      
-                            // Update links
-                            const links = svg.selectAll(".link").data(root.links(), (d) => `${d.source.data.name}-${d.target.data.name}`);
-                      
-                            links
-                              .enter()
-                              .insert("path", "g")
-                              .attr("class", "link")
-                              .merge(links)
-                              .transition()
-                              .duration(500)
-                              .attr(
-                                "d",
-                                d3
-                                  .linkVertical()
-                                  .x((d) => d.x)
-                                  .y((d) => height - d.y)
-                              );
-                      
-                            links.exit().remove();
-                          }
-                      
+                                const root = d3.hierarchy(treeData);
+                                treeLayout(root);
+
+                                // Ensure the grass is at the very bottom of the SVG
+                                const grassY = height - 20; 
+
+                                // Add or update the sky rectangle
+                                let sky = svg.select(".sky");
+                                if (sky.empty()) {
+                                    sky = svg.append("rect").attr("class", "sky");
+                                }
+
+                                // Add or update the grass rectangle
+                                let grass = svg.select(".grass");
+                                if (grass.empty()) {
+                                    grass = svg.append("rect").attr("class", "grass");
+                                }
+
+                                sky
+                                    .attr("x", 0)
+                                    .attr("y", 0) // Fixed position at the bottom
+                                    .attr("width", width)
+                                    .attr("height", grassY) // Fixed height for the grass
+                                    .attr("fill", "#0088ff");
+
+                                
+                                grass
+                                    .attr("x", 0)
+                                    .attr("y", grassY) // Fixed position at the bottom
+                                    .attr("width", width)
+                                    .attr("height", 80) // Fixed height for the grass
+                                    .attr("fill", "green");
+
+                                // Update nodes
+                                const nodes = svg.selectAll(".node").data(root.descendants(), d => d.data.name);
+
+                                const nodeEnter = nodes.enter()
+                                    .append("g")
+                                    .attr("class", "node")
+                                    .attr("transform", d => `translate(${d.x},${height - d.y})`);
+
+                                nodeEnter.append("circle").attr("r", 5);
+                                nodeEnter.append("text").attr("dy", -8).text(d => d.data.name);
+
+                                nodes.merge(nodeEnter)
+                                    .transition().duration(500)
+                                    .attr("transform", d => `translate(${d.x},${height - d.y})`);
+
+                                nodes.exit().remove();
+
+                                // Update links
+                                const links = svg.selectAll(".link").data(root.links(), d => `${d.source.data.name}-${d.target.data.name}`);
+
+                                links.enter()
+                                    .insert("path", "g")
+                                    .attr("class", "link")
+                                    .merge(links)
+                                    .transition().duration(500)
+                                    .attr("d", d3.linkVertical()
+                                        .x(d => d.x)
+                                        .y(d => height - d.y));
+
+                                links.exit().remove();
+                            }                      
                           function markBranch(d) {
                             // Clear all marks
                             svg.selectAll(".node circle").classed("marked", false).classed("child", false);
