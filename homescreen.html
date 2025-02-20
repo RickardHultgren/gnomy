@@ -1998,7 +1998,7 @@ function addLink() {
 
     // Create a selection prompt for the user
     let options = allSituations.map((item, index) => `${index + 1}. ${item}`).join("\n");
-    let choice = prompt(`Select a situation:\n${options}`);
+    let choice = prompt(`Select a tree:\n${options}`);
 
     // Convert input to an index and validate
     let index = parseInt(choice, 10) - 1;
