@@ -1,225 +1,2031 @@
-<!DOCTYPE html>
-<html lang="en">
-<head> 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="GnomyLogo.ico" > <!--type="image/x-icon"-->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="map.css">
-    <title>Gnomy</title>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="https://rickardhultgren.github.io/gnomy/GnomyLogo.ico" > <!--type="image/x-icon"-->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Orbitron:wght@400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="map.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
+
+
+    .node circle { fill: #008800; cursor: pointer; }
+    .node text { font: 12px sans-serif; cursor: pointer; }
+    .link { fill: none; stroke: #ccc; stroke-width: 2px; }
+    .marked { fill: red; }
+    .child { fill: orange; }
+
+#map{
+    width:100%;
+    height:100%;
+    background: #aab99b;
+    background-size: 2em 2em;
+    /*background-image:
+    linear-gradient(to right, #dab795 1px, transparent 1px),
+    linear-gradient(to bottom, #dab795 1px, transparent 1px);*/
+    box-shadow: 2px 3px 20px black, 0 0 60px #335116 inset;
+    /*border: 3px double #c79665; */
+}
+
+#theTree{
+    width:100%;
+    height:100%;
+    background-color: #335116;
+}
+
+#squares{
+    width:auto;
+    height:auto;
+    background-color: #000;
+    position: relative;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+padding:0;
+}
+/*
+#squareLeft{
+    width:49.8%;
+    padding-top:50%;
+    background-color: #000;
+    position: relative;
+    border-right:1px solid #aaaaaa;
+}
+*/
+#squareRight{
+    display:none;
+    width:49.8%;
+    padding-top:50%;
+    background-color: #000;
+    position: relative;
+}
+
+/*@media (max-aspect-ratio: 3/2) {
+    #squareRight,*/ 
+    #squareLeft {
+        width:100%;
+        padding-top:50%;
+    background-color: #000;
+    position: relative;
+    border-right:1px solid #aaaaaa;
+    }
+/*}*/
+
+#hudLeft{
+    position: absolute;
+    background-color: #ff0000;
+    top: 3em;
+    left: 0;
+    bottom: 3em;
+    right: 0;
+}
+
+#hudRight{
+    position: absolute;
+    background-color: #88ff00;
+    top: 3em;
+    left: 0;
+    bottom: 3em;
+    right: 0;
+}
+
+
+.metal{  
+    z-index:3;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.1) 10%,
+      transparent 10%,
+      transparent 20%,
+      rgba(0, 0, 0, 0.1) 20%,
+      rgba(0, 0, 0, 0.1) 30%,
+      transparent 30%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.1) 40%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 50%,
+      transparent 60%,
+      rgba(0, 0, 0, 0.1) 60%,
+      rgba(0, 0, 0, 0.1) 70%,
+      transparent 70%,
+      transparent 80%,
+      rgba(255, 255, 255, 0.1) 80%,
+      rgba(255, 255, 255, 0.1) 90%,
+      transparent 90%,
+      transparent 100%
+    ),
+    linear-gradient(
+      180deg,
+      hsl(19, 60%, 20%) 0%,
+      hsl(19, 60%, 25%) 50%,
+      hsl(19, 60%, 20%) 100%
+    );
+  background-size: 4px 4px, 100% 100%;
+  box-shadow: inset 0 0.5em 0.5em rgba(0, 0, 0, 0.5);
+  border: 1px solid #3a1f0d;
+  border-radius: 5px;
+  padding-top:0.5em;
+}
+
+#logoID {
+  font-family: 'Amatic SC', cursive; /* Use the Amatic SC font */
+  font-size: 1.5em; /* Adjust size as needed */
+  letter-spacing: -0.5px; /* Slightly reduced letter spacing */
+  color: #ffffff; /* Set text color */
+  text-align: center; /* Center align text */
+  font-weight: bold;
+  /*margin: 20px;*/
+}
+
+#panic-button {
+            background-color: #A50021;
+            color: white;
+            width:2em;
+            border-color: #aaaaaa; 
+            font-size:1em;  
+            
+            background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0, 33%, 56%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0, 34%, 42%, 0.6) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0, 36%, 40%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0, 35%, 37%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0, 46%, 62%, 0.2) 2.2%),
+            
+            -webkit-radial-gradient( 50% 50%, 200% 50%, rgb(255, 123, 123) 5%, rgb(255, 135, 135) 30%, rgb(211, 145, 145) 100%);
+            width:3rem; height:3rem;
+            float:right;
+        }
+            
+          
+          #panic-button:hover {
+            background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0, 33%, 56%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0, 72%, 34%, 0.6) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0, 78%, 30%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0, 83%, 28%, 0.5) 0%, hsla(0,0%,100%,0) 100%),
+            
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
+            -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0, 46%, 62%, 0.2) 2.2%),
+            
+            -webkit-radial-gradient( 50% 50%, 200% 50%, rgb(255, 0, 0) 5%, rgb(255, 135, 135) 30%, rgb(252, 45, 45) 100%);
+        }
+
+
+        #contexts{
+            z-index:3;
+            display:flex;
+
+        }
+
+        #moreButton{}
+.space{
+    display:block;
+    border-bottom: 1px solid #B87333;
+    margin: 0em 0em 0em 0em;
+    padding:0em;
+    height:0em;
+}
+
+#contexts, #hud, #inventory{
+
+padding:0.5em;
+}    
+
+
+.slider-right-text, .slider-left-text, .slider-container {
+    font-family: 'Nunito', sans-serif;
+
+    
+
+
+font-size: 1em;
+    align-items: center;
+    /*gap: 10px; -> flex: 1 0 10px;*/
+    margin-top: 20px;
+
+}
+
+.slider {
+    width: 200px;
+}
+
+#subContainer, #subInventory {
+    margin-right:1.5em;
+    /* No display: none; */
+    visibility: hidden; /* Start as hidden */
+    position: absolute; /* Prevent layout shift */
+    transform-origin: top center;
+    transform: rotateX(90deg); /* Start flipped */
+    transition: transform 0.3s ease-in-out, visibility 0s 0.3s; /* Delay hiding */
+}
+
+#subContainer.show, #subInventory.show {
+    margin-right:1.5em;    
+    visibility: visible;
+    transform: rotateX(0deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Style for the context dropdown */
+.context-dropdown, .situation-dropdown,.context-dropdown * , .situation-dropdown * {
+    padding: 0.25rem;
+    font-family: 'Nunito', sans-serif;
+    font-family:"IM Fell English";
+font-size: 1em;
+    margin: 0 0.25rem 0.25rem 0;
+    width:10em;
+    height:2em;
+}
+
+
+.context-option, .situation-option, button {
+    cursor: pointer;
+    font-family:"IM Fell English";
+font-size: 1em;
+    margin: 0 .75em 1.25em 0;
+    border-radius: 5px;
+}
+
+button {
+    font-family: 'Nunito', sans-serif;
+    background-color: #a67844;
+    color: #f8f4e3;
+
+    color: #b87333;
+  text-shadow: 
+    0px -2px 3px #ffdab9, /* Top highlight */
+    0px 2px 3px #6b3e1e, /* Bottom depth */
+    1px 1px 5px #b87333; /* Glow */
+    font-size: 1.2rem;
+    font-weight:bold;
+    padding: 10px 20px;
+    border-color: #a67844;
+    border-color: 	#B87333;
+    border-width: 4px;
+    border-radius: 5px;
+    /*cursor: pointer;*/
+    transition: background-color 0.3s ease;
+
+    background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
+    -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0,0%,100%,.6) 0%, hsla(0,0%,100%,0) 100%),
+    -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
+    -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
+    
+    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
+    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
+    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.2) 2.2%),
+    
+    -webkit-radial-gradient( 50% 50%, 200% 50%, hsla(0,0%,90%,1) 5%, hsla(0,0%,85%,1) 30%, hsla(0,0%,60%,1) 100%);
+    
+}
+
+button:hover {
+    color: #d8995d;;
+    background-color: #ffcc33;
+}
+
+.add-context-button. .add-situation-button, .delete-context-button, .delete-situation-button {
+    background-color: #444444;
+    color:  #FAF3E0;
+    margin: 0 0.25rem 0.25rem 0;
+}
+
+/* Additional styles as needed */
+#tableheader {
+    font-family: 'Nunito', sans-serif;
+    background-color: #333;
+    color: #FAF3E0;
+}
+
+.reality{
+font-size: 1em;
+    font-family:"Michroma";
+    color:#67bbff;
+    display:none;
+}
+
+.tale{
+font-size: 1em;
+    font-family:"IM Fell English";
+    color: #FFBF00;
+    
+}
+
+.current-location .current-label {
+    color: #FAF3E0;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1em;
+}
+
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  transform: scale(2);
+  padding: 1rem;
+  margin: 0 1rem 0 0;
+  width: 1.5rem !important;
+  vertical-align:middle;
+    position: relative;
+    *top: 1px;
+    *overflow: hidden;
+    position: relative;
+    text-align-last:left;
+}
+
+
+
+html, body {
+            width:auto;
+            height:auto;
+            font-family: 'Nunito', sans-serif;
+            font-family:"IM Fell English";
+            font-size: 1rem;    font-size: 2vw;    font-size: calc(1.1rem + .5vw);
+            background-color: #151515;
+            color: #FAF3E0;
+            margin: 0;
+/*            background:
+  radial-gradient(rgba(60, 60, 60, 0.2) 20%, rgba(0, 0, 0, 0.5) 40%, rgba(0, 0, 0, 0) 60%) 0 0,
+  radial-gradient(rgba(50, 50, 50, 0.15) 15%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0) 50%) 120px 80px,
+  radial-gradient(rgba(40, 40, 40, 0.2) 25%, rgba(0, 0, 0, 0.5) 45%, rgba(0, 0, 0, 0) 65%) -100px -50px,
+  radial-gradient(rgba(30, 30, 30, 0.15) 20%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0) 55%) 180px 200px,
+  radial-gradient(rgba(50, 50, 50, 0.1) 10%, rgba(0, 0, 0, 0.3) 30%, rgba(0, 0, 0, 0) 50%) -50px -120px,
+  linear-gradient(145deg, #0f0f0f 0%, #1a1a1a 30%, #222222 50%, #141414 70%, #1a1a1a 100%),
+  repeating-radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.1) 3%, rgba(0, 0, 0, 0) 6%) 50px 50px,
+  repeating-radial-gradient(circle, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.3) 2%, rgba(0, 0, 0, 0) 5%) 30px 30px,
+  repeating-radial-gradient(circle, rgba(50, 50, 50, 0.1) 0%, rgba(0, 0, 0, 0.3) 1.5%, rgba(0, 0, 0, 0) 3%) 20px 20px;
+background-size: 
+  500px 500px, 
+  900px 900px, 
+  450px 450px, 
+  700px 700px, 
+  600px 600px, 
+  100% 100%, 
+  400px 400px,
+  300px 300px,
+  150px 150px;
+background-blend-mode: overlay, overlay, overlay, overlay, overlay, normal, multiply, multiply, multiply;
+*/
+}
+
+#frame{
+margin:0.5em;
+padding:0em;
+    background-color: #2a2a2a; /* Light beige background */
+  background-image: 
+    linear-gradient(70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%),
+    linear-gradient(-70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%);
+    /*radial-gradient(circle at center, #444444 25%, transparent 2.5%);*/
+  background-size: .5em 1.5em, .5em 1.5em;/*, .333em .333em;        */
+  border: 1px solid #B87333;
+  padding-bottom:0em;
+}
+
+body {
+    padding: calc(.25rem + 2vw);
+}
+
+
+        .tab {
+            overflow: hidden;
+            border: 1px solid #FAF3E0;
+            background-color: #444444;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            color: #FAF3E0;
+            margin:0.5em;
+            
+        }
+
+        .tableMain {
+            display: table;
+            width: 100%;
+            background-color: #333333;
+        }
+
+        .tableRow {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .tableRowEdit {
+            display: flex;
+            justify-content: space-between;
+        }        
+
+        .tableRow1 {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .autonomyRow {
+            display: flex;
+            justify-content: space-between;
+        }        
+
+        .tableRow2 {
+            display: flex;
+            justify-content: space-between;
+        }
+        .tableRow3 {
+            display: flex;
+            justify-content: space-between;
+        }
+        .tableRow4 {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #FAF3E0;
+            text-align-last:left;
+        }
+
+
+
+        .tableCell {
+            flex: 1;
+            padding-left: 5px;
+        }
+
+
+        #popupForm, #addItemPopup, #editPopup, #ToDoListPopup, #addToDoPopup, #showThanks  {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #popupContent, #addItemContent, #editPopupContent, #showThanksContent {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: #FAF3E0;
+            width: 300px;
+        }
+
+        #popupContent input, #addItemContent input, #editPopupContent input {
+            width: 90%;
+            padding: 10px;
+            margin: 1em 0;
+            border: 1px solid #FAF3E0;
+            border-radius: 5px;
+        }
+
+        #popupContent button, #addItemContent button, #editPopupContent button {
+            padding: 10px 20px;
+            background-color: #FAF3E0;
+            border: none;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+    
+
+    </style>
 </head>
 <body>
-    <!--div id="popup1" class="overlay">
-        <div class="popup">
-            <h2>Tree view</h2>
-            <a class="close">&times;</a>
-            <div class="content">
-                
-                <button id="addNodeButton">Add Node</button>
-                <svg width="600" height="400"></svg>
-              
-                <script>
-                  let treeData = {
-                    name: "Root",
-                    children: [
-                      {
-                        name: "Branch A",
-                        children: [{ name: "Leaf A1" }, { name: "Leaf A2" }],
-                      },
-                      { name: "Branch B" },
-                    ],
-                  };
-              
-                  const width = 600;
-                  const height = 400;
-              
-                  const svg = d3.select("svg");
-                  const treeLayout = d3.tree().size([width, height - 100]);
-              
-                  let markedNode = null;
-              
-                  function updateTree() {
-                    const root = d3.hierarchy(treeData);
-                    treeLayout(root);
-              
-                    // Update nodes
-                    const nodes = svg.selectAll(".node").data(root.descendants(), (d) => d.data.name);
-              
-                    const nodeEnter = nodes
-                      .enter()
-                      .append("g")
-                      .attr("class", "node")
-                      .attr("transform", (d) => `translate(${d.x},${height - d.y})`)
-                      .on("click", (event, d) => {
-                        markedNode = d;
-                        markBranch(d);
-                      });
-              
-                    nodeEnter.append("circle").attr("r", 5);
-                    nodeEnter.append("text").attr("dy", -8).text((d) => d.data.name);
-              
-                    nodes
-                      .merge(nodeEnter)
-                      .transition()
-                      .duration(500)
-                      .attr("transform", (d) => `translate(${d.x},${height - d.y})`);
-              
-                    nodes.exit().remove();
-              
-                    // Update links
-                    const links = svg.selectAll(".link").data(root.links(), (d) => `${d.source.data.name}-${d.target.data.name}`);
-              
-                    links
-                      .enter()
-                      .insert("path", "g")
-                      .attr("class", "link")
-                      .merge(links)
-                      .transition()
-                      .duration(500)
-                      .attr(
-                        "d",
-                        d3
-                          .linkVertical()
-                          .x((d) => d.x)
-                          .y((d) => height - d.y)
-                      );
-              
-                    links.exit().remove();
-                  }
-              
-                  function markBranch(d) {
-                    // Clear all marks
-                    svg.selectAll(".node circle").classed("marked", false).classed("child", false);
-                    svg.selectAll(".node text").classed("marked", false).classed("child", false);
-                    svg.selectAll(".link").classed("marked", false).classed("child", false);
-              
-                    // Mark the selected branch
-                    d3.select(d3.select(`.node circle:nth-of-type(${d.depth + 1})`).node())
-                      .classed("marked", true);
-              
-                    d3.selectAll(d.ancestors().reverse()).selectAll(".node").classed("marked", true);
-                  }
-              
-                  function addNode() {
-                    if (markedNode) {
-                      if (!markedNode.data.children) markedNode.data.children = [];
-                      markedNode.data.children.push({ name: "new node" });
-                      updateTree();
-                    }
-                  }
-              
-                  document.getElementById("addNodeButton").addEventListener("click", addNode);
-              
-                  updateTree();
-                </script>
-              
-            </div>
-        </div>
-    </div-->
 
-    
-
-        <!-- Gauges Section -->
-        <!--div id="gauges"> 
-            <div id="leafgauge">
-                <div style="width:50%;text-align:left;vertical-align:middle;"><img class="icon" style="height:1.5em;margin:0;padding:0;" id="leafcyan" src="leafcyan.png" alt="leaf" /> Competence Leaf: <span id="competence-leaf">150</span> </div>
-            <div style="width:50%;text-align:right;vertical-align:middle;"><img class="icon" style="height:1.5em;margin:0;padding:0;" id="leafyellow" src="leafyellow.png" alt="leaf" />Autonomy Leaf: <span id="autonomy-leaf">200</span></div>
-            </div>
-        </div-->
-    <div id="frame">
-        <div id="hud">
-            <div id="logoID">Gnomy<!--hr style="border:1px solid #FFD700"></hr--></div>
+    <div style="padding: 0.5em 0.5em 0.5em 0.5em; inline-block; ">
+        <span id="logoID">Gnomy<!--hr style="border:1px solid #FFD700"></hr--></span>
     
             
-            <button id="panic-button" onclick="location.href='panic.html';">
+        <button style="width:3rem; height:3rem;float:right;">
+        <!-- Game Menu -->
+        <!--div id="game-menu">
+            <button id="btn-settings">Settings</button>
+            <button id="btn-stats">Stats</button>
+            <button id="btn-play-map">Play Map</button>
+        </div-->                
+                &#9776;
+        </button>
+
+        <button id="panic-button" onclick="location.href='panic.html';">
             !
             </button>
-    
-            <button style="width:2em; height:2em;">
-            <!-- Game Menu -->
-            <!--div id="game-menu">
-                <button id="btn-settings">Settings</button>
-                <button id="btn-stats">Stats</button>
-                <button id="btn-play-map">Play Map</button>
-            </div-->                
-                    &#9776;
-            </button>
-    
-        </div>
-
-        <div id="tools">
-            <!--div id="search-garden">
-                    <input type="text" placeholder="Search for gardens..." />
-                    <button id="garden-search-btn">Search</button>
-                    <button id="garden-new-btn">New Garden</button>                    
-            </div>
-            <div id="search-treas">
-                    <input type="text" id="tree-search-bar" placeholder="Search for trees in the garden..." />
-                    <button id="tree-search-btn">Search</button>
-            </div><br-->
-            <div id="toolscontainer" style="width: 100%; padding-bottom: 3em; text-align: center; display: flex; justify-content: center; align-items: center;">
-                <div id="subtoolscontainer1" style="width:30vw; min-width:20em;text-align:center;">
-                    <!--input type="text" placeholder="Search for gardens..." /-->
-                    Garden Name: <button id="garden-search-btn">My New Project</button>
-                    <hr style="border:1px solid #FFD700;"/>
-                    <div class="switch-container">
-                        <label>
-                          <input type="checkbox" id="toggle" />
-                          <div class="switch">
-                            <div class="indicator"></div>
-                          </div>
-                        </label>
-                    </div>
-                </div>
-                
-
-                <!--button id="deleteNodeBtn" style="font-family: 'Lora', serif;display: none; width:12em; margin-left:1em;">Delete Tree</button-->
-                <button id="addNodeBtn" style="font-family: 'Lora', serif; width:8em;           position: absolute; /* Allows positioning relative to the parent div */
-                top: 11em; /* Adjust to move the button slightly below the border */
-                left: 25%; /* Center horizontally */
-                transform: translateX(-25%);">Add Tree</button> 
-                <button id="addBranchBtn" style="font-family: 'Lora', serif; width:8em;           position: absolute; /* Allows positioning relative to the parent div */
-                top: 11em; /* Adjust to move the button slightly below the border */
-                left: 75%; /* Center horizontally */
-                transform: translateX(-75%); /* Aligns the button perfectly in the middle */">Add Path</button> 
-        
-            </div>
-
-            <button id="lantern-button"  style="background-image:url('lantern.png');">
-                <!--img class="icon" style="height:100%;margin:0;padding:0;align:center;" id="lantern" src="lantern.png" /-->
-            </button>
-        </div>
-
-                
-        <!-- Map Section -->
-
-        <div id="map">
-                    <!-- Lantern of Emotions -->
-
-             <svg xmlns="http://www.w3.org/2000/svg" class="lamp-effect" viewBox="0 0 100 100" preserveAspectRatio="none" style="z-index:30; pointer-events: none;position:sticky;">
-                <defs>
-                    <linearGradient id="lightGradient" x1="0.5" y1="0" x2="0.5" y2="1">
-                        <stop offset="0%" stop-color="black" stop-opacity="1"/>
-                        <stop offset="100%" stop-color="black" stop-opacity="0"/>
-                    </linearGradient>
-                    <filter id="blurFilter" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="2" />
-                    </filter>
-                </defs>
-                <!-- Left black triangle -->
-                <polygon points="0,0 50,0 0,100" fill="url(#lightGradient)" filter="url(#blurFilter)"/>
-                <!-- Right black triangle -->
-                <polygon points="50,0 100,0 100,100" fill="url(#lightGradient)" filter="url(#blurFilter)"/>
-            </svg>
-        </div>
-                       
 
     </div>
 
-    <!-- JavaScript -->
-    <script src="d3.min.js"></script>
-    <script src="app.js"></script> <!-- Assuming a JS file for interactivity -->
+        <!--button>Submit an Inquiry of Autonomy</button>
+    <button>Submit a Quote of Relatedness and Competence</button>
+    <button>Give Your Autonomy as a Gift</button></div-->
+    <div id="frame">
+        <div id="contexts"></div>
+        <div id="subContainer" class="metal" style="padding-left:0.5em; padding-right:0.5em;"></div>
+        <div class="space"></div>
+        <div id="inventory">
+            <span><button id="toggleButton">Inventory</button></span>
+            <div id="subInventory" class="metal">
+                <div class="tableMain">
+                    <div class="tableBody">
+                        <div id="current"></div>
+                        <div class="tab">
+                            <button id="autonomyHead" class="tablinks" onclick="showCategory('Autonomy')"><span class="reality">Autonomy</span> <br><span class="tale">Spells</span></button>
+                            <button id="relatednessHead" class="tablinks" onclick="showCategory('Relatedness')"><span class="reality">Relatedness</span> <br><span class="tale">Flowers</span>
+                            <button id="competenceHead" class="tablinks" onclick="showCategory('Competence')"><span class="reality">Competence</span> <br><span class="tale">Fruits</span></button>
+                        </div>
+                    <div id="inventoryContent" class="tableBody"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="space"></div>   
+    <div id="squares">
+        <div id="squareLeft">
+            <button id="addLink" onclick="addLink();">Add Link to Tree</button>
+            <div id="hudLeft">
+                <div id="map"></div>
+            </div>
+        </div>
+        <div id="squareRight">
+            <!--div id="ToDo"></div-->
+            <button id="addNodeButton">Add Node</button>
+            <div id="hudRight">
+                <div id="theTree">
+    
+                        <!--svg width="600" height="400"></svg-->
+
+                        
+                        <svg id="treeSvg" style="background-color:#008800; width:100%; height:100%;""></svg>
+
+                        <script>
+                          let treeData = {
+                            name: "Root",
+                            children: [
+                              {
+                                name: "Branch A",
+                                children: [{ name: "Leaf A1" }, { name: "Leaf A2" }],
+                              },
+                              { name: "Branch B" },
+                            ],
+                          };
+                      
+                          const width = document.getElementById('theTree').offsetWidth;
+                          const height = document.getElementById('theTree').offsetHeight;
+                      
+                          const svg = d3.select("#treeSvg");
+                          const treeLayout = d3.tree().size([width, height - 100]);
+                      
+                          let markedNode = null;
+                      
+                          function updateTree() {
+                                const root = d3.hierarchy(treeData);
+                                treeLayout(root);
+
+                                // Ensure the grass is at the very bottom of the SVG
+                                const grassY = height - 20; 
+
+                                // Add or update the sky rectangle
+                                let sky = svg.select(".sky");
+                                if (sky.empty()) {
+                                    sky = svg.append("rect").attr("class", "sky");
+                                }
+
+                                // Add or update the grass rectangle
+                                let grass = svg.select(".grass");
+                                if (grass.empty()) {
+                                    grass = svg.append("rect").attr("class", "grass");
+                                }
+
+                                sky
+                                    .attr("x", 0)
+                                    .attr("y", 0) // Fixed position at the bottom
+                                    .attr("width", width)
+                                    .attr("height", grassY) // Fixed height for the grass
+                                    .attr("fill", "#0088ff");
+
+                                
+                                grass
+                                    .attr("x", 0)
+                                    .attr("y", grassY) // Fixed position at the bottom
+                                    .attr("width", width)
+                                    .attr("height", 80) // Fixed height for the grass
+                                    .attr("fill", "green");
+
+                                // Update nodes
+                                const nodes = svg.selectAll(".node").data(root.descendants(), d => d.data.name);
+
+                                const nodeEnter = nodes.enter()
+                                    .append("g")
+                                    .attr("class", "node")
+                                    .attr("transform", d => `translate(${d.x},${height - d.y})`);
+
+                                nodeEnter.append("circle").attr("r", 5);
+                                nodeEnter.append("text").attr("dy", -8).text(d => d.data.name);
+
+                                nodes.merge(nodeEnter)
+                                    .transition().duration(500)
+                                    .attr("transform", d => `translate(${d.x},${height - d.y})`);
+
+                                nodes.exit().remove();
+
+                                // Update links
+                                const links = svg.selectAll(".link").data(root.links(), d => `${d.source.data.name}-${d.target.data.name}`);
+
+                                links.enter()
+                                    .insert("path", "g")
+                                    .attr("class", "link")
+                                    .merge(links)
+                                    .transition().duration(500)
+                                    .attr("d", d3.linkVertical()
+                                        .x(d => d.x)
+                                        .y(d => height - d.y));
+
+                                links.exit().remove();
+                            }                      
+                          function markBranch(d) {
+                            // Clear all marks
+                            svg.selectAll(".node circle").classed("marked", false).classed("child", false);
+                            svg.selectAll(".node text").classed("marked", false).classed("child", false);
+                            svg.selectAll(".link").classed("marked", false).classed("child", false);
+                      
+                            // Mark the selected branch
+                            d3.select(d3.select(`.node circle:nth-of-type(${d.depth + 1})`).node())
+                              .classed("marked", true);
+                      
+                            d3.selectAll(d.ancestors().reverse()).selectAll(".node").classed("marked", true);
+                          }
+                      
+                          function addNode() {
+                            if (markedNode) {
+                              if (!markedNode.data.children) markedNode.data.children = [];
+                              markedNode.data.children.push({ name: "new node" });
+                              updateTree();
+                            }
+                          }
+                      
+                          document.getElementById("addNodeButton").addEventListener("click", addNode);
+                      
+                          updateTree();
+                        </script>
+                </div>    
+            </div>
+            <button id="ToDoList" onclick="openToDoList();">Show To-Do-List</button>
+            <button id="addToDo" onclick="openAddToDo();">Add to the To-Do-List</button>
+        </div>
+    </div>
+
+</div>
+
+
+    <div id="addItemPopup">
+        <div id="addItemContent">
+                <h2>Add New Item</h2>
+                <label for="newItemInput">Item Name:</label><br>
+                <input type="text" id="newItemInput" placeholder="Enter item name"><br>
+                <button onclick="submitNewItem()">Add Item</button>
+                <button onclick="closeAddItemPopup()">Cancel</button>
+        </div>
+    </div>
+
+    <div id="editPopup">
+            <div id="editPopupContent">
+                <h2>Edit Item</h2>
+                <label for="editItemInput">Item Name:</label><br>
+                <input type="text" id="editItemInput" placeholder="Enter new name"><br>
+                <button onclick="submitEdit()">Save</button>
+                <button onclick="closeEditPopup()">Cancel</button>
+            </div>
+    </div>
+
+    <div id="addToDoPopup">
+            <!--div id="addToDoPopupContent">
+                <h2>Add to the To-Do-List</h2>
+                <div id="theSelected"></div>
+                <label for="editItemInput">Thank-You-message after execution:</label><br>
+                <input type="text" id="editItemInput" placeholder="Enter new name"><br>
+                <button onclick="submitAddToDo();">Save</button>
+                <button onclick="document.getElementById( 'addToDoPopup' ).style.display = 'none';">Cancel</button>
+            </div-->
+    </div>
+
+    <div id="ToDoListPopup">
+            <!--div id="ToDoListPopupContent">
+                <h2>To-Do-List</h2>
+                <button onclick="submitToDoList()">Done</button>
+                <button onclick="document.getElementById( 'ToDoListPopup' ).style.display = 'none';">Cancel</button>
+                htmltest
+            </div-->
+    </div>
+
+
+    <div id="showThanks">
+            <div id="showThanksContent">
+                <h2>Edit Item</h2>
+                <label for="editItemInput">Message from Yourself:</label><br>
+                <button onclick="document.getElementById( 'showThanks' ).style.display = 'none';">Cancel</button>
+            </div>
+    </div>
+    <script>
+let fromItem = null;
+var selectedLink = null ;
+
+var theItemId = null ;
+
+const database = {
+    1: "Create a portrait of my neighbour",
+    2: "I have the permission to paint an image of my neighbour.",
+    3: "I'm a hobby painter",
+    4: "Painting",
+    5: "Making friendship with my neighbour.",    
+};
+
+let nextKey = Object.keys(database).length + 1;
+
+const inventoryData = {
+    "inventory": {
+        "Relatedness": [database[1]].sort((a, b) => a.localeCompare(b)),
+        "Competence": [database[3]].sort((a, b) => a.localeCompare(b)),
+        "Autonomy": [database[2]].sort((a, b) => a.localeCompare(b)),
+    }
+};
+
+
+// Reconstruct situationData
+const situationData = {
+    "contexts": {
+        "Home": [],
+        "Work": [],
+        "Hobby": [database[4], database[5]]
+    }
+};
+
+
+
+// Reconstruct situationData
+const situationLinks = {
+    "1": { "from": [database[4]], "to": [database[5]]  }
+};
+
+
+
+const ladderData = {
+    "ladder": {
+        "1": [database[1]],
+        "2": [database[1]],
+        "3": [database[1]],
+        "4": [database[1]]        
+    }
+};
+
+
+
+const autonomySubCategory = {
+    "subCategory": {
+        "My": [database[2]],
+        "Borrowed": [],
+        "Lent": []
+    }
+};
+
+
+
+inventoryData.inventory["Autonomy"] = [
+    ...autonomySubCategory.subCategory["My"],
+    ...autonomySubCategory.subCategory["Borrowed"],
+    ...autonomySubCategory.subCategory["Lent"]
+].sort((a, b) => a.localeCompare(b));
+
+
+function sortSubCategory() {
+    // Sort the subcategories under 'My', 'Borrowed', and 'Lent' alphabetically
+    Object.keys(autonomySubCategory.subCategory).forEach((key) => {
+        autonomySubCategory.subCategory[key].sort((a, b) => a.localeCompare(b));
+    });
+
+    console.log('Sorted autonomySubCategory:', autonomySubCategory);
+}
+
+// Call the function to sort the subcategories
+sortSubCategory();
+
+
+
+var selectedAutonomyItem = null;
+
+let currentLocationIndex = null;
+const currentSelectedAutonomy = null;
+
+const matchesSelected = 
+[
+    //{ id: 1, A: 'itemA1', RC: 'itemB1' },
+];
+
+const matchesToDo = 
+[
+    { id: 1, A: 'itemA1', thanks: 'I did it!!!', resultContext: 'Result Context', resultSituation: 'Result Situation' },
+];
+var autonomyId = null;
+
+const sliders = {}; // Store sliders for each situation
+
+function addSliderInevitable(situation) {
+    const sliderContainer = document.createElement('div');
+    sliderContainer.classList.add('slider-container');  // Add class for styling
+    sliderContainer.id = `slider-${situation}`; // Unique ID for each slider
+
+    const leftText = document.createElement('span');
+    leftText.classList.add('slider-left-text');  // Add class for styling
+    leftText.textContent = 'Inevitable';
+
+    const slider = document.createElement('input');
+    slider.classList.add('slider');  // Add class for styling
+    slider.type = 'range';
+    slider.min = '1';
+    slider.max = '5';
+    slider.value = '3'; // Default value
+    slider.style.margin = '0 10px';
+
+    const rightText = document.createElement('span');
+    rightText.classList.add('slider-right-text');  // Add class for styling
+    rightText.textContent = 'By choice';
+
+    sliderContainer.appendChild(leftText);
+    sliderContainer.appendChild(slider);
+    sliderContainer.appendChild(rightText);
+
+    sliders[situation] = sliderContainer; // Store the slider container
+}
+
+function updateDropdowns(contextDropdown, situationDropdown, selectedContext) {
+    // Clear and update the situation dropdown
+    situationDropdown.innerHTML = "";
+    const defaultOption = document.createElement("option");
+    defaultOption.textContent = "Select a tree";
+    defaultOption.value = "";
+    situationDropdown.appendChild(defaultOption);
+
+    if (selectedContext && situationData.contexts[selectedContext]) {
+        situationData.contexts[selectedContext].forEach((situation) => {
+            const option = document.createElement("option");
+            option.classList.add('situation-option');  // Add class for styling
+            option.textContent = situation;
+            option.value = situation;
+            situationDropdown.appendChild(option);
+
+            // Create a slider for each situation if not already created
+            if (!sliders[situation]) {
+                addSliderInevitable(situation);
+            }
+        });
+    }
+}
+
+function createDropdowns() {
+    const container = document.getElementById("contexts");
+
+    if (!container) {
+        console.error("Container element with ID 'contexts' not found.");
+        return;
+    }
+
+    // Context dropdown
+    const contextDropdown = document.createElement("select");
+    contextDropdown.classList.add('context-dropdown'); 
+    contextDropdown.id = "contextDropdown";
+
+    const defaultContextOption = document.createElement("option");
+    defaultContextOption.textContent = "Select a garden...";
+    defaultContextOption.value = "";
+    contextDropdown.appendChild(defaultContextOption);
+
+    if (situationData && situationData.contexts) {
+        Object.keys(situationData.contexts).forEach((context) => {
+            const option = document.createElement("option");
+            option.classList.add('context-option');
+            option.textContent = context;
+            option.value = context;
+            contextDropdown.appendChild(option);
+        });
+    } else {
+        console.error("situationData or its 'contexts' property is undefined.");
+    }
+
+    container.appendChild(contextDropdown);
+
+    // Situation dropdown
+    const situationDropdown = document.createElement("select");
+    situationDropdown.classList.add('situation-dropdown'); 
+    situationDropdown.id = "situationDropdown";
+
+    const defaultSituationOption = document.createElement("option");
+    defaultSituationOption.textContent = "Select a situation...";
+    defaultSituationOption.value = "";
+    situationDropdown.appendChild(defaultSituationOption);
+    
+    container.appendChild(situationDropdown);
+
+    // Slider container
+    const sliderContainer = document.createElement("div");
+    sliderContainer.classList.add('slider-container');  
+    sliderContainer.id = "sliderContainer";
+    //container.appendChild(sliderContainer);
+
+    // Sub-container for buttons
+    // More Button
+    const moreButton = document.createElement("button");
+    moreButton.id = "moreButton";
+    moreButton.textContent = "\u22EE"; 
+    container.appendChild(moreButton);
+
+    moreButton.onclick = () => {
+        const subContainer = document.getElementById("subContainer");
+
+        if (!subContainer.classList.contains('show')) {
+            // Ensure it's visible before animation starts
+            subContainer.style.visibility = 'visible';
+            subContainer.style.position = 'absolute'; // Prevent layout shift
+            subContainer.classList.add('show'); // Start flip animation
+        } else {
+            subContainer.classList.remove('show'); // Flip out animation
+            setTimeout(() => {
+                subContainer.style.visibility = 'hidden'; // Hide after animation
+            }, 1000); // Matches transition duration (1s)
+        }
+    };
+
+
+    // Create Buttons
+    const buttons = [
+        { text: "Add Context", class: "add-context-button", action: addContext },
+        { text: "Add Situation", class: "add-situation-button", action: addSituation },
+        { text: "Delete Context", class: "delete-context-button", action: deleteContext },
+        { text: "Delete Situation", class: "delete-situation-button", action: deleteSituation }
+    ];
+
+    buttons.forEach(({ text, class: className, action }) => {
+        const button = document.createElement("button");
+        button.classList.add(className);
+        button.textContent = text;
+        button.addEventListener("click", action);
+        subContainer.appendChild(button);
+    });
+
+    // Dropdown event listeners
+    contextDropdown.addEventListener("change", (event) => {
+        const selectedContext = event.target.value;
+        updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+    });
+
+    situationDropdown.addEventListener("change", (event) => {
+        const selectedSituation = event.target.value;
+        const sliderContainerDiv = document.getElementById("sliderContainer");
+        sliderContainerDiv.innerHTML = ""; 
+
+        if (sliders && sliders[selectedSituation]) {
+            sliderContainerDiv.appendChild(sliders[selectedSituation]);
+        }
+    });
+
+    function toggleSubInventory() {
+    const subInventory = document.getElementById("subInventory");
+
+    if (!subInventory.classList.contains('show')) {
+        // Ensure visibility before animation
+        subInventory.style.visibility = 'visible';
+        subInventory.style.position = 'absolute'; // Prevent layout shift
+        subInventory.classList.add('show'); // Start flip animation
+    } else {
+        subInventory.classList.remove('show'); // Flip-out animation
+        setTimeout(() => {
+            subInventory.style.visibility = 'hidden'; // Hide after animation
+        }, 1000); // Matches transition duration (1s)
+    }
+}
+
+// Attach function to a button
+document.getElementById("toggleButton").onclick = toggleSubInventory;   
+
+    // Functions for button actions
+    function addContext() {
+        const newContextName = prompt("Enter a name for the new context:");
+        if (newContextName && !situationData.contexts[newContextName]) {
+            situationData.contexts[newContextName] = [];
+            const option = document.createElement("option");
+            option.classList.add('context-option');
+            option.textContent = newContextName;
+            option.value = newContextName;
+            contextDropdown.appendChild(option);
+            contextDropdown.value = newContextName;
+            updateDropdowns(contextDropdown, situationDropdown, newContextName);
+        } else {
+            alert("This context already exists.");
+        }
+    }
+
+    function addSituation() {
+        const selectedContext = contextDropdown.value;
+        if (!selectedContext) {
+            alert("Please select a context first.");
+            return;
+        }
+        const newSituationName = prompt("Enter a name for the new situation:");
+        if (newSituationName && !situationData.contexts[selectedContext].includes(newSituationName)) {
+            situationData.contexts[selectedContext].push(newSituationName);
+            updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+        } else {
+            alert("This situation already exists in the selected context.");
+        }
+    }
+
+    function deleteContext() {
+        const selectedContext = contextDropdown.value;
+        if (!selectedContext) {
+            alert("Please select a context to delete.");
+            return;
+        }
+        if (confirm(`Are you sure you want to delete the context "${selectedContext}"?`)) {
+            delete situationData.contexts[selectedContext];
+            updateDropdowns(contextDropdown, situationDropdown, "");
+        }
+    }
+
+    function deleteSituation() {
+        const selectedContext = contextDropdown.value;
+        const selectedSituation = situationDropdown.value;
+
+        if (!selectedContext) {
+            alert("Please select a context first.");
+            return;
+        }
+        if (!selectedSituation) {
+            alert("Please select a situation to delete.");
+            return;
+        }
+        if (confirm(`Are you sure you want to delete the situation "${selectedSituation}" from the "${selectedContext}" context?`)) {
+            const index = situationData.contexts[selectedContext].indexOf(selectedSituation);
+            if (index !== -1) {
+                situationData.contexts[selectedContext].splice(index, 1);
+                updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+            }
+        }
+    }
+}
+
+// Initialize
+createDropdowns();
+
+
+function createDropdown() {
+    // Get the container div
+    const container = document.getElementById("contexts");
+
+    // Create a dropdown element
+    const dropdown = document.createElement("select");
+    dropdown.id = "contextDropdown";
+
+    // Create a default option
+    const defaultOption = document.createElement("option");
+    defaultOption.textContent = "Select a context...";
+    defaultOption.value = "";
+    dropdown.appendChild(defaultOption);
+
+    // Populate the dropdown with options from contextData
+    contextData.Context.forEach((context, index) => {
+        const option = document.createElement("option");
+        option.textContent = context;
+        option.value = index; // Use index as value to track the selected context
+        dropdown.appendChild(option);
+    });
+
+    // Add an event listener to handle selection changes
+    dropdown.addEventListener("change", (event) => {
+        currentContextIndex = event.target.value !== "" ? parseInt(event.target.value) : null;
+
+        if (currentContextIndex !== null) {
+            console.log(`Selected context: ${contextData.Context[currentContextIndex]}`);
+        } else {
+            console.log("No context selected.");
+        }
+    });
+
+    // Append the dropdown to the container
+    container.appendChild(dropdown);
+}
+
+// Call the function to create the dropdown
+createDropdown();
+        
+    
+        function setCurrentLocation(category, index) {
+            // Remove the current location label from the previous location
+            if (currentLocationIndex !== null) {
+                const previousLabel = document.getElementById(`current-location-${currentLocationIndex}`);
+                if (previousLabel) {
+                    previousLabel.textContent = '';
+                }
+            }
+    
+            // Set the new current location
+            currentLocationIndex = index;
+            const newLabel = document.getElementById(`current-location-${index}`);
+            if (newLabel) {
+                newLabel.textContent = 'Current Location';
+            }
+    
+            alert(`Current location set to: ${inventoryData.inventory[category][index]}`);
+        }
+    
+        function addItem(category) {
+            const newItem = prompt("Enter the new item name:");
+            if (newItem && newItem.trim()) {
+                const trimmedItem = newItem.trim();
+
+                // Add to the database
+                database[nextKey] = trimmedItem;
+
+                // Add to the inventoryData category
+                inventoryData.inventory[category].push(trimmedItem);
+
+                // Sort the category
+                inventoryData.inventory[category].sort((a, b) => a.localeCompare(b));
+
+                // Increment the key for the next addition
+                
+                if (category === 'Autonomy') {
+
+                    const trimmedItem = newItem.trim();
+                    const new2Item = prompt("My, Borrowed or Lent:");
+                    // Add to the inventoryData category
+                    autonomySubCategory.subCategory[new2Item].push(trimmedItem);
+
+                    // Sort the category
+                    autonomySubCategory.subCategory[new2Item].sort((a, b) => a.localeCompare(b));
+
+                    // Increment the key for the next addition
+
+                    }
+                nextKey++;
+
+                showCategory(category); // Refresh or display the updated category
+                
+            }
+        }
+
+        showCategory('Autonomy');
+    </script>
+<script>
+function deleteItem(category, index) {
+    // Confirm the delete action with the user
+    const confirmDelete = confirm(`Are you sure you want to delete "${inventoryData.inventory[category][index]}"?`);
+    if (confirmDelete) {
+        // Remove the item from the inventory
+        inventoryData.inventory[category].splice(index, 1);
+        // Refresh the displayed category
+        showCategory(category);
+    }
+}
+
+</script>    
+
+<script>
+function openEditPopup(item, category, index) {
+    // Display the popup
+    const editPopup = document.getElementById('editPopup');
+    editPopup.style.display = 'flex';
+
+    // Set the current item's name in the input field
+    const editItemInput = document.getElementById('editItemInput');
+    editItemInput.value = item;
+
+    // Save the category and index for reference
+    editPopup.dataset.category = category;
+    editPopup.dataset.index = index;
+}
+
+function openAddToDo() {
+    // Display the popup
+    const addToDoPopup = document.getElementById('addToDoPopup');
+
+    const addItemContent = document.getElementById('v');
+    let nextId = matchesToDo.reduce((max, matchToDo) => Math.max(max, matchToDo.id), 0) + 1;    
+    const thanks = prompt("What thank you message would you like to receive when achieving the goal?:");
+    const theSelectedContext = document.getElementById("contextDropdown");
+    const theSelectedSituation = document.getElementById("situationDropdown");
+    matchesToDo.push({ id: nextId, A: selectedAutonomyItem, thanks: thanks, resultContext: theSelectedContext.value, resultSituation: theSelectedSituation.value });
+
+}
+
+function showThanks(match) {
+    // Get the popup and content elements
+    var showThanks = document.getElementById('showThanks');
+    var showThanksContent = document.getElementById('showThanksContent');
+
+    // Clear previous content
+    showThanksContent.innerHTML = ''; // Clears all child elements of showThanksContent
+
+    // Display the popup
+    showThanks.style.display = 'block';
+
+    // Create new content
+    var thanksItem1 = document.createElement('div');
+    var thanksItem2 = document.createElement('div');
+    var thanksItem3 = document.createElement('div');
+    thanksItem1.textContent = `Resulted Context: ${match.resultContext}`;
+    thanksItem2.textContent = `Resulted Situation: ${match.resultSituation}`;
+    thanksItem3.textContent = `Message: ${match.thanks}`;
+    var thanksButton = document.createElement('button');
+    thanksButton.className = 'actionButton';
+    thanksButton.textContent = 'Done!';
+    thanksButton.onclick = () => {
+        // Hide the popup
+        showThanks.style.display = 'block';
+        // Remove the item from matchesToDo
+        var index = matchesToDo.indexOf(match);
+        if (index !== -1) {
+            matchesToDo.splice(index, 1);
+        }
+        showThanks.style.display = 'none';
+    };
+
+    // Append the new elements to the content container
+    showThanksContent.appendChild(thanksItem1);
+    showThanksContent.appendChild(thanksItem2);
+    showThanksContent.appendChild(thanksItem3);
+    showThanksContent.appendChild(thanksButton);
+}
+
+
+function openToDoList() {
+    const ToDoListPopup = document.getElementById('ToDoListPopup');
+    
+    // Clear previous content
+    ToDoListPopup.innerHTML = ''; // Clears all child elements of ToDoListPopup
+    
+    // Show the popup
+    ToDoListPopup.style.display = 'block';
+    
+    // Create the content container
+    var ToDoListPopupContent = document.createElement('div');
+    
+    // Add the Cancel button
+    var cancelButton = document.createElement('button');
+    cancelButton.className = 'actionButton';
+    cancelButton.textContent = 'Cancel';
+    cancelButton.onclick = () => {
+        ToDoListPopup.style.display = 'none';
+    };
+    ToDoListPopupContent.appendChild(cancelButton);
+    
+    // Add the to-do list items
+    matchesToDo.forEach((match, index) => {
+        var todoitem = document.createElement('div');
+        todoitem.textContent = `Autonomy: ${match.A}`;//; Response: ${match.thanks}`;
+        ToDoListPopupContent.appendChild(todoitem);
+        
+        var thanksButton = document.createElement('button');
+        thanksButton.onclick = () => showThanks(match);    
+        thanksButton.className = 'actionButton';
+        thanksButton.textContent = 'Done!';
+        ToDoListPopupContent.appendChild(thanksButton);
+    });
+    
+    // Append the content container to the popup
+    ToDoListPopup.appendChild(ToDoListPopupContent);
+}
+
+function submitAddToDo() {
+    const submitAddToDo = document.getElementById('submitAddToDo');
+    var already = 0;
+    var messageText = prompt("Enter a name for the new context:");
+    matchesSelected.forEach((match, index) => {
+        if (match.A === autonomyId ) {//&& match.RC === itemId && already === 0) {
+                messageText.textContent = 'Is already in the to-do-list.';
+                already=1;
+            } 
+        });
+        if (already===0){
+            var messageText = prompt("Enter a thank you message:");
+            matchesToDo.push({ id: index, A: autonomyId, thanks: messageText });
+            
+            messageText.textContent = `Autonomy: ${match.A}; Response: ${messageTex}`;
+        }
+    submitAddToDo.appendChild(messageText);
+    //Find the matching item in the matchesSelected array
+    const matchingIndex = matchesSelected.findIndex(match => match.A === autonomyId && match.RC === itemId);
+
+    if (already === 0) {
+        //match
+
+                            
+                        // Add new match
+                        let nextId = matchesSelected.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+                        matchesSelected.push({ id: nextId, A: autonomyId, RC: itemId });
+                        //console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
+        }
+
+        already = 0;
+
+        // Display the updated object
+        console.log(matchesSelected)
+    };
+
+
+  
+
+
+
+function submitEdit() {
+    const editPopup = document.getElementById('editPopup');
+    const category = editPopup.dataset.category;
+    const index = parseInt(editPopup.dataset.index, 10);
+
+    const editItemInput = document.getElementById('editItemInput');
+    const newItemName = editItemInput.value.trim();
+
+    if (newItemName) {
+        // Update the inventory with the new name
+        inventoryData.inventory[category][index] = newItemName;
+
+        // Close the popup
+        closeEditPopup();
+
+        // Refresh the displayed category
+        showCategory(category);
+    } else {
+        alert("Item name cannot be empty.");
+    }
+}
+
+function closeEditPopup() {
+    const editPopup = document.getElementById('editPopup');
+    editPopup.style.display = 'none';
+}
+
+
+</script>
+<script>
+
+
+function showCategory(category) {
+    const contentDiv = document.getElementById('inventoryContent');
+    
+    
+    contentDiv.innerHTML = '';
+
+    // Clear active class from all headers
+    const tabButtons = document.querySelectorAll('.tab button');
+
+    tabButtons.forEach((button) => button.classList.remove('active-header'));
+
+    // Set active class for the clicked header
+    const activeButton = [...tabButtons].find((button) => button.textContent === category);
+
+    if (activeButton) {
+        activeButton.classList.add('active-header');
+    }
+
+    // Get items for the category
+    const items = inventoryData.inventory[category] || [];
+
+    items.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = 'tableRow';
+        row.textContent = item; // Render the sorted item
+        
+       //contentDiv.appendChild(row);
+    });
+
+    // Store currently selected indices
+    let selectedAutonomyIndex = null;
+    let selectedRIndex = null;
+    let nextId = matchesSelected.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+    items.forEach((item, index) => {
+    
+        // Create constants for each row based on the database item
+        const itemConstant = database[Object.keys(database).find(key => database[key] === item)];
+
+        const row = document.createElement('div');
+        row.className = 'tableRow';
+
+        const rowedit = document.createElement('div');
+        row.className = 'tableRowEdit';
+
+        const rowAutonomy = document.createElement('div');
+        const autocell = document.createElement('div');
+        rowAutonomy.className = 'autonomyRow';
+
+        const row1 = document.createElement('div');
+        row1.className = 'tableRow1';
+        const Checkbox1 = document.createElement('input');
+        Checkbox1.type = 'checkbox';
+        Checkbox1.className = 'Checkbox';
+        const Checkbox1Label = document.createElement('label');
+
+        const row2 = document.createElement('div');
+        row2.className = 'tableRow2';
+        const Checkbox2 = document.createElement('input');
+        Checkbox2.type = 'checkbox';
+        Checkbox2.className = 'Checkbox';
+        const Checkbox2Label = document.createElement('label');
+        
+        const row3 = document.createElement('div');
+        row3.className = 'tableRow3';
+        const Checkbox3 = document.createElement('input');
+        Checkbox3.type = 'checkbox';
+        Checkbox3.className = 'Checkbox';
+        const Checkbox3Label = document.createElement('label');
+        
+        const row4 = document.createElement('div');
+        row4.className = 'tableRow4';
+        const Checkbox4 = document.createElement('input');
+        Checkbox4.type = 'checkbox';
+        Checkbox4.className = 'Checkbox';
+        const Checkbox4Label = document.createElement('label');
+        
+
+        // Cell with item name
+        const cell = document.createElement('div');
+        cell.className = 'tableCell';
+        cell.textContent = item;
+
+        // Edit and delete buttons
+        const editButton = document.createElement('button');
+        editButton.className = 'actionButton';
+        editButton.textContent = 'Edit';
+        editButton.onclick = () => openEditPopup(item, category, index);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'actionButton';
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = () => deleteItem(category, index);
+
+        // Append basic row elements
+        rowedit.appendChild(cell);
+        rowedit.appendChild(editButton);
+        rowedit.appendChild(deleteButton);
+
+        // Get the item ID from the database based on the item name
+        var itemId = Object.keys(database).find(key => database[key] === item);
+        theItemId = itemId ;
+        var checked = 0;
+        document.getElementById("autonomyHead").style.color = "#444444";
+        document.getElementById("autonomyHead").style.backgroundColor ="#444444";
+        document.getElementById("relatednessHead").style.color = "#444444";
+        document.getElementById("relatednessHead").style.backgroundColor ="#444444";
+        document.getElementById("competenceHead").style.color = "#444444";
+        document.getElementById("competenceHead").style.backgroundColor ="#444444";        
+        if (category === 'Autonomy') {
+            document.getElementById("autonomyHead").style.color = "#004D40";
+            document.getElementById("autonomyHead").style.backgroundColor ="#FAF3E0";
+            const selectButton = document.createElement('button');
+            selectButton.className = 'actionButton';
+            selectButton.textContent = 'Select';
+            if (selectedAutonomyItem === database[itemId]) {
+                const tableRows = document.querySelectorAll('#inventoryContent .tableRow');
+                // Select the clicked item
+                selectedAutonomyItem = item;
+                row.style.backgroundColor = '#888888'; // Highlight selected
+                selectedAutonomyIndex = index;
+
+                const currentLocationDiv = document.getElementById('current');
+                if (currentLocationDiv) {
+                    currentLocationDiv.textContent = `Current selected item: ${selectedAutonomyItem}`; // Update display
+                } else {
+                    console.warn('Element with id "current" not found in the DOM.');
+                }
+                
+
+            }
+            selectButton.onclick = () => {
+                autonomyId = itemId;
+                const tableRows = document.querySelectorAll('#inventoryContent .tableRow');
+
+                if (selectedAutonomyIndex === index) {
+                    console.log(`Deselecting item at index ${index}`);
+                    autonomyId = null;
+                    // Deselect the currently selected item
+                    row.style.backgroundColor = ''; // Reset background color
+                    selectedAutonomyIndex = null; // Clear the selected index
+                    //selectedAutonomyItem = null; // Clear the selected item
+
+                    const currentLocationDiv = document.getElementById('current');
+                    if (currentLocationDiv) {
+                        currentLocationDiv.textContent = 'No item selected'; // Reset display
+                    } else {
+                        console.warn('Element with id "current" not found in the DOM.');
+                    }
+                } else {
+                    console.log(`Selecting item at index ${index}`);
+
+                    // Deselect the previously selected item if any
+                    if (selectedAutonomyIndex !== null && tableRows[selectedAutonomyIndex]) {
+                        const previousRow = tableRows[selectedAutonomyIndex];
+                        previousRow.style.backgroundColor = ''; // Reset previous background color
+
+                    }
+
+                    // Select the clicked item
+                    selectedAutonomyItem = item;
+                    row.style.backgroundColor = '#888888'; // Highlight selected
+                    selectedAutonomyIndex = index;
+                    const currentLocationDiv = document.getElementById('current');
+                    if (currentLocationDiv) {
+                        currentLocationDiv.textContent = `Current selected item: ${selectedAutonomyItem}`; // Update display
+                    } else {
+                        console.warn('Element with id "current" not found in the DOM.');
+                    }
+                }
+            };
+            row.appendChild(selectButton);
+            autocell.textContent = ''
+            if (autonomySubCategory.subCategory["My"].includes(item)) {
+                autocell.textContent = 'Category My: ';
+            }
+            if (autonomySubCategory.subCategory["Borrowed"].includes(item)) {
+                autocell.textContent = 'Category Borrowed: ';
+            }
+            if (autonomySubCategory.subCategory["Lent"].includes(item)) {
+                autocell.textContent = 'Category Lent: ';
+            }
+            rowAutonomy.appendChild(autocell);
+
+            Checkbox1Label.textContent = 'Feeling';
+            Checkbox1Label.textContent = 'Inclusion: Can you be yourself here?';
+            Checkbox2Label.textContent = 'Learning: Can you try new things your way?';
+            Checkbox3Label.textContent = 'Contributor: Do you decide how to help?';
+            Checkbox4Label.textContent = 'Challenger: Can you challenge the rules?';
+
+         
+        
+        }
+
+        // Additional logic for 'Relatedness'
+        if (category === 'Relatedness') {
+            document.getElementById("relatednessHead").style.color = "#004D40";
+            document.getElementById("relatednessHead").style.backgroundColor ="#FAF3E0";
+            const selectRButton = document.createElement('button');
+            selectRButton.className = 'actionButton';
+            selectRButton.textContent = 'Select';
+            matchesSelected.forEach((match, index) => {
+                if (match.A === autonomyId && match.RC === itemId) {
+             
+                   row.style.backgroundColor = '#888888'; // Highlight selected
+                
+                }
+            });
+                
+
+            
+            
+                
+            var already = 0;
+            selectRButton.onclick = () => {
+                if (autonomyId === null) {alert("Please select an autonomy")}
+                else{
+                    matchesSelected.forEach((match, index) => {
+                    if (match.A === autonomyId && match.RC === itemId && already === 0) {
+                            // Reset the background color of the matched row (if needed)
+                            row.style.backgroundColor = ''; // Reset background color
+
+                            // Remove the match from the array
+                            matchesSelected.splice(index, 1);
+                            console.log(`Removed match for autonomyId: ${autonomyId} and itemId: ${itemId}`);
+                            already = 1; // Prevent multiple deletions
+                            }
+                    });
+
+
+
+
+                    // Find the matching item in the matchesSelected array
+                    const matchingIndex = matchesSelected.findIndex(match => match.A === autonomyId && match.RC === itemId);
+
+                    if (already === 0) {
+                        row.style.backgroundColor = '#888888';
+                        //match
+
+                            
+                        // Add new match
+                        let nextId = matchesSelected.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+                        matchesSelected.push({ id: nextId, A: autonomyId, RC: itemId });
+                        //console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
+                    }
+
+                    already = 0;
+
+                    // Display the updated object
+                    console.log(matchesSelected)
+                };
+            };
+
+            row.appendChild(selectRButton);
+
+
+
+            // Set the label text for the checkbox
+
+            Checkbox1Label.textContent = 'Inclusion: Do you feel welcome here?';
+            Checkbox2Label.textContent = 'Learning: Can you ask for help?';
+            Checkbox3Label.textContent = 'Contributing: Do others value your input?';
+            Checkbox4Label.textContent = 'Challenger: Can you resolve problems together?';
+
+        
+        
+        }
+
+        // Additional logic for 'Competence'
+        if (category === 'Competence') {
+            document.getElementById("competenceHead").style.color = "#004D40";
+            document.getElementById("competenceHead").style.backgroundColor ="#FAF3E0";
+            const selectCButton = document.createElement('button');
+            selectCButton.className = 'actionButton';
+            selectCButton.textContent = 'Select';
+
+            matchesSelected.forEach((match, index) => {
+            if (match.A === autonomyId && match.RC === itemId) {
+             
+             row.style.backgroundColor = '#888888'; // Highlight selected
+             
+             }
+            });             
+
+                        
+                
+                var already = 0;
+                selectCButton.onclick = () => {
+                    if (autonomyId === null) {alert("Please select an autonomy")}
+                    else{
+                        matchesSelected.forEach((match, index) => {
+                        if (match.A === autonomyId && match.RC === itemId && already === 0) {
+                            // Reset the background color of the matched row (if needed)
+                            row.style.backgroundColor = ''; // Reset background color
+
+                            // Remove the match from the array
+                            matchesSelected.splice(index, 1);
+                            console.log(`Removed match for autonomyId: ${autonomyId} and itemId: ${itemId}`);
+                            already = 1; // Prevent multiple deletions
+                            }
+                        });
+
+
+
+
+                        // Find the matching item in the matchesSelected array
+                        const matchingIndex = matchesSelected.findIndex(match => match.A === autonomyId && match.RC === itemId);
+
+                        if (already === 0) {
+                            row.style.backgroundColor = '#888888';
+                            //match
+
+                            
+                            // Add new match
+                            let nextId = matchesSelected.reduce((max, match) => Math.max(max, match.id), 0) + 1;
+                            matchesSelected.push({ id: nextId, A: autonomyId, RC: itemId });
+                            //console.log(`Added match for item: ${item} (item ID: ${matchAutonomyFF.match[autonomyId]})`);
+                        }
+
+                        already = 0;
+
+                        // Display the updated object
+                        console.log(matchesSelected)
+                    };
+                };
+
+            row.appendChild(selectCButton);
+
+            Checkbox1Label.textContent = 'Inclusion: Are your skills noticed?';
+            Checkbox2Label.textContent = 'Learning: Can you practice without fear?';
+            Checkbox3Label.textContent = 'Contribution: Are your skills trusted?';
+            Checkbox4Label.textContent = 'Challenging: Can you improve how things are done?';
+
+
+        }        
+
+
+ 
+        // Check if the item exists in ladderData.ladder["1"]
+        if (ladderData.ladder["1"].includes(item)) {
+                Checkbox1.checked = true;
+            } else {
+                Checkbox1.checked = false;
+            }
+            Checkbox1.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    // Add the item to ladderData.ladder["1"] if checked
+                    ladderData.ladder["1"].push(item.trim());
+                } else {
+                    // Remove the item from ladderData.ladder["1"] if unchecked
+                    const index = ladderData.ladder["1"].indexOf(item);
+                    if (index > -1) {
+                        ladderData.ladder["1"].splice(index, 1);
+                    }
+                }
+            });
+
+            // Check if the item exists in ladderData.ladder["2"]
+            if (ladderData.ladder["2"].includes(item)) {
+                Checkbox2.checked = true;
+            } else {
+                Checkbox2.checked = false;
+            }
+            Checkbox2.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    // Add the item to ladderData.ladder["2"] if checked
+                    ladderData.ladder["2"].push(item.trim());
+                } else {
+                    // Remove the item from ladderData.ladder["2"] if unchecked
+                    const index = ladderData.ladder["2"].indexOf(item);
+                    if (index > -2) {
+                        ladderData.ladder["2"].splice(index, 2);
+                    }
+                }
+            });
+
+            // Check if the item exists in ladderData.ladder["3"]
+            if (ladderData.ladder["3"].includes(item)) {
+                Checkbox3.checked = true;
+            } else {
+                Checkbox3.checked = false;
+            }
+            Checkbox3.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    // Add the item to ladderData.ladder["3"] if checked
+                    ladderData.ladder["3"].push(item.trim());
+                } else {
+                    // Remove the item from ladderData.ladder["3"] if unchecked
+                    const index = ladderData.ladder["3"].indexOf(item);
+                    if (index > -3) {
+                        ladderData.ladder["3"].splice(index, 3);
+                    }
+                }
+            });
+
+
+            // Check if the item exists in ladderData.ladder["4"]
+            if (ladderData.ladder["4"].includes(item)) {
+                Checkbox4.checked = true;
+            } else {
+                Checkbox4.checked = false;
+            }
+            Checkbox4.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    // Add the item to ladderData.ladder["4"] if checked
+                    ladderData.ladder["4"].push(item.trim());
+                } else {
+                    // Remove the item from ladderData.ladder["4"] if unchecked
+                    const index = ladderData.ladder["4"].indexOf(item);
+                    if (index > -4) {
+                        ladderData.ladder["4"].splice(index, 4);
+                    }
+                }
+            });        
+
+        const box1Container = document.createElement('div');
+        box1Container.appendChild(Checkbox1);
+        box1Container.appendChild(Checkbox1Label);
+        row1.appendChild(box1Container);
+
+        
+        const box2Container = document.createElement('div');
+        box2Container.appendChild(Checkbox2);
+        box2Container.appendChild(Checkbox2Label);
+        row2.appendChild(box2Container);
+
+        
+        const box3Container = document.createElement('div');
+        box3Container.appendChild(Checkbox3);
+        box3Container.appendChild(Checkbox3Label);
+        row3.appendChild(box3Container);
+
+        
+        const box4Container = document.createElement('div');
+        box4Container.appendChild(Checkbox4);
+        box4Container.appendChild(Checkbox4Label);
+        row4.appendChild(box4Container);
+
+
+
+ 
+
+
+        // Append rows
+        contentDiv.appendChild(row);
+        contentDiv.appendChild(rowAutonomy);
+        contentDiv.appendChild(rowedit);        
+        contentDiv.appendChild(row1);
+        contentDiv.appendChild(row2);
+        contentDiv.appendChild(row3);
+        contentDiv.appendChild(row4);
+        
+
+    });
+    // Add "Add" button
+    const addButton = document.createElement('button');
+    addButton.onclick = () => addItem(category);    
+    addButton.className = 'actionButton';
+    addButton.textContent = 'Add';
+    
+
+    contentDiv.appendChild(addButton);
+
+    
+}
+
+
+let previouslySelectedRow = null; // Track the previously selected row
+
+</script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+    function updateMapWithNodes(selectedSituation) {
+        // Clear previous visualization
+        d3.select("#map").selectAll("*").remove();
+
+        // Find all links where "from" matches the selected situation
+        const links = Object.keys(situationLinks)
+            .filter(key => situationLinks[key].from.includes(selectedSituation))
+            .map(key => situationLinks[key]); 
+
+        if (links.length === 0) {
+            console.log("No links found for the selected situation.");
+            return;
+        }
+
+        const fromText = links[0].from[0]; 
+        const toTexts = [...new Set(links.flatMap(link => link.to))];
+
+        // Create an SVG container
+        //const width = 500;
+        const width = document.getElementById('map').offsetWidth;
+        //const height = 300;
+        const height = document.getElementById('map').offsetHeight;
+        const svg = d3.select("#map")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        const nodes = [
+            { id: "from", text: fromText, x: centerX, y: centerY }
+        ];
+
+        const radius = 100;
+        const angleStep = (2 * Math.PI) / toTexts.length;
+
+        toTexts.forEach((toText, index) => {
+            const angle = index * angleStep;
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            nodes.push({ id: "to" + index, text: toText, x, y });
+        });
+
+        // Create tree-shaped nodes instead of simple circles
+        nodes.forEach(d => {
+            const crownTop = { x: d.x, y: d.y - 10, r: 10 };
+            const crownBottom = { x: d.x, y: d.y + 5, r: 15 };
+            const trunkBottomY = d.y + 35; // Bottom of the trunk
+
+            // Append tree crowns (two circles)
+            svg.append("circle")
+                .attr("cx", crownTop.x)
+                .attr("cy", crownTop.y)
+                .attr("r", crownTop.r)
+                .style("fill", "#2f9000");
+
+            svg.append("circle")
+                .attr("cx", crownBottom.x)
+                .attr("cy", crownBottom.y)
+                .attr("r", crownBottom.r)
+                .style("fill", "#2f9000");
+
+            // Append trunk (line)
+            svg.append("line")
+                .attr("x1", d.x)
+                .attr("y1", d.y + 15)
+                .attr("x2", d.x)
+                .attr("y2", trunkBottomY)
+                .attr("stroke", "#8B4513")
+                .attr("stroke-width", 7);
+
+            // Save the trunk bottom coordinate for link connections
+            d.trunkBottomY = trunkBottomY;
+        });
+
+        // Draw connecting lines **from the bottom of the trunk**
+        svg.selectAll("line.link")
+            .data(nodes.slice(1)) // Exclude "from" node
+            .enter()
+            .append("line")
+            .attr("class", "link")
+            .attr("x1", centerX)
+            .attr("y1", nodes[0].trunkBottomY)  // Start from the bottom of center tree's trunk
+            .attr("x2", d => d.x)
+            .attr("y2", d => d.trunkBottomY)  // Connect to the bottom of each "to" tree trunk
+            .attr("stroke", "#443300")
+            .attr("stroke-width", 4);
+
+        // Add text labels
+        svg.selectAll("text")
+            .data(nodes)
+            .enter()
+            .append("text")
+            .attr("x", d => d.x)
+            .attr("y", d => d.trunkBottomY + 15)  // Position text below the trunk
+            .attr("text-anchor", "middle")
+            .style("fill", "black")
+            .style("font-size", "12px")
+            .style("font-family", "Arial")
+            .text(d => d.text);
+    }
+
+    // Event listener for situationDropdown
+    const situationDropdown = document.getElementById("situationDropdown");
+    situationDropdown.addEventListener("change", (event) => {
+        updateMapWithNodes(event.target.value);
+    });
+</script>
+<script>
+
+
+function addLink() {
+    // Get the selected value from the dropdown
+    const dropdown = document.getElementById("situationDropdown");
+    if (!dropdown) {
+        alert("Dropdown not found!");
+        return;
+    }
+    const fromValue = dropdown.value;
+    
+    // Validate fromValue exists in the database
+    // Loop through the database to find a matching value
+    for (const key in database) { 
+        if (database.hasOwnProperty(key)) { // Ensure key exists in object
+            if (database[key] === fromValue) { // Check if value matches selected dropdown value
+                fromItem = key; // Assign the key to fromItem
+                break; // Exit loop once a match is found
+            }
+        }
+    }
+    if (!fromItem) {
+        alert("Invalid 'from' selection!");
+        return;
+    }
+    //fromItem = document.getElementById("situationDropdown").value;
+
+    // Gather all available situations
+    const allSituations = Object.values(situationData.contexts).flat();
+    
+    if (allSituations.length === 0) {
+        alert("No situations available to select.");
+        return;
+    }
+
+    // Create a selection prompt for the user
+    let options = allSituations.map((item, index) => `${index + 1}. ${item}`).join("\n");
+    let choice = prompt(`Select a situation:\n${options}`);
+
+    // Convert input to an index and validate
+    let index = parseInt(choice, 10) - 1;
+    if (isNaN(index) || index < 0 || index >= allSituations.length) {
+        alert("Invalid selection. Please try again.");
+        return;
+    }
+
+    // Get the selected situation
+    const selectedSituation = allSituations[index];
+
+    // Generate a new key for situationLinks
+    const newKey = (Object.keys(situationLinks).length + 1).toString();
+    
+    // Add the new link
+    situationLinks[newKey] = {
+        "from": [database[fromItem]],
+        "to": [selectedSituation]
+    };
+
+    console.log("New situation link added:", situationLinks);
+
+    updateMapWithNodes(database[fromItem]);
+}
+
+
+
+</script>
 </body>
 </html>
