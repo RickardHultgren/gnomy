@@ -794,186 +794,34 @@
                 </div>
         </div>
         <script>
+            var jsData = {{=data}};
+            
+            var database = jsData.database;
+            var inventoryData = jsData.inventoryData;
+            var situationData = jsData.situationData;
+            var situationLinks = jsData.situationLinks;
+            var ladderData = jsData.ladderData;
+            var autonomySubCategory = jsData.autonomySubCategory;
+            var matchesSelected = jsData.matchesSelected;
+            var matchesToDo = jsData.matchesToDo;
+        
+            console.log("Database:", database);
+            console.log("Inventory Data:", inventoryData);
+            console.log("Situation Data:", situationData);
+            console.log("Situation Links:", situationLinks);
+            console.log("Ladder Data:", ladderData);
+            console.log("Autonomy SubCategory:", autonomySubCategory);
+            console.log("Matches Selected:", matchesSelected);
+            console.log("Matches To Do:", matchesToDo);
+        </script>
+        
+
+        <script>
     let fromItem = null;
     var selectedLink = null ;
 
     var theItemId = null ;
 
-    const database = {
-        1: "Create a portrait of my neighbour",
-        2: "I have the permission to paint an image of my neighbour.",
-        3: "I'm a hobby painter",
-        4: "Painting",
-        5: "Making friendship with my neighbour.",
-    };
-
-    let nextKey = Object.keys(database).length + 1;
-
-    const inventoryData = {
-        "inventory": {
-            "Relatedness": [database[1]].sort((a, b) => a.localeCompare(b)),
-            "Competence": [database[3]].sort((a, b) => a.localeCompare(b)),
-            "Autonomy": [database[2]].sort((a, b) => a.localeCompare(b)),
-        }
-    };
-
-
-    // Reconstruct situationData
-    const situationData = {
-        "contexts": {
-            "Home": [],
-            "Work": [],
-            "Hobby": [database[4], database[5]]
-        }
-    };
-
-
-
-    // Reconstruct situationData
-    const situationLinks = {
-        "1": { "from": [database[4]], "to": [database[5]]  }
-    };
-
-
-
-    const ladderData = {
-        "ladder": {
-            "1": [database[1]],
-            "2": [database[1]],
-            "3": [database[1]],
-            "4": [database[1]]
-        }
-    };
-
-
-
-    const autonomySubCategory = {
-        "subCategory": {
-            "My": [database[2]],
-            "Borrowed": [],
-            "Lent": []
-        }
-    };
-
-
-
-    inventoryData.inventory["Autonomy"] = [
-        ...autonomySubCategory.subCategory["My"],
-        ...autonomySubCategory.subCategory["Borrowed"],
-        ...autonomySubCategory.subCategory["Lent"]
-    ].sort((a, b) => a.localeCompare(b));
-
-
-    function sortSubCategory() {
-        // Sort the subcategories under 'My', 'Borrowed', and 'Lent' alphabetically
-        Object.keys(autonomySubCategory.subCategory).forEach((key) => {
-            autonomySubCategory.subCategory[key].sort((a, b) => a.localeCompare(b));
-        });
-
-        console.log('Sorted autonomySubCategory:', autonomySubCategory);
-    }
-
-    // Call the function to sort the subcategories
-    sortSubCategory();
-
-
-
-    var selectedAutonomyItem = null;
-
-    let currentLocationIndex = null;
-    const currentSelectedAutonomy = null;
-
-    const matchesSelected =
-    [
-        //{ id: 1, A: 'itemA1', RC: 'itemB1' },
-    ];
-
-    const matchesToDo =
-    [
-        { id: 1, A: 'itemA1', thanks: 'I did it!!!', resultContext: 'Result Context', resultSituation: 'Result Situation' },
-    ];
-    var autonomyId = null;
-
-    const sliders = {}; // Store sliders for each situation
-
-                                                                                                                         
-                                                                                                                         
-    async function fetchData() {
-        const response = await fetch("/yourapp/default/get_data_xml"); // Replace 'yourapp' with actual app name
-        const xmlText = await response.text();
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-
-        // Parse database
-        const database = {};
-        const entries = xmlDoc.getElementsByTagName("entry");
-        for (let entry of entries) {
-            database[entry.getAttribute("id")] = entry.textContent;
-        }
-
-        // Parse inventory
-        const inventoryData = {
-            "inventory": {
-                "Relatedness": Array.from(xmlDoc.getElementsByTagName("Relatedness")[0].children).map(item => item.textContent),
-                "Competence": Array.from(xmlDoc.getElementsByTagName("Competence")[0].children).map(item => item.textContent),
-                "Autonomy": Array.from(xmlDoc.getElementsByTagName("Autonomy")[0].children).map(item => item.textContent),
-            }
-        };
-
-        // Parse situation data
-        const situationData = {
-            "contexts": {
-                "Home": [],
-                "Work": [],
-                "Hobby": Array.from(xmlDoc.getElementsByTagName("Hobby")[0].children).map(item => item.textContent)
-            }
-        };
-
-        // Parse situation links
-        const situationLinks = {
-            "1": {
-                "from": [xmlDoc.getElementsByTagName("from")[0].textContent],
-                "to": [xmlDoc.getElementsByTagName("to")[0].textContent]
-            }
-        };
-
-        // Parse ladder data
-        const ladderData = {
-            "ladder": {}
-        };
-        const levels = xmlDoc.getElementsByTagName("level");
-        for (let level of levels) {
-            ladderData.ladder[level.getAttribute("id")] = [level.children[0].textContent];
-        }
-
-        // Parse autonomy subcategory
-        const autonomySubCategory = {
-            "subCategory": {
-                "My": Array.from(xmlDoc.getElementsByTagName("My")[0].children).map(item => item.textContent),
-                "Borrowed": [],
-                "Lent": []
-            }
-        };
-
-        inventoryData.inventory["Autonomy"] = [
-            ...autonomySubCategory.subCategory["My"],
-            ...autonomySubCategory.subCategory["Borrowed"],
-            ...autonomySubCategory.subCategory["Lent"]
-        ].sort((a, b) => a.localeCompare(b));
-
-        console.log("Database:", database);
-        console.log("Inventory Data:", inventoryData);
-        console.log("Situation Data:", situationData);
-        console.log("Situation Links:", situationLinks);
-        console.log("Ladder Data:", ladderData);
-        console.log("Autonomy SubCategory:", autonomySubCategory);
-    }
-
-    // Fetch and parse XML data on page load
-    fetchData();                                                                                                                         
-                                                                                                                         
-                                                                                                                         
-                                                                                                                         
     function addSliderInevitable(situation) {
         const sliderContainer = document.createElement('div');
         sliderContainer.classList.add('slider-container');  // Add class for styling
@@ -1002,6 +850,57 @@
         sliders[situation] = sliderContainer; // Store the slider container
     }
 
+    let nextKey = Object.keys(database).length + 1;
+    function sortSubCategory() {
+        // Sort the subcategories under 'My', 'Borrowed', and 'Lent' alphabetically
+        Object.keys(autonomySubCategory.subCategory).forEach((key) => {
+            autonomySubCategory.subCategory[key].sort((a, b) => a.localeCompare(b));
+        });
+
+        console.log('Sorted autonomySubCategory:', autonomySubCategory);
+    }
+
+    // Call the function to sort the subcategories
+    sortSubCategory();
+
+
+
+    var selectedAutonomyItem = null;
+
+    let currentLocationIndex = null;
+    const currentSelectedAutonomy = null;
+    const sliders = {}; // Store sliders for each situation
+
+                                                                                                                         
+                                                                                                                         
+    async function fetchData() {
+        try {
+            let response = await fetch("/your_web2py_endpoint"); // Replace with actual endpoint
+            let text = await response.text(); // Read as text
+            console.log("Raw XML Response:", text); // Debug
+
+            let parser = new DOMParser();
+            let xmlDoc = parser.parseFromString(text, "application/xml");
+
+            console.log("Parsed XML:", xmlDoc);
+
+            let relatednessNode = xmlDoc.getElementsByTagName("Relatedness")[0];
+
+            if (!relatednessNode) {
+                console.error("Error: <Relatedness> tag not found in XML");
+                return;
+            }
+
+            let relatednessArray = Array.from(relatednessNode.children).map(item => item.textContent);
+            console.log("Extracted Relatedness:", relatednessArray);
+
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    }
+    fetchData();
+                                                                                                                         
+    
     function updateDropdowns(contextDropdown, situationDropdown, selectedContext) {
         // Clear and update the situation dropdown
         situationDropdown.innerHTML = "";
@@ -1626,6 +1525,7 @@
                 const selectButton = document.createElement('button');
                 selectButton.className = 'actionButton';
                 selectButton.textContent = 'Select';
+                console.log("Database:", database);
                 if (selectedAutonomyItem === database[itemId]) {
                     const tableRows = document.querySelectorAll('#inventoryContent .tableRow');
                     // Select the clicked item
@@ -2096,6 +1996,7 @@
 
 
     function addLink() {
+        //alert("addLink");
         // Get the selected value from the dropdown
         const dropdown = document.getElementById("situationDropdown");
         if (!dropdown) {
@@ -2103,12 +2004,16 @@
             return;
         }
         const fromValue = dropdown.value;
-
+        //alert("addLink");
         // Validate fromValue exists in the database
         // Loop through the database to find a matching value
+        console.log("Database:", database);
         for (const key in database) {
+            alert(key);
             if (database.hasOwnProperty(key)) { // Ensure key exists in object
+                alert("addLink2");
                 if (database[key] === fromValue) { // Check if value matches selected dropdown value
+                    alert("addLink3");
                     fromItem = key; // Assign the key to fromItem
                     break; // Exit loop once a match is found
                 }
@@ -2159,6 +2064,151 @@
 
 
     </script>
+
+
+    <script>
+    // Wait for the page to fully load before executing fetchData
+    document.addEventListener("DOMContentLoaded", () => { fetchData(); });
+
+    // Object to store contexts and situations
+    const situationData = { contexts: {} };
+
+    // Get references to dropdown elements in the HTML
+    const contextDropdown = document.getElementById("contextDropdown");
+    const situationDropdown = document.getElementById("situationDropdown");
+
+    // Define the API URL for fetching and updating data
+    const API_URL = "/default/api.json"; // Replace with the actual API endpoint
+
+    // Function to fetch existing data from the API
+    async function fetchData() {
+        try {
+            let response = await fetch(API_URL); // Send a request to fetch data
+            if (!response.ok) throw new Error("Network response was not ok"); // Check for errors in the response
+
+            let data = await response.json(); // Parse response as JSON
+            situationData.contexts = data.contexts || {}; // Store contexts in situationData
+
+            // Update dropdowns with the fetched data
+            updateDropdowns(contextDropdown, situationDropdown, "");
+        } catch (error) {
+            console.error("Error fetching data:", error); // Log any errors
+        }
+    }
+
+    // Function to add a new context
+    async function addContext() {
+        const newContextName = prompt("Enter a name for the new context:"); // Prompt user for input
+        if (!newContextName || situationData.contexts[newContextName]) { // Validate input
+            alert("Invalid or existing context.");
+            return;
+        }
+
+        try {
+            let response = await fetch(API_URL, { // Send a POST request to add the context
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "add_context", name: newContextName }) // Send the new context name
+            });
+
+            let result = await response.json(); // Parse the response
+
+            if (result.success) { // Check if the operation was successful
+                situationData.contexts[newContextName] = []; // Add the new context locally
+                updateDropdowns(contextDropdown, situationDropdown, newContextName); // Refresh dropdowns
+            } else {
+                alert("Failed to add context."); // Notify user if operation fails
+            }
+        } catch (error) {
+            console.error("Error adding context:", error); // Log any errors
+        }
+    }
+
+    // Function to add a new situation to a selected context
+    async function addSituation() {
+        const selectedContext = contextDropdown.value; // Get the selected context
+        if (!selectedContext) return alert("Please select a context first."); // Ensure a context is selected
+
+        const newSituationName = prompt("Enter a name for the new situation:"); // Prompt user for input
+        if (!newSituationName || situationData.contexts[selectedContext].includes(newSituationName)) { // Validate input
+            alert("Invalid or existing situation.");
+            return;
+        }
+//2025-02-22
+        try {
+            let response = await fetch(API_URL, { // Send a POST request to add the situation
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "add_situation", context: selectedContext, name: newSituationName })
+            });
+
+            let result = await response.json(); // Parse the response
+
+            if (result.success) { // Check if the operation was successful
+                situationData.contexts[selectedContext].push(newSituationName); // Add the new situation locally
+                updateDropdowns(contextDropdown, situationDropdown, selectedContext); // Refresh dropdowns
+            } else {
+                alert("Failed to add situation."); // Notify user if operation fails
+            }
+        } catch (error) {
+            console.error("Error adding situation:", error); // Log any errors
+        }
+    }
+
+    // Function to delete a selected context
+    async function deleteContext() {
+        const selectedContext = contextDropdown.value; // Get the selected context
+        if (!selectedContext || !confirm(`Delete context "${selectedContext}"?`)) return; // Confirm deletion
+
+        try {
+            let response = await fetch(API_URL, { // Send a POST request to delete the context
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "delete_context", name: selectedContext }) // Send the context name
+            });
+
+            let result = await response.json(); // Parse the response
+
+            if (result.success) { // Check if the operation was successful
+                delete situationData.contexts[selectedContext]; // Remove context from local data
+                updateDropdowns(contextDropdown, situationDropdown, ""); // Refresh dropdowns
+            } else {
+                alert("Failed to delete context."); // Notify user if operation fails
+            }
+        } catch (error) {
+            console.error("Error deleting context:", error); // Log any errors
+        }
+    }
+
+    // Function to delete a selected situation within a context
+    async function deleteSituation() {
+        const selectedContext = contextDropdown.value; // Get the selected context
+        const selectedSituation = situationDropdown.value; // Get the selected situation
+
+        if (!selectedContext || !selectedSituation || !confirm(`Delete "${selectedSituation}" from "${selectedContext}"?`)) return; // Confirm deletion
+
+        try {
+            let response = await fetch(API_URL, { // Send a POST request to delete the situation
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "delete_situation", context: selectedContext, name: selectedSituation }) // Send the situation name
+            });
+
+            let result = await response.json(); // Parse the response
+
+            if (result.success) { // Check if the operation was successful
+                let index = situationData.contexts[selectedContext].indexOf(selectedSituation); // Find index of the situation
+                if (index !== -1) situationData.contexts[selectedContext].splice(index, 1); // Remove situation from local data
+                updateDropdowns(contextDropdown, situationDropdown, selectedContext); // Refresh dropdowns
+            } else {
+                alert("Failed to delete situation."); // Notify user if operation fails
+            }
+        } catch (error) {
+            console.error("Error deleting situation:", error); // Log any errors
+        }
+    }
+
+</script>
 
 {{pass}}
 
