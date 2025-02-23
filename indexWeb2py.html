@@ -908,7 +908,7 @@
         defaultOption.textContent = "Select a tree";
         defaultOption.value = "";
         situationDropdown.appendChild(defaultOption);
-
+//////Examine
         if (selectedContext && situationData.contexts[selectedContext]) {
             situationData.contexts[selectedContext].forEach((situation) => {
                 const option = document.createElement("option");
@@ -2080,131 +2080,139 @@
     // Define the API URL for fetching and updating data
     const API_URL = "/default/api.json"; // Replace with the actual API endpoint
 
-    // Function to fetch existing data from the API
     async function fetchData() {
         try {
-            let response = await fetch(API_URL); // Send a request to fetch data
-            if (!response.ok) throw new Error("Network response was not ok"); // Check for errors in the response
+            const response = await fetch(API_URL);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-            let data = await response.json(); // Parse response as JSON
-            situationData.contexts = data.contexts || {}; // Store contexts in situationData
+            const data = await response.json();
+            console.log("Fetched data:", data); // Debugging log
 
-            // Update dropdowns with the fetched data
-            updateDropdowns(contextDropdown, situationDropdown, "");
+            if (!data.contexts) {
+                console.warn("Warning: No contexts found in API response.");
+            }
+
+            situationData.contexts = data.contexts || {};
+
+            // Ensure dropdowns exist before updating
+            if (contextDropdown && situationDropdown) {
+                updateDropdowns(contextDropdown, situationDropdown, "");
+            } else {
+                console.warn("Dropdown elements are not properly initialized.");
+            }
         } catch (error) {
-            console.error("Error fetching data:", error); // Log any errors
+            console.error("Error fetching data:", error);
         }
     }
 
-    // Function to add a new context
-    async function addContext() {
-        const newContextName = prompt("Enter a name for the new context:"); // Prompt user for input
-        if (!newContextName || situationData.contexts[newContextName]) { // Validate input
-            alert("Invalid or existing context.");
+    function addContext() {
+        const newContextName = prompt("Enter a name for the new context:");
+        if (!newContextName) return;
+
+        fetch("api", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "add_context", name: newContextName })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                situationData.contexts[newContextName] = [];
+                const option = document.createElement("option");
+                option.classList.add("context-option");
+                option.textContent = newContextName;
+                option.value = newContextName;
+                contextDropdown.appendChild(option);
+                contextDropdown.value = newContextName;
+                updateDropdowns(contextDropdown, situationDropdown, newContextName);
+            } else {
+                alert("Failed to add context: " + (data.error || "Unknown error"));
+            }
+        });
+    }
+//2025-02-23
+    function addSituation() {
+        const selectedContext = contextDropdown.value;
+        if (!selectedContext) {
+            alert("Please select a context first.");
             return;
         }
 
-        try {
-            let response = await fetch(API_URL, { // Send a POST request to add the context
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "add_context", name: newContextName }) // Send the new context name
-            });
+        const newSituationName = prompt("Enter a name for the new situation:");
+        if (!newSituationName) return;
 
-            let result = await response.json(); // Parse the response
-
-            if (result.success) { // Check if the operation was successful
-                situationData.contexts[newContextName] = []; // Add the new context locally
-                updateDropdowns(contextDropdown, situationDropdown, newContextName); // Refresh dropdowns
+        fetch("api", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "add_situation", context: selectedContext, name: newSituationName })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                situationData.contexts[selectedContext].push(newSituationName);
+                updateDropdowns(contextDropdown, situationDropdown, selectedContext);
             } else {
-                alert("Failed to add context."); // Notify user if operation fails
+                alert("Failed to add situation: " + (data.error || "Unknown error"));
             }
-        } catch (error) {
-            console.error("Error adding context:", error); // Log any errors
-        }
+        });
     }
 
-    // Function to add a new situation to a selected context
-    async function addSituation() {
-        const selectedContext = contextDropdown.value; // Get the selected context
-        if (!selectedContext) return alert("Please select a context first."); // Ensure a context is selected
-
-        const newSituationName = prompt("Enter a name for the new situation:"); // Prompt user for input
-        if (!newSituationName || situationData.contexts[selectedContext].includes(newSituationName)) { // Validate input
-            alert("Invalid or existing situation.");
+    function deleteContext() {
+        const selectedContext = contextDropdown.value;
+        if (!selectedContext) {
+            alert("Please select a context to delete.");
             return;
         }
-//2025-02-22
-        try {
-            let response = await fetch(API_URL, { // Send a POST request to add the situation
+
+        if (confirm(`Are you sure you want to delete the context "${selectedContext}"?`)) {
+            fetch("api", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "add_situation", context: selectedContext, name: newSituationName })
+                body: JSON.stringify({ action: "delete_context", name: selectedContext })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    delete situationData.contexts[selectedContext];
+                    updateDropdowns(contextDropdown, situationDropdown, "");
+                } else {
+                    alert("Failed to delete context: " + (data.error || "Unknown error"));
+                }
             });
-
-            let result = await response.json(); // Parse the response
-
-            if (result.success) { // Check if the operation was successful
-                situationData.contexts[selectedContext].push(newSituationName); // Add the new situation locally
-                updateDropdowns(contextDropdown, situationDropdown, selectedContext); // Refresh dropdowns
-            } else {
-                alert("Failed to add situation."); // Notify user if operation fails
-            }
-        } catch (error) {
-            console.error("Error adding situation:", error); // Log any errors
         }
     }
 
-    // Function to delete a selected context
-    async function deleteContext() {
-        const selectedContext = contextDropdown.value; // Get the selected context
-        if (!selectedContext || !confirm(`Delete context "${selectedContext}"?`)) return; // Confirm deletion
-
-        try {
-            let response = await fetch(API_URL, { // Send a POST request to delete the context
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "delete_context", name: selectedContext }) // Send the context name
-            });
-
-            let result = await response.json(); // Parse the response
-
-            if (result.success) { // Check if the operation was successful
-                delete situationData.contexts[selectedContext]; // Remove context from local data
-                updateDropdowns(contextDropdown, situationDropdown, ""); // Refresh dropdowns
-            } else {
-                alert("Failed to delete context."); // Notify user if operation fails
-            }
-        } catch (error) {
-            console.error("Error deleting context:", error); // Log any errors
+    function deleteSituation() {
+        const selectedContext = contextDropdown.value;
+        const selectedSituation = situationDropdown.value;
+        
+        if (!selectedContext) {
+            alert("Please select a context first.");
+            return;
         }
-    }
+        if (!selectedSituation) {
+            alert("Please select a situation to delete.");
+            return;
+        }
 
-    // Function to delete a selected situation within a context
-    async function deleteSituation() {
-        const selectedContext = contextDropdown.value; // Get the selected context
-        const selectedSituation = situationDropdown.value; // Get the selected situation
-
-        if (!selectedContext || !selectedSituation || !confirm(`Delete "${selectedSituation}" from "${selectedContext}"?`)) return; // Confirm deletion
-
-        try {
-            let response = await fetch(API_URL, { // Send a POST request to delete the situation
+        if (confirm(`Are you sure you want to delete the situation "${selectedSituation}"?`)) {
+            fetch("api", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "delete_situation", context: selectedContext, name: selectedSituation }) // Send the situation name
+                body: JSON.stringify({ action: "delete_situation", context: selectedContext, name: selectedSituation })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const index = situationData.contexts[selectedContext].indexOf(selectedSituation);
+                    if (index !== -1) {
+                        situationData.contexts[selectedContext].splice(index, 1);
+                    }
+                    updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+                } else {
+                    alert("Failed to delete situation: " + (data.error || "Unknown error"));
+                }
             });
-
-            let result = await response.json(); // Parse the response
-
-            if (result.success) { // Check if the operation was successful
-                let index = situationData.contexts[selectedContext].indexOf(selectedSituation); // Find index of the situation
-                if (index !== -1) situationData.contexts[selectedContext].splice(index, 1); // Remove situation from local data
-                updateDropdowns(contextDropdown, situationDropdown, selectedContext); // Refresh dropdowns
-            } else {
-                alert("Failed to delete situation."); // Notify user if operation fails
-            }
-        } catch (error) {
-            console.error("Error deleting situation:", error); // Log any errors
         }
     }
 
