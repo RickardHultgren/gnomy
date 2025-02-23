@@ -1037,20 +1037,30 @@
         //error prone below: alert("685");
         //error prone below: alert("80");
         // Create Buttons
-        const buttons = [
-            { text: "Add Context", class: "add-context-button", action: addContext },
-            { text: "Add Situation", class: "add-situation-button", action: addSituation },
-            { text: "Delete Context", class: "delete-context-button", action: deleteContext },
-            { text: "Delete Situation", class: "delete-situation-button", action: deleteSituation }
-        ];
+        try {
+            const buttons = [
+                { text: "Add Context", class: "add-context-button", action: addContext },
+                { text: "Add Situation", class: "add-situation-button", action: addSituation },
+                { text: "Delete Context", class: "delete-context-button", action: deleteContext },
+                { text: "Delete Situation", class: "delete-situation-button", action: deleteSituation }
+            ];
+        }
+        catch(err) {
+                alert(err.message);
+        }
         //alert("685");
-        buttons.forEach(({ text, class: className, action }) => {
-            const button = document.createElement("button");
-            button.classList.add(className);
-            button.textContent = text;
-            button.addEventListener("click", action);
-            subContainer.appendChild(button);
-        });
+        try {
+            buttons.forEach(({ text, class: className, action }) => {
+                const button = document.createElement("button");
+                button.classList.add(className);
+                button.textContent = text;
+                button.addEventListener("click", action);
+                subContainer.appendChild(button);
+            });
+        }
+        catch(err) {
+                alert(err.message);
+        }
         //alert("686");
         try {
             // Dropdown event listeners -- error prone together with the functions below:
@@ -1062,7 +1072,7 @@
         }
         catch(err) {
                 alert(err.message);
-            }
+        }
         situationDropdown.addEventListener("change", (event) => {
             const selectedSituation = event.target.value;
             const sliderContainerDiv = document.getElementById("sliderContainer");
