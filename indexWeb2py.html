@@ -1015,9 +1015,9 @@
         moreButton.id = "moreButton";
         moreButton.textContent = "\u22EE";
         container.appendChild(moreButton);
-
+        const subContainer = document.getElementById("subContainer");
         moreButton.onclick = () => {
-            const subContainer = document.getElementById("subContainer");
+            
 
             if (!subContainer.classList.contains('show')) {
                 // Ensure it's visible before animation starts
@@ -1032,7 +1032,7 @@
             }
         };
 
-        alert("68");
+        //alert("68");
         //error prone below: alert("68");
         //error prone below: alert("685");
         //error prone below: alert("80");
@@ -1043,7 +1043,7 @@
             { text: "Delete Context", class: "delete-context-button", action: deleteContext },
             { text: "Delete Situation", class: "delete-situation-button", action: deleteSituation }
         ];
-        alert("685");
+        //alert("685");
         buttons.forEach(({ text, class: className, action }) => {
             const button = document.createElement("button");
             button.classList.add(className);
@@ -1051,13 +1051,18 @@
             button.addEventListener("click", action);
             subContainer.appendChild(button);
         });
-        alert("686");
-        // Dropdown event listeners
-        contextDropdown.addEventListener("change", (event) => {
-            const selectedContext = event.target.value;
-            updateDropdowns(contextDropdown, situationDropdown, selectedContext);
-        });
-        alert("70");
+        //alert("686");
+        try {
+            // Dropdown event listeners -- error prone together with the functions below:
+            contextDropdown.addEventListener("change", (event) => {
+                const selectedContext = event.target.value;
+                updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+            });
+            
+        }
+        catch(err) {
+                alert(err.message);
+            }
         situationDropdown.addEventListener("change", (event) => {
             const selectedSituation = event.target.value;
             const sliderContainerDiv = document.getElementById("sliderContainer");
@@ -1087,199 +1092,216 @@
     // Attach function to a button
     document.getElementById("toggleButton").onclick = toggleSubInventory;
     alert("80");
+    try {
         function addContext() {
-            const newContextName = prompt("Enter a name for the new context:");
-            if (!newContextName) return;
+                const newContextName = prompt("Enter a name for the new context:");
+                if (!newContextName) return;
 
-            fetch("api", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "add_context", name: newContextName })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+                fetch("api", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ action: "add_context", name: newContextName })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        situationData.contexts[newContextName] = [];
+                        const option = document.createElement("option");
+                        option.classList.add("context-option");
+                        option.textContent = newContextName;
+                        option.value = newContextName;
+                        contextDropdown.appendChild(option);
+                        contextDropdown.value = newContextName;
+                        updateDropdowns(contextDropdown, situationDropdown, newContextName);
+                    } else {
+                        alert("Failed to add context: " + (data.error || "Unknown error"));
+                    }
+                });
+                const newContextName = prompt("Enter a name for the new context:");
+                if (newContextName && !situationData.contexts[newContextName]) {
                     situationData.contexts[newContextName] = [];
                     const option = document.createElement("option");
-                    option.classList.add("context-option");
+                    option.classList.add('context-option');
                     option.textContent = newContextName;
                     option.value = newContextName;
                     contextDropdown.appendChild(option);
                     contextDropdown.value = newContextName;
                     updateDropdowns(contextDropdown, situationDropdown, newContextName);
                 } else {
-                    alert("Failed to add context: " + (data.error || "Unknown error"));
-                }
-            });
-            const newContextName = prompt("Enter a name for the new context:");
-            if (newContextName && !situationData.contexts[newContextName]) {
-                situationData.contexts[newContextName] = [];
-                const option = document.createElement("option");
-                option.classList.add('context-option');
-                option.textContent = newContextName;
-                option.value = newContextName;
-                contextDropdown.appendChild(option);
-                contextDropdown.value = newContextName;
-                updateDropdowns(contextDropdown, situationDropdown, newContextName);
-            } else {
-                alert("This context already exists.");
-            }        
+                    alert("This context already exists.");
+                }        
+            }
         }
-
-        function addSituation() {
-            const selectedContext = contextDropdown.value;
-            if (!selectedContext) {
-                alert("Please select a context first.");
-                return;
+        catch(err) {
+                alert(err.message);
             }
-
-            const newSituationName = prompt("Enter a name for the new situation:");
-            if (!newSituationName) return;
-
-            fetch("api", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "add_situation", context: selectedContext, name: newSituationName })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    situationData.contexts[selectedContext].push(newSituationName);
-                    updateDropdowns(contextDropdown, situationDropdown, selectedContext);
-                } else {
-                    alert("Failed to add situation: " + (data.error || "Unknown error"));
-                }
-            });
-            const selectedContext = contextDropdown.value;
-            if (!selectedContext) {
-                alert("Please select a context first.");
-                return;
-            }
-
-            const newSituationName = prompt("Enter a name for the new situation:");
-            if (!newSituationName) return;
-
-            // Check if the situation already exists in the selected context
-            if (situationData.contexts[selectedContext].includes(newSituationName)) {
-                alert("This situation already exists in the selected context.");
-                return;
-            }
-
-            // Generate a new unique database key
-            const newId = Object.keys(database).length + 1;
-            
-            // Store the new situation in the database
-            database[newId] = newSituationName;
-            
-            // Update situationData to point to the new database entry
-            situationData.contexts[selectedContext].push(database[newId]);
-
-            // Refresh dropdowns with updated data
-            updateDropdowns(contextDropdown, situationDropdown, selectedContext);
-
-        }
-
-        function deleteContext() {
-            const selectedContext = contextDropdown.value;
-            if (!selectedContext) {
-                alert("Please select a context to delete.");
-                return;
-            }
-
-            if (confirm(`Are you sure you want to delete the context "${selectedContext}"?`)) {
-                fetch("api", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ action: "delete_context", name: selectedContext })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        delete situationData.contexts[selectedContext];
-                        updateDropdowns(contextDropdown, situationDropdown, "");
-                    } else {
-                        alert("Failed to delete context: " + (data.error || "Unknown error"));
-                    }
-                });
-            }
-            const selectedContext = contextDropdown.value;
-            if (!selectedContext) {
-                alert("Please select a context to delete.");
-                return;
-            }
-            if (confirm(`Are you sure you want to delete the context "${selectedContext}"?`)) {
-                delete situationData.contexts[selectedContext];
-                updateDropdowns(contextDropdown, situationDropdown, "");
-            }        
-        }
-
-        function deleteSituation() {
-            const selectedContext = contextDropdown.value;
-            const selectedSituation = situationDropdown.value;
-            
-            if (!selectedContext) {
-                alert("Please select a context first.");
-                return;
-            }
-            if (!selectedSituation) {
-                alert("Please select a situation to delete.");
-                return;
-            }
-
-            if (confirm(`Are you sure you want to delete the situation "${selectedSituation}"?`)) {
-                fetch("api", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ action: "delete_situation", context: selectedContext, name: selectedSituation })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const index = situationData.contexts[selectedContext].indexOf(selectedSituation);
-                        if (index !== -1) {
-                            situationData.contexts[selectedContext].splice(index, 1);
-                        }
-                        updateDropdowns(contextDropdown, situationDropdown, selectedContext);
-                    } else {
-                        alert("Failed to delete situation: " + (data.error || "Unknown error"));
-                    }
-                });
-            }
-            const selectedContext = contextDropdown.value;
-            const selectedSituation = situationDropdown.value;
-
-            if (!selectedContext) {
-                alert("Please select a context first.");
-                return;
-            }
-            if (!selectedSituation) {
-                alert("Please select a situation to delete.");
-                return;
-            }
-
-            if (confirm(`Are you sure you want to delete the situation "${selectedSituation}" from the "${selectedContext}" context?`)) {
-                // Find the database key that corresponds to the selected situation
-                const situationKey = Object.keys(database).find(key => database[key] === selectedSituation);
-
-                if (!situationKey) {
-                    alert("Error: Situation not found in database.");
+        try {
+            function addSituation() {
+                const selectedContext = contextDropdown.value;
+                if (!selectedContext) {
+                    alert("Please select a context first.");
                     return;
                 }
 
-                // Remove from situationData
-                const index = situationData.contexts[selectedContext].indexOf(selectedSituation);
-                if (index !== -1) {
-                    situationData.contexts[selectedContext].splice(index, 1);
+                const newSituationName = prompt("Enter a name for the new situation:");
+                if (!newSituationName) return;
+
+                fetch("api", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ action: "add_situation", context: selectedContext, name: newSituationName })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        situationData.contexts[selectedContext].push(newSituationName);
+                        updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+                    } else {
+                        alert("Failed to add situation: " + (data.error || "Unknown error"));
+                    }
+                });
+                const selectedContext = contextDropdown.value;
+                if (!selectedContext) {
+                    alert("Please select a context first.");
+                    return;
                 }
 
-                // Delete from database
-                delete database[situationKey];
+                const newSituationName = prompt("Enter a name for the new situation:");
+                if (!newSituationName) return;
+
+                // Check if the situation already exists in the selected context
+                if (situationData.contexts[selectedContext].includes(newSituationName)) {
+                    alert("This situation already exists in the selected context.");
+                    return;
+                }
+
+                // Generate a new unique database key
+                const newId = Object.keys(database).length + 1;
+                
+                // Store the new situation in the database
+                database[newId] = newSituationName;
+                
+                // Update situationData to point to the new database entry
+                situationData.contexts[selectedContext].push(database[newId]);
 
                 // Refresh dropdowns with updated data
                 updateDropdowns(contextDropdown, situationDropdown, selectedContext);
-            }
 
+            }
         }
+        catch(err) {
+                alert(err.message);
+            }
+        try {
+            function deleteContext() {
+                const selectedContext = contextDropdown.value;
+                if (!selectedContext) {
+                    alert("Please select a context to delete.");
+                    return;
+                }
+
+                if (confirm(`Are you sure you want to delete the context "${selectedContext}"?`)) {
+                    fetch("api", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ action: "delete_context", name: selectedContext })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            delete situationData.contexts[selectedContext];
+                            updateDropdowns(contextDropdown, situationDropdown, "");
+                        } else {
+                            alert("Failed to delete context: " + (data.error || "Unknown error"));
+                        }
+                    });
+                }
+                const selectedContext = contextDropdown.value;
+                if (!selectedContext) {
+                    alert("Please select a context to delete.");
+                    return;
+                }
+                if (confirm(`Are you sure you want to delete the context "${selectedContext}"?`)) {
+                    delete situationData.contexts[selectedContext];
+                    updateDropdowns(contextDropdown, situationDropdown, "");
+                }        
+            }
+        }
+        catch(err) {
+                alert(err.message);
+            }
+        try {
+            function deleteSituation() {
+                const selectedContext = contextDropdown.value;
+                const selectedSituation = situationDropdown.value;
+                alert("81");            
+                if (!selectedContext) {
+                    alert("Please select a context first.");
+                    return;
+                }
+                if (!selectedSituation) {
+                    alert("Please select a situation to delete.");
+                    return;
+                }
+                alert("82");            
+                if (confirm(`Are you sure you want to delete the situation "${selectedSituation}"?`)) {
+                    fetch("api", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ action: "delete_situation", context: selectedContext, name: selectedSituation })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const index = situationData.contexts[selectedContext].indexOf(selectedSituation);
+                            if (index !== -1) {
+                                situationData.contexts[selectedContext].splice(index, 1);
+                            }
+                            updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+                        } else {
+                            alert("Failed to delete situation: " + (data.error || "Unknown error"));
+                        }
+                    });
+                }
+                const selectedContext = contextDropdown.value;
+                const selectedSituation = situationDropdown.value;
+                alert("83");            
+                if (!selectedContext) {
+                    alert("Please select a context first.");
+                    return;
+                }
+                if (!selectedSituation) {
+                    alert("Please select a situation to delete.");
+                    return;
+                }
+                alert("84");            
+                if (confirm(`Are you sure you want to delete the situation "${selectedSituation}" from the "${selectedContext}" context?`)) {
+                    // Find the database key that corresponds to the selected situation
+                    const situationKey = Object.keys(database).find(key => database[key] === selectedSituation);
+
+                    if (!situationKey) {
+                        alert("Error: Situation not found in database.");
+                        return;
+                    }
+
+                    // Remove from situationData
+                    const index = situationData.contexts[selectedContext].indexOf(selectedSituation);
+                    if (index !== -1) {
+                        situationData.contexts[selectedContext].splice(index, 1);
+                    }
+
+                    // Delete from database
+                    delete database[situationKey];
+
+                    // Refresh dropdowns with updated data
+                    updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+                }
+            }
+        }
+        catch(err) {
+                alert(err.message);
+        }
+        
     }
 
     // Initialize
@@ -2190,24 +2212,6 @@
 
 
     </script>
-
-
-    <script>
-    // Wait for the page to fully load before executing fetchData
-    document.addEventListener("DOMContentLoaded", () => { fetchData(); });
-
-    // Object to store contexts and situations
-    const situationData = { contexts: {} };
-
-    // Get references to dropdown elements in the HTML
-    const contextDropdown = document.getElementById("contextDropdown");
-    const situationDropdown = document.getElementById("situationDropdown");
-
-    // Define the API URL for fetching and updating data
-    const API_URL = "/default/api.json"; // Replace with the actual API endpoint
-
-    
-</script>
 
 {{pass}}
 
