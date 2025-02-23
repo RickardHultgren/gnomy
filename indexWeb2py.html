@@ -2129,6 +2129,19 @@
                 alert("Failed to add context: " + (data.error || "Unknown error"));
             }
         });
+        const newContextName = prompt("Enter a name for the new context:");
+        if (newContextName && !situationData.contexts[newContextName]) {
+            situationData.contexts[newContextName] = [];
+            const option = document.createElement("option");
+            option.classList.add('context-option');
+            option.textContent = newContextName;
+            option.value = newContextName;
+            contextDropdown.appendChild(option);
+            contextDropdown.value = newContextName;
+            updateDropdowns(contextDropdown, situationDropdown, newContextName);
+        } else {
+            alert("This context already exists.");
+        }        
     }
 //2025-02-23
     function addSituation() {
@@ -2155,6 +2168,33 @@
                 alert("Failed to add situation: " + (data.error || "Unknown error"));
             }
         });
+        const selectedContext = contextDropdown.value;
+        if (!selectedContext) {
+            alert("Please select a context first.");
+            return;
+        }
+
+        const newSituationName = prompt("Enter a name for the new situation:");
+        if (!newSituationName) return;
+
+        // Check if the situation already exists in the selected context
+        if (situationData.contexts[selectedContext].includes(newSituationName)) {
+            alert("This situation already exists in the selected context.");
+            return;
+        }
+
+        // Generate a new unique database key
+        const newId = Object.keys(database).length + 1;
+        
+        // Store the new situation in the database
+        database[newId] = newSituationName;
+        
+        // Update situationData to point to the new database entry
+        situationData.contexts[selectedContext].push(database[newId]);
+
+        // Refresh dropdowns with updated data
+        updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+
     }
 
     function deleteContext() {
@@ -2180,6 +2220,15 @@
                 }
             });
         }
+        const selectedContext = contextDropdown.value;
+        if (!selectedContext) {
+            alert("Please select a context to delete.");
+            return;
+        }
+        if (confirm(`Are you sure you want to delete the context "${selectedContext}"?`)) {
+            delete situationData.contexts[selectedContext];
+            updateDropdowns(contextDropdown, situationDropdown, "");
+        }        
     }
 
     function deleteSituation() {
@@ -2214,6 +2263,40 @@
                 }
             });
         }
+        const selectedContext = contextDropdown.value;
+        const selectedSituation = situationDropdown.value;
+
+        if (!selectedContext) {
+            alert("Please select a context first.");
+            return;
+        }
+        if (!selectedSituation) {
+            alert("Please select a situation to delete.");
+            return;
+        }
+
+        if (confirm(`Are you sure you want to delete the situation "${selectedSituation}" from the "${selectedContext}" context?`)) {
+            // Find the database key that corresponds to the selected situation
+            const situationKey = Object.keys(database).find(key => database[key] === selectedSituation);
+
+            if (!situationKey) {
+                alert("Error: Situation not found in database.");
+                return;
+            }
+
+            // Remove from situationData
+            const index = situationData.contexts[selectedContext].indexOf(selectedSituation);
+            if (index !== -1) {
+                situationData.contexts[selectedContext].splice(index, 1);
+            }
+
+            // Delete from database
+            delete database[situationKey];
+
+            // Refresh dropdowns with updated data
+            updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+        }
+
     }
 
 </script>
