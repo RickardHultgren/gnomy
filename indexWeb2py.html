@@ -1091,52 +1091,53 @@
 
         // Attach function to a button
         document.getElementById("toggleButton").onclick = toggleSubInventory;
-//        try {
+          try {
             function addContext() {//}
                 const newContextName = prompt("Enter a name for the new context:");
-//                if (!newContextName) return;
-//
-//                fetch("api", {
-//                    method: "POST",
-//                    headers: { "Content-Type": "application/json" },
-//                    body: JSON.stringify({ action: "add_context", name: newContextName })
-//                })
-//                .then(response => response.json())
-//                .then(data => {
-//                    if (data.success) {
-//                        situationData.contexts[newContextName] = [];
-//                        const option = document.createElement("option");
-//                        option.classList.add("context-option");
-//                        option.textContent = newContextName;
-//                        option.value = newContextName;
-//                        contextDropdown.appendChild(option);
-//                        contextDropdown.value = newContextName;
-//                        updateDropdowns(contextDropdown, situationDropdown, newContextName);
-//                    } else {
-//                        alert("Failed to add context: " + (data.error || "Unknown error"));
-//                    }
-//                });
-//                
-//                if (newContextName && !situationData.contexts[newContextName]) {
-//                    situationData.contexts[newContextName] = [];
-//                    const option = document.createElement("option");
-//                    option.classList.add('context-option');
-//                    option.textContent = newContextName;
-//                    option.value = newContextName;
-//                    contextDropdown.appendChild(option);
-//                    contextDropdown.value = newContextName;
-//                    updateDropdowns(contextDropdown, situationDropdown, newContextName);
-//                } else {
-//                    alert("This context already exists.");
-//                }        
+                  if (!newContextName) return;
+  
+                  fetch("api", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ action: "add_context", name: newContextName })
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          situationData.contexts[newContextName] = [];
+                          const option = document.createElement("option");
+                          option.classList.add("context-option");
+                          option.textContent = newContextName;
+                          option.value = newContextName;
+                          contextDropdown.appendChild(option);
+                          contextDropdown.value = newContextName;
+                          updateDropdowns(contextDropdown, situationDropdown, newContextName);
+                      } else {
+                          alert("Failed to add context: " + (data.error || "Unknown error"));
+                      }
+                  });
+                  
+                  if (newContextName && !situationData.contexts[newContextName]) {
+                      situationData.contexts[newContextName] = [];
+                      const option = document.createElement("option");
+                      option.classList.add('context-option');
+                      option.textContent = newContextName;
+                      option.value = newContextName;
+                      contextDropdown.appendChild(option);
+                      contextDropdown.value = newContextName;
+                      updateDropdowns(contextDropdown, situationDropdown, newContextName);
+                  } else {
+                      alert("This context already exists.");
+                  }        
             }
-//        }
-//        catch(err) {
-//                alert(err.message);
-//            }
+          }
+          catch(err) {
+                  alert(err.message);
+              }
 //        try {
             function addSituation() {//}
-//                const selectedContext = contextDropdown.value;
+                //ERROR PRONE LINE:
+                const selectedContext = contextDropdown.value;
 //                if (!selectedContext) {
 //                    alert("Please select a context first.");
 //                    return;
