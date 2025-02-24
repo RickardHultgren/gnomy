@@ -1092,8 +1092,8 @@
         // Attach function to a button
         document.getElementById("toggleButton").onclick = toggleSubInventory;
 //        try {
-            function addContext() {}
-//                const newContextName = prompt("Enter a name for the new context:");
+            function addContext() {//}
+                const newContextName = prompt("Enter a name for the new context:");
 //                if (!newContextName) return;
 //
 //                fetch("api", {
@@ -1129,20 +1129,20 @@
 //                } else {
 //                    alert("This context already exists.");
 //                }        
-//            }
+            }
 //        }
 //        catch(err) {
 //                alert(err.message);
 //            }
 //        try {
-            function addSituation() {}
+            function addSituation() {//}
 //                const selectedContext = contextDropdown.value;
 //                if (!selectedContext) {
 //                    alert("Please select a context first.");
 //                    return;
 //                }
 //
-//                const newSituationName = prompt("Enter a name for the new situation:");
+                const newSituationName = prompt("Enter a name for the new situation:");
 //                if (!newSituationName) return;
 //
 //                fetch("api", {
@@ -1159,13 +1159,12 @@
 //                        alert("Failed to add situation: " + (data.error || "Unknown error"));
 //                    }
 //                });
-//                const selectedContext = contextDropdown.value;
+                const selectedContext = contextDropdown.value;
 //                if (!selectedContext) {
 //                    alert("Please select a context first.");
 //                    return;
 //                }
 //
-//                const newSituationName = prompt("Enter a name for the new situation:");
 //                if (!newSituationName) return;
 //
 //                // Check if the situation already exists in the selected context
@@ -1175,7 +1174,7 @@
 //                }
 //
 //                // Generate a new unique database key
-//                const newId = Object.keys(database).length + 1;
+                const newId = Object.keys(database).length + 1;
 //                
 //                // Store the new situation in the database
 //                database[newId] = newSituationName;
@@ -1183,17 +1182,17 @@
 //                // Update situationData to point to the new database entry
 //                situationData.contexts[selectedContext].push(database[newId]);
 //
-//                // Refresh dropdowns with updated data
+                // Refresh dropdowns with updated data
 //                updateDropdowns(contextDropdown, situationDropdown, selectedContext);
 //
-//            }
+            }
 //        }
 //        catch(err) {
 //                alert(err.message);
 //            }
 //        try {
-            function deleteContext() {}
-//                const selectedContext = contextDropdown.value;
+            function deleteContext() {//}
+                const selectedContext = contextDropdown.value;
 //                if (!selectedContext) {
 //                    alert("Please select a context to delete.");
 //                    return;
@@ -1224,13 +1223,13 @@
 //                    delete situationData.contexts[selectedContext];
 //                    updateDropdowns(contextDropdown, situationDropdown, "");
 //                }        
-//            }
+            }
 //        }
 //        catch(err) {
 //                alert(err.message);
 //            }
 //        try {
-            function deleteSituation() {}
+            function deleteSituation() {//}
 //                const selectedContext = contextDropdown.value;
 //                const selectedSituation = situationDropdown.value;
 //                alert("81");            
@@ -1295,7 +1294,7 @@
 //                    // Refresh dropdowns with updated data
 //                    updateDropdowns(contextDropdown, situationDropdown, selectedContext);
 //                }
-//            }
+            }
 //        }
 //        catch(err) {
 //                alert(err.message);
