@@ -171,7 +171,7 @@ def api():
                 db.commit()  # Commit the changes
                 return dict(success=True)  
             return dict(success=False, error="Context not found")  # Return error if context does not exist
-
+#2025-02-25:
         elif action == "add_situation":  
             # Add a new situation to an existing context
             context_name = vars.get("context")  
