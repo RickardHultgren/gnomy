@@ -132,7 +132,7 @@ def index():
 def api():  
     # Set the response format to JSON
     response.view = "generic.json"  
-
+    response.js = "alert('0');"  
     def GET(*args, **vars):  
         """Fetch all contexts and their situations."""
         
@@ -174,13 +174,21 @@ def api():
 #2025-02-25:
         elif action == "add_situation":  
             # Add a new situation to an existing context
+            response.js = "alert('1');"
             context_name = vars.get("context")  
+            response.js = "alert('2');"
             situation_name = vars.get("name")  
+            response.js = "alert('3');"
             context = db(db.context.name == context_name).select().first()  # Retrieve the context by name
+            response.js = "alert('4');"
             if context and situation_name and not db((db.situation.name == situation_name) & (db.situation.context_id == context.id)).count():  
+                response.js = "alert('4.1');"
                 db.situation.insert(name=situation_name, context_id=context.id)  # Insert new situation into the database
+                response.js = "alert('4.2');"
                 db.commit()  # Commit the changes
-                return dict(success=True)  
+                return dict(success=True)
+                response.js = "alert('4.3');"  
+            response.js = "alert('5');"
             return dict(success=False, error="Invalid context or situation already exists")  # Return error if the situation exists or context is invalid
 
         elif action == "delete_situation":  

@@ -1080,6 +1080,7 @@
         // Attach function to a button
         document.getElementById("toggleButton").onclick = toggleSubInventory;
         function addContext() {//}
+                
                 const newContextName = prompt("Enter a name for the new context:");
                 if (!newContextName) return;
   
@@ -1121,7 +1122,7 @@
 //          try {
             function addSituation() {//}
                 //ERROR PRONE LINE:
-                const selectedContext = contextDropdown.value;
+                var selectedContext = contextDropdown.value;
                 if (!selectedContext) {
                     alert("Please select a context first.");
                     return;
