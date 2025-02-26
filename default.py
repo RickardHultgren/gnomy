@@ -132,7 +132,7 @@ def index():
 def api():  
     # Set the response format to JSON
     response.view = "generic.json"  
-    response.js = "alert('0');"  
+    response.js = "alert('-9');"  
     def GET(*args, **vars):  
         """Fetch all contexts and their situations."""
         

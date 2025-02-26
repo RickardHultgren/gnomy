@@ -1085,26 +1085,22 @@
                 if (!newContextName) return;
   
                 fetch("api", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ action: "add_context", name: newContextName })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                              situationData.contexts[newContextName] = [];
-                          const option = document.createElement("option");
-                          option.classList.add("context-option");
-                          option.textContent = newContextName;
-                          option.value = newContextName;
-                          contextDropdown.appendChild(option);
-                          contextDropdown.value = newContextName;
-                          updateDropdowns(contextDropdown, situationDropdown, newContextName);
-                    } else {
-                          alert("Failed to add context: " + (data.error || "Unknown error"));
-                    }
-                });
-                  
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "add_situation", context: selectedContext, name: newSituationName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Response from API:", data);  // Debugging output
+                if (data.success) {
+                    alert("Situation added successfully!");
+                    situationData.contexts[selectedContext].push(newSituationName);
+                    updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+                } else {
+                    alert("Failed to add situation: " + (data.error || "Unknown error"));
+                }
+            })
+            .catch(error => console.error("Fetch error:", error));                  
                 if (newContextName && !situationData.contexts[newContextName]) {
                       situationData.contexts[newContextName] = [];
                       const option = document.createElement("option");
@@ -1131,7 +1127,7 @@
                 const newSituationName = prompt("Enter a name for the new situation:");
                 if (!newSituationName) return;
 
-                fetch("api", {
+                fetch("gnomy/default/api", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ action: "add_situation", context: selectedContext, name: newSituationName })
@@ -1139,9 +1135,17 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
+                        {
+//2025-02-26                            
+                        "tasks": [
+                            { "id": 1, "title": "Buy groceries", "description": "Milk, Eggs, Bread", "completed": false }
+                        ]
+                        }
+
                         situationData.contexts[selectedContext].push(newSituationName);
-                          updateDropdowns(contextDropdown, situationDropdown, selectedContext);
-                      } else {
+                        updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+
+                        } else {
                           alert("Failed to add situation: " + (data.error || "Unknown error"));
                       }
                   });
