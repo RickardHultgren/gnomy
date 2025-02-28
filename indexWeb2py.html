@@ -1135,17 +1135,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        {
-//2025-02-26                            
-                        "tasks": [
-                            { "id": 1, "title": "Buy groceries", "description": "Milk, Eggs, Bread", "completed": false }
-                        ]
-                        }
-
                         situationData.contexts[selectedContext].push(newSituationName);
-                        updateDropdowns(contextDropdown, situationDropdown, selectedContext);
-
-                        } else {
+                          updateDropdowns(contextDropdown, situationDropdown, selectedContext);
+                      } else {
                           alert("Failed to add situation: " + (data.error || "Unknown error"));
                       }
                   });
