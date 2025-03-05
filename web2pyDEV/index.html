@@ -17,21 +17,22 @@
 
 
 
-<h2>Welcome to Noduli!</h2>
-<p>
-Explore interactive decision trees to advance medical knowledge through collaborative learning and communication in healthcare..
-</p>
-<div>
-    <input type="text" id="collSearch" placeholder="Enter text...">
-    <button onclick="collFunction()">Search flowcharts</button>
-</div>
 
 {{if auth.is_logged_in():}}
+    Garden ponds (<i>contexts</i>):
+    <div id="collchoice" style="overflow: scroll; scrollbar-color: #333333 #ccccff; scrollbar-width: thin; width:100%;"></div>
+        {{=LOAD('default', 'showcollections', ajax=True, ajax_trap=True, target='collchoice', content='Loading...')}}
+    </div>
+
     <form method="post" action="{{=URL('default', 'add_collection')}}">
-        {{="Create flowchart" }}
+        Build a new pond: 
         {{=SQLFORM(db.collection)}}
         {{#response.js="document.getElementById('collchoice').reload(true);"}}
     </form>
+
+    <div id="collchoice" style="overflow: scroll; scrollbar-color: #333333 #ccccff; scrollbar-width: thin; width:100%;">
+        
+
 {{pass}}
 
 

@@ -1,0 +1,278 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dagre-d3/0.6.4/dagre-d3.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/d3-dag@1.1.0/+esm'></script>
+
+<!-- Graph container div -->
+<div id="graph-container"></div>
+
+<style>
+    /* CSS styles for the output container */
+    #output {
+        margin-top: 0;
+        padding: 0;
+        border: 4px solid blue;
+        position: relative;
+        background-color: yellow;
+        width: 45%;
+        height: 0%;
+        font-size:2vw;
+    }
+
+    /* CSS styles for the canvas */
+    #canvas {
+        margin-top: 0;
+        padding: 0;
+        border: 4px solid blue;
+        position: relative;
+        background-color: none;
+        width: 100%;
+        height: 100%;
+        font-size:2vw;
+    }
+</style>
+
+<script>
+    // Base64 encode / decode script from webtoolkit.info
+
+    // Add a button to trigger the image copy
+    <button id="copyButton">Copy Graph Image</button>
+
+    // Event listener for the copy button
+    document.getElementById('copyButton').addEventListener('click', copyGraphToClipboardWithSvgToPng);
+
+    // Function to copy SVG to PNG and trigger download
+    function copyGraphToClipboardWithSvgToPng() {
+        // Get the graph container element
+        var graphContainer = document.getElementById('graph-container');
+
+        // Convert the SVG content to a data URL
+        var svgString = new XMLSerializer().serializeToString(graphContainer);
+        var dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
+
+        // Create an Image element
+        var img = new Image();
+
+        // Set the Image source to the data URL
+        img.src = dataUrl;
+
+        // Wait for the Image to load
+        img.onload = function () {
+            // Create a Canvas element
+            var canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            // Get the 2D rendering context
+            var context = canvas.getContext('2d');
+
+            // Draw the Image on the Canvas
+            context.drawImage(img, 0, 0);
+
+            // Convert the Canvas to a data URL (base64)
+            var base64ImageData = canvas.toDataURL('image/png');
+
+            // Convert the base64 image to a Blob
+            var blob = dataURItoBlob(base64ImageData);
+
+            // Use the Clipboard API to copy to clipboard
+            navigator.clipboard.write([
+                new ClipboardItem({ "image/png": blob })
+            ]).then(function () {
+                // Alert the user (you can customize this part)
+                alert('Graph content copied to clipboard as PNG.');
+            }).catch(function (err) {
+                // Handle errors
+                console.error('Unable to copy to clipboard', err);
+            });
+
+            // Download the PNG file
+            downloadSvg(graphContainer, 'graph.png');
+        };
+    }
+</script>
+
+<script>
+    // Variable definition for nodes and links
+
+    var nodes = {{=XML(nodes)}};
+    var links = {{=XML(links)}};
+</script>
+
+<script>
+    // D3 code for graph visualization
+
+    // Set up SVG container and zoom behavior
+    var svg = d3.select("#graph-container")
+        .append("svg")
+        .attr("width", "100%")
+        .attr("height", "100%");
+
+    var g = svg.append("g");
+
+    var zoom = d3.zoom()
+        .scaleExtent([0.2, 4])
+        .on("zoom", zoomed);
+    // Define the initial zoom transform (e.g., 50% zoom and translated view)
+    var initialZoomTransform = d3.zoomIdentity
+      .scale(0.5)  // Set the initial zoom scale (e.g., 0.5 for 50% zoom)
+      .translate(100, 50);  // Set the initial pan (translate) values
+
+    // Create zoom behavior
+    var zoom = d3.zoom()
+      .on("zoom", zoomed);
+
+    // Apply initial zoom transform to the SVG element
+    svg.call(zoom.transform, initialZoomTransform);
+
+    // Define zoomed function to handle zoom events
+    function zoomed() {
+      // Implement zoom behavior as needed
+      svg.attr("transform", d3.event.transform);
+    }
+    
+    
+    // Initialize the simulation with modified force parameters
+    var simulation = d3.forceSimulation()
+        .force("link", d3.forceLink().id(function(d) { return d.id; }).distance(300))
+        .force("charge", d3.forceManyBody().strength(-1000))
+        .force("center", d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2));
+
+    // Add arrowhead marker
+    svg.append("defs").append("marker")
+        .attr("id", "arrow")
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 8)
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+        .append("path")
+        .attr("d", "M0,-5L10,0L0,5");
+
+    // Add nodes and links to the simulation
+    var node = g.selectAll(".node")
+        .data(nodes)
+        .enter().append("g")
+        .attr("class", "node")
+        .attr("fill", "lightgrey")
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended))
+        .on("click", nodeClicked);
+
+    node.append("rect")
+        .attr("width", 80)
+        .attr("height", 40)
+        .attr("class", "node");
+
+    node.append("text")
+        .attr("dy", "1.3em")
+        .attr("x", 40)
+        .style("text-anchor", "middle")
+        .style("fill", "black")
+        .text(function(d) { return d.label; });
+
+    // Function to handle node click
+    function nodeClicked(d) {
+        var rect = d3.select(this).select("rect");
+        var currentColor = rect.style("fill");
+
+        if (currentColor !== "lightgreen") {
+            rect.style("fill", "lightgreen");
+        } else {
+            rect.style("fill", "lightgrey");
+        }
+    }
+
+    // Zoom function
+    function zoomed() {
+        g.attr("transform", d3.event.transform);
+    }
+    svg.call(zoom);
+
+    // Drag functions
+    function dragstarted(d) {
+        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+
+    function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+
+    function dragended(d) {
+        if (!d3.event.active) simulation.alphaTarget(0);
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+
+    // Create links
+    var link = g.selectAll(".link")
+        .data(links)
+        .enter().append("path")
+        .attr("class", "link")
+        .attr("marker-end", "url(#arrow)")
+        .style("stroke", "#666")
+        .style("stroke-width", function (d) { return Math.sqrt(d.value); })
+        .attr("fill", "lightgrey")
+        .attr("d", function (d) {
+            var sourceNode = nodes.find(node => node.id === d.source);
+            var targetNode = nodes.find(node => node.id === d.target);
+
+            if (sourceNode && targetNode) {
+                return "M" + sourceNode.x + "," + sourceNode.y +
+                       "L" + targetNode.x + "," + targetNode.y;
+            }
+
+            return "";
+        })
+        .on("mouseover", function (d) {
+            console.log("Mouseover on link:", d);
+        });
+
+    // Log link data and elements to console
+    console.log("Links data:", links);
+    console.log("Links elements:", link.nodes());
+    simulation.nodes(nodes);
+    simulation.force("link").links(links);
+    simulation.on("tick", ticked);
+
+    // Tick function to update node and link positions
+    function ticked() {
+        node.attr("transform", d => `translate(${d.x},${d.y})`);
+        link.attr("d", d => `M${d.source.x},${d.source.y}L${d.target.x},${d.target.y}`);
+    }
+</script>
+
+<script>
+    // Function to reload the graph content
+
+    function reloadFoundCollView() {
+        $.ajax({
+            url: "{{=URL('default', 'found_coll')}}",
+            type: "GET",
+            success: function(response) {
+                $('#foundcoll').html(response);
+            },
+            error: function() {
+                console.error("Error reloading 'found_coll'.");
+            }
+        });
+    }
+</script>
+
+<script>
+    // Function to take a screenshot of the graph
+
+    function takeshot() {
+        let div = document.getElementById('graph-container');
+
+        html2canvas(div).then(function (canvas) {
+            document.getElementById('output').appendChild(canvas);
+        });
+    }
+</script>

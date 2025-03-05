@@ -1,0 +1,85 @@
+{{response.files.append(URL(r=request,c='static',f='static/js/jquery.js'))}}
+{{response.files.append(URL(r=request,c='static',f='static/js/d3_graph.js'))}}
+{{response.files.append(URL(r=request,c='static',f='static/js/d3.min.js'))}}
+{{response.files.append(URL(r=request,c='static',f='static/css/d3_graph.css'))}}
+{{#response.files.append(URL(r=request,c='static',f='/js/d3.js'))}}
+{{extend 'layout.html'}}
+{{#import time}}
+
+{{collection = db.collection(request.args(0))}}
+<div style="font-weight:bold">Pond name: {{=collection.name}}</div>
+
+
+
+<div id="foundcoll" style="width: auto; margin:0px;padding:0px;">
+    <!-- Existing content to be dynamically updated -->
+    {{=LOAD('default', 'found_coll', ajax=True, ajax_trap=True, target='foundcoll', content='Loading...', cache=dict(expiration=0), style="width:100vw;")}}
+</div>
+    <button id="shareButton">Share Content</button>
+
+    <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const shareButton = document.getElementById('shareButton');
+
+    if (shareButton) {
+        shareButton.addEventListener('click', function() {
+            const shareData = {
+                title: document.title,  // Use the current page title
+                url: window.location.href  // Use the current page URL
+            };
+
+            if (navigator.share) {
+                // Use Web Share API if supported
+                navigator.share(shareData)
+                    .then(() => console.log('Shared successfully'))
+                    .catch((error) => console.error('Error sharing:', error));
+            } else {
+                // Fallback: Open a new window with shareable URL
+                const shareUrl = `${shareData.url}?title=${encodeURIComponent(shareData.title)}`;
+                window.open(shareUrl, '_blank');
+            }
+        });
+    }
+});
+
+
+function refreshDiv() {
+    $("#foundcoll").load(" #foundcoll > *");
+}
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var form = document.getElementById("my_form");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();  // Prevent the default form submission
+
+            // Submit the form using JavaScript
+            var formData = new FormData(form);
+            fetch(form.action, {
+                method: "POST",
+                body: formData
+            }).then(response => response.text()).then(data => {
+                // After form submission, reload the target div
+                $('#collchoice').load('{{=URL('default', 'showcollections')}}');
+            });
+        });
+    });
+</script>
+
+
+<div id="details" style="margin:0px;margin-top:5px;padding:5px; height:auto;margin-bottom:2em; border-width:3px;
+">
+
+<div style="font-weight:bold;font-style:italic;width:100%;height:2em;">Nodes of the chosen flowchart:</div>
+
+    <div id="nodecoll" class="nodecoll" name="nodecoll" style="width:90vw;margin:0px;padding:0px;">
+        <div style="width:90vw;height:auto;margin:0px;padding:0px;">
+
+ {{=LOAD(url=URL('default', 'showcolsnodes'), ajax=True, ajax_trap=True, target='nodecoll', content='Loading...', cache=False)}}
+{{#include 'default/showcolsnodes.html'}}
+        </div>
+    </div>
+</div>
