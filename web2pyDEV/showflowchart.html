@@ -67,6 +67,22 @@ function refreshDiv() {
 
     return false; // Prevent normal form submission
 }
+
+function deleteNode(deleteUrl) {
+    if (confirm("Are you sure?")) {  // Show confirmation
+        $.ajax({
+            type: "POST",
+            url: deleteUrl,  // Call delete function
+            success: function(response) {
+                $("#foundcoll").load("{{=URL('default', 'found_coll')}}");  // Reload div
+            },
+            error: function() {
+                alert("Error deleting node.");
+            }
+        });
+    }
+}
+
 </script>
 
 <script>

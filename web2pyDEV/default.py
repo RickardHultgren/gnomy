@@ -363,7 +363,8 @@ def shownextnodes():
     def can_delete_node(row):
         if auth.is_logged_in() and row.created_by == auth.user.id:
             delete_url = URL('default', 'node_delete', args=[row.id])
-            return A('Delete!', _style="height:1em;", _href=delete_url, _class='btn btn-danger', _data=dict(confirm="Are you sure?"))
+            return A('Delete!', _style="height:1em;", _href=delete_url, _class='btn btn-danger',
+                    _onclick="deleteNode('%s'); return false;" % delete_url)  # Call JS function
         return None
 
     # Display the grid based on user authentication status
