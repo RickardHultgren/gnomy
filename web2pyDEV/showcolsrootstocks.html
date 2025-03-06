@@ -1,0 +1,201 @@
+<div id="left" style="display:inline-block; width:40vw;height:auto;background-color:white;vertical-align: text-top; thin; font-size:3vh;margin:0px; padding:0px; min-width: 10em; border-width:0px;">
+
+    <style>
+        div{
+            font-size:3vh;     margin:0px;padding:0px;
+        }
+    </style>
+    <div id="addrootstockbttn" style="border-width:2px;
+    border: 4px solid #555555;
+    a: 1em;
+    color: #333333;
+font-size:3vh; margin:0px;padding:0px;  border-radius: 20px;border-width:2px;
+    border: 4px solid #555555;
+    padding: 1em;
+    color: #333333;
+
+    background-color: #eeeeee;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);width:40vw;margin-left:5vw;display:inline-block;min-width: 10em; border-width:1px;display:none;">
+<span style="font-style:italic;font-weight:bold;">
+    New rootstock
+</span>
+{{try:}}
+    {{if auth.is_logged_in():}}
+        {{=create_form}}
+    {{pass}}
+{{except:}}
+    {{pass}}
+
+    </div>
+<script>
+function showadd() {
+    var addrootstockbttn = document.getElementById('addrootstockbttn');
+
+    if (addrootstockbttn.style.display === 'inline-block') {
+        addrootstockbttn.style.display = 'none';
+    } else {
+        addrootstockbttn.style.display = 'inline-block';
+    }
+}
+</script>
+{{if auth.is_logged_in():}}
+    {{=BUTTON("Add rootstock", _onclick="showadd();", _style="border-color:black;border-width:1px;")}}
+{{pass}}
+<hr>
+Search rootstock
+{{=cols_rootstock_grid}}
+</div>
+
+<!-- JavaScript for handling AJAX interactions -->
+<script>
+$(document).ready(function() {
+    // Intercept form submission for creating a rootstock
+    $('#createrootstockFormContainer form').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Serialize form data
+        var formData = $(this).serialize();
+
+        // Send form data via AJAX to create_rootstock endpoint
+        $.ajax({
+            url: "{{=URL('default', 'create_rootstock')}}",
+            type: "POST",
+            data: formData,
+            success: function(response) {
+                $('#showcolsrootstocks').html("rootstock created successfully!");
+                // Optionally, reload specific parts of the page or update UI components
+            },
+            error: function(xhr, status, error) {
+                $('#formSubmissionResult').html("Error: " + error);
+            }
+        });
+    });
+</script>
+<script>
+    // Function to handle rootstock deletion via AJAX
+    function deleterootstock() {
+        if (confirm("Are you sure you want to delete this rootstock {{=session.rootstock_id}}?")) {
+            $.ajax({
+                url: "{{=URL('default', 'rootstockdelete')}}",
+                type: "POST",
+                success: function(response) {
+                    //alert(response); // Show success message
+                    //reloadShownextView();
+                    document.getElementById('rootstockcoll').reload(true);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error deleting rootstock:", error);
+                    alert("Error deleting rootstock.");
+                }
+            });
+        }
+    }
+</script>
+<script>
+    // Function to reload content in 'nextrootstock' based on search keyword
+    function reloadrootstockcoll(keyword) {
+        $.ajax({
+            url: "{{=URL('default', 'shownextrootstocks')}}",
+            type: "GET",
+            data: { colnodkeyword: keyword },
+            success: function(response) {
+                $('#nextrootstock').html(response); // Replace content of nextrootstock with reloaded view
+            },
+            error: function(xhr, status, error) {
+                console.error("Error reloading 'nextrootstock': " + error);
+            }
+        });
+    }
+</script>
+<script>
+    // Call searchrootstocks function when the page loads
+    searchrootstocks(); // Optionally, trigger initial search based on default keyword
+
+    // Periodically reload content in nextrootstock every 3 seconds
+    setInterval(function() {
+        var currentnodkeyword = $("#rootstockSearch").val();
+        reloadrootstockcoll(currentnodkeyword);
+    }, 3000);
+</script>
+<script>
+    // Function to reload 'left' content
+    function reloadShownextView() {
+        $.ajax({
+            url: "{{=URL('default', 'showcolsrootstocks')}}",
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                $('#rootstockcoll').html(response.updated_content);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error reloading content:", error);
+            }
+        });
+    }
+});
+</script>
+
+<!-- Content area for 'nextrootstock' to load dynamic content -->
+<div id="nextrootstock" class="nextrootstock" name="nextrootstock" style="scrollbar-color: #aaccff #888888; scrollbar-width: thin; display:inline-block;vertical-align: text-top;margin-left:5vw;font-size:3vh; margin:0px;padding:0px;  border-radius: 20px;border-width:2px;
+    border: 4px solid #555555;
+    padding: 1em;
+    color: #333333;
+
+    background-color: #eeeeee;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);width:40vw;margin-left:5vw;display:inline-block;min-width: 10em; border-width:1px;">
+
+
+        <!-- Load nextrootstocks dynamically using AJAX -->
+        {{#=LOAD(url=URL('default', 'shownextrootstocks'), ajax=True, ajax_trap=True, target='nextrootstock', content='fing...', cache=False)}}
+    
+
+
+
+<p style="margin:0%;padding:0%;font-weight:bold;font-style:italic;">
+    Details rootstock
+</p>
+
+{{try:}}
+    {{therootstock = db.rootstock(int(session.rootstock_id))}}
+    Record ID: {{=therootstock.id}}
+{{except:}}
+    {{pass}}
+{{try:}}
+    Name: {{=therootstock.name}}
+{{except:}}
+    {{pass}}
+
+
+
+{{if auth.is_logged_in():}}
+        {{=BUTTON("Delete rootstock", _style="background-color:#333333;color:#cccccc;", _id="deleterootstockBtn", _class="delbtn", _onclick="deleterootstock();")}}
+        {{=edit_form}}
+{{pass}}
+{{#=search_next}}
+
+
+<p>Next rootstocks:</p>
+<div id="nextspec" style="font-size:3vh;margin:0px;padding:0px;">
+{{try:}}
+    {{if auth.is_logged_in():}}
+        {{=create_next}}
+    {{pass}}
+{{except:}}
+    {{pass}}
+
+{{=knotstock_grid}}
+
+
+
+
+<script>
+//Call the reloadrootstockcoll function every 3 seconds
+//setInterval(function() {
+//    reloadshownextview();
+//}, 3000);
+
+
+</script>
+
+
+</div>
