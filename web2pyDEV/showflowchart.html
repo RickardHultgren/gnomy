@@ -68,22 +68,27 @@ function refreshDiv() {
     return false; // Prevent normal form submission
 }
 
-function refreshDivDel(element) {
-    var nodeId = $(element).data("node_id"); // Get node ID from button
-    alert('hej');
-    $.ajax({
-        type: "POST",
-        url: $(element).attr("href"), // Delete node via AJAX
-        success: function(response) {
-            $("#foundcoll").load("{{=URL('default', 'found_coll')}}"); // Reload found_coll
-        },
-        error: function() {
-            alert("Error deleting node.");
-        }
-    });
+$(document).ready(function() {
+    $(document).on("click", ".delete-btn", function(event) {
+        event.preventDefault();  // Prevent default link behavior
 
-    return false; // Prevent default link action
-}
+        var nodeId = $(this).data("node_id"); // Get node ID from button
+        var deleteUrl = $(this).attr("href"); // Get delete URL
+
+        $.ajax({
+            type: "POST",
+            url: deleteUrl, // Call delete function
+            success: function(response) {
+                $("#foundcoll").load("{{=URL('default', 'found_coll')}}"); // Reload found_coll
+            },
+            error: function() {
+                alert("Error deleting node.");
+            }
+        });
+
+        return false; // Prevent default action
+    });
+});
 
 </script>
 
