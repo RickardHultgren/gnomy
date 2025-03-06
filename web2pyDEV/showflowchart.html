@@ -1,4 +1,5 @@
-{{response.files.append(URL(r=request,c='static',f='static/js/jquery.js'))}}
+{{#response.files.append(URL(r=request,c='static',f='static/js/jquery.js'))}}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 {{response.files.append(URL(r=request,c='static',f='static/js/d3_graph.js'))}}
 {{response.files.append(URL(r=request,c='static',f='static/js/d3.min.js'))}}
 {{response.files.append(URL(r=request,c='static',f='static/css/d3_graph.css'))}}
@@ -42,17 +43,37 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+*/
 
-
+/*
 function refreshDiv() {
     $("#foundcoll").load(" #foundcoll > *");
-}*/
+}
+*/
+function refreshDiv() {
+    var formData = $("#create_node").serialize(); // Get form data
+
+    $.ajax({
+        type: "POST",
+        url: $("#create_node").attr("action"), // Submit form action
+        data: formData,
+        success: function(response) {
+            $("#foundcoll").load("{{=URL('default', 'found_coll')}}"); // Reload found_coll
+        },
+        error: function() {
+            alert("Error submitting form");
+        }
+    });
+
+    return false; // Prevent normal form submission
+}
 </script>
 
 <script>
+    /*
     document.addEventListener("DOMContentLoaded", function() {
         var form = document.getElementById("create_node");
-
+            
         form.addEventListener("submit", function(event) {
             event.preventDefault();  // Prevent the default form submission
 
@@ -67,6 +88,7 @@ function refreshDiv() {
             });
         });
     });
+    */
 </script>
 
 

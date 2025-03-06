@@ -430,7 +430,9 @@ def showcolsnodes():
     
     
     fields = ['name','ICD9','data_type']
-    create_form = SQLFORM(db.node, submit_button='Create', fields=fields, _style='font-size: 3vh;', _id='create_node', _onsubmit="refreshDiv();")
+    create_form = SQLFORM(db.node, submit_button='Create', fields=fields, 
+                      _style='font-size: 3vh;', _id='create_node', 
+                      _onsubmit="refreshDiv(); return false;")
 
     # Prepopulate the collection field with session.coll_id
     create_form.vars.collection = session.coll_id
@@ -722,7 +724,6 @@ def found_coll():
 
     # Retrieve nodes to show for the specified collection
     #response.js = "alert('%s')"%session.coll_id
-    response.js = "alert('Hello from found_coll!');"
     nodes_to_show = db(db.node.collection == session.coll_id).select()
     nodes = []
     links = []
