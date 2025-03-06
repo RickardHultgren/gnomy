@@ -362,12 +362,14 @@ def shownextnodes():
     # Define function to create a delete link for a node record
     def can_delete_node(row):
         if auth.is_logged_in() and row.created_by == auth.user.id:
-            delete_url = URL('default', 'node_delete', args=[row.id], user_signature=True)
-            return A('Delete!', _style="height:1em;", _href=delete_url, 
-                    _class='btn btn-danger delete-node', 
-                    _data=dict(node_id=row.id))
+            delete_url = URL('default', 'node_delete', args=[row.id])
+            return A('Delete!', 
+                    _style="height:1em;", 
+                    _href=delete_url, 
+                    _class='btn btn-danger delete-btn',  # Use class instead
+                    _data=dict(node_id=row.id))  # Store ID in data attribute
         return None
-
+        
     # Display the grid based on user authentication status
     if auth.is_logged_in():
         next_node_grid = SQLFORM.grid(
