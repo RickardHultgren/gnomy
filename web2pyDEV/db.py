@@ -190,10 +190,10 @@ db.define_table('node',
     #Field('collection',db.collection, requires=IS_IN_DB(db, db.collection, '%(name)s')),
     #Field('collection',db.collection, requires=IS_IN_DB(db(db.collection == session.coll_id), db.node, '%(name)s')),
     Field('name'),
-    Field('ICD9'),
+    #Field('ICD9'),
     #Field('next_list'),
     #Field('numeral_system'),
-    Field('data_type', requires=IS_IN_SET(['Procedure','Factor binary'])),
+    #Field('data_type', requires=IS_IN_SET(['Procedure','Factor binary'])),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)         ,  
     #Field.Virtual('virtual_field', lambda row: row.name + ' - ' + row.ICD9)
@@ -201,7 +201,7 @@ db.define_table('node',
     format='%(name)s'           
                )
 #db.node.virtual_field = Field.Virtual(lambda row: row.name + ' - ' + row.ICD9)
-db.node.data_type.default = 'Procedure'
+#db.node.data_type.default = 'Procedure'
 try:
     db.node.collection.id = session.coll_id
 except:

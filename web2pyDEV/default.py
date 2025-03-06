@@ -412,8 +412,8 @@ def showcolsnodes():
     record = db.node(record_id)
 
     # Define the fields to display in the edit form
-    editfields = ['name', 'ICD9', 'data_type']
-
+    #editfields = ['name', 'ICD9', 'data_type']
+    editfields = ['name']
     # Create an edit form for the specified record with custom submit button and styles
     edit_form = SQLFORM(db.node, record, fields=editfields, submit_button='Save', _style='font-size: 3vh;')
     
@@ -429,7 +429,8 @@ def showcolsnodes():
         edit_form.vars.collection = session.coll_id
     
     
-    fields = ['name','ICD9','data_type']
+    #fields = ['name','ICD9','data_type']
+    fields = ['name']
     create_form = SQLFORM(db.node, submit_button='Create', fields=fields, 
                       _style='font-size: 3vh;', _id='create_node', 
                       _onsubmit="refreshDiv(); return false;")
