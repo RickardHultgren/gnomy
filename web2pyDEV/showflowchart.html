@@ -68,20 +68,25 @@ function refreshDiv() {
     return false; // Prevent normal form submission
 }
 
-function deleteNode(deleteUrl) {
-    if (confirm("Are you sure?")) {  // Show confirmation
-        $.ajax({
-            type: "POST",
-            url: deleteUrl,  // Call delete function
-            success: function(response) {
-                $("#foundcoll").load("{{=URL('default', 'found_coll')}}");  // Reload div
-            },
-            error: function() {
-                alert("Error deleting node.");
-            }
-        });
-    }
-}
+$(document).ready(function() {
+    $(".delete-node").on("click", function(event) {
+        event.preventDefault();  // Prevent normal link navigation
+        var deleteUrl = $(this).attr("href"); // Get delete URL
+
+        if (confirm("Are you sure you want to delete this node?")) {
+            $.ajax({
+                type: "POST",
+                url: deleteUrl,  // Send delete request
+                success: function(response) {
+                    $("#foundcoll").load("{{=URL('default', 'found_coll')}}"); // Reload div
+                },
+                error: function() {
+                    alert("Error deleting node.");
+                }
+            });
+        }
+    });
+});
 
 </script>
 

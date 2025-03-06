@@ -362,9 +362,10 @@ def shownextnodes():
     # Define function to create a delete link for a node record
     def can_delete_node(row):
         if auth.is_logged_in() and row.created_by == auth.user.id:
-            delete_url = URL('default', 'node_delete', args=[row.id])
-            return A('Delete!', _style="height:1em;", _href=delete_url, _class='btn btn-danger',
-                    _onclick="deleteNode('%s'); return false;" % delete_url)  # Call JS function
+            delete_url = URL('default', 'node_delete', args=[row.id], user_signature=True)
+            return A('Delete!', _style="height:1em;", _href=delete_url, 
+                    _class='btn btn-danger delete-node', 
+                    _data=dict(node_id=row.id))
         return None
 
     # Display the grid based on user authentication status
@@ -417,7 +418,7 @@ def showcolsnodes():
     editfields = ['name']
     # Create an edit form for the specified record with custom submit button and styles
     edit_form = SQLFORM(db.node, record, fields=editfields, submit_button='Save', _style='font-size: 3vh;')
-    
+
     if 'collection' in db.node.fields:  # Check if 'collection' is a field in db.node
         edit_form.vars.collection = session.coll_id
     # Check if form is submitted and process the form data
@@ -428,12 +429,12 @@ def showcolsnodes():
     # Prepopulate the 'collection' field with session.coll_id (assuming session.coll_id exists)
     if 'collection' in edit_form.vars:
         edit_form.vars.collection = session.coll_id
-    
-    
+
+
     #fields = ['name','ICD9','data_type']
     fields = ['name']
-    create_form = SQLFORM(db.node, submit_button='Create', fields=fields, 
-                      _style='font-size: 3vh;', _id='create_node', 
+    create_form = SQLFORM(db.node, submit_button='Create', fields=fields,
+                      _style='font-size: 3vh;', _id='create_node',
                       _onsubmit="refreshDiv(); return false;")
 
     # Prepopulate the collection field with session.coll_id
@@ -569,7 +570,7 @@ def showcolsnodes():
     # Fetch next_nodes based on the session.coll_id
 
     nextfields = ['next_node']
-    
+
     # Create the SQLFORM instance with specified fields and submit button
     create_next = SQLFORM(db.next_node_list, submit_button='Create', fields=nextfields)
 
@@ -851,7 +852,7 @@ def found_node():
     the_id = request.args(0)
     session.node_id = int(the_id)  # Convert ID to integer and store in session
     #response.js = "window.location.reload();"
-    
+
     response.js = "document.getElementById('nodecoll').reload(true);"
 
 
