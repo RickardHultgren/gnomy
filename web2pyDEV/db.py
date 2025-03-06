@@ -160,21 +160,21 @@ else:
    me=None
 
 
-db.define_table('collection',
+db.define_table('pond',
     Field('name'),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False) # ,           
     #format='%(name)s'
                )
 
-#db.collection._permissions = {
-#    'create': auth.has_permission('create', db.collection),
-#    'read': auth.has_permission('read', db.collection),
-#    'update': auth.has_permission('update', db.collection),
-#    'delete': auth.has_permission('delete', db.collection),
+#db.pond._permissions = {
+#    'create': auth.has_permission('create', db.pond),
+#    'read': auth.has_permission('read', db.pond),
+#    'update': auth.has_permission('update', db.pond),
+#    'delete': auth.has_permission('delete', db.pond),
 #}
 
-db.define_table('node',
+db.define_table('rootstock',
     #Field('title',unique=True,notnull=True),
     #Field('description','text'),
     #Field('priority','integer',default=3,
@@ -186,9 +186,9 @@ db.define_table('node',
     #            T('Very High')],
     #    zero=None)),
     #Field('completed','boolean',default=False),
-    Field('collection', 'reference collection'),
-    #Field('collection',db.collection, requires=IS_IN_DB(db, db.collection, '%(name)s')),
-    #Field('collection',db.collection, requires=IS_IN_DB(db(db.collection == session.coll_id), db.node, '%(name)s')),
+    Field('pond', 'reference pond'),
+    #Field('pond',db.pond, requires=IS_IN_DB(db, db.pond, '%(name)s')),
+    #Field('pond',db.pond, requires=IS_IN_DB(db(db.pond == session.coll_id), db.rootstock, '%(name)s')),
     Field('name'),
     #Field('ICD9'),
     #Field('next_list'),
@@ -200,45 +200,55 @@ db.define_table('node',
                 
     format='%(name)s'           
                )
-#db.node.virtual_field = Field.Virtual(lambda row: row.name + ' - ' + row.ICD9)
-#db.node.data_type.default = 'Procedure'
+#db.rootstock.virtual_field = Field.Virtual(lambda row: row.name + ' - ' + row.ICD9)
+#db.rootstock.data_type.default = 'Procedure'
 try:
-    db.node.collection.id = session.coll_id
+    db.rootstock.pond.id = session.coll_id
 except:
     pass
 
-db.define_table('next_node',
+db.define_table('knotstock',
     Field('name', 'list:reference project'),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             ,
     format='%(name)s'           
                )
 
-#db.define_table('next_node_list',
-#    Field('node', requires=IS_IN_DB(db, db.node, '%(name)s')),
-#    Field('next_node',db.node
+db.define_table('flower',
+    Field('name', 'list:reference project'),
+    Field('flower_type', requires=IS_IN_SET(['Relatiris','Competentia'])),
+    Field('grwoing_place', requires=IS_IN_SET(['rootstock','tendril'])),
+    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    Field('created_on','datetime',default=request.now,writable=False,readable=False)             ,
+    format='%(name)s'           
+               )
+
+
+#db.define_table('knotstock_list',
+#    Field('rootstock', requires=IS_IN_DB(db, db.rootstock, '%(name)s')),
+#    Field('knotstock',db.rootstock
 #         ),                
 #    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
 #    Field('created_on','datetime',default=request.now,writable=False,readable=False)             ,
-#    format='%(node)s'           
+#    format='%(rootstock)s'           
 #               )
-# Define the table 'next_node_list'
+# Define the table 'knotstock_list'
 db.define_table(
-    'next_node_list',
-    Field('node', db.node, requires=IS_IN_DB(db(db.node.collection == session.coll_id), db.node, '%(name)s')),
-    Field('next_node', db.node, requires=IS_IN_DB(db(db.node.collection == session.coll_id), db.node, '%(name)s')),
+    'knotstock_list',
+    Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.coll_id), db.rootstock, '%(name)s')),
+    Field('knotstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.coll_id), db.rootstock, '%(name)s')),
     Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),
     Field('created_on', 'datetime', default=request.now, writable=False, readable=False),
-    format='%(node)s'
+    format='%(rootstock)s'
 )
 
-# Now 'node' and 'next_node' fields in 'next_node_list' table will be restricted
-# to nodes that belong to the collection specified by session.coll_id
+# Now 'rootstock' and 'knotstock' fields in 'knotstock_list' table will be restricted
+# to rootstocks that belong to the pond specified by session.coll_id
 
 
-db.define_table('collection_list',
-    Field('node'),
-    Field('collection'),                
+db.define_table('pond_list',
+    Field('rootstock'),
+    Field('pond'),                
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
                

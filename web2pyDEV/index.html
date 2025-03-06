@@ -21,12 +21,12 @@
 {{if auth.is_logged_in():}}
     Garden ponds (<i>contexts</i>):
     <div id="collchoice" style="overflow: scroll; scrollbar-color: #333333 #ccccff; scrollbar-width: thin; width:100%;"></div>
-        {{=LOAD('default', 'showcollections', ajax=True, ajax_trap=True, target='collchoice', content='Loading...')}}
+        {{=LOAD('default', 'showponds', ajax=True, ajax_trap=True, target='collchoice', content='Loading...')}}
     </div>
 
-    <form method="post" action="{{=URL('default', 'add_collection')}}">
+    <form method="post" action="{{=URL('default', 'add_pond')}}">
         Build a new pond: 
-        {{=SQLFORM(db.collection)}}
+        {{=SQLFORM(db.pond)}}
         {{#response.js="document.getElementById('collchoice').reload(true);"}}
     </form>
 

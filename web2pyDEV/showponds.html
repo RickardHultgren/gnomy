@@ -1,0 +1,36 @@
+{{if 'message' in globals():}}
+<h3>{{=message}}</h3>
+{{pass}}
+
+{{=pond_grid}}
+
+<script>
+    function reloadColl(keyword) {
+        $.ajax({
+            url: "{{=URL('default', 'showponds')}}",
+            type: "GET",
+            data: { colkeyword: keyword },
+            dataType: "html",
+            success: function(response) {
+                // Update the content of the 'nodecoll' container
+                $("#collchoice").html(response);
+            },
+            error: function() {
+                console.error("Error reloading 'collchoice'.");
+            }
+        });
+    }
+
+    // Call the function to reload the 'nodecoll' div every 3000 milliseconds (3 seconds)
+    function searchPonds() {
+        var colkeyword = $("#pondSearch").val();
+        reloadColl(colkeyword);
+    }
+
+    // You can add this part if you want to reload the content every 3 seconds
+//    setInterval(function () {
+        // Get the current search keyword and reload
+        //var currentcolkeyword = $("#collSearch").val();//
+//        reloadColl(currentcolkeyword);
+//    }, 3000);
+</script>
