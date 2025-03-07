@@ -58,7 +58,7 @@ $(document).ready(function() {
 
         // Send form data via AJAX to create_rootstock endpoint
         $.ajax({
-            url: "{{=URL('default', 'create_form')}}",
+            url: "{{=URL('default', 'create_rootstock')}}",
             type: "POST",
             data: formData,
             success: function(response) {

@@ -45,106 +45,8 @@ def add_pond():
 
     response.js="document.getElementById('collchoice').reload(true);"
     return dict()
-###
-def add_rootstock():
-    # Check if the user is logged in
-    if not auth.is_logged_in():
-        redirect(URL('default', 'user', args='login'))
-
-    # Process the form submission
-    if request.method == 'POST':
-        # Insert data into the 'rootstock' table based on form input
-        inserted_id = db.rootstock.insert(**request.post_vars)
-
-    # Create an empty form
-    form = SQLFORM(db.rootstock)
 
 
-    # Assuming the form has been successfully processed
-    response.flash = 'rootstock added successfully'
-
-    # You can redirect to another page or reload the index view
-    # Example: redirect to the index page
-    redirect(URL('default', 'index'))
-
-    # If you prefer to reload the content without redirecting, you can use AJAX
-    # Example: return a JSON response indicating success, and handle it in your JavaScript
-    return response.json({'success': True})
-
-
-def addnext():
-    # Check if the user is logged in
-    if not auth.is_logged_in():
-        redirect(URL('default', 'user', args='login'))
-
-    # Process the form submission
-    if request.method == 'POST':
-        # Extract data from the form
-#        rootstock_id = request.vars.rootstock
-        knotstock_id = request.vars.knotstock
-
-        # Insert a new record into the 'knotstock_list' table
-        inserted_id = db.knotstock_list.insert(
-            rootstock=session.rootstock_id,
-            knotstock=knotstock_id,
-            created_by=auth.user.id,
-        )
-
-        # Optionally, you can add a flash message or redirect to another page
-        response.flash = f'Next rootstock added successfully with ID: {inserted_id}'
-        response.js="document.getElementById('nextspec').reload(true);"
-        response.js="document.getElementById('foundcoll').reload(true);"
-        #redirect(URL('default', 'index'))
-
-    # Render the view or redirect if needed
-    return dict()
-
-
-
-def add_next_OLD():
-    # Check if the user is logged in
-    if not auth.is_logged_in():
-        redirect(URL('default', 'user', args='login'))
-
-    # Process the form submission
-    if request.method == 'POST':
-        # Get the names of the rootstocks from the form
-        selected_rootstocks = request.vars.rootstock
-
-        # Handle the case where multiple rootstocks are selected
-        if isinstance(selected_rootstocks, list):
-            rootstock_ids = [int(rootstock_id) for rootstock_id in selected_rootstocks]
-        else:
-            # Handle the case where only one rootstock is selected
-            rootstock_ids = [int(selected_rootstocks)]
-
-            ####
-        # Insert data into the 'pond' table based on form input
-        rootstock = db(db.rootstock.name == rootstock_name).select(db.rootstock.id).first()
-        knotstock = db(db.rootstock.name == knotstock_name).select(db.rootstock.id).first()
-
-        inserted_id = db.rootstock.insert(**request.post_vars)
-
-        #response.flash = f'rootstock added successfully with ID: {inserted_id}'
-        #redirect(URL('default', 'index'))
-        #showcolsrootstocks()
-    # Create an empty form
-    form = SQLFORM(db.knotstock)
-
-
-    # Assuming the form has been successfully processed
-    response.flash = 'rootstock added successfully'
-
-    # You can redirect to another page or reload the index view
-    # Example: redirect to the index page
-    redirect(URL('default', 'index'))
-
-    # If you prefer to reload the content without redirecting, you can use AJAX
-    # Example: return a JSON response indicating success, and handle it in your JavaScript
-    return response.json({'success': True})
-    #return dict()
-
-#Test function:
 
 def check():#(name):
     import gluon.contenttype
@@ -298,10 +200,6 @@ def shownextrootstocks():
         knotstock_grid=knotstock_grid
     )
 
-#########
-
-
-
 
 def showcolsrootstocks():
     # Assuming 'id' is the ID of the record you want to edit
@@ -338,14 +236,11 @@ def showcolsrootstocks():
     db.rootstock.pond.default = session.pond_id  # Set default value at DB levelcreate_form.vars.pond = session.pond_id
 
     if create_form.process().accepted:
-            # Form data was submitted and accepted
-            # Perform necessary actions here, e.g., save data to database
-            #response.flash = 'Record created successfully'
-            response.js = "document.getElementById('rootstockpond').reload(true);"
-            # Optional: Do not redirect or return a response if you want to stay on the same page
-            # Instead, display a success message or update the current view
-            pass
+        print("Form submission accepted!")  # Debugging
+        response.flash = 'Record created successfully'
+        response.js = "document.getElementById('rootstockpond').reload(true);"
     elif create_form.errors:
+        print("Form errors:", create_form.errors)  # Debugging
         response.flash = 'Form has errors: ' + str(create_form.errors)
         response.status = 400
         
@@ -709,3 +604,13 @@ def download():
     http://..../[app]/default/download/[filename]
     """
     return response.download(request, db)
+
+
+@auth.requires_login()
+def create_rootstock():
+    form = SQLFORM(db.rootstock)
+    if form.process().accepted:
+        return "rootstock created successfully!"
+    elif form.errors:
+        return "Form has errors: " + str(form.errors)
+    return "Unexpected error"
