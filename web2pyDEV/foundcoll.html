@@ -185,28 +185,34 @@ node.append("text")
 /*function nodeClicked(event, d) {
     d3.select(this).raise(); // Bring clicked node to front
 }*/
-
+//sketch
+// Function to toggle star color while keeping full opacity and update nextrottstock div
 function nodeClicked(event, d) {
-    d3.select(this).raise(); // Bring clicked node to front
-
-    // Toggle color to indicate selection
     var star = d3.select(this).select("polygon");
     var currentColor = star.attr("fill");
-    star.attr("fill", currentColor !== "lightgreen" ? "lightgreen" : "lightgrey");
 
-    // Send the selected node's ID to the server via AJAX
-    $.ajax({
-        type: "POST",
-        url: "{{=URL('default', 'update_rootstock_id')}}", // Ensure this URL is correctly mapped
-        data: { rootstock_id: d.id },
-        success: function(response) {
-            console.log("Session updated:", response);
-        },
-        error: function(xhr, status, error) {
-            console.error("Error updating session:", error);
+    // Toggle color
+    if (currentColor !== "lightgreen") {
+        star.attr("fill", "lightgreen");
+    } else {
+        star.attr("fill", "lightgrey");
+    }
+    
+    star.attr("opacity", 1); // Ensure it remains 100% visible
+
+    // Update session.rootstock_id via AJAX
+    fetch("{{=URL('default', 'set_rootstock_id')}}", {
+        method: "POST",
+        body: JSON.stringify({ rootstock_id: d.id }),
+        headers: {
+            "Content-Type": "application/json"
         }
     });
+
+    // Update the content of nextrottstock div
+    document.getElementById("nextrottstock").innerHTML = "Selected Rootstock: " + d.label;
 }
+
 
 // Function to generate star points
 function getStarPoints(cx, cy, innerRadius, outerRadius, numPoints) {
