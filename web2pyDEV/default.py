@@ -600,6 +600,22 @@ def showcolsrootstocks():
     # Retrieve next rootstocks based on session.coll_id
     # Assuming session, db, response, and SQLFORM are properly imported and initialized
 
+    # Create the form
+    new_flower = SQLFORM(db.flower, fields=['name', 'flower_type', 'growing_place'], submit_button='Create')
+
+    # Process the form submission
+    if new_flower.process().accepted:
+        response.flash = 'Record created successfully'
+    elif new_flower.errors:
+        response.flash = 'Form has errors'
+        response.status = 400  # Indicate a bad request
+
+        # Check if the error is due to a duplicate name
+        if 'name' in new_flower.errors:
+            response.flash = 'This name is already registered. Please choose another.'
+
+    # Adjust element targeting if necessary
+    new_flower_field = new_flower.element('select[name="name"]')
 
 
 
@@ -743,6 +759,7 @@ def showcolsrootstocks():
         #search_results=search_results,
         edit_form=edit_form,
         create_form=create_form,
+        new_flower=new_flower,
         create_flower=create_flower,
         create_next=create_next,
         flower_grid=flower_grid,

@@ -173,6 +173,18 @@ $(document).ready(function() {
 {{pass}}
 {{#=search_next}}
 
+<hr>
+
+<p>Flowers:</p>
+<div id="flowerspec" style="font-size:3vh;margin:0px;padding:0px;">
+{{try:}}
+    {{if auth.is_logged_in():}}
+        {{=new_flower}}
+    {{pass}}
+{{except:}}
+    {{pass}}
+<hr>
+
 <p>Flowers:</p>
 <div id="flowerspec" style="font-size:3vh;margin:0px;padding:0px;">
 {{try:}}
@@ -184,6 +196,7 @@ $(document).ready(function() {
 
 {{=flower_grid}}
 
+<hr>
 
 <p>Knotstocks:</p>
 <div id="nextspec" style="font-size:3vh;margin:0px;padding:0px;">

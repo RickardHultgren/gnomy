@@ -188,7 +188,7 @@ db.define_table('rootstock',
     #Field('completed','boolean',default=False),
     Field('pond', 'reference pond'),
     #Field('pond',db.pond, requires=IS_IN_DB(db, db.pond, '%(name)s')),
-    #Field('pond',db.pond, requires=IS_IN_DB(db(db.pond == session.coll_id), db.rootstock, '%(name)s')),
+    #Field('pond',db.pond, requires=IS_IN_DB(db(db.pond == session.pond_id), db.rootstock, '%(name)s')),
     Field('name'),
     #Field('ICD9'),
     #Field('next_list'),
@@ -203,7 +203,7 @@ db.define_table('rootstock',
 #db.rootstock.virtual_field = Field.Virtual(lambda row: row.name + ' - ' + row.ICD9)
 #db.rootstock.data_type.default = 'Procedure'
 try:
-    db.rootstock.pond.id = session.coll_id
+    db.rootstock.pond.id = session.pond_id
 except:
     pass
 
@@ -216,6 +216,7 @@ db.define_table('knotstock',
 
 db.define_table('flower',
     Field('name', 'list:reference project'),
+    Field('pond', 'reference pond'),
     Field('flower_type', requires=IS_IN_SET(['Relatiris','Competentia'])),
     Field('grwoing_place', requires=IS_IN_SET(['rootstock','tendril'])),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
@@ -235,8 +236,8 @@ db.define_table('flower',
 # Define the table 'knotstock_list'
 db.define_table(
     'knotstock_list',
-    Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.coll_id), db.rootstock, '%(name)s')),
-    Field('knotstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.coll_id), db.rootstock, '%(name)s')),
+    Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
+    Field('knotstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
     Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),
     Field('created_on', 'datetime', default=request.now, writable=False, readable=False),
     format='%(rootstock)s'
@@ -245,8 +246,8 @@ db.define_table(
 # Define the table 'flower_list'
 db.define_table(
     'flower_list',
-    Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.coll_id), db.rootstock, '%(name)s')),
-    Field('flower', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.coll_id), db.rootstock, '%(name)s')),
+    Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
+    Field('flower', db.flower, requires=IS_IN_DB(db(db.flower.pond == session.pond_id), db.rootstock, '%(name)s')),
     Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),
     Field('created_on', 'datetime', default=request.now, writable=False, readable=False),
     format='%(rootstock)s'
@@ -254,7 +255,7 @@ db.define_table(
 
 
 # Now 'rootstock' and 'knotstock' fields in 'knotstock_list' table will be restricted
-# to rootstocks that belong to the pond specified by session.coll_id
+# to rootstocks that belong to the pond specified by session.pond_id
 
 
 db.define_table('pond_list',
