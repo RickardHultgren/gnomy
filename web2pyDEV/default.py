@@ -339,7 +339,7 @@ def rootstock_next_delete():
 def shownextrootstocks():
     # Create a grid control.
     try:
-        flowers_to_show = (db.knotstock_list.rootstock == session.rootstock_id)
+        flowers_to_show = (db.flower_list.rootstock == session.rootstock_id)
     except:
         flowers_to_show = None  # Handle the case when session.rootstock_id is not set
     try:
@@ -628,7 +628,7 @@ def showcolsrootstocks():
 
     # Create a grid control.
     try:
-        flowers_to_show = (db.knotstock_list.rootstock == session.rootstock_id)
+        flowers_to_show = (db.flower_list.rootstock == session.rootstock_id)
     except:
         flowers_to_show = None  # Handle the case when session.rootstock_id is not set
     try:
@@ -793,7 +793,7 @@ def found_coll():
 
     # Retrieve rootstocks to show for the specified pond
     #response.js = "alert('%s')"%session.coll_id
-    rootstocks_to_show = db(db.rootstock.pond == session.coll_id).select()
+    rootstocks_to_show = db(db.rootstock.pond == session.pond_id).select()
     rootstocks = []
     links = []
     for index, the_rootstock in enumerate(rootstocks_to_show, start=1):
@@ -810,7 +810,7 @@ def found_coll():
 
     # Retrieve rootstocks to show for the specified pond
     #response.js = "alert('%s')"%session.coll_id
-    rootstocks_to_show = db(db.rootstock.pond == session.coll_id).select()
+    rootstocks_to_show = db(db.rootstock.pond == session.pond_id).select()
     rootstocks = []
     links = []
     for index, the_rootstock in enumerate(rootstocks_to_show, start=1):
