@@ -615,7 +615,7 @@ def showcolsrootstocks():
             response.flash = 'This name is already registered. Please choose another.'
 
     # Adjust element targeting if necessary
-    #new_flower_field = new_flower.element('select[name="name"]')
+    new_flower_field = new_flower.element('select[name="name"]')
 
 
 
