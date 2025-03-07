@@ -218,7 +218,7 @@ db.define_table('flower',
     Field('name', 'list:reference project'),
     Field('pond', 'reference pond'),
     Field('flower_type', requires=IS_IN_SET(['Relatiris','Competentia'])),
-    Field('grwoing_place', requires=IS_IN_SET(['rootstock','tendril'])),
+    Field('growing_place', requires=IS_IN_SET(['rootstock','tendril'])),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             ,
     format='%(name)s'           
