@@ -339,6 +339,10 @@ def rootstock_next_delete():
 def shownextrootstocks():
     # Create a grid control.
     try:
+        flowers_to_show = (db.knotstock_list.rootstock == session.rootstock_id)
+    except:
+        flowers_to_show = None  # Handle the case when session.rootstock_id is not set
+    try:
         nexts_to_show = (db.knotstock_list.rootstock == session.rootstock_id)
     except:
         nexts_to_show = None  # Handle the case when session.rootstock_id is not set
@@ -371,6 +375,33 @@ def shownextrootstocks():
         return None
 
     # Display the grid based on user authentication status
+    if auth.is_logged_in():
+        flower_grid = SQLFORM.grid(
+            flowers_to_show,
+            deletable=can_edit_record,
+            fields=["knotstock"],
+            #editable=can_edit_record,
+            details=False,
+            create=False,
+            searchable=False,
+            paginate=10,
+            csv=False,
+            sortable=False
+        )
+    else:
+        flower_grid = SQLFORM.grid(
+            flowers_to_show,
+            deletable=False,
+            editable=False,
+            details=True,
+            create=False,
+            searchable=False,
+            paginate=10,
+            csv=False,
+            sortable=False
+        )
+
+
     if auth.is_logged_in():
         knotstock_grid = SQLFORM.grid(
             nexts_to_show,
@@ -597,6 +628,10 @@ def showcolsrootstocks():
 
     # Create a grid control.
     try:
+        flowers_to_show = (db.knotstock_list.rootstock == session.rootstock_id)
+    except:
+        flowers_to_show = None  # Handle the case when session.rootstock_id is not set
+    try:
         nexts_to_show = (db.knotstock_list.rootstock == session.rootstock_id)
     except:
         nexts_to_show = None  # Handle the case when session.rootstock_id is not set
@@ -611,6 +646,34 @@ def showcolsrootstocks():
     #    query = db.knotstock.name.contains(search_next.vars.name)
     #    search_results = db(query).select()
 
+    # Display the grid based on user authentication status
+    if auth.is_logged_in():
+        flower_grid = SQLFORM.grid(
+            flowers_to_show,
+            #fields=['flower'],
+            #deletable=can_edit_record,
+            deletable=True,
+            editable=False,
+            details=False,
+            create=False,
+            searchable=False,
+            paginate=10,
+            csv=False,
+            sortable=True
+        )
+    else:
+        flower_grid = SQLFORM.grid(
+            flowers_to_show,
+            #fields=['flower'],
+            deletable=False,
+            editable=False,
+            details=False,
+            create=False,
+            searchable=False,
+            paginate=10,
+            csv=False,
+            sortable=True
+        )
 
     # Display the grid based on user authentication status
     if auth.is_logged_in():
@@ -649,6 +712,7 @@ def showcolsrootstocks():
         edit_form=edit_form,
         create_form=create_form,
         create_next=create_next,
+        flower_grid=flower_grid,
         knotstock_grid=knotstock_grid,
         cols_rootstock_grid=SQLFORM.grid(
         rootstocks_to_show,
@@ -726,6 +790,23 @@ def found_coll():
     #except:
     #    pass
 
+
+    # Retrieve rootstocks to show for the specified pond
+    #response.js = "alert('%s')"%session.coll_id
+    rootstocks_to_show = db(db.rootstock.pond == session.coll_id).select()
+    rootstocks = []
+    links = []
+    for index, the_rootstock in enumerate(rootstocks_to_show, start=1):
+        rootstocks.append({"id": index, "label": the_rootstock.name, "x": 75, "y": 75 * index})
+
+    # Build the list
+    for index, the_rootstock in enumerate(rootstocks_to_show, start=1):
+        # Build the graph string
+        flowers_to_show = db(db.knotstock_list.rootstock == str(the_rootstock.id)).select()
+        for flower_show in flowers_to_show:
+            for index2, rootstock2 in enumerate(rootstocks_to_show, start=1):
+                if rootstock2.id == flower_show.knotstock:
+                    links.append({"source": index, "target": index2})
 
     # Retrieve rootstocks to show for the specified pond
     #response.js = "alert('%s')"%session.coll_id

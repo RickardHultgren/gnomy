@@ -242,6 +242,17 @@ db.define_table(
     format='%(rootstock)s'
 )
 
+# Define the table 'flower_list'
+db.define_table(
+    'flower_list',
+    Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.coll_id), db.rootstock, '%(name)s')),
+    Field('flower', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.coll_id), db.rootstock, '%(name)s')),
+    Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),
+    Field('created_on', 'datetime', default=request.now, writable=False, readable=False),
+    format='%(rootstock)s'
+)
+
+
 # Now 'rootstock' and 'knotstock' fields in 'knotstock_list' table will be restricted
 # to rootstocks that belong to the pond specified by session.coll_id
 

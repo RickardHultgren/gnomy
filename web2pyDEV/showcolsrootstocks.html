@@ -173,8 +173,19 @@ $(document).ready(function() {
 {{pass}}
 {{#=search_next}}
 
+<p>Flowers:</p>
+<div id="flowerspec" style="font-size:3vh;margin:0px;padding:0px;">
+{{try:}}
+    {{if auth.is_logged_in():}}
+        {{=create_flower}}
+    {{pass}}
+{{except:}}
+    {{pass}}
 
-<p>Next rootstocks:</p>
+{{=flower_grid}}
+
+
+<p>Knotstocks:</p>
 <div id="nextspec" style="font-size:3vh;margin:0px;padding:0px;">
 {{try:}}
     {{if auth.is_logged_in():}}

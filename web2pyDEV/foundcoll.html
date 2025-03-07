@@ -258,28 +258,28 @@ function getStarPoints(cx, cy, innerRadius, outerRadius, numPoints) {
 
     // Create links
     var link = g.selectAll(".link")
-        .data(links)
-        .enter().append("path")
-        .attr("class", "link")
-        .attr("marker-end", "url(#arrow)")
-        .style("stroke", "#666")
-        .style("stroke-width", function (d) { return Math.sqrt(d.value); })
-        .attr("fill", "lightgrey")
-        .attr("d", function (d) {
-            var sourceNode = nodes.find(node => node.id === d.source);
-            var targetNode = nodes.find(node => node.id === d.target);
+    .data(links)
+    .enter().append("path")
+    .attr("class", "link")
+    .attr("marker-end", "url(#arrow)")
+    .style("stroke", "#aaff22")
+    .style("stroke-width", function (d) { return Math.sqrt(d.value); })
+    .attr("fill", "lightgrey")
+    .attr("d", function (d) {
+        var sourceNode = nodes.find(node => node.id === d.source);
+        var targetNode = nodes.find(node => node.id === d.target);
 
-            if (sourceNode && targetNode) {
-                return "M" + sourceNode.x + "," + sourceNode.y +
-                       "L" + targetNode.x + "," + targetNode.y;
-            }
-
-            return "";
-        })
-        .on("mouseover", function (d) {
-            console.log("Mouseover on link:", d);
-        });
-
+        if (sourceNode && targetNode) {
+            return "M" + sourceNode.x + "," + sourceNode.y +
+                   "L" + targetNode.x + "," + targetNode.y;
+        }
+        return "";
+    })
+    .on("mouseover", function (event, d) {
+        d3.select(this).raise();  // Moves the link to the top of the stack
+        console.log("Mouseover on link:", d);
+    });
+    
     // Log link data and elements to console
     console.log("Links data:", links);
     console.log("Links elements:", link.nodes());
