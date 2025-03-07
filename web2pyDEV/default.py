@@ -613,3 +613,12 @@ def create_rootstock():
     elif form.errors:
         return "Form has errors: " + str(form.errors)
     return "Unexpected error"
+
+def update_rootstock_id():
+    if request.vars.rootstock_id:
+        try:
+            session.rootstock_id = int(request.vars.rootstock_id)
+            return response.json({"success": True, "rootstock_id": session.rootstock_id})
+        except ValueError:
+            return response.json({"success": False, "error": "Invalid rootstock_id"})
+    return response.json({"success": False, "error": "No rootstock_id provided"})
