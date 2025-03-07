@@ -828,7 +828,7 @@ def showcolsrootstocks():
 
 
 def found_coll():
-    nodes_to_show = db(db.rootstock.pond == session.pond_id).select()
+    rootstocks_to_show = db(db.rootstock.pond == session.pond_id).select()
     nodes = []
     links = []
     for index, the_rootstock in enumerate(rootstocks_to_show, start=1):
@@ -845,7 +845,7 @@ def found_coll():
 
     # Pass rootstocks and links to the view
     response.js = "reloadFoundCollView();"
-    return response.render('default/found_coll.html', {'rootstocks': rootstocks, 'links': links}, ajax=True)
+    return response.render('default/found_coll.html', {'nodes': nodes, 'links': links}, ajax=True)
 
 
 def showflowchart():
