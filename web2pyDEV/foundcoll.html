@@ -35,11 +35,7 @@
 </style>
 
 <script>
-    // Base64 encode / decode script from webtoolkit.info
-
-    // Add a button to trigger the image copy
-    <button id="copyButton">Copy Graph Image</button>
-
+    /*
     // Event listener for the copy button
     document.getElementById('copyButton').addEventListener('click', copyGraphToClipboardWithSvgToPng);
 
@@ -92,6 +88,7 @@
             downloadSvg(graphContainer, 'graph.png');
         };
     }
+    */
 </script>
 
 <script>
@@ -99,7 +96,8 @@
 
     var nodes = {{=XML(rootstocks)}};
     var links = {{=XML(links)}};
-    
+    console.log("Nodes:", nodes);
+    console.log("Links:", links);
 </script>
 
 <script>
@@ -184,8 +182,30 @@ node.append("text")
     .text(function(d) { return d.label; });
 
 // Function to bring the node to the front when clicked
+/*function nodeClicked(event, d) {
+    d3.select(this).raise(); // Bring clicked node to front
+}*/
+
 function nodeClicked(event, d) {
     d3.select(this).raise(); // Bring clicked node to front
+
+    // Toggle color to indicate selection
+    var star = d3.select(this).select("polygon");
+    var currentColor = star.attr("fill");
+    star.attr("fill", currentColor !== "lightgreen" ? "lightgreen" : "lightgrey");
+
+    // Send the selected node's ID to the server via AJAX
+    $.ajax({
+        type: "POST",
+        url: "{{=URL('default', 'update_rootstock_id')}}", // Ensure this URL is correctly mapped
+        data: { rootstock_id: d.id },
+        success: function(response) {
+            console.log("Session updated:", response);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error updating session:", error);
+        }
+    });
 }
 
 // Function to generate star points
@@ -239,22 +259,23 @@ function getStarPoints(cx, cy, innerRadius, outerRadius, numPoints) {
     svg.call(zoom);
 
     // Drag functions
-    function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    function dragstarted(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d.x;
         d.fy = d.y;
     }
 
-    function dragged(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
+    function dragged(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
     }
 
-    function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(0);
+    function dragended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
         d.fx = d.x;
         d.fy = d.y;
     }
+
 
     // Create links
     var link = g.selectAll(".link")
@@ -279,7 +300,7 @@ function getStarPoints(cx, cy, innerRadius, outerRadius, numPoints) {
         d3.select(this).raise();  // Moves the link to the top of the stack
         console.log("Mouseover on link:", d);
     });
-    
+
     // Log link data and elements to console
     console.log("Links data:", links);
     console.log("Links elements:", link.nodes());
