@@ -600,6 +600,38 @@ def showcolsrootstocks():
     # Retrieve next rootstocks based on session.coll_id
     # Assuming session, db, response, and SQLFORM are properly imported and initialized
 
+
+
+
+
+
+
+    flowerfields = ['flower']
+
+    # Create the SQLFORM instance with specified fields and submit button
+    create_flower = SQLFORM(db.flower_list, submit_button='Create', fields=flowerfields)
+
+    # Set the 'rootstock' variable in create_next to session.rootstock_id
+    create_flower.vars.rootstock = session.rootstock_id
+
+    # Process form submission
+    if create_flower.process().accepted:
+        # Form data was submitted and accepted
+        response.flash = 'Record created successfully'
+        # Additional actions after successful form submission can be placed here
+
+    elif create_flower.errors:
+        # Form has validation errors
+        response.status = 400  # Set response status to indicate bad request if there are errors
+
+    # Output the form element for 'knotstock' field
+    flower_field = create_flower.element('select[name="flower"]')
+
+
+
+
+
+
     # Fetch knotstocks based on the session.coll_id
 
     nextfields = ['knotstock']
@@ -711,6 +743,7 @@ def showcolsrootstocks():
         #search_results=search_results,
         edit_form=edit_form,
         create_form=create_form,
+        create_flower=create_flower,
         create_next=create_next,
         flower_grid=flower_grid,
         knotstock_grid=knotstock_grid,
