@@ -7,7 +7,7 @@
     </style>
     <div id="addrootstockbttn" style="border-width:2px;
     border: 4px solid #555555;
-    a: 1em;
+    
     color: #333333;
 font-size:3vh; margin:0px;padding:0px;  border-radius: 20px;border-width:2px;
     border: 4px solid #555555;
@@ -58,7 +58,7 @@ $(document).ready(function() {
 
         // Send form data via AJAX to create_rootstock endpoint
         $.ajax({
-            url: "{{=URL('default', 'create_rootstock')}}",
+            url: "{{=URL('default', 'create_form')}}",
             type: "POST",
             data: formData,
             success: function(response) {
@@ -81,7 +81,7 @@ $(document).ready(function() {
                 success: function(response) {
                     //alert(response); // Show success message
                     //reloadShownextView();
-                    document.getElementById('rootstockcoll').reload(true);
+                    document.getElementById('rootstockpond').reload(true);
                 },
                 error: function(xhr, status, error) {
                     console.error("Error deleting rootstock:", error);
@@ -93,7 +93,7 @@ $(document).ready(function() {
 </script>
 <script>
     // Function to reload content in 'nextrootstock' based on search keyword
-    function reloadrootstockcoll(keyword) {
+    function reloadrootstockpond(keyword) {
         $.ajax({
             url: "{{=URL('default', 'shownextrootstocks')}}",
             type: "GET",
@@ -114,7 +114,7 @@ $(document).ready(function() {
     // Periodically reload content in nextrootstock every 3 seconds
     setInterval(function() {
         var currentnodkeyword = $("#rootstockSearch").val();
-        reloadrootstockcoll(currentnodkeyword);
+        reloadrootstockpond(currentnodkeyword);
     }, 3000);
 </script>
 <script>
@@ -125,7 +125,7 @@ $(document).ready(function() {
             type: "GET",
             dataType: "json",
             success: function(response) {
-                $('#rootstockcoll').html(response.updated_content);
+                $('#rootstockpond').html(response.updated_content);
             },
             error: function(xhr, status, error) {
                 console.error("Error reloading content:", error);
@@ -213,7 +213,7 @@ $(document).ready(function() {
 
 
 <script>
-//Call the reloadrootstockcoll function every 3 seconds
+//Call the reloadrootstockpond function every 3 seconds
 //setInterval(function() {
 //    reloadshownextview();
 //}, 3000);
