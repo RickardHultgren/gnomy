@@ -215,7 +215,7 @@ db.define_table('knotstock',
                )
 
 db.define_table('flower',
-    Field('name', 'list:reference project'),
+    Field('name'),
     Field('pond', 'reference pond'),
     Field('flower_type', requires=IS_IN_SET(['Relatiris','Competentia'])),
     Field('growing_place', requires=IS_IN_SET(['rootstock','tendril'])),
