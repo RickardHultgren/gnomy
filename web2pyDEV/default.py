@@ -231,7 +231,6 @@ def showcolsrootstocks():
     create_form = SQLFORM(db.rootstock, submit_button='Grow the new plant', fields=fields,
                       _style='font-size: 3vh;', _id='create_rootstock',
                       _onsubmit="refreshDiv();")
-    response.js=("alert('abc')")
     # Prepopulate the pond field with session.pond_id
     db.rootstock.pond.default = session.pond_id  # Set default value at DB levelcreate_form.vars.pond = session.pond_id
 
@@ -341,9 +340,9 @@ def showcolsrootstocks():
     except:
         flowers_to_show = None  # Handle the case when session.rootstock_id is not set
     try:
-        knotroots_to_show = (db.knotstock_list.rootstock == session.rootstock_id)
+        rootstocks_to_show = (db.rootstock.pond == session.pond_id)
     except:
-        knotroots_to_show = None  # Handle the case when session.rootstock_id is not set
+        rootstocks_to_show = None  # Handle the case when session.rootstock_id is not set
 
     # Display the grid based on user authentication status
     if auth.is_logged_in():
@@ -376,8 +375,8 @@ def showcolsrootstocks():
 
     # Display the grid based on user authentication status
     if auth.is_logged_in():
-        knotstock_grid = SQLFORM.grid(
-            knotroots_to_show,
+        rootstock_grid = SQLFORM.grid(
+            rootstocks_to_show,
             #fields=['knotstock'],
             #deletable=can_edit_record,
             deletable=True,
@@ -390,8 +389,8 @@ def showcolsrootstocks():
             sortable=True
         )
     else:
-        knotstock_grid = SQLFORM.grid(
-            knotroots_to_show,
+        rootstocks_to_show_grid = SQLFORM.grid(
+            rootstocks_to_show,
             #fields=['knotstock'],
             deletable=False,
             editable=False,
@@ -414,9 +413,9 @@ def showcolsrootstocks():
         create_flower=create_flower,
         create_next=create_next,
         flower_grid=flower_grid,
-        knotstock_grid=knotstock_grid,
+        knotstock_grid=rootstock_grid,
         cols_rootstock_grid=SQLFORM.grid(
-        knotroots_to_show,
+        rootstocks_to_show,
 
 
         #fields=[lambda row: display_pond_name(row)],
