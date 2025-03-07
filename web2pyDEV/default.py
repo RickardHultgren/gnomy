@@ -332,7 +332,7 @@ def showcolsrootstocks():
     fields = ['name']
     create_form = SQLFORM(db.rootstock, submit_button='Grow the new plant', fields=fields,
                       _style='font-size: 3vh;', _id='create_rootstock',
-                      _onsubmit="refreshDiv(); return false;")
+                      _onsubmit="refreshDiv();")
     response.js=("alert('abc')")
     # Prepopulate the pond field with session.pond_id
     db.rootstock.pond.default = session.pond_id  # Set default value at DB levelcreate_form.vars.pond = session.pond_id
