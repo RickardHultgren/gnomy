@@ -252,13 +252,14 @@ def showcolsrootstocks():
         rootstocks_to_show = db(db.rootstock.pond == session.pond_id)
 
 
+#2025-03-08
     def display_pond_name(row):
+        response.js="alert('test');"
         return A(
-            row.name,
-            _style="color:blue;font-weight:bold;text-decoration:none;",
-            _href=URL('found_rootstock', args=[row.id]),  # Proper link handling
-            _target="_blank"  # Open in a new tab (optional)
-        )
+        row.name,
+        _style="left:1vw;color:blue;font-weight:bold;opacity:0.5;width:35vw;height:2em;position:absolute;margin:-0.5em -0.5em 0 1em;background-color:rgba(255,255,0,0.5);  display: block;  width: auto; height:auto;  text-decoration: none;   color: inherit; padding: 0;box-sizing: border-box; ",
+        callback=URL('found_rootstock', args=[int(row.id)])
+    )
 
     # Create the form
     new_flower = SQLFORM(db.flower, fields=['name', 'flower_type', 'growing_place'], submit_button='Create')
@@ -414,19 +415,25 @@ def showcolsrootstocks():
         create_next=create_next,
         flower_grid=flower_grid,
         knotstock_grid=rootstock_grid,
-        cols_rootstock_grid = SQLFORM.grid(
-            rootstocks_to_show,
-            fields=[db.rootstock.name],
-            csv=False,
-            sortable=True,
-            paginate=10,
-            deletable=False,
-            editable=False,
-            details=False,
-            create=False,
-            searchable=True,
-            links=[lambda row: display_pond_name(row)],  # Ensure lambda properly returns A() tag
-        )
+        cols_rootstock_grid=SQLFORM.grid(
+        rootstocks_to_show,
+
+
+        #fields=[lambda row: display_pond_name(row)],
+        fields = [db.rootstock.name],
+        #fields=[dbrootstock.name],
+        csv=False,
+        sortable=True,
+        paginate=10,
+        deletable=False,
+        #editable=can_edit_record,  # Set editable based on the result of the function
+        editable=False,
+        details=False,
+        create=False,
+        #create=True,
+        searchable=True,
+        links=[lambda row: display_pond_name(row)],
+    )
 
     )
 
