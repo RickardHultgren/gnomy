@@ -1,4 +1,4 @@
-<div id="left" style="display:inline-block; width:40vw;height:auto;background-color:white;vertical-align: text-top; thin; font-size:3vh;margin:0px; padding:0px; min-width: 10em; border-width:0px;">
+f<div id="left" style="display:inline-block; width:40vw;height:auto;background-color:white;vertical-align: text-top; thin; font-size:3vh;margin:0px; padding:0px; min-width: 10em; border-width:0px;">
 
     <style>
         div{
@@ -106,18 +106,7 @@ $(document).ready(function() {
             }
         });
     }
-</script>
-<script>
-    // Call searchrootstocks function when the page loads
-    searchrootstocks(); // Optionally, trigger initial search based on default keyword
 
-    // Periodically reload content in nextrootstock every 3 seconds
-    setInterval(function() {
-        var currentnodkeyword = $("#rootstockSearch").val();
-        reloadrootstockpond(currentnodkeyword);
-    }, 3000);
-</script>
-<script>
     // Function to reload 'left' content
     function reloadShownextView() {
         $.ajax({
