@@ -264,6 +264,44 @@ def showcolsrootstocks():
             _onclick=f"toggleDiv('rootstock_{row.id}')"
         )
 
+    rootstock_rows = db(rootstocks_to_show).select()
+    rootstock_divs = DIV(
+        *[DIV(f"Details for {row.name}", _id=f"rootstock_{row.id}", _style="display:none;") for row in rootstock_rows]
+    )
+
+    script = SCRIPT(
+        """
+        function toggleDiv(id) {
+            var div = document.getElementById(id);
+            if (div.style.display === "none") {
+                div.style.display = "block";
+            } else {
+                div.style.display = "none";
+            }
+        }
+        """
+    )
+
+    return dict(
+        edit_form=edit_form,
+        create_form=create_form,
+        rootstock_divs=rootstock_divs,
+        script=script,
+        cols_rootstock_grid=SQLFORM.grid(
+            rootstocks_to_show,
+            fields=[db.rootstock.name],
+            csv=False,
+            sortable=True,
+            paginate=10,
+            deletable=False,
+            editable=False,
+            details=False,
+            create=False,
+            searchable=True,
+            links=[lambda row: display_pond_name(row)],
+        )
+    )
+#OLD
     # Create the form
     new_flower = SQLFORM(db.flower, fields=['name', 'flower_type', 'growing_place'], submit_button='Create')
 
