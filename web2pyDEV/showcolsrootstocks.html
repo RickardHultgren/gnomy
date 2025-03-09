@@ -58,7 +58,7 @@ $(document).ready(function() {
 
         // Send form data via AJAX to create_rootstock endpoint
         $.ajax({
-            url: "{{=URL('default', 'create_rootstock')}}",
+            url: "{{=URL('default', 'create_form')}}",
             type: "POST",
             data: formData,
             success: function(response) {
@@ -107,6 +107,16 @@ $(document).ready(function() {
         });
     }
 
+<<<<<<< HEAD
+    // Periodically reload content in nextrootstock every 3 seconds
+    setInterval(function() {
+        var currentnodkeyword = $("#rootstockSearch").val();
+        reloadrootstockpond(currentnodkeyword);
+    }, 3000);
+</script>
+<script>
+=======
+>>>>>>> 7544d7bd02e67ea95c99f812e7b32d79e575c42a
     // Function to reload 'left' content
     function reloadShownextView() {
         $.ajax({
