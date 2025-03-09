@@ -254,11 +254,16 @@ def showcolsrootstocks():
 
 #2025-03-08
     def display_pond_name(row):
-        return A(
-        row.name,
-        _style="left:1vw;color:blue;font-weight:bold;opacity:0.5;width:35vw;height:2em;position:absolute;margin:-0.5em -0.5em 0 1em;background-color:rgba(255,255,0,0.5);  display: block;  width: auto; height:auto;  text-decoration: none;   color: inherit; padding: 0;box-sizing: border-box; ",
-        callback=URL('found_rootstock', args=[int(row.id)])
-    )
+        #return A(
+        #row.name,
+        #_style="left:1vw;color:blue;font-weight:bold;opacity:0.5;width:35vw;height:2em;position:absolute;margin:-0.5em -0.5em 0 1em;background-color:rgba(255,255,0,0.5);  display: block;  width: auto; height:auto;  text-decoration: none;   color: inherit; padding: 0;box-sizing: border-box; ",
+        #callback=URL('found_rootstock', args=[int(row.id)])
+    #NEW:
+            return A(
+            row.name,
+            _style="color:blue;font-weight:bold;text-decoration:none;cursor:pointer;",
+            _onclick=f"toggleDiv('rootstock_{row.id}')"
+        )
 
     # Create the form
     new_flower = SQLFORM(db.flower, fields=['name', 'flower_type', 'growing_place'], submit_button='Create')
