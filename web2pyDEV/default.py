@@ -75,7 +75,7 @@ def addnext():
     name = current_rootstock.name
 
     # Insert a new record into the 'knotstock_list' table
-    nextrootstock_id = db.knotstock_list.insert(
+    knotstock_id = db.knotstock_list.insert(
         name=name,
         nextname=nextname,
         created_by=auth.user.id,
@@ -101,10 +101,10 @@ def rootstockdelete():
 def rootstock_next_delete():
     record_id = request.vars.record_id
     # Perform delete operations on multiple tables
-    knotroots_delete = db(db.knotstock_list.rootstock==session.record_id)
+    knotstocks_delete = db(db.knotstock_list.rootstock==session.record_id)
     #db.table1(db.table1.id == record_id).delete()
     #db.table2(db.table2.id == record_id).delete()
-    for next_del in knotroots_delete:
+    for next_del in knotstocks_delete:
 
         db.knotstock_list(db.knotstock_list.id == next_del.id).delete()
     db.rootstock(db.rootstock.id == record_id.id).delete()
@@ -118,9 +118,9 @@ def shownextrootstocks():
     except:
         flowers_to_show = None  # Handle the case when session.rootstock_id is not set
     try:
-        knotroots_to_show = (db.knotstock_list.rootstock == session.rootstock_id)
+        knotstocks_to_show = (db.knotstock_list.rootstock == session.rootstock_id)
     except:
-        knotroots_to_show = None  # Handle the case when session.rootstock_id is not set
+        knotstocks_to_show = None  # Handle the case when session.rootstock_id is not set
 
 
     # Define function to check if a record can be edited by the current user
@@ -169,8 +169,8 @@ def shownextrootstocks():
 
 
     if auth.is_logged_in():
-        knotstock_grid = SQLFORM.grid(
-            knotroots_to_show,
+        ks_grid = SQLFORM.grid(
+            knotstocks_to_show,
             deletable=can_edit_record,
             fields=["knotstock"],
             #editable=can_edit_record,
@@ -182,8 +182,8 @@ def shownextrootstocks():
             sortable=False
         )
     else:
-        knotstock_grid = SQLFORM.grid(
-            knotroots_to_show,
+        ks_grid = SQLFORM.grid(
+            knotstocks_to_show,
             deletable=False,
             editable=False,
             details=True,
@@ -197,7 +197,9 @@ def shownextrootstocks():
     return dict(
         #search_next=search_next,
         #search_results=search_results,
-        knotstock_grid=knotstock_grid
+        flower_grid=flower_grid,
+        ks_grid=ks_grid,
+        updated_content="Data for: " + keyword
     )
 
 
@@ -243,64 +245,7 @@ def showcolsrootstocks():
         response.flash = 'Form has errors: ' + str(create_form.errors)
         response.status = 400
         
-    #For the search function:
-    keyword = request.vars.colnodkeyword or ''
-    if keyword:
-        rootstocks_to_show = db((db.rootstock.pond == session.pond_id) and (db.rootstock.name.contains(keyword)))
-    else:
-        # If no keyword, fetch all ponds
-        rootstocks_to_show = db(db.rootstock.pond == session.pond_id)
 
-
-#2025-03-08
-    def display_pond_name(row):
-        return A(
-        #row.name,
-        #_style="left:1vw;color:blue;font-weight:bold;opacity:0.5;width:35vw;height:2em;position:absolute;margin:-0.5em -0.5em 0 1em;background-color:rgba(255,255,0,0.5);  display: block;  width: auto; height:auto;  text-decoration: none;   color: inherit; padding: 0;box-sizing: border-box; ",
-        #callback=URL('found_rootstock', args=[int(row.id)])
-    #NEW:
-            row.name,
-            _style="color:blue;font-weight:bold;text-decoration:none;cursor:pointer;",
-            _onclick=f"toggleDiv('rootstock_{row.id}')"
-        )
-
-    rootstock_rows = db(rootstocks_to_show).select()
-    rootstock_divs = DIV(
-        *[DIV(f"Details for {row.name}", _id=f"rootstock_{row.id}", _style="display:none;") for row in rootstock_rows]
-    )
-
-    script = SCRIPT(
-        """
-        function toggleDiv(id) {
-            var div = document.getElementById(id);
-            if (div.style.display === "none") {
-                div.style.display = "block";
-            } else {
-                div.style.display = "none";
-            }
-        }
-        """
-    )
-
-    return dict(
-        edit_form=edit_form,
-        create_form=create_form,
-        rootstock_divs=rootstock_divs,
-        script=script,
-        cols_rootstock_grid=SQLFORM.grid(
-            rootstocks_to_show,
-            fields=[db.rootstock.name],
-            csv=False,
-            sortable=True,
-            paginate=10,
-            deletable=False,
-            editable=False,
-            details=False,
-            create=False,
-            searchable=True,
-            links=[lambda row: display_pond_name(row)],
-        )
-    )
 #OLD
     # Create the form
     new_flower = SQLFORM(db.flower, fields=['name', 'flower_type', 'growing_place'], submit_button='Create')
@@ -346,6 +291,12 @@ def showcolsrootstocks():
     flower_field = create_flower.element('select[name="flower"]')
 
 
+    # Define function to check if a record can be edited by the current user
+    def can_edit_record(row):
+        if auth.is_logged_in():
+            return row.created_by == auth.user.id
+        return False
+
 
 
 
@@ -382,9 +333,49 @@ def showcolsrootstocks():
     except:
         flowers_to_show = None  # Handle the case when session.rootstock_id is not set
     try:
-        rootstocks_to_show = (db.rootstock.pond == session.pond_id)
+        knotstocks_to_show = (db.knotstock_list.rootstock == session.knotstocks_id)
     except:
-        rootstocks_to_show = None  # Handle the case when session.rootstock_id is not set
+        knotstocks_to_show = None  # Handle the case when session.rootstock_id is not set        
+    #For the search function:
+    keyword = request.vars.colnodkeyword or ''
+
+    if keyword:
+        rootstocks_to_show = db((db.rootstock.pond == session.pond_id) & (db.rootstock.name.contains(keyword)))
+    else:
+        rootstocks_to_show = db(db.rootstock.pond == session.pond_id)
+
+
+
+#2025-03-08
+    def display_pond_name(row):
+        return A(
+        #row.name,
+        #_style="left:1vw;color:blue;font-weight:bold;opacity:0.5;width:35vw;height:2em;position:absolute;margin:-0.5em -0.5em 0 1em;background-color:rgba(255,255,0,0.5);  display: block;  width: auto; height:auto;  text-decoration: none;   color: inherit; padding: 0;box-sizing: border-box; ",
+        #callback=URL('found_rootstock', args=[int(row.id)])
+    #NEW:
+            row.name,
+            _style="color:blue;font-weight:bold;text-decoration:none;cursor:pointer;",
+            _onclick=f"toggleDiv('rootstock_{row.id}')"
+        )
+
+    rootstock_rows = rootstocks_to_show.select()
+    rootstock_divs = DIV(
+        *[DIV(f"Details for {row.name}", _class="ootstocklings", _id=f"rootstock_{row.id}", _style="display:none;") for row in rootstock_rows]
+    )
+
+    script = SCRIPT(
+        """
+        function toggleDiv(id) {
+            let elements = document.getElementsByClassName('rootstocklings');
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].style.display = 'none';
+            }
+            var div = document.getElementById(id);
+            div.style.display = "block";
+        }
+        """
+    )
+
 
     # Display the grid based on user authentication status
     if auth.is_logged_in():
@@ -444,39 +435,54 @@ def showcolsrootstocks():
             sortable=True
         )
 
-
+    if auth.is_logged_in():
+        ks_grid = SQLFORM.grid(
+            knotstocks_to_show,
+            deletable=can_edit_record,
+            fields=["knotstock"],
+            #editable=can_edit_record,
+            details=False,
+            create=False,
+            searchable=False,
+            paginate=10,
+            csv=False,
+            sortable=False
+        )
+    else:
+        ks_grid = SQLFORM.grid(
+            knotstocks_to_show,
+            deletable=False,
+            editable=False,
+            details=True,
+            create=False,
+            searchable=False,
+            paginate=10,
+            csv=False,
+            sortable=False
+        )
 
     return dict(
-        #search_next=search_next,
-        #search_results=search_results,
+        ks_grid=ks_grid,
+        flower_grid=flower_grid,
         edit_form=edit_form,
         create_form=create_form,
-        new_flower=new_flower,
-        create_flower=create_flower,
-        create_next=create_next,
-        flower_grid=flower_grid,
-        knotstock_grid=rootstock_grid,
+        rootstock_divs=rootstock_divs,
+        script=script,
         cols_rootstock_grid=SQLFORM.grid(
-        rootstocks_to_show,
-
-
-        #fields=[lambda row: display_pond_name(row)],
-        fields = [db.rootstock.name],
-        #fields=[dbrootstock.name],
-        csv=False,
-        sortable=True,
-        paginate=10,
-        deletable=False,
-        #editable=can_edit_record,  # Set editable based on the result of the function
-        editable=False,
-        details=False,
-        create=False,
-        #create=True,
-        searchable=True,
-        links=[lambda row: display_pond_name(row)],
+            rootstocks_to_show,
+            fields=[db.rootstock.name],
+            csv=False,
+            sortable=True,
+            paginate=10,
+            deletable=False,
+            editable=False,
+            details=False,
+            create=False,
+            searchable=True,
+            links=[lambda row: display_pond_name(row)],
+        )
     )
 
-    )
 
 
 
@@ -484,6 +490,7 @@ def found_coll():
     rootstocks_to_show = db(db.rootstock.pond == session.pond_id).select()
     nodes = []
     links = []
+    session.pond_id = request.args(0)
     for index, the_rootstock in enumerate(rootstocks_to_show, start=1):
         nodes.append({"id": index, "label": the_rootstock.name, "x": 75, "y": 75 * index})
 
@@ -523,8 +530,8 @@ def showflowchart():
     # Build the list
     for index, the_rootstock in enumerate(rootstocks_to_show, start=1):
         # Build the graph string
-        knotroots_to_show = db(db.knotstock_list.rootstock == str(the_rootstock.id)).select()
-        for next_show in knotroots_to_show:
+        knotstocks_to_show = db(db.knotstock_list.rootstock == str(the_rootstock.id)).select()
+        for next_show in knotstocks_to_show:
             for index2, rootstock2 in enumerate(rootstocks_to_show, start=1):
                 if rootstock2.id == next_show.knotstock:
                     links.append({"source": index, "target": index2})

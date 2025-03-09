@@ -93,20 +93,21 @@ $(document).ready(function() {
 </script>
 <script>
     // Function to reload content in 'nextrootstock' based on search keyword
-    function reloadrootstockpond(keyword) {
+    function reloadrootstockpond() {
+        var keyword = $('#searchInput').val();  // Ensure keyword is obtained from an input field
+        
         $.ajax({
             url: "{{=URL('default', 'shownextrootstocks')}}",
             type: "GET",
-            data: { colnodkeyword: keyword },
+            data: { colnodkeyword: keyword },  // Ensure this parameter exists in your controller
             success: function(response) {
-                $('#nextrootstock').html(response); // Replace content of nextrootstock with reloaded view
+                $('#nextrootstock').html(response);
             },
             error: function(xhr, status, error) {
                 console.error("Error reloading 'nextrootstock': " + error);
             }
         });
     }
-
     // Function to reload 'left' content
     function reloadShownextView() {
         $.ajax({
@@ -114,7 +115,7 @@ $(document).ready(function() {
             type: "GET",
             dataType: "json",
             success: function(response) {
-                $('#rootstockpond').html(response.updated_content);
+                $('#rootstockpond').html(response.ks_grid);
             },
             error: function(xhr, status, error) {
                 console.error("Error reloading content:", error);
@@ -196,7 +197,7 @@ $(document).ready(function() {
 {{except:}}
     {{pass}}
 
-{{=knotstock_grid}}
+{{=ks_grid}}
 
 
 
