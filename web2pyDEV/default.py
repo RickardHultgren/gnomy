@@ -19,29 +19,47 @@ if not session.new_graph :
     session.new_graph = 0
 
 def index():
-    return locals()
+    def can_edit_record(row):
+        return check_record_permission(row.id)
+
+    fields = ['name']
+    create_pond = SQLFORM(db.pond, submit_button='Create a pond', fields=fields, _style='font-size: 3vh;', _id='create_pond', _onsubmit="refreshcollchoice();")
+
+    # Ensure user is logged in before processing the form
+    if auth.is_logged_in():
+        if create_pond.process().accepted:
+            # Explicitly set created_by field
+            db.pond.update_or_insert(id=create_pond.vars.id, created_by=auth.user.id)
+            response.flash = 'Pond created successfully!'
+            redirect(URL('index'))  # Refresh to show new record
+        elif create_pond.errors:
+            response.flash = 'Please correct the errors in the form.'
+    else:
+        response.flash = 'You must be logged in to create a pond.'
+
+    # Query only the ponds created by the logged-in user
+    ponds_to_show = db(db.pond.created_by == auth.user.id) if auth.is_logged_in() else db(db.pond.id > 0)
+
+    # Add a "Show pond" link to each row
+    links = [lambda row: A('Show pond', _href=URL('default', 'showflowchart', args=[row.id]))]
+
+    # Configure the grid
+    pond_grid = SQLFORM.grid(
+        ponds_to_show,
+        deletable=can_edit_record if auth.is_logged_in() else False,
+        editable=can_edit_record if auth.is_logged_in() else False,
+        details=False,
+        create=False,  # Use the form instead
+        searchable=False,
+        paginate=10,
+        csv=False,
+        sortable=False,
+        links=links  # Add the links to the grid
+    )
+
+    return dict(create_pond=create_pond, pond_grid=pond_grid)
 
 
-
-
-def add_pond():
-    # Check if the user is logged in
-    if not auth.is_logged_in():
-        redirect(URL('default', 'user', args='login'))
-
-    # Process the form submission
-    if request.method == 'POST':
-        # Insert data into the 'pond' table based on form input
-        inserted_id = db.pond.insert(**request.post_vars)
-
-        response.flash = f'pond added successfully with ID: {inserted_id}'
-        redirect(URL('default', 'index'))
-
-    # Create an empty form
-    form = SQLFORM(db.pond)
-
-    response.js="document.getElementById('pondchoice').reload(true);"
-    return dict()
 
 
 
@@ -528,7 +546,6 @@ def check_record_permission(record_id):
     if record and record.created_by == auth.user_id:
         return True
     return False
-
 
 
 
