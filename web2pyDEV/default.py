@@ -8,11 +8,7 @@ if not session.pond_id:
 if not session.rootstock_id:
     session.rootstock_id = int(0)
 
-if not session.rootstocks_pass:
-    session.rootstocks_pass = dict()
 
-if not session.len_rootstocks_pass :
-    session.len_rootstocks_pass
 def index():
     def can_edit_record(row):
         return check_record_permission(row.id)
@@ -50,20 +46,7 @@ def index():
 
     return dict(create_pond=create_pond, pond_grid=pond_grid)
 
-<<<<<<< HEAD
-        response.flash = f'pond added successfully with ID: {inserted_id}'
-        redirect(URL('default', 'index'))
 
-    # Create an empty form
-    form = SQLFORM(db.pond)
-
-    response.js="document.getElementById('pondchoice').reload(true);"
-    return dict()
-
-
-
-=======
->>>>>>> 006994c5029a5e6fba6cb26d14af1c40c842d2ea
 def check():#(name):
     import gluon.contenttype
     id_list = request.args
@@ -402,23 +385,6 @@ def showcolsrootstocks():
             csv=False,
             sortable=True
         )
-<<<<<<< HEAD
-=======
-    else:
-        flower_grid = SQLFORM.grid(
-            flowers_to_show,
-            fields = [db.flwoer.name],
-            deletable=False,
-            editable=False,
-            details=False,
-            create=False,
-            searchable=False,
-            paginate=10,
-            csv=False,
-            sortable=True
-        )
->>>>>>> 006994c5029a5e6fba6cb26d14af1c40c842d2ea
-
     # Display the grid based on user authentication status
     rootstock_grid = SQLFORM.grid(
             rootstocks_to_show,
@@ -433,25 +399,6 @@ def showcolsrootstocks():
             csv=False,
             sortable=True
         )
-<<<<<<< HEAD
-=======
-    else:
-        rootstock_grid = SQLFORM.grid(
-            rootstocks_to_show,
-            fields = [db.rootstock.name],
-            deletable=False,
-            editable=False,
-            details=False,
-            create=False,
-            searchable=False,
-            paginate=10,
-            csv=False,
-            sortable=True
-        )
-
-
-
->>>>>>> 006994c5029a5e6fba6cb26d14af1c40c842d2ea
     if auth.is_logged_in():
         knotstock_grid = SQLFORM.grid(
             knotstocks_to_show,
@@ -464,20 +411,6 @@ def showcolsrootstocks():
             csv=False,
             sortable=False
         )
-<<<<<<< HEAD
-=======
-    else:
-        knotstock_grid = SQLFORM.grid(
-            knotstocks_to_show,
-            deletable=False,
-            details=False,
-            create=False,
-            searchable=False,
-            paginate=10,
-            csv=False,
-            sortable=False
-        )
->>>>>>> 006994c5029a5e6fba6cb26d14af1c40c842d2ea
 
     return dict(
         knotstock_grid=knotstock_grid,
@@ -490,64 +423,6 @@ def showcolsrootstocks():
     )
 
 
-
-<<<<<<< HEAD
-
-
-def found_coll():
-    rootstocks_to_show = db(db.rootstock.pond == session.pond_id).select()
-    nodes = []
-    links = []
-    session.pond_id = request.args(0)
-    for index, the_rootstock in enumerate(rootstocks_to_show, start=1):
-        nodes.append({"id": index, "label": the_rootstock.name, "x": 75, "y": 75 * index})
-
-    # Build the list
-    for index, the_rootstock in enumerate(rootstocks_to_show, start=1):
-        # Build the graph string
-        flowers_to_show = db(db.knotstock_list.rootstock == str(the_rootstock.id)).select()
-        for flower_show in flowers_to_show:
-            for index2, rootstock2 in enumerate(rootstocks_to_show, start=1):
-                if rootstock2.id == flower_show.knotstock:
-                    links.append({"source": index, "target": index2})
-
-    # Pass rootstocks and links to the view
-    response.js = "reloadFoundCollView();"
-    return response.render('default/found_coll.html', {'nodes': nodes, 'links': links}, ajax=True)
-
-
-def showflowchart():
-    # Retrieve record ID from the URL
-    record_id = request.args(0)
-
-    # Fetch the record from the database
-    pond = db.pond(record_id)  # Assuming 'crows' is your table name
-    session.pond_id = record_id
-#    found_coll()
-    # Check if record exists
-    if not pond:
-        raise HTTP(404, "Record not found")
-
-    response.js = "alert('Hello from found_coll!');"
-    rootstocks_to_show = db(db.rootstock.pond == session.pond_id).select()
-    rootstocks = []
-    links = []
-    for index, the_rootstock in enumerate(rootstocks_to_show, start=1):
-        rootstocks.append({"id": index, "label": the_rootstock.name, "x": 75, "y": 75 * index})
-
-    # Build the list
-    for index, the_rootstock in enumerate(rootstocks_to_show, start=1):
-        # Build the graph string
-        knotstocks_to_show = db(db.knotstock_list.rootstock == str(the_rootstock.id)).select()
-        for next_show in knotstocks_to_show:
-            for index2, rootstock2 in enumerate(rootstocks_to_show, start=1):
-                if rootstock2.id == next_show.knotstock:
-                    links.append({"source": index, "target": index2})
-
-    return response.render('default/showflowchart.html', {'rootstocks': rootstocks, 'links': links}, ajax=True)
-
-=======
->>>>>>> 006994c5029a5e6fba6cb26d14af1c40c842d2ea
 def check_record_permission(record_id):
     record = db.pond(record_id)
     if record and record.created_by == auth.user_id:
