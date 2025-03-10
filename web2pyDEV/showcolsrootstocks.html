@@ -43,7 +43,7 @@ function showadd() {
 {{pass}}
 <hr>
 Search rootstock
-{{=cols_rootstock_grid}}
+{{=rootstock_grid}}
 </div>
 
 <!-- JavaScript for handling AJAX interactions -->
@@ -115,7 +115,7 @@ $(document).ready(function() {
             type: "GET",
             dataType: "json",
             success: function(response) {
-                $('#rootstockpond').html(response.ks_grid);
+                $('#rootstockpond').html(response.knotstock_grid);
             },
             error: function(xhr, status, error) {
                 console.error("Error reloading content:", error);
@@ -197,7 +197,7 @@ $(document).ready(function() {
 {{except:}}
     {{pass}}
 
-{{=ks_grid}}
+{{=knotstock_grid}}
 
 
 

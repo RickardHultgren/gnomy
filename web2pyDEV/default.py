@@ -9,9 +9,6 @@ if not session.pond_id:
 if not session.rootstock_id:
     session.rootstock_id = int(0)
 
-if not session.graph_string:
-    session.graph_string = "digraph { "
-
 if not session.rootstocks_pass:
     session.rootstocks_pass = dict()
 
@@ -43,7 +40,7 @@ def add_pond():
     # Create an empty form
     form = SQLFORM(db.pond)
 
-    response.js="document.getElementById('collchoice').reload(true);"
+    response.js="document.getElementById('pondchoice').reload(true);"
     return dict()
 
 
@@ -169,7 +166,7 @@ def shownextrootstocks():
 
 
     if auth.is_logged_in():
-        ks_grid = SQLFORM.grid(
+        knotstock_grid = SQLFORM.grid(
             knotstocks_to_show,
             deletable=can_edit_record,
             fields=["knotstock"],
@@ -182,7 +179,7 @@ def shownextrootstocks():
             sortable=False
         )
     else:
-        ks_grid = SQLFORM.grid(
+        knotstock_grid = SQLFORM.grid(
             knotstocks_to_show,
             deletable=False,
             editable=False,
@@ -198,7 +195,7 @@ def shownextrootstocks():
         #search_next=search_next,
         #search_results=search_results,
         flower_grid=flower_grid,
-        ks_grid=ks_grid,
+        knotstock_grid=knotstock_grid,
         updated_content="Data for: " + keyword
     )
 
@@ -357,7 +354,6 @@ def showcolsrootstocks():
             _style="color:blue;font-weight:bold;text-decoration:none;cursor:pointer;",
             _onclick=f"toggleDiv('rootstock_{row.id}')"
         )
-
     rootstock_rows = rootstocks_to_show.select()
     rootstock_divs = DIV(
         *[DIV(f"Details for {row.name}", _class="ootstocklings", _id=f"rootstock_{row.id}", _style="display:none;") for row in rootstock_rows]
@@ -381,9 +377,9 @@ def showcolsrootstocks():
     if auth.is_logged_in():
         flower_grid = SQLFORM.grid(
             flowers_to_show,
-            #fields=['flower'],
-            #deletable=can_edit_record,
-            deletable=True,
+            fields = [db.flwoer.name],
+            deletable=can_edit_record,
+            #deletable=True,
             editable=False,
             details=False,
             create=False,
@@ -395,7 +391,7 @@ def showcolsrootstocks():
     else:
         flower_grid = SQLFORM.grid(
             flowers_to_show,
-            #fields=['flower'],
+            fields = [db.flwoer.name],
             deletable=False,
             editable=False,
             details=False,
@@ -410,9 +406,9 @@ def showcolsrootstocks():
     if auth.is_logged_in():
         rootstock_grid = SQLFORM.grid(
             rootstocks_to_show,
-            #fields=['knotstock'],
-            #deletable=can_edit_record,
-            deletable=True,
+            fields = [db.rootstock.name],
+            deletable=can_edit_record,
+            #deletable=True,
             editable=False,
             details=False,
             create=False,
@@ -422,9 +418,9 @@ def showcolsrootstocks():
             sortable=True
         )
     else:
-        rootstocks_to_show_grid = SQLFORM.grid(
+        rootstock_grid = SQLFORM.grid(
             rootstocks_to_show,
-            #fields=['knotstock'],
+            fields = [db.rootstock.name],
             deletable=False,
             editable=False,
             details=False,
@@ -434,13 +430,14 @@ def showcolsrootstocks():
             csv=False,
             sortable=True
         )
+
+
 
     if auth.is_logged_in():
-        ks_grid = SQLFORM.grid(
+        knotstock_grid = SQLFORM.grid(
             knotstocks_to_show,
             deletable=can_edit_record,
-            fields=["knotstock"],
-            #editable=can_edit_record,
+            fields=[db.knotstock_list.knotstock],  # Use db.table.field
             details=False,
             create=False,
             searchable=False,
@@ -449,39 +446,27 @@ def showcolsrootstocks():
             sortable=False
         )
     else:
-        ks_grid = SQLFORM.grid(
+        knotstock_grid = SQLFORM.grid(
             knotstocks_to_show,
             deletable=False,
-            editable=False,
-            details=True,
+            details=False,
             create=False,
             searchable=False,
             paginate=10,
             csv=False,
             sortable=False
-        )
+        )        
 
     return dict(
-        ks_grid=ks_grid,
+        knotstock_grid=knotstock_grid,
         flower_grid=flower_grid,
         edit_form=edit_form,
         create_form=create_form,
         rootstock_divs=rootstock_divs,
         script=script,
-        cols_rootstock_grid=SQLFORM.grid(
-            rootstocks_to_show,
-            fields=[db.rootstock.name],
-            csv=False,
-            sortable=True,
-            paginate=10,
-            deletable=False,
-            editable=False,
-            details=False,
-            create=False,
-            searchable=True,
-            links=[lambda row: display_pond_name(row)],
-        )
+        rootstock_grid=rootstock_grid,
     )
+
 
 
 
