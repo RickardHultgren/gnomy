@@ -162,10 +162,15 @@ else:
 
 db.define_table('pond',
     Field('name'),
-    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    Field('created_by', 'reference auth_user', default=lambda: auth.user.id if auth.user else None, readable=False, writable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False) # ,           
     #format='%(name)s'
-               )
+
+
+    #Field('created_by', 'reference auth_user', default=lambda: auth.user.id if auth.user else None, readable=False, writable=False)
+)
+
+
 
 #db.pond._permissions = {
 #    'create': auth.has_permission('create', db.pond),
