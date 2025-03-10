@@ -1,4 +1,4 @@
-f<div id="left" style="display:inline-block; width:40vw;height:auto;background-color:white;vertical-align: text-top; thin; font-size:3vh;margin:0px; padding:0px; min-width: 10em; border-width:0px;">
+<div id="left" style="display:inline-block; width:40vw;height:auto;background-color:white;vertical-align: text-top; thin; font-size:3vh;margin:0px; padding:0px; min-width: 10em; border-width:0px;">
 
     <style>
         div{
@@ -20,9 +20,9 @@ font-size:3vh; margin:0px;padding:0px;  border-radius: 20px;border-width:2px;
     New rootstock
 </span>
 {{try:}}
-    {{if auth.is_logged_in():}}
+    {{#if auth.is_logged_in():}}
         {{=create_form}}
-    {{pass}}
+    {{#pass}}
 {{except:}}
     {{pass}}
 
@@ -43,7 +43,11 @@ function showadd() {
 {{pass}}
 <hr>
 Search rootstock
+<<<<<<< HEAD
+{{#=rootstock_grid}}
+=======
 {{=rootstock_grid}}
+>>>>>>> 006994c5029a5e6fba6cb26d14af1c40c842d2ea
 </div>
 
 <!-- JavaScript for handling AJAX interactions -->
@@ -125,12 +129,9 @@ $(document).ready(function() {
 });
 </script>
 
-<!-- Content area for 'nextrootstock' to load dynamic content -->
-<div id="nextrootstock" class="nextrootstock" name="nextrootstock" style="scrollbar-color: #aaccff #888888; scrollbar-width: thin; display:inline-block;vertical-align: text-top;margin-left:5vw;font-size:3vh; margin:0px;padding:0px;  border-radius: 20px;border-width:2px;
-    border: 4px solid #555555;
-    padding: 1em;
-    color: #333333;
 
+<<<<<<< HEAD
+=======
     background-color: #eeeeee;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);width:40vw;margin-left:5vw;display:inline-block;min-width: 10em; border-width:1px;">
 
@@ -213,3 +214,5 @@ $(document).ready(function() {
 
 
 </div>
+
+>>>>>>> 006994c5029a5e6fba6cb26d14af1c40c842d2ea
