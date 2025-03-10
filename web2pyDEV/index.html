@@ -35,21 +35,24 @@ function refreshcollchoice() {
         {{=create_pond}}  <!-- Use the correct form variable -->
     </div>
 
-<<<<<<< HEAD
-=======
-    {{#=LOAD('default', 'showponds', ajax=True, ajax_trap=True, target='collchoice', content='Loading...')}}
-    
->>>>>>> 006994c5029a5e6fba6cb26d14af1c40c842d2ea
 {{pass}}
 
 
-<<<<<<< HEAD
 <div style="overflow: scroll; scrollbar-color: #333333 #ccccff; scrollbar-width: thin; width:100%;"--></div>
-=======
-<!--div id="collchoice" style="overflow: scroll; scrollbar-color: #333333 #ccccff; scrollbar-width: thin; width:100%;"></div-->
->>>>>>> 006994c5029a5e6fba6cb26d14af1c40c842d2ea
 {{if not auth.is_logged_in():}}
 
+  <div class="splash-container" style="auto;height:100%;display: flex; background-image: url('https://github.com/RickardHultgren/gnomy/blob/gh-pages/lantern-bg.jpg?raw=true'); color:#ffffff; background-repeat: no-repeat;    background-size: cover; background-position: center;">
+    <div class="splash-content">
+      <div style="background-color: rgb(0,0,0,0.5);   padding: 10px 5px;border: none;border-radius: 5px;">
+        <img src="https://github.com/RickardHultgren/gnomy/blob/gh-pages/GnomyLogotype.png?raw=true" alt="Gnomy Logo" class="Logotype" style="height:3em;width:auto; margin-bottom:0;"/>
+        <p style="text-align:center;width:30vw; min-width:300px;margin-bottom:1em;">Where the Lantern Guides You. Log in to continue...</p>
+        <!--button class="start-button"  onclick="window.location.href='homescreen.html'" style="display:block; text-align:center;width:30vw; min-width:300px;">Start Your Adventure</button>
+          <button class="start-button" onclick="window.location.href='tutorial.html'" style="display:block; text-align:center;width:30vw; min-width:300px;">Tutorial</button-->
+
+      </div>
+
+    </div>
+  </div>
 
 {{pass}}
 

@@ -43,11 +43,7 @@ function showadd() {
 {{pass}}
 <hr>
 Search rootstock
-<<<<<<< HEAD
 {{#=rootstock_grid}}
-=======
-{{=rootstock_grid}}
->>>>>>> 006994c5029a5e6fba6cb26d14af1c40c842d2ea
 </div>
 
 <!-- JavaScript for handling AJAX interactions -->
@@ -129,90 +125,3 @@ $(document).ready(function() {
 });
 </script>
 
-
-<<<<<<< HEAD
-=======
-    background-color: #eeeeee;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);width:40vw;margin-left:5vw;display:inline-block;min-width: 10em; border-width:1px;">
-
-
-        <!-- Load nextrootstocks dynamically using AJAX -->
-        {{#=LOAD(url=URL('default', 'shownextrootstocks'), ajax=True, ajax_trap=True, target='nextrootstock', content='fing...', cache=False)}}
-    
-
-
-
-<p style="margin:0%;padding:0%;font-weight:bold;font-style:italic;">
-    Details rootstock
-</p>
-
-{{try:}}
-    {{therootstock = db.rootstock(int(session.rootstock_id))}}
-    Record ID: {{=therootstock.id}}
-{{except:}}
-    {{pass}}
-{{try:}}
-    Name: {{=therootstock.name}}
-{{except:}}
-    {{pass}}
-
-
-
-{{if auth.is_logged_in():}}
-        {{=BUTTON("Delete rootstock", _style="background-color:#333333;color:#cccccc;", _id="deleterootstockBtn", _class="delbtn", _onclick="deleterootstock();")}}
-        {{=edit_form}}
-{{pass}}
-{{#=search_next}}
-
-<hr>
-
-<p>Flowers:</p>
-<div id="flowerspec" style="font-size:3vh;margin:0px;padding:0px;">
-{{try:}}
-    {{if auth.is_logged_in():}}
-        {{=new_flower}}
-    {{pass}}
-{{except:}}
-    {{pass}}
-<hr>
-
-<p>Flowers:</p>
-<div id="flowerspec" style="font-size:3vh;margin:0px;padding:0px;">
-{{try:}}
-    {{if auth.is_logged_in():}}
-        {{=create_flower}}
-    {{pass}}
-{{except:}}
-    {{pass}}
-
-{{=flower_grid}}
-
-<hr>
-
-<p>Knotstocks:</p>
-<div id="nextspec" style="font-size:3vh;margin:0px;padding:0px;">
-{{try:}}
-    {{if auth.is_logged_in():}}
-        {{=create_next}}
-    {{pass}}
-{{except:}}
-    {{pass}}
-
-{{=knotstock_grid}}
-
-
-
-
-<script>
-//Call the reloadrootstockpond function every 3 seconds
-//setInterval(function() {
-//    reloadshownextview();
-//}, 3000);
-
-
-</script>
-
-
-</div>
-
->>>>>>> 006994c5029a5e6fba6cb26d14af1c40c842d2ea
