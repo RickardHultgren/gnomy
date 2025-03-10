@@ -530,51 +530,6 @@ def check_record_permission(record_id):
     return False
 
 
-def showponds():
-    keyword = request.vars.colkeyword
-    if keyword:
-        crows = db(db.pond.name.contains(keyword))
-    else:
-        # If no keyword, fetch all ponds
-        crows = db.pond
-
-    def can_edit_record(row):
-        return check_record_permission(row.id)
-
-    def found_coll_link(row):
-        #response.js = ("document.getElementById('popupI').style.display='block';")
-        return A('Select', callback=URL('found_coll', args=[row.id]))
-
-    if auth.is_logged_in():
-        return dict(pond_grid=SQLFORM.grid(
-            crows,
-            csv=False,
-            sortable=True,
-            paginate=10,
-            deletable=can_edit_record,
-            editable=can_edit_record,
-            details=False,
-            create=False,
-            searchable=False,
-            links = [lambda row: A('Show pond', _href=URL('default', 'showflowchart', args=[row.id]))],
-            #links=[lambda row: found_coll_link(row)],  # Use the modified lambda function
-            formname='colls',
-        ))
-    else:
-        return dict(pond_grid=SQLFORM.grid(
-            crows,
-            csv=False,
-            sortable=True,
-            paginate=10,
-            deletable=False,
-            editable=False,
-            details=False,
-            create=False,
-            searchable=False,
-            links = [lambda row: A('Show flowchart', _href=URL('default', 'showflowchart', args=[row.id]))],
-            #links=[lambda row: found_coll_link(row)],  # Use the modified lambda function
-            formname='colls',
-        ))
 
 
 
