@@ -338,13 +338,19 @@ def showcolsrootstocks():
         flowers_to_show = (db.flower_list.rootstock == session.rootstock_id)
     except:
         flowers_to_show = None  # Handle the case when session.rootstock_id is not set
+
+
     try:
         knotstocks_to_show = (db.knotstock_list.rootstock == session.knotstocks_id)
     except:
         knotstocks_to_show = None  # Handle the case when session.rootstock_id is not set        
+
+
     #For the search function:
     keyword = request.vars.colnodkeyword or ''
 
+    response.js = ("alert('Pond %s');" % (session.pond_id))
+    response.js = ("alert('rootstock %s');" % (session.rootstock_id))    
     if keyword:
         rootstocks_to_show = db((db.rootstock.pond == session.pond_id) & (db.rootstock.name.contains(keyword)))
     else:
@@ -352,13 +358,13 @@ def showcolsrootstocks():
 
 
 
-#2025-03-08
+
     def display_pond_name(row):
         return A(
         #row.name,
         #_style="left:1vw;color:blue;font-weight:bold;opacity:0.5;width:35vw;height:2em;position:absolute;margin:-0.5em -0.5em 0 1em;background-color:rgba(255,255,0,0.5);  display: block;  width: auto; height:auto;  text-decoration: none;   color: inherit; padding: 0;box-sizing: border-box; ",
         #callback=URL('found_rootstock', args=[int(row.id)])
-    #NEW:
+
             row.name,
             _style="color:blue;font-weight:bold;text-decoration:none;cursor:pointer;",
             _onclick=f"toggleDiv('rootstock_{row.id}')"
