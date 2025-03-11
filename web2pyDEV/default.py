@@ -233,15 +233,17 @@ def showcolsrootstocks():
 
     #fields = ['name','ICD9','data_type']
     fields = ['name']
-    create_form = SQLFORM(db.rootstock, submit_button='Grow the new plant', fields=fields,
-                      _style='font-size: 3vh;', _id='create_rootstock',
-                      _onsubmit="refreshDiv();")
+
     # Prepopulate the pond field with session.pond_id
-    db.rootstock.pond.default = session.pond_id  # Set default value at DB levelcreate_form.vars.pond = session.pond_id
+    db.rootstock.pond.default = session.pond_id  # Set the default value
+    create_form = SQLFORM(db.rootstock, fields=fields,  # Create the form after setting default
+                        submit_button='Grow the new plant',
+                        _style='font-size: 3vh;', _id='create_rootstock',
+                        _onsubmit="refreshDiv();")
 
     if create_form.process().accepted:
-        print("Form submission accepted!")  # Debugging
-        response.flash = 'Record created successfully'
+        db(db.rootstock.id == create_form.vars.id).update(pond=session.pond_id)
+        response.flash = 'Record created successfully'        
         response.js = "document.getElementById('rootstockpond').reload(true);"
     elif create_form.errors:
         print("Form errors:", create_form.errors)  # Debugging
@@ -349,13 +351,12 @@ def showcolsrootstocks():
     #For the search function:
     keyword = request.vars.colnodkeyword or ''
 
-    response.js = ("alert('Pond %s');" % (session.pond_id))
-    response.js = ("alert('rootstock %s');" % (session.rootstock_id))    
+    
     if keyword:
         rootstocks_to_show = db((db.rootstock.pond == session.pond_id) & (db.rootstock.name.contains(keyword)))
     else:
         rootstocks_to_show = db(db.rootstock.pond == session.pond_id)
-
+    #response.js = ("alert('Pond: %s ; rootstocks %s');" % (session.pond_id, rootstocks_to_show))    
 
 
 
@@ -369,10 +370,15 @@ def showcolsrootstocks():
             _style="color:blue;font-weight:bold;text-decoration:none;cursor:pointer;",
             _onclick=f"toggleDiv('rootstock_{row.id}')"
         )
-    rootstock_rows = rootstocks_to_show.select()
-    rootstock_divs = DIV(
-        *[DIV(f"Details for {row.name}", _class="ootstocklings", _id=f"rootstock_{row.id}", _style="display:none;") for row in rootstock_rows]
-    )
+
+        rootstock_rows = rootstocks_to_show.select(db.rootstock.ALL)  # Fetch all fields, not just ID
+
+        if rootstock_rows:
+            rootstock_divs = DIV(
+                *[DIV(f"Details for {row.name}", _class="rootstocklings", _id=f"rootstock_{row.id}", _style="display:none;") for row in rootstock_rows]
+            )
+        else:
+            rootstock_divs = DIV("No rootstocks found.", _class="no-rootstocks")
 
     script = SCRIPT(
         """
@@ -438,7 +444,7 @@ def showcolsrootstocks():
         flower_grid=flower_grid,
         edit_form=edit_form,
         create_form=create_form,
-        rootstock_divs=rootstock_divs,
+        #rootstock_divs=rootstock_divs,
         script=script,
         rootstock_grid=rootstock_grid,
     )

@@ -209,7 +209,7 @@ db.define_table('rootstock',
 #db.rootstock.virtual_field = Field.Virtual(lambda row: row.name + ' - ' + row.ICD9)
 #db.rootstock.data_type.default = 'Procedure'
 try:
-    db.rootstock.pond.id = session.pond_id
+    db.rootstock.pond = session.pond_id
 except:
     pass
 
