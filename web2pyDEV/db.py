@@ -154,6 +154,13 @@ if configuration.get('scheduler.enabled'):
 # -------------------------------------------------------------------------
 # auth.enable_record_versioning(db)
 
+if not session.pond_id:
+    session.pond_id = int(0)
+
+if not session.rootstock_id:
+    session.rootstock_id = int(0)
+
+
 if auth.is_logged_in():
    me=auth.user.id
 else:
@@ -209,7 +216,7 @@ db.define_table('rootstock',
 #db.rootstock.virtual_field = Field.Virtual(lambda row: row.name + ' - ' + row.ICD9)
 #db.rootstock.data_type.default = 'Procedure'
 try:
-    db.rootstock.pond = session.pond_id
+    db.rootstock.pond.id = session.pond_id
 except:
     pass
 

@@ -9,9 +9,6 @@ if not session.pond_id:
 if not session.rootstock_id:
     session.rootstock_id = int(0)
 
-if not session.new_graph :
-    session.new_graph = 0
-
 def index():
     def can_edit_record(row):
         return check_record_permission(row.id)
@@ -193,6 +190,8 @@ def showcolsrootstocks():
     record = db.rootstock(record_id)
 
 
+    response.js = ("alert('%s');") % (request.args(0))
+    #session.pond_id = request.args(0)
 
 
     # Define the fields to display in the edit form
