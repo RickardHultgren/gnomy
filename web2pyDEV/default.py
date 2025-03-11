@@ -9,12 +9,6 @@ if not session.pond_id:
 if not session.rootstock_id:
     session.rootstock_id = int(0)
 
-if not session.rootstocks_pass:
-    session.rootstocks_pass = dict()
-
-if not session.len_rootstocks_pass :
-    session.len_rootstocks_pass
-
 if not session.new_graph :
     session.new_graph = 0
 
@@ -156,52 +150,25 @@ def shownextrootstocks():
         return None
 
     # Display the grid based on user authentication status
-    if auth.is_logged_in():
-        flower_grid = SQLFORM.grid(
+    flower_grid = SQLFORM.grid(
             flowers_to_show,
-            deletable=can_edit_record,
-            fields=["knotstock"],
-            #editable=can_edit_record,
-            details=False,
+            deletable=can_edit_record if auth.is_logged_in() else False,
+            fields=["knotstock"] if auth.is_logged_in() else False,
+            editable=can_edit_record if auth.is_logged_in() else False,
+            details=False if auth.is_logged_in() else False,
             create=False,
             searchable=False,
             paginate=10,
             csv=False,
             sortable=False
         )
-    else:
-        flower_grid = SQLFORM.grid(
-            flowers_to_show,
-            deletable=False,
-            editable=False,
-            details=True,
-            create=False,
-            searchable=False,
-            paginate=10,
-            csv=False,
-            sortable=False
-        )
-
-
-    if auth.is_logged_in():
-        knotstock_grid = SQLFORM.grid(
+    
+    knotstock_grid = SQLFORM.grid(
             knotstocks_to_show,
-            deletable=can_edit_record,
-            fields=["knotstock"],
-            #editable=can_edit_record,
+            deletable=can_edit_record if auth.is_logged_in() else False,
+            fields=["knotstock"] if auth.is_logged_in() else False,
+            editable=can_edit_record if auth.is_logged_in() else False,
             details=False,
-            create=False,
-            searchable=False,
-            paginate=10,
-            csv=False,
-            sortable=False
-        )
-    else:
-        knotstock_grid = SQLFORM.grid(
-            knotstocks_to_show,
-            deletable=False,
-            editable=False,
-            details=True,
             create=False,
             searchable=False,
             paginate=10,
@@ -307,14 +274,17 @@ def showcolsrootstocks():
 
 
     # Define function to check if a record can be edited by the current user
+    #def can_edit_record(row):
+    #    if auth.is_logged_in():
+    #        return row.created_by == auth.user.id
+    #    return False
+
     def can_edit_record(row):
-        if auth.is_logged_in():
-            return row.created_by == auth.user.id
-        return False
-
-
-
-
+        if not row:
+            return False  # Prevent errors
+        if not hasattr(row, 'created_by'):
+            return False  # If the field doesn't exist
+        return row.created_by == auth.user.id
 
     # Fetch knotstocks based on the session.pond_id
 
@@ -392,12 +362,11 @@ def showcolsrootstocks():
 
 
     # Display the grid based on user authentication status
-    if auth.is_logged_in():
-        flower_grid = SQLFORM.grid(
+    flower_grid = SQLFORM.grid(
             flowers_to_show,
-            fields = [db.flwoer.name],
-            deletable=can_edit_record,
-            #deletable=True,
+            fields = [db.flower.name] if auth.is_logged_in() else False,
+            deletable=can_edit_record if auth.is_logged_in() else False,
+            #deletable=True if auth.is_logged_in() else False,
             editable=False,
             details=False,
             create=False,
@@ -406,26 +375,13 @@ def showcolsrootstocks():
             csv=False,
             sortable=True
         )
-    else:
-        flower_grid = SQLFORM.grid(
-            flowers_to_show,
-            fields = [db.flwoer.name],
-            deletable=False,
-            editable=False,
-            details=False,
-            create=False,
-            searchable=False,
-            paginate=10,
-            csv=False,
-            sortable=True
-        )
-
+    
     # Display the grid based on user authentication status
-    if auth.is_logged_in():
-        rootstock_grid = SQLFORM.grid(
+    rootstock_grid = SQLFORM.grid(
             rootstocks_to_show,
-            fields = [db.rootstock.name],
-            deletable=can_edit_record,
+            fields = [db.rootstock.name] if auth.is_logged_in() else False,
+            #fields=[db.rootstock.name, db.rootstock.created_by],  # Include created_by
+            deletable=can_edit_record if auth.is_logged_in() else False,
             #deletable=True,
             editable=False,
             details=False,
@@ -435,27 +391,13 @@ def showcolsrootstocks():
             csv=False,
             sortable=True
         )
-    else:
-        rootstock_grid = SQLFORM.grid(
-            rootstocks_to_show,
-            fields = [db.rootstock.name],
-            deletable=False,
-            editable=False,
-            details=False,
-            create=False,
-            searchable=False,
-            paginate=10,
-            csv=False,
-            sortable=True
-        )
 
 
 
-    if auth.is_logged_in():
-        knotstock_grid = SQLFORM.grid(
+    knotstock_grid = SQLFORM.grid(
             knotstocks_to_show,
-            deletable=can_edit_record,
-            fields=[db.knotstock_list.knotstock],  # Use db.table.field
+            deletable=can_edit_record if auth.is_logged_in() else False,
+            fields=[db.knotstock_list.knotstock] if auth.is_logged_in() else False,  # Use db.table.field
             details=False,
             create=False,
             searchable=False,
@@ -463,18 +405,7 @@ def showcolsrootstocks():
             csv=False,
             sortable=False
         )
-    else:
-        knotstock_grid = SQLFORM.grid(
-            knotstocks_to_show,
-            deletable=False,
-            details=False,
-            create=False,
-            searchable=False,
-            paginate=10,
-            csv=False,
-            sortable=False
-        )        
-
+    
     return dict(
         knotstock_grid=knotstock_grid,
         flower_grid=flower_grid,

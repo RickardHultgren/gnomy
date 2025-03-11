@@ -199,7 +199,8 @@ db.define_table('rootstock',
     #Field('next_list'),
     #Field('numeral_system'),
     #Field('data_type', requires=IS_IN_SET(['Procedure','Factor binary'])),
-    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    Field('created_by', 'reference auth_user', default=lambda: auth.user_id, writable=False, readable=False),
+    #Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)         ,  
     #Field.Virtual('virtual_field', lambda row: row.name + ' - ' + row.ICD9)
                 
