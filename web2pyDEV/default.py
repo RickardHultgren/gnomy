@@ -192,22 +192,43 @@ def showcolsrootstocks():
     # Fetch the record from the database
     record = db.rootstock(record_id)
 
+
+
+
     # Define the fields to display in the edit form
     #editfields = ['name', 'ICD9', 'data_type']
-    editfields = ['name']
+    #editfields = ['name']
+    editfields = ['name', 'pond']
     # Create an edit form for the specified record with custom submit button and styles
-    edit_form = SQLFORM(db.rootstock, record, fields=editfields, submit_button='Save', _style='font-size: 3vh;')
+    #edit_form = SQLFORM(db.rootstock, record, fields=editfields, submit_button='Save', _style='font-size: 3vh;')
+    
+    
+    edit_form = SQLFORM(db.rootstock, record, fields=editfields, 
+                        submit_button='Save', 
+                        _style='font-size: 3vh;',
+                        _formname='edit_form')
 
-    if 'pond' in db.rootstock.fields:  # Check if 'pond' is a field in db.rootstock
-        edit_form.vars.pond = session.pond_id
+    if 'pond' in db.rootstock.fields:
+        edit_form.vars.pond = session.pond_id  # This works *only if pond is in fields*
+
+
+    # Check if 'pond' is a field in db.rootstock
+    #if 'pond' in db.rootstock.fields:  
+        #edit_form.vars.pond = session.pond_id
+
+    # Prepopulate the 'pond' field with session.pond_id (assuming session.pond_id exists)
+    #if 'pond' in edit_form.vars:
+        #edit_form.vars.pond = session.pond_id
+    #if session.pond_id and db(db.pond.id == session.pond_id).count():
+    #    edit_form.vars.pond = session.pond_id
+    #else:
+    #    response.flash = 'Invalid pond reference!'
+
+
     # Check if form is submitted and process the form data
     if edit_form.process().accepted:
         # Form was successfully submitted and data updated in the database
         response.flash = 'Record updated successfully'
-
-    # Prepopulate the 'pond' field with session.pond_id (assuming session.pond_id exists)
-    if 'pond' in edit_form.vars:
-        edit_form.vars.pond = session.pond_id
 
 
     #fields = ['name','ICD9','data_type']
@@ -228,8 +249,8 @@ def showcolsrootstocks():
         response.status = 400
         
 
-#OLD
-    # Create the form
+
+    # Create the flower form
     new_flower = SQLFORM(db.flower, fields=['name', 'flower_type', 'growing_place'], submit_button='Create')
 
     # Process the form submission
