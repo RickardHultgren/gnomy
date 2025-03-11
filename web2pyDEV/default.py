@@ -183,6 +183,7 @@ def shownextrootstocks():
 
 
 def showcolsrootstocks():
+    ###ADD OWNERSHIP OF IDs!!!
     # Assuming 'id' is the ID of the record you want to edit
     record_id = session.rootstock_id  # Replace with the actual ID of the record to be edited
 
@@ -190,17 +191,15 @@ def showcolsrootstocks():
     record = db.rootstock(record_id)
 
 
-    response.js = ("alert('%s');") % (request.args(0))
+    response.js = ("alert('%s');") % (session.pond_id)
     #session.pond_id = request.args(0)
 
 
     # Define the fields to display in the edit form
-    #editfields = ['name', 'ICD9', 'data_type']
-    #editfields = ['name']
-    editfields = ['name', 'pond']
+    editfields = ['name']
     # Create an edit form for the specified record with custom submit button and styles
-    #edit_form = SQLFORM(db.rootstock, record, fields=editfields, submit_button='Save', _style='font-size: 3vh;')
     
+    db.rootstock.pond.default = session.pond_id  # Set the default value
     
     edit_form = SQLFORM(db.rootstock, record, fields=editfields, 
                         submit_button='Save', 
@@ -479,12 +478,7 @@ def showflowchart():
     record_id = request.args(0)
 
     # Fetch the record from the database
-    pond = db.pond(record_id)  # Assuming 'crows' is your table name
-    session.pond_id = record_id
-#    found_coll()
-    # Check if record exists
-    if not pond:
-        raise HTTP(404, "Record not found")
+    session.pond_id = request.args(0)
 
     response.js = "alert('Hello from found_coll!');"
     rootstocks_to_show = db(db.rootstock.pond == session.pond_id).select()

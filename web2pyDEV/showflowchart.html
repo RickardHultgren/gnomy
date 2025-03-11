@@ -8,6 +8,7 @@
 {{#import time}}
 
 {{pond = db.pond(request.args(0))}}
+{{session.pond_id = request.args(0)}}
 <div style="font-weight:bold">Pond name: {{=pond.name}}</div>
 
 

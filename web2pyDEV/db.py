@@ -154,13 +154,6 @@ if configuration.get('scheduler.enabled'):
 # -------------------------------------------------------------------------
 # auth.enable_record_versioning(db)
 
-if not session.pond_id:
-    session.pond_id = int(0)
-
-if not session.rootstock_id:
-    session.rootstock_id = int(0)
-
-
 if auth.is_logged_in():
    me=auth.user.id
 else:
