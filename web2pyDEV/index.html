@@ -1,21 +1,27 @@
-{{extend 'layout.html'}}
+{{extend 'layout.html'}}  <!-- Extend the main layout of the web2py application -->
 
 {{if message:}}
-    <div>{{=message}}</div>
+    <div>{{=message}}</div>  <!-- Display the "Please log in" message if user is not logged in -->
 {{else:}}
     {{if form:}}
         <h2>Add a New Pond</h2>
-        {{=form}}
+        {{=form}}  <!-- Display the form for adding a new pond -->
     {{pass}}
 
     <h2>Ponds</h2>
-    {{=grid}}
+    {{=grid}}  <!-- Display the grid of ponds owned by the user -->
 
-    <div id="pond-container"></div>
+    <div id="pond-container"></div>  <!-- A div where pond details and rootstocks will be loaded dynamically -->
 
     <script>
+        // Function to load a pond's details and rootstocks dynamically
         function loadPond(pond_id) {
-            $("#pond-container").load("{{=URL('pond', args=[''])}}/" + pond_id);
+            $("#pond-container").load("{{=URL('default', 'pond', args=[''])}}/" + pond_id);
+        }
+
+        // Function to load a rootstock's details dynamically
+        function loadRootstock(rootstock_id) {
+            $("#rootstock-container").load("{{=URL('default', 'rootstock', args=[''])}}/" + rootstock_id);
         }
     </script>
 {{pass}}
