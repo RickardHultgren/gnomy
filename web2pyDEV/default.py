@@ -9,6 +9,56 @@ if not session.pond_id:
 if not session.rootstock_id:
     session.rootstock_id = int(0)
 
+
+
+
+# Define the function index
+#     Define a nested function can_edit_record(row)
+#         Return the result of check_record_permission(row.id)
+
+#     Define a list fields containing 'name'
+#     Create a form create_pond using SQLFORM with the following properties:
+#         - Table: db.pond
+#         - Submit button labeled 'Create a pond'
+#         - Fields: fields
+#         - Style: font-size: 3vh
+#         - ID: create_pond
+#         - Onsubmit event: refreshcollchoice()
+
+#     If the user is logged in:
+#         If create_pond is successfully processed:
+#             Update or insert a new record in db.pond with:
+#                 - ID: create_pond.vars.id
+#                 - Created by: auth.user.id
+#             Set response.flash to 'Pond created successfully!'
+#             Redirect to index (refresh to show new record)
+#         Else if create_pond has errors:
+#             Set response.flash to 'Please correct the errors in the form.'
+#     Else:
+#         Set response.flash to 'You must be logged in to create a pond.'
+
+#     If the user is logged in:
+#         Query ponds_to_show where db.pond.created_by equals auth.user.id
+#     Else:
+#         Query ponds_to_show where db.pond.id is greater than 0
+
+#     Define links as a list containing a lambda function:
+#         - Create a hyperlink labeled 'Show pond'
+#         - Set href to URL of 'default/showflowchart' with row.id as argument
+
+#     Create a grid pond_grid using SQLFORM.grid with the following configurations:
+#         - Source: ponds_to_show
+#         - Deletable: can_edit_record if user is logged in, else False
+#         - Editable: can_edit_record if user is logged in, else False
+#         - Details: False
+#         - Create new records: False (use form instead)
+#         - Searchable: False
+#         - Pagination: 10 records per page
+#         - CSV export: False
+#         - Sortable: False
+#         - Add links to the grid
+
+#     Return a dictionary containing create_pond and pond_grid
 def index():
     def can_edit_record(row):
         return check_record_permission(row.id)
@@ -181,6 +231,9 @@ def shownextrootstocks():
         updated_content="Data for: " + keyword
     )
 
+def set_pond():
+    session.pond_id = request.args(0)  # Update session with selected pond ID
+    return "Session updated!"  # Optional response
 
 def showcolsrootstocks():
     ###ADD OWNERSHIP OF IDs!!!
@@ -360,37 +413,50 @@ def showcolsrootstocks():
 
     def display_pond_name(row):
         return A(
-        #row.name,
-        #_style="left:1vw;color:blue;font-weight:bold;opacity:0.5;width:35vw;height:2em;position:absolute;margin:-0.5em -0.5em 0 1em;background-color:rgba(255,255,0,0.5);  display: block;  width: auto; height:auto;  text-decoration: none;   color: inherit; padding: 0;box-sizing: border-box; ",
-        #callback=URL('found_rootstock', args=[int(row.id)])
-
             row.name,
             _style="color:blue;font-weight:bold;text-decoration:none;cursor:pointer;",
+            _href="javascript:void(0);",
             _onclick=f"toggleDiv('rootstock_{row.id}')"
         )
 
-        rootstock_rows = rootstocks_to_show.select(db.rootstock.ALL)  # Fetch all fields, not just ID
+    rootstock_rows = rootstocks_to_show.select(db.rootstock.ALL)  # Fetch all fields, not just ID
+    if rootstock_rows:
+        rootstock_divs = DIV(
+            *[
+                DIV(f"Details for {row.name}", _class="rootstocklings", _id=f"rootstock_{row.id}", _style="display:none;")
+                for row in rootstocks_to_show.select()
+            ]
+        )        
+    else:
+        rootstock_divs = DIV("No rootstocks found.", _class="no-rootstocks")
 
-        if rootstock_rows:
-            rootstock_divs = DIV(
-                *[DIV(f"Details for {row.name}", _class="rootstocklings", _id=f"rootstock_{row.id}", _style="display:none;") for row in rootstock_rows]
-            )
-        else:
-            rootstock_divs = DIV("No rootstocks found.", _class="no-rootstocks")
 
-    script = SCRIPT(
-        """
+    script = SCRIPT("""
         function toggleDiv(id) {
             let elements = document.getElementsByClassName('rootstocklings');
             for (let i = 0; i < elements.length; i++) {
                 elements[i].style.display = 'none';
             }
             var div = document.getElementById(id);
-            div.style.display = "block";
+            if (div) {
+                div.style.display = "block";
+            }
         }
-        """
-    )
+    """)
 
+    rootstock_grid = SQLFORM.grid(
+        rootstocks_to_show,
+        fields=[db.rootstock.name] if auth.is_logged_in() else False,
+        deletable=can_edit_record if auth.is_logged_in() else False,
+        editable=False,
+        details=False,
+        create=False,
+        searchable=False,
+        paginate=10,
+        csv=False,
+        sortable=True,
+        links=[dict(header="View", body=display_pond_name)]  # Add the column with links
+    )
 
     # Display the grid based on user authentication status
     flower_grid = SQLFORM.grid(
@@ -442,7 +508,7 @@ def showcolsrootstocks():
         flower_grid=flower_grid,
         edit_form=edit_form,
         create_form=create_form,
-        #rootstock_divs=rootstock_divs,
+        rootstock_divs=rootstock_divs,
         script=script,
         rootstock_grid=rootstock_grid,
     )
@@ -474,6 +540,10 @@ def found_coll():
 
 
 def showflowchart():
+    record_id = request.args(0)
+    response.js = f"alert('Record ID: {record_id}');"
+    
+    response.js = "alert('Hello from found_coll!');"
     # Retrieve record ID from the URL
     record_id = request.args(0)
 

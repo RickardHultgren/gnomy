@@ -17,9 +17,27 @@
     <!-- Existing content to be dynamically updated -->
     {{=LOAD('default', 'found_coll', ajax=True, ajax_trap=True, target='foundcoll', content='Loading...', cache=dict(expiration=0), style="width:100vw;")}}
 </div>
-    <button id="shareButton">Share Content</button>
 
     <script>
+        function ajax(url, params, responseType) {
+            var xhr = new XMLHttpRequest();
+            var data = new FormData();
+            params.forEach(param => {
+                data.append(param, event.target.getAttribute("data-" + param));
+            });
+            xhr.open("POST", url, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+            xhr.send(data);
+        }
+    </script>
+
+    <script>
+
+
 /*
 document.addEventListener('DOMContentLoaded', function() {
     const shareButton = document.getElementById('shareButton');

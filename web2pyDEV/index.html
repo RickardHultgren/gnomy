@@ -1,61 +1,21 @@
-{{response.files.append(URL(r=request,c='static',f='static/js/jquery.js'))}}
-{{response.files.append(URL(r=request,c='static',f='static/js/d3_graph.js'))}}
-{{response.files.append(URL(r=request,c='static',f='static/js/d3.min.js'))}}
-{{response.files.append(URL(r=request,c='static',f='static/css/d3_graph.css'))}}
-{{#response.files.append(URL(r=request,c='static',f='/js/d3.js'))}}
 {{extend 'layout.html'}}
-{{#import time}}
-<!-- Your existing code for extending the layout -->
 
+{{if message:}}
+    <div>{{=message}}</div>
+{{else:}}
+    {{if form:}}
+        <h2>Add a New Pond</h2>
+        {{=form}}
+    {{pass}}
 
+    <h2>Ponds</h2>
+    {{=grid}}
 
+    <div id="pond-container"></div>
 
-
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<!--script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script-->
-<!--script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script-->
-
-
-<script>
-function refreshcollchoice() {
-    $( "#collchoice" ).load(window.location.href + " #collchoice" );
-}
-
-</script>
-
-{{if auth.is_logged_in():}}
-
-    <h3>Garden ponds (<i>contexts</i>):</h3>
-    
-    <div id="collchoice" style="overflow: scroll; scrollbar-color: #333333 #ccccff; scrollbar-width: thin; width:100%;"></div>
-    
-    {{=pond_grid}}  <!-- Display the pond grid -->
-    
-    <div>
-        {{=create_pond}}  <!-- Use the correct form variable -->
-    </div>
-
+    <script>
+        function loadPond(pond_id) {
+            $("#pond-container").load("{{=URL('pond', args=[''])}}/" + pond_id);
+        }
+    </script>
 {{pass}}
-
-
-<div style="overflow: scroll; scrollbar-color: #333333 #ccccff; scrollbar-width: thin; width:100%;"--></div>
-{{if not auth.is_logged_in():}}
-
-  <div class="splash-container" style="auto;height:100%;display: flex; background-image: url('https://github.com/RickardHultgren/gnomy/blob/gh-pages/lantern-bg.jpg?raw=true'); color:#ffffff; background-repeat: no-repeat;    background-size: cover; background-position: center;">
-    <div class="splash-content">
-      <div style="background-color: rgb(0,0,0,0.5);   padding: 10px 5px;border: none;border-radius: 5px;">
-        <img src="https://github.com/RickardHultgren/gnomy/blob/gh-pages/GnomyLogotype.png?raw=true" alt="Gnomy Logo" class="Logotype" style="height:3em;width:auto; margin-bottom:0;"/>
-        <p style="text-align:center;width:30vw; min-width:300px;margin-bottom:1em;">Where the Lantern Guides You. Log in to continue...</p>
-        <!--button class="start-button"  onclick="window.location.href='homescreen.html'" style="display:block; text-align:center;width:30vw; min-width:300px;">Start Your Adventure</button>
-          <button class="start-button" onclick="window.location.href='tutorial.html'" style="display:block; text-align:center;width:30vw; min-width:300px;">Tutorial</button-->
-
-      </div>
-
-    </div>
-  </div>
-
-{{pass}}
-
-</div>
-<br>
-<br>
