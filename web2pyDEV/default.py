@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+from gluon import SQLFORM, URL, DIV, A, H2, H3  # Import necessary web2py modules for form creation and UI elements
+from gluon.tools import Auth  # Import authentication system
+
+db = DAL('sqlite://storage.sqlite')  # or your database connection
+auth = Auth(db)
+auth.define_tables(username=False, signature=False)
+
+
+# -*- coding: utf-8 -*-
 from gluon import current
 
 def index():
@@ -36,40 +45,62 @@ def index():
     return dict(message=None, grid=ponds, pond_form=pond_form, rootstock_grids=rootstock_grids)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 # ---- API (example) -----
 @auth.requires_login()
 def api_get_user_email():
     if not request.env.request_method == 'GET': raise HTTP(403)
     return response.json({'status':'success', 'email':auth.user.email})
-    # Provides an API endpoint to get the email of the logged-in user (only for GET requests)
 
 # ---- Smart Grid (example) -----
-@auth.requires_membership('admin')  # can only be accessed by members of admin group
+@auth.requires_membership('admin') # can only be accessed by members of admin groupd
 def grid():
-    response.view = 'generic.html'  # use a generic view
+    response.view = 'generic.html' # use a generic view
     tablename = request.args(0)
     if not tablename in db.tables: raise HTTP(403)
     grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
-    # Provide a smart grid for managing a table, based on a table name passed in the URL
-
     return dict(grid=grid)
 
 # ---- Embedded wiki (example) ----
 def wiki():
-    auth.wikimenu()  # add the wiki to the menu
-    return auth.wiki()  # Return the wiki page
+    auth.wikimenu() # add the wiki to the menu
+    return auth.wiki()
 
 # ---- Action for login/register/etc (required for auth) -----
 def user():
     """
-    Exposes various authentication-related routes, like login, logout, register, profile, etc.
+    exposes:
+    http://..../[app]/default/user/login
+    http://..../[app]/default/user/logout
+    http://..../[app]/default/user/register
+    http://..../[app]/default/user/profile
+    http://..../[app]/default/user/retrieve_password
+    http://..../[app]/default/user/change_password
+    http://..../[app]/default/user/bulk_register
+    use @auth.requires_login()
+        @auth.requires_membership('group name')
+        @auth.requires_permission('read','table name',record_id)
+    to decorate functions that need access control
+    also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users
     """
-    return dict(form=auth())  # Show the authentication forms for login, registration, etc.
+    return dict(form=auth())
 
 # ---- action to server uploaded static content (required) ---
 @cache.action()
 def download():
     """
-    Allows downloading of uploaded files.
+    allows downloading of uploaded files
+    http://..../[app]/default/download/[filename]
     """
-    return response.download(request, db)  # Handles file download requests from the server
+    return response.download(request, db)
