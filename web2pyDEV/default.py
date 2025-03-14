@@ -72,11 +72,11 @@ def get_rootstocks():
     fields = [db.rootstock.name]
     # Only show the 'name' field of the rootstock in the grid
 
-    grid = SQLFORM.grid(query, fields=fields, create=False, editable=False, deletable=False,
+    rootstock_grid = SQLFORM.grid(query, fields=fields, create=False, editable=False, deletable=False,
                         details=False, paginate=10, csv=False, user_signature=False)
     # Display a grid of rootstocks for the selected pond, with pagination and other features disabled
 
-    return dict(pond_id=pond_id, rootstockgrid=grid)
+    return dict(pond_id=pond_id, rootstock_grid=rootstock_rid)
     # Return the grid for displaying rootstocks
 
 def get_rootstock_form():
