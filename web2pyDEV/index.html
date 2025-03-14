@@ -62,28 +62,35 @@
             });
 
             function attachPondClickListeners() {
-              document.querySelectorAll(".pond-link").forEach(function(link) {
-                  link.addEventListener("click", function(e) {
-                      e.preventDefault();
-                      let pond_id = this.getAttribute("data-pond-id");
+              setTimeout(function() {  // Delay to allow DOM updates
+                  document.querySelectorAll(".pond-link").forEach(function(link) {
+                      link.addEventListener("click", function(e) {
+                          e.preventDefault();
+                          let pond_id = this.getAttribute("data-pond-id");
 
-                      if (!pond_id || pond_id === "null") {
-                          console.error("Invalid pond_id received:", pond_id);
-                          return;
-                      }
+                          console.log("Clicked Pond:", this, "Pond ID:", pond_id);  // Debug
 
-                      // Load rootstock form dynamically
-                      fetch("{{=URL('get_rootstock_form')}}?pond_id=" + pond_id)
-                          .then(response => response.text())
-                          .then(data => document.getElementById("rootstock-form-container").innerHTML = data);
+                          if (!pond_id || pond_id === "null" || pond_id === "0") {
+                              console.error("Invalid pond_id received:", pond_id);
+                              return;
+                          }
 
-                      // Load rootstock grid dynamically
-                      fetch("{{=URL('get_rootstocks')}}?pond_id=" + pond_id)
-                          .then(response => response.text())
-                          .then(data => document.getElementById("rootstock-grid-container").innerHTML = data);
+                          // Load rootstock form dynamically
+                          fetch("{{=URL('get_rootstock_form')}}?pond_id=" + pond_id)
+                              .then(response => response.text())
+                              .then(data => document.getElementById("rootstock-form-container").innerHTML = data);
+
+                          // Load rootstock grid dynamically
+                          fetch("{{=URL('get_rootstocks')}}?pond_id=" + pond_id)
+                              .then(response => response.text())
+                              .then(data => document.getElementById("rootstock-grid-container").innerHTML = data);
+                      });
                   });
-              });
+              }, 500); // Delay to ensure DOM updates
           }
+
+          // Call function on page load
+          document.addEventListener("DOMContentLoaded", attachPondClickListeners);
 
           // Call function on page load
           document.addEventListener("DOMContentLoaded", attachPondClickListeners);
