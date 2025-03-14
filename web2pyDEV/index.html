@@ -9,17 +9,22 @@
     {{=form}}
 {{pass}}
 
-<script>
-function loadPond(pond_id) {
-    fetch("{{=URL('pond')}}" + "/" + pond_id)
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById("pond-container").innerHTML = html;
-        });
-}
-</script>
+<h2>Ponds</h2>
+{{=grid}}
 
 <div id="pond-container"></div>
 
-<h2>Ponds</h2>
-{{=grid}}
+<script>
+function loadPond(pond_id) {
+    // Load the pond details into the pond-container div using AJAX
+    $.ajax({
+        url: '{{=URL('default', 'pond')}}/' + pond_id,
+        success: function(response) {
+            $('#pond-container').html(response);
+        },
+        error: function() {
+            alert('Failed to load pond details.');
+        }
+    });
+}
+</script>

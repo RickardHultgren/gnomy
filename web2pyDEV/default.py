@@ -1,100 +1,101 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+from gluon import current
 
 def index():
-    """ Main page - shows login prompt or the user's ponds. """
+    """
+    This function serves as the main page of the application.
+    If the user is not logged in, it prompts them to log in.
+    If the user is logged in, it displays a grid of their ponds and a form to add new ponds.
+    """
+    auth = current.auth
+    db = current.db
+    response = current.response
+    request = current.request
+
+    # Check if the user is logged in
     if not auth.user:
-        return dict(message="Please log in", form=None, grid=None)
+        message = "Please log in"
+        form = None
+        grid = None
+    else:
+        # Define the pond table if not already defined
+        if not hasattr(db, 'pond'):
+            db.define_table('pond',
+                Field('name', 'string', requires=IS_NOT_EMPTY()),
+                Field('user_id', 'reference auth_user', default=auth.user.id, readable=False, writable=False)
+            )
 
-    # Define form for adding new ponds
-    form = SQLFORM(db.pond)
-    if form.process().accepted:
-        response.flash = "Pond added!"
-        redirect(URL('index'))  # Refresh grid after submission
+        # Define the rootstock table if not already defined
+        if not hasattr(db, 'rootstock'):
+            db.define_table('rootstock',
+                Field('pond_id', 'reference pond'),
+                Field('name', 'string', requires=IS_NOT_EMPTY())
+            )
 
-    # Show only ponds owned by the logged-in user
-    query = (db.pond.owner == auth.user.id)
-    grid = SQLFORM.grid(
-        query,
-        create=False,
-        editable=False,
-        deletable=True,
-        details=False,
-        csv=False,
-        links=[
-            lambda row: A(row.name, _href="#", _onclick="loadPond({})".format(row.id))
-        ]
-    )
+        # Form to add a new pond
+        form = SQLFORM(db.pond).process() if request.vars else None
 
-    return dict(message=None, form=form, grid=grid)
+        # Query to select ponds owned by the logged-in user
+        query = (db.pond.user_id == auth.user.id)
+        # Grid to display the user's ponds
+        grid = SQLFORM.grid(query,
+                            fields=[db.pond.name],
+                            create=False,
+                            editable=False,
+                            deletable=True,
+                            details=False,
+                            selectable=None,
+                            csv=False,
+                            links=[
+                                dict(header='Pond Name',
+                                     body=lambda row: A(row.name, _href="#", _onclick="loadPond(%d)" % row.id))
+                            ])
 
+        # Handle form submission for adding a new pond
+        if form and form.accepted:
+            response.flash = 'New pond added!'
+        elif form and form.errors:
+            response.flash = 'Form has errors'
+
+    return dict(message=message, form=form, grid=grid)
 
 def pond():
-    """ Load pond details and rootstock grid dynamically. """
+    """
+    This function loads the details of a specific pond, including its rootstocks and a form to add new rootstocks.
+    It is called via AJAX when a pond name is clicked.
+    """
+    db = current.db
+    request = current.request
+    response = current.response
+
+    # Get the pond ID from the URL
     pond_id = request.args(0, cast=int)
+    if not pond_id:
+        raise HTTP(400, "Invalid pond ID")
+
+    # Retrieve the pond record
     pond = db.pond(pond_id) or redirect(URL('index'))
 
-    # Rootstock form, linked to the specific pond
-    form = SQLFORM(db.rootstock)
-    form.vars.pond = pond_id  # Pre-fill pond ID
-    if form.process().accepted:
-        response.flash = "Rootstock added!"
-        redirect(URL('pond', args=[pond_id]))
+    # Form to add a new rootstock to the pond
+    db.rootstock.pond_id.default = pond.id
+    form = SQLFORM(db.rootstock).process() if request.vars else None
 
-    # Rootstock grid (filtered by pond)
-    query = (db.rootstock.pond == pond_id)
-    grid = SQLFORM.grid(
-        query,
-        create=False,
-        editable=False,
-        deletable=True,
-        details=False,
-        csv=False
-    )
+    # Query to select rootstocks associated with this pond
+    query = (db.rootstock.pond_id == pond.id)
+    # Grid to display the rootstocks of this pond
+    grid = SQLFORM.grid(query,
+                        fields=[db.rootstock.name],
+                        create=False,
+                        editable=False,
+                        deletable=True,
+                        details=False,
+                        selectable=None,
+                        csv=False)
+
+    # Handle form submission for adding a new rootstock
+    if form and form.accepted:
+        response.flash = 'New rootstock added!'
+    elif form and form.errors:
+        response.flash = 'Form has errors'
 
     return dict(pond=pond, form=form, grid=grid)
-
-
-
-
-
-
-
-
-
-# ---- API (example) -----
-@auth.requires_login()
-def api_get_user_email():
-    if not request.env.request_method == 'GET': raise HTTP(403)
-    return response.json({'status':'success', 'email':auth.user.email})
-    # Provides an API endpoint to get the email of the logged-in user (only for GET requests)
-
-# ---- Smart Grid (example) -----
-@auth.requires_membership('admin')  # can only be accessed by members of admin group
-def grid():
-    response.view = 'generic.html'  # use a generic view
-    tablename = request.args(0)
-    if not tablename in db.tables: raise HTTP(403)
-    grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
-    # Provide a smart grid for managing a table, based on a table name passed in the URL
-
-    return dict(grid=grid)
-
-# ---- Embedded wiki (example) ----
-def wiki():
-    auth.wikimenu()  # add the wiki to the menu
-    return auth.wiki()  # Return the wiki page
-
-# ---- Action for login/register/etc (required for auth) -----
-def user():
-    """
-    Exposes various authentication-related routes, like login, logout, register, profile, etc.
-    """
-    return dict(form=auth())  # Show the authentication forms for login, registration, etc.
-
-# ---- action to server uploaded static content (required) ---
-@cache.action()
-def download():
-    """
-    Allows downloading of uploaded files.
-    """
-    return response.download(request, db)  # Handles file download requests from the server
