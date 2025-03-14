@@ -38,9 +38,10 @@ def index():
     # Pass selected pond ID via URL
     pond_links = [
         dict(header='', body=lambda row: A(row.name,
-                                           _href="#",
+                                           #_href="#",**{'_data-pond-id': row.id},
+                                           _href=URL('default', 'get_rootstocks', args=[row.id])
                                            _class="pond-link",
-                                           **{'_data-pond-id': row.id}))
+                                           ))
     ]
     # Create links for each pond that will pass the pond ID in the URL when clicked
 
@@ -54,7 +55,8 @@ def index():
 
 def get_rootstocks():
     """ Returns rootstocks belonging to the selected pond (AJAX call) """
-    pond_id = request.vars.pond_id
+    #pond_id = request.vars.pond_id
+    pond_id = request.args(0, cast=int)
     # Retrieve the pond_id from the request URL parameters
 
     # Handle case where pond_id is null or invalid
