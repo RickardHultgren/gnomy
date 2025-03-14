@@ -56,6 +56,7 @@ def index():
 
 def get_rootstocks():
     """ Returns rootstocks belonging to the selected pond (AJAX call) """
+    response.js= ("alert(%s);" % request.vars.pond_id)
     pond_id = request.vars.pond_id
     #pond_id = request.args(0, cast=int)
     # Retrieve the pond_id from the request URL parameters
