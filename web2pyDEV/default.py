@@ -20,7 +20,9 @@ def get_rootstocks():
 
     # Query rootstocks by pond
     rootstocks = db(db.rootstock.pond == pond_id).select()
-    return dict(rootstocks=rootstocks)
+
+    # Return a JSON response
+    return response.json(dict(rootstocks=[rootstock.as_dict() for rootstock in rootstocks]))
 
 def add_rootstock():
     """Handles adding a new rootstock to a pond via AJAX."""
