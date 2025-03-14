@@ -28,7 +28,7 @@ def index():
         dict(header='', body=lambda row: A(row.name, 
                                         _href="#", 
                                         _class="pond-link", 
-                                        **{'_data-pond-id': row.id})))
+                                        **{'_data-pond-id': row.id}))
     ]
 
     # Grid for displaying ponds
@@ -55,40 +55,23 @@ def get_rootstocks():
 
     return grid
 
-def get_rootstocks():
-    """ Returns rootstocks belonging to the selected pond (AJAX call) """
+def get_rootstock_form():
+    """Returns the rootstock form for a selected pond (AJAX call)"""
     pond_id = request.vars.pond_id
 
     if not pond_id:
-        return DIV("No pond selected.")
+        return DIV("Error: No pond selected.")
 
-    query = (db.rootstock.pond == pond_id)
-    fields = [db.rootstock.name]
-
-    # Fix: Removed invalid `_id` argument
-    grid = SQLFORM.grid(query, fields=fields, create=False, editable=False, deletable=False,
-                        details=False, paginate=10, csv=False, user_signature=False)
-
-    return grid
-
-def get_rootstocks():
-    """ Returns rootstocks belonging to the selected pond (AJAX call) """
-    pond_id = request.vars.pond_id
-
-    # Handle case where pond_id is null or invalid
     try:
-        pond_id = int(pond_id)  # Convert to integer
-    except (ValueError, TypeError):
-        return DIV("Error: Invalid pond selected.")
+        pond_id = int(pond_id)  # Ensure pond_id is an integer
+    except ValueError:
+        return DIV("Error: Invalid pond ID.")
 
-    query = (db.rootstock.pond == pond_id)
-    fields = [db.rootstock.name]
+    # Create a form for adding rootstocks
+    db.rootstock.pond.default = pond_id
+    form = SQLFORM(db.rootstock)
 
-    grid = SQLFORM.grid(query, fields=fields, create=False, editable=False, deletable=False,
-                        details=False, paginate=10, csv=False, user_signature=False)
-
-    return grid
-
+    return form
 
 
 
