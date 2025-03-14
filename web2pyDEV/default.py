@@ -40,7 +40,7 @@ def index():
         dict(header='', body=lambda row: A(row.name,
                                            #_href="#",**{'_data-pond-id': row.id},
                                            #_href=URL('default', 'get_rootstocks', args=[row.id]),
-                                           _href=URL('default', 'index', vars={'selected_pond_id': row.id}), 
+                                           _href=URL('default', 'get_rootstocks', vars={'selected_pond_id': row.id}), 
                                            _class="pond-link"
                                            ))
     ]
