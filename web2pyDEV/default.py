@@ -1,16 +1,10 @@
-# -*- coding: utf-8 -*- 
-# Specifies the encoding for the Python file as UTF-8
-
-from gluon import SQLFORM, URL, DIV, A, H2
-# Import necessary components from the gluon framework, such as SQLFORM for database forms, URL for URL handling, DIV, A, and H2 for HTML elements
-
-from gluon.tools import Auth
-# Import the Auth class for user authentication features
+# -*- coding: utf-8 -*-
+from gluon import SQLFORM, URL, DIV, A, H2, H3  # Import necessary web2py modules for form creation and UI elements
+from gluon.tools import Auth  # Import authentication system
 
 # Initialize authentication system
 auth = Auth(db)
-auth.define_tables(username=False, signature=False)
-# Set up the authentication system, defining tables for user management, but not including username or signature in the tables
+auth.define_tables(username=False, signature=False)  # Define user authentication tables
 
 
 # -*- coding: utf-8 -*-
