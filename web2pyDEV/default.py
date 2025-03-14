@@ -18,6 +18,7 @@ def get_rootstocks():
     if not pond_id:
         return "Invalid pond ID"
 
+    # Query rootstocks by pond
     rootstocks = db(db.rootstock.pond == pond_id).select()
     return dict(rootstocks=rootstocks)
 
@@ -31,7 +32,6 @@ def add_rootstock():
 
     db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
     return "Rootstock added successfully"
-
 
 
 
