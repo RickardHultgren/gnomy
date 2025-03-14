@@ -9,7 +9,7 @@ auth.define_tables(username=False, signature=False)
 def index():
     """ Home page: Displays ponds and rootstocks owned by the logged-in user. """
     if not auth.user:
-        return dict(message="Please log in", form=None, grid=None, rootstock_form=None, rootstock_grid=None, pond_container=None, rootstock_container=None)
+        return dict(message="Please log in", form=None, grid=None, rootstock_form=None, rootstock_grid=None)
 
     # ---- Ponds Section ----
     db.pond.created_by.default = auth.user.id
@@ -35,8 +35,7 @@ def index():
     pond_grid = SQLFORM.grid(pond_query, fields=pond_fields, links=pond_links, create=False, editable=False, deletable=False,
                              details=False, paginate=10, csv=False, user_signature=False)
 
-    return dict(message=None, form=form, grid=pond_grid, rootstock_form=None, rootstock_grid=None,
-                pond_container=DIV(), rootstock_container=DIV())
+    return dict(message=None, form=form, grid=pond_grid, rootstock_form=None, rootstock_grid=None)
 
 def get_rootstock_form():
     """ Returns the rootstock form for the selected pond (AJAX call) """
@@ -65,8 +64,9 @@ def get_rootstocks():
     query = (db.rootstock.pond == pond_id)
     fields = [db.rootstock.name]
 
+    # Fix: Removed invalid `_id` argument
     grid = SQLFORM.grid(query, fields=fields, create=False, editable=False, deletable=False,
-                        details=False, paginate=10, csv=False, user_signature=False, _id="rootstock-grid")
+                        details=False, paginate=10, csv=False, user_signature=False)
 
     return grid
 
