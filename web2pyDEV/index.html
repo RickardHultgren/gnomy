@@ -6,28 +6,61 @@
     <!-- Pond Section -->
     {{if form:}}
         <h2>Add a New Pond</h2>
-        {{=form}}
+        <div id="pond-form-container">
+            {{=form}}
+        </div>
     {{pass}}
 
     <h2>Ponds</h2>
-    {{=grid}}
+    <div id="pond-grid">
+        {{=grid}}
+    </div>
 
     <!-- Rootstock Section -->
-    {{if rootstock_form:}}
-        <h2>Add a New Rootstock (For Selected Pond)</h2>
-        {{=rootstock_form}}
-    {{pass}}
-
     <h2>Rootstocks</h2>
-    {{=rootstock_grid}}
+    <div id="rootstock-form-container"></div>  
+    <div id="rootstock-grid-container"></div>
 
     <script>
-        $(document).ready(function() {
+        document.addEventListener("DOMContentLoaded", function() {
             // Handle pond selection dynamically
-            $(document).on('click', '.pond-link', function(e) {
-                e.preventDefault();
-                var pond_url = this.href;
-                window.location.href = pond_url; // Reload page with the selected pond
+            document.querySelectorAll(".pond-link").forEach(link => {
+                link.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    let pond_id = this.getAttribute("data-pond-id");
+
+                    // Load rootstock form dynamically
+                    fetch("{{=URL('get_rootstock_form')}}?pond_id=" + pond_id)
+                        .then(response => response.text())
+                        .then(data => document.getElementById("rootstock-form-container").innerHTML = data);
+
+                    // Load rootstock grid dynamically
+                    fetch("{{=URL('get_rootstocks')}}?pond_id=" + pond_id)
+                        .then(response => response.text())
+                        .then(data => document.getElementById("rootstock-grid-container").innerHTML = data);
+                });
+            });
+
+            // Handle rootstock form submission via Fetch API
+            document.addEventListener("submit", function(e) {
+                if (e.target && e.target.id === "rootstock-form") {
+                    e.preventDefault();
+                    let form = e.target;
+                    let formData = new FormData(form);
+                    let pond_id = form.querySelector("input[name='pond']").value; // Get pond ID
+
+                    fetch("{{=URL('add_rootstock')}}?pond_id=" + pond_id, {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("rootstock-form-container").innerHTML = data; // Reload form
+                        return fetch("{{=URL('get_rootstocks')}}?pond_id=" + pond_id);
+                    })
+                    .then(response => response.text())
+                    .then(data => document.getElementById("rootstock-grid-container").innerHTML = data); // Refresh grid
+                }
             });
         });
     </script>

@@ -7,10 +7,7 @@ auth = Auth(db)
 auth.define_tables(username=False, signature=False)
 
 def index():
-    """ 
-    Home page: Displays ponds and rootstocks owned by the logged-in user.
-    Allows users to add new ponds and rootstocks.
-    """
+    """ Home page: Displays ponds and rootstocks owned by the logged-in user. """
     if not auth.user:
         return dict(message="Please log in", form=None, grid=None, rootstock_form=None, rootstock_grid=None, pond_container=None, rootstock_container=None)
 
@@ -20,7 +17,7 @@ def index():
     db.pond.created_by.readable = False
 
     # Form for adding ponds
-    form = SQLFORM(db.pond).process()
+    form = SQLFORM(db.pond, _id="pond-form").process()
 
     # Fetch user's ponds
     pond_query = (db.pond.created_by == auth.user.id)
@@ -29,45 +26,72 @@ def index():
     # Pass selected pond ID via URL
     pond_links = [
         dict(header='', body=lambda row: A(row.name, 
-                                           _href=URL('default', 'index', vars={'selected_pond_id': row.id}), 
-                                           _class="pond-link"))
+                                           _href="#", 
+                                           _class="pond-link", 
+                                           _data_pond_id=row.id))
     ]
 
     # Grid for displaying ponds
     pond_grid = SQLFORM.grid(pond_query, fields=pond_fields, links=pond_links, create=False, editable=False, deletable=False,
                              details=False, paginate=10, csv=False, user_signature=False)
 
-    # ---- Rootstocks Section ----
-    selected_pond_id = request.vars.selected_pond_id
-
-    # If a pond is selected, set up the rootstock form for that pond
-    if selected_pond_id:
-        selected_pond = db.pond(selected_pond_id) or redirect(URL('index'))
-
-        db.rootstock.pond.default = selected_pond.id
-        db.rootstock.pond.writable = False  # Hide pond field in form
-        db.rootstock.pond.readable = False
-        db.rootstock.created_by.default = auth.user.id
-        db.rootstock.created_by.writable = False
-        db.rootstock.created_by.readable = False
-
-        rootstock_form = SQLFORM(db.rootstock).process()
-        rootstock_query = (db.rootstock.pond == selected_pond_id)
-    else:
-        rootstock_form = None  # No form shown if no pond selected
-        rootstock_query = (db.rootstock.id == None)  # No rootstocks displayed
-
-    rootstock_fields = [db.rootstock.name]
-    rootstock_links = [
-        dict(header='', body=lambda row: A(row.name, _href=URL('default', 'rootstock', args=[row.id]), _class="rootstock-link"))
-    ]
-
-    # Grid for displaying rootstocks
-    rootstock_grid = SQLFORM.grid(rootstock_query, fields=rootstock_fields, links=rootstock_links, create=False, editable=False, deletable=False,
-                                  details=False, paginate=10, csv=False, user_signature=False)
-
-    return dict(message=None, form=form, grid=pond_grid, rootstock_form=rootstock_form, rootstock_grid=rootstock_grid, 
+    return dict(message=None, form=form, grid=pond_grid, rootstock_form=None, rootstock_grid=None,
                 pond_container=DIV(), rootstock_container=DIV())
+
+def get_rootstock_form():
+    """ Returns the rootstock form for the selected pond (AJAX call) """
+    pond_id = request.vars.pond_id
+
+    if not pond_id:
+        return DIV("Select a pond first.")
+
+    db.rootstock.pond.default = pond_id
+    db.rootstock.pond.writable = False
+    db.rootstock.pond.readable = False
+    db.rootstock.created_by.default = auth.user.id
+    db.rootstock.created_by.writable = False
+    db.rootstock.created_by.readable = False
+
+    form = SQLFORM(db.rootstock, _id="rootstock-form")
+    return form
+
+def get_rootstocks():
+    """ Returns rootstocks belonging to the selected pond (AJAX call) """
+    pond_id = request.vars.pond_id
+
+    if not pond_id:
+        return DIV("No pond selected.")
+
+    query = (db.rootstock.pond == pond_id)
+    fields = [db.rootstock.name]
+
+    grid = SQLFORM.grid(query, fields=fields, create=False, editable=False, deletable=False,
+                        details=False, paginate=10, csv=False, user_signature=False, _id="rootstock-grid")
+
+    return grid
+
+def add_rootstock():
+    """ Handles the AJAX rootstock form submission without reloading """
+    pond_id = request.vars.pond_id
+
+    if not pond_id:
+        return DIV("Error: No pond selected.")
+
+    db.rootstock.pond.default = pond_id
+    db.rootstock.pond.writable = False
+    db.rootstock.pond.readable = False
+    db.rootstock.created_by.default = auth.user.id
+    db.rootstock.created_by.writable = False
+    db.rootstock.created_by.readable = False
+
+    form = SQLFORM(db.rootstock, _id="rootstock-form").process()
+
+    if form.accepted:
+        return DIV("Rootstock added successfully!", _class="alert alert-success")
+    elif form.errors:
+        return form
+
+    return form
 
 
 
