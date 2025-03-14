@@ -1,43 +1,79 @@
 {{extend 'layout.html'}}
 
-{{if message:}}
-    <div>{{=message}}</div>
+{{if not auth.is_logged_in():}}
+    <h2>{{=message}}</h2>
 {{else:}}
-    <!-- Pond Creation Form -->
+    <h2>Ponds</h2>
     <div>
-        <h2>Add a New Pond</h2>
         {{=pond_form}}
     </div>
 
-    <!-- Ponds Grid -->
-    <div>
-        <h2>Your Ponds</h2>
-        {{if grid:}}
-            <ul>
-            {{for pond in grid:}}
-                <li>
-                    <a href="javascript:void(0);" onclick="toggleRootstockGrid({{=pond.id}})">
-                        {{=pond.name}}
-                    </a>
-                    <div id="rootstock_grid_{{=pond.id}}" style="display:none;">
-                        {{=rootstock_grids[pond.id]}}
-                    </div>
-                </li>
-            {{pass}}
-            </ul>
-        {{else:}}
-            <p>No ponds available.</p>
+    <table border="1">
+        <tr>
+            <th>Pond Name</th>
+        </tr>
+        {{for pond in ponds:}}
+        <tr>
+            <td>
+                <a href="#" onclick="showPond({{=pond.id}})">{{=pond.name}}</a>
+            </td>
+        </tr>
         {{pass}}
+    </table>
+
+    <div id="pond-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
+        <h3>Rootstocks</h3>
+        <table border="1" id="rootstock-table">
+            <tr>
+                <th>Rootstock Name</th>
+            </tr>
+        </table>
+
+        <h3>Add Rootstock</h3>
+        <input type="text" id="rootstock-name" placeholder="Rootstock name">
+        <button onclick="addRootstock()">Add</button>
     </div>
 
     <script>
-        function toggleRootstockGrid(pondId) {
-            var gridDiv = document.getElementById('rootstock_grid_' + pondId);
-            if (gridDiv.style.display === 'none') {
-                gridDiv.style.display = 'block';
-            } else {
-                gridDiv.style.display = 'none';
+        var currentPondId = null;
+
+        function showPond(pondId) {
+            currentPondId = pondId;
+            document.getElementById("pond-container").style.display = "block";
+            fetchRootstocks(pondId);
+        }
+
+        function fetchRootstocks(pondId) {
+            fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
+                .then(response => response.json())
+                .then(data => {
+                    let table = document.getElementById("rootstock-table");
+                    table.innerHTML = "<tr><th>Rootstock Name</th></tr>";
+                    data.rootstocks.forEach(rootstock => {
+                        let row = table.insertRow();
+                        let cell = row.insertCell(0);
+                        cell.innerHTML = rootstock.name;
+                    });
+                });
+        }
+
+        function addRootstock() {
+            let name = document.getElementById("rootstock-name").value;
+            if (!name) {
+                alert("Please enter a rootstock name.");
+                return;
             }
+
+            fetch("{{=URL('add_rootstock')}}", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "pond_id=" + currentPondId + "&name=" + encodeURIComponent(name)
+            })
+            .then(response => response.text())
+            .then(() => {
+                fetchRootstocks(currentPondId);
+                document.getElementById("rootstock-name").value = "";
+            });
         }
     </script>
 {{pass}}
