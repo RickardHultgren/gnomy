@@ -2,42 +2,29 @@
 
 {{if message:}}
     <div>{{=message}}</div>
-{{else:}}
-    <!-- Pond Creation Form -->
-    <div>
-        <h2>Add a New Pond</h2>
-        {{=pond_form}}
-    </div>
-
-    <!-- Ponds Grid -->
-    <div>
-        <h2>Your Ponds</h2>
-        {{if grid:}}
-            <ul>
-            {{for pond in grid:}}
-                <li>
-                    <a href="javascript:void(0);" onclick="toggleRootstockGrid({{=pond.id}})">
-                        {{=pond.name}}
-                    </a>
-                    <div id="rootstock_grid_{{=pond.id}}" style="display:none;">
-                        {{=rootstock_grids[pond.id]}}
-                    </div>
-                </li>
-            {{pass}}
-            </ul>
-        {{else:}}
-            <p>No ponds available.</p>
-        {{pass}}
-    </div>
-
-    <script>
-        function toggleRootstockGrid(pondId) {
-            var gridDiv = document.getElementById('rootstock_grid_' + pondId);
-            if (gridDiv.style.display === 'none') {
-                gridDiv.style.display = 'block';
-            } else {
-                gridDiv.style.display = 'none';
-            }
-        }
-    </script>
 {{pass}}
+
+{{if form:}}
+    <h2>Add a New Pond</h2>
+    {{=form}}
+{{pass}}
+
+<h2>Ponds</h2>
+{{=grid}}
+
+<div id="pond-container"></div>
+
+<script>
+function loadPond(pond_id) {
+    // Load the pond details into the pond-container div using AJAX
+    $.ajax({
+        url: '{{=URL('default', 'pond')}}/' + pond_id,
+        success: function(response) {
+            $('#pond-container').html(response);
+        },
+        error: function() {
+            alert('Failed to load pond details.');
+        }
+    });
+}
+</script>
