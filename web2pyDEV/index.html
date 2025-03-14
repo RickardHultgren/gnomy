@@ -9,10 +9,13 @@
     {{=form}}
 {{pass}}
 
-
 <script>
 function loadPond(pond_id) {
-    $("#pond-container").load("{{=URL('pond')}}" + "/" + pond_id);
+    fetch("{{=URL('pond')}}" + "/" + pond_id)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById("pond-container").innerHTML = html;
+        });
 }
 </script>
 

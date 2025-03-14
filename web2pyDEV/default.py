@@ -1,29 +1,57 @@
-:{{extend 'layout.html'}}
+# coding: utf-8
 
-{{if message:}}
-    <div>{{=message}}</div>
-{{pass}}
+def index():
+    """ Main page - shows login prompt or the user's ponds. """
+    if not auth.user:
+        return dict(message="Please log in", form=None, grid=None)
 
-{{if form:}}
-    <h2>Add a New Pond</h2>
-    {{=form}}
-{{pass}}
+    # Define form for adding new ponds
+    form = SQLFORM(db.pond)
+    if form.process().accepted:
+        response.flash = "Pond added!"
+        redirect(URL('index'))  # Refresh grid after submission
+
+    # Show only ponds owned by the logged-in user
+    query = (db.pond.owner == auth.user.id)
+    grid = SQLFORM.grid(
+        query,
+        create=False,
+        editable=False,
+        deletable=True,
+        details=False,
+        csv=False,
+        links=[
+            lambda row: A(row.name, _href="#", _onclick="loadPond({})".format(row.id))
+        ]
+    )
+
+    return dict(message=None, form=form, grid=grid)
 
 
-<script>
-function loadPond(pond_id) {
-    $("#pond-container").load("{{=URL('pond')}}" + "/" + pond_id);
-}
-</script>
+def pond():
+    """ Load pond details and rootstock grid dynamically. """
+    pond_id = request.args(0, cast=int)
+    pond = db.pond(pond_id) or redirect(URL('index'))
 
-<div id="pond-container"></div>
+    # Rootstock form, linked to the specific pond
+    form = SQLFORM(db.rootstock)
+    form.vars.pond = pond_id  # Pre-fill pond ID
+    if form.process().accepted:
+        response.flash = "Rootstock added!"
+        redirect(URL('pond', args=[pond_id]))
 
-<h2>Ponds</h2>
-{{=grid}}
+    # Rootstock grid (filtered by pond)
+    query = (db.rootstock.pond == pond_id)
+    grid = SQLFORM.grid(
+        query,
+        create=False,
+        editable=False,
+        deletable=True,
+        details=False,
+        csv=False
+    )
 
-
-
-
+    return dict(pond=pond, form=form, grid=grid)
 
 
 
