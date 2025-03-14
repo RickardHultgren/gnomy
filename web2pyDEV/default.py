@@ -31,4 +31,3 @@ def add_rootstock():
 
     db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
     return "Rootstock added successfully"
-s
