@@ -50,7 +50,7 @@ def index():
                              details=False, paginate=10, csv=False, user_signature=False)
     # Display a grid of ponds filtered by the query and configured to not allow creating, editing, or deleting
 
-    return dict(message=None, form=form, grid=pond_grid, rootstock_form=None, rootstock_grid=None, knotstock_list_grid=None)
+    return dict(message=None, form=form, pond_grid=pond_grid, rootstock_form=None, rootstock_grid=None, knotstock_list_grid=None)
     # Return the form for adding ponds, the grid displaying ponds, and other sections set to None (rootstock and knotstock are not yet loaded)
 
 def get_rootstocks():
@@ -76,7 +76,7 @@ def get_rootstocks():
                         details=False, paginate=10, csv=False, user_signature=False)
     # Display a grid of rootstocks for the selected pond, with pagination and other features disabled
 
-    return dict{pond_id=pond_id,grid=grid}
+    return dict{pond_id=pond_id, rootstock_grid=rootstock_grid}
     # Return the grid for displaying rootstocks
 
 def get_rootstock_form():
