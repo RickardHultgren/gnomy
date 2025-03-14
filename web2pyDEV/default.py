@@ -26,9 +26,9 @@ def index():
     # Pass selected pond ID via URL
     pond_links = [
         dict(header='', body=lambda row: A(row.name, 
-                                           _href="#", 
-                                           _class="pond-link", 
-                                           _data_pond_id=row.id))
+                                        _href="#", 
+                                        _class="pond-link", 
+                                        **{'_data-pond-id': row.id})))
     ]
 
     # Grid for displaying ponds
