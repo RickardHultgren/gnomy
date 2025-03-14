@@ -76,7 +76,7 @@ def get_rootstocks():
                         details=False, paginate=10, csv=False, user_signature=False)
     # Display a grid of rootstocks for the selected pond, with pagination and other features disabled
 
-    return dict{pond_id=pond_id, rootstock_grid=rootstock_grid}
+    return dict(pond_id=pond_id, rootstockgrid=grid)
     # Return the grid for displaying rootstocks
 
 def get_rootstock_form():
