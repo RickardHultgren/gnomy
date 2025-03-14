@@ -99,4 +99,33 @@
 
 
   </script>
+
+
+<!-- Knotstock List Section -->
+<h2>Knotstock List</h2>
+<div id="knotstock-list-grid-container"></div>
+
+<script>
+    function attachRootstockClickListeners() {
+        document.querySelectorAll(".rootstock-link").forEach(function(link) {
+            link.addEventListener("click", function(e) {
+                e.preventDefault();
+                let rootstock_id = this.getAttribute("data-rootstock-id");
+
+                if (!rootstock_id || rootstock_id === "null") {
+                    console.error("Invalid rootstock_id received:", rootstock_id);
+                    return;
+                }
+
+                // Load knotstock list grid dynamically
+                fetch("{{=URL('get_knotstock_list')}}?rootstock_id=" + rootstock_id)
+                    .then(response => response.text())
+                    .then(data => document.getElementById("knotstock-list-grid-container").innerHTML = data);
+            });
+        });
+    }
+
+    // Call function on page load
+    document.addEventListener("DOMContentLoaded", attachRootstockClickListeners);
+</script>
 {{pass}}

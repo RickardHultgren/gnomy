@@ -9,7 +9,7 @@ auth.define_tables(username=False, signature=False)
 def index():
     """ Home page: Displays ponds and rootstocks owned by the logged-in user. """
     if not auth.user:
-        return dict(message="Please log in", form=None, grid=None, rootstock_form=None, rootstock_grid=None)
+        return dict(message="Please log in", form=None, grid=None, rootstock_form=None, rootstock_grid=None, knotstock_list_grid=None)
 
     # ---- Ponds Section ----
     db.pond.created_by.default = auth.user.id
@@ -25,17 +25,17 @@ def index():
 
     # Pass selected pond ID via URL
     pond_links = [
-        dict(header='', body=lambda row: A(row.name, 
-                                        _href="#", 
-                                        _class="pond-link", 
-                                        **{'_data-pond-id': row.id}))
+        dict(header='', body=lambda row: A(row.name,
+                                           _href="#",
+                                           _class="pond-link",
+                                           **{'_data-pond-id': row.id}))
     ]
 
     # Grid for displaying ponds
     pond_grid = SQLFORM.grid(pond_query, fields=pond_fields, links=pond_links, create=False, editable=False, deletable=False,
                              details=False, paginate=10, csv=False, user_signature=False)
 
-    return dict(message=None, form=form, grid=pond_grid, rootstock_form=None, rootstock_grid=None)
+    return dict(message=None, form=form, grid=pond_grid, rootstock_form=None, rootstock_grid=None, knotstock_list_grid=None)
 
 def get_rootstocks():
     """ Returns rootstocks belonging to the selected pond (AJAX call) """
@@ -72,6 +72,27 @@ def get_rootstock_form():
     form = SQLFORM(db.rootstock)
 
     return form
+
+def get_knotstock_list():
+    """Returns items from knotstock_list associated with the selected rootstock (AJAX call)"""
+    rootstock_id = request.vars.rootstock_id
+
+    if not rootstock_id:
+        return DIV("Error: No rootstock selected.")
+
+    try:
+        rootstock_id = int(rootstock_id)  # Ensure rootstock_id is an integer
+    except ValueError:
+        return DIV("Error: Invalid rootstock ID.")
+
+    query = (db.knotstock_list.rootstock == rootstock_id)
+    fields = [db.knotstock_list.knotstock]
+
+    grid = SQLFORM.grid(query, fields=fields, create=False, editable=False, deletable=False,
+                        details=False, paginate=10, csv=False, user_signature=False)
+
+    return grid
+
 
 
 
