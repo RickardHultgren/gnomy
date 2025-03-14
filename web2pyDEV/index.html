@@ -44,21 +44,22 @@
             document.getElementById("pond-container").style.display = "block";
             fetchRootstocks(pondId);
         }
-
         function fetchRootstocks(pondId) {
           fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
               .then(response => response.json())
               .then(data => {
-                  console.log(data); // Check the structure of the data returned by the server
-                  
+                  console.log(data); // Debugging: check returned data structure
+
                   let grid = document.getElementById("rootstock-grid");
                   if (data.rootstocks && data.rootstocks.length > 0) {
                       // Start the table HTML
                       let tableHtml = "<table border='1'><tr><th>Rootstock Name</th></tr>";
 
-                      // Loop through each rootstock and add to table
+                      // Loop through each rootstock and create clickable links
                       data.rootstocks.forEach(rootstock => {
-                          tableHtml += "<tr><td>" + rootstock.name + "</td></tr>";
+                          tableHtml += `<tr>
+                              <td><a href="#" onclick="fetchKnotstocks(${rootstock.id}); return false;">${rootstock.name}</a></td>
+                          </tr>`;
                       });
 
                       // Close the table
@@ -75,6 +76,25 @@
               });
       }
 
+      function fetchKnotstocks(rootstockId) {
+          fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
+              .then(response => response.json())
+              .then(data => {
+                  let list = document.getElementById("knotstock-list");
+                  list.innerHTML = "<h3>Knotstocks for selected Rootstock</h3>";
+
+                  if (data.knotstocks && data.knotstocks.length > 0) {
+                      list.innerHTML += "<ul>";
+                      data.knotstocks.forEach(knotstock => {
+                          list.innerHTML += `<li>${knotstock.knotstock_name} (Added by: ${knotstock.created_by})</li>`;
+                      });
+                      list.innerHTML += "</ul>";
+                  } else {
+                      list.innerHTML += "<p>No knotstocks found for this rootstock.</p>";
+                  }
+              })
+              .catch(error => console.error("Error fetching knotstocks:", error));
+      }
 
         function addRootstock() {
             let name = document.getElementById("rootstock-name").value;
@@ -121,19 +141,6 @@
     .catch(error => console.error("Error:", error));
 }
 
-function fetchKnotstocks(rootstockId) {
-    fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
-        .then(response => response.json())
-        .then(data => {
-            let list = document.getElementById("knotstock-list");
-            list.innerHTML = "<ul>";
-            data.knotstocks.forEach(knotstock => {
-                list.innerHTML += `<li>${knotstock.knotstock_name} (Added by: ${knotstock.created_by})</li>`;
-            });
-            list.innerHTML += "</ul>";
-        })
-        .catch(error => console.error("Error fetching knotstocks:", error));
-}
 
     </script>
 {{pass}}
