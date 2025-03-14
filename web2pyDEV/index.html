@@ -3,6 +3,7 @@
 {{if message:}}
     <div>{{=message}}</div>
 {{else:}}
+    <!-- Pond Section -->
     {{if form:}}
         <h2>Add a New Pond</h2>
         {{=form}}
@@ -11,24 +12,27 @@
     <h2>Ponds</h2>
     {{=grid}}
 
-    <div id="pond-container"></div>  <!-- Pond details load here -->
-    <div id="rootstock-container"></div>  <!-- Rootstock details load here -->
+    <!-- Rootstock Section -->
+    {{if rootstock_form:}}
+        <h2>Add a New Rootstock</h2>
+        {{=rootstock_form}}
+    {{pass}}
 
+    <h2>Rootstocks</h2>
+    {{=rootstock_grid}}
+
+    <!-- Containers for AJAX-loaded content -->
+    <div id="pond-container"></div>  
+    <div id="rootstock-container"></div>  
 
     <script>
-      $(document).ready(function() {
-          // Use event delegation to handle clicks
-          $(document).on('click', '.pond-link', function(e) {
-              e.preventDefault();
-              var pond_id = $(this).data('pond-id');
-              loadPond(pond_id);
-          });
-      });
-  
-      function loadPond(pond_id) {
-          $("#pond-container").load("{{=URL('default', 'pond')}}/" + pond_id);
-      }
-    s</script>
-
-  
+        $(document).ready(function() {
+            // Handle pond clicks dynamically
+            $(document).on('click', '.pond-link', function(e) {
+                e.preventDefault();
+                var pond_url = this.href;
+                window.location.href = pond_url; // Reload page with the selected pond
+            });
+        });
+    </script>
 {{pass}}
