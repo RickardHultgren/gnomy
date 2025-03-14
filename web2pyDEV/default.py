@@ -40,7 +40,7 @@ def index():
         dict(header='', body=lambda row: A(row.name,
                                            #_href="#",**{'_data-pond-id': row.id},
                                            _href=URL('default', 'get_rootstocks', args=[row.id]),
-                                           _class="pond-link",
+                                           _class="pond-link"
                                            ))
     ]
     # Create links for each pond that will pass the pond ID in the URL when clicked
