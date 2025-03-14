@@ -34,7 +34,7 @@ def index():
     # Query for ponds created by the logged-in user
     pond_fields = [db.pond.name]
     # Specify the fields to be shown in the pond list (just the name)
-    response.js= ("alert('test');")
+
     # Pass selected pond ID via URL
     pond_links = [
         dict(header='', body=lambda row: A(row.name,
@@ -76,7 +76,7 @@ def get_rootstocks():
                         details=False, paginate=10, csv=False, user_signature=False)
     # Display a grid of rootstocks for the selected pond, with pagination and other features disabled
 
-    return grid
+    return dict{pond_id=pond_id,grid=grid}
     # Return the grid for displaying rootstocks
 
 def get_rootstock_form():
