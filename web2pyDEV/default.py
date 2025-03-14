@@ -34,7 +34,7 @@ def index():
     # Query for ponds created by the logged-in user
     pond_fields = [db.pond.name]
     # Specify the fields to be shown in the pond list (just the name)
-
+    response.js= ("alert('test');")
     # Pass selected pond ID via URL
     pond_links = [
         dict(header='', body=lambda row: A(row.name,
@@ -45,7 +45,7 @@ def index():
                                            ))
     ]
     # Create links for each pond that will pass the pond ID in the URL when clicked
-    response.js= ("alert(%s);" % row.id)
+    response.js= ("alert('%s');" % row.id)
     # Grid for displaying ponds
     pond_grid = SQLFORM.grid(pond_query, fields=pond_fields, links=pond_links, create=False, editable=False, deletable=False,
                              details=False, paginate=10, csv=False, user_signature=False)
