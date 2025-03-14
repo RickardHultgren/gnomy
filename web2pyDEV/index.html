@@ -94,5 +94,46 @@
                 document.getElementById("rootstock-name").value = "";
             });
         }
+
+
+
+
+        function addKnotstock(rootstockId, knotstockId) {
+    fetch("{{=URL('add_knotstock')}}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+            rootstock_id: rootstockId,
+            knotstock_id: knotstockId
+        })
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        if (data.success) {
+            alert("Knotstock added successfully!");
+            fetchKnotstocks(rootstockId); // Refresh the list
+        } else {
+            alert("Error: " + data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+function fetchKnotstocks(rootstockId) {
+    fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
+        .then(response => response.json())
+        .then(data => {
+            let list = document.getElementById("knotstock-list");
+            list.innerHTML = "<ul>";
+            data.knotstocks.forEach(knotstock => {
+                list.innerHTML += `<li>${knotstock.knotstock_name} (Added by: ${knotstock.created_by})</li>`;
+            });
+            list.innerHTML += "</ul>";
+        })
+        .catch(error => console.error("Error fetching knotstocks:", error));
+}
+
     </script>
 {{pass}}

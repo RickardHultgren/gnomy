@@ -12,6 +12,8 @@ def index():
 
     return dict(pond_form=pond_form, ponds=ponds)
 
+############
+
 def get_rootstocks():
     """Returns the rootstocks for a given pond ID (AJAX call)."""
     pond_id = request.vars.pond_id
@@ -34,6 +36,59 @@ def add_rootstock():
 
     db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
     return "Rootstock added successfully"
+
+############
+
+def get_knotstocks():
+    """Returns the knottocks for a given rootstock ID (AJAX call)."""
+    rootstock_id = request.vars.rootstock_id
+    if not rootstock_id:
+        return "Invalid rootstock ID"
+
+    # Query rootstocks by pond
+    knotstock_items = db(db.knotstock_list.rootstock == rootstock_id).select()
+
+    # Return a JSON response
+    return response.json(dict(knotstock_items=[knotstock_list.as_dict() for knotstock_item in knotstock_items]))
+
+def add_knotstock():
+    """Handles adding a new knotstock to a rootstock via AJAX."""
+    rootstock_id = request.vars.rootstock_id
+    knotstock_id = request.vars.knotstock_id
+
+    if not rootstock_id or not knotstock_id:
+        return response.json({"success": False, "error": "Missing rootstock or knotstock ID."})
+
+    try:
+        db.knotstock_list.insert(
+            rootstock=rootstock_id,
+            knotstock=knotstock_id,
+            created_by=auth.user_id
+        )
+        return response.json({"success": True, "message": "Knotstock added successfully"})
+    except Exception as e:
+        return response.json({"success": False, "error": str(e)})
+
+def get_knotstocks():
+    """Returns a list of knotstocks for a given rootstock."""
+    rootstock_id = request.vars.rootstock_id
+
+    if not rootstock_id:
+        return response.json({"success": False, "error": "Missing rootstock ID."})
+
+    knotstocks = db(db.knotstock_list.rootstock == rootstock_id).select(
+        db.knotstock_list.knotstock, db.knotstock_list.created_by
+    )
+
+    result = [
+        {
+            "knotstock_name": db.rootstock[k.knotstock].name if k.knotstock else "Unknown",
+            "created_by": db.auth_user[k.created_by].first_name if k.created_by else "Unknown"
+        }
+        for k in knotstocks
+    ]
+
+    return response.json({"success": True, "knotstocks": result})
 
 
 
