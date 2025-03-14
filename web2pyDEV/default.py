@@ -37,22 +37,23 @@ def index():
 
     return dict(message=None, form=form, grid=pond_grid, rootstock_form=None, rootstock_grid=None)
 
-def get_rootstock_form():
-    """ Returns the rootstock form for the selected pond (AJAX call) """
+def get_rootstocks():
+    """ Returns rootstocks belonging to the selected pond (AJAX call) """
     pond_id = request.vars.pond_id
 
-    if not pond_id:
-        return DIV("Select a pond first.")
+    # Handle case where pond_id is null or invalid
+    try:
+        pond_id = int(pond_id)  # Convert to integer
+    except (ValueError, TypeError):
+        return DIV("Error: Invalid pond selected.")
 
-    db.rootstock.pond.default = pond_id
-    db.rootstock.pond.writable = False
-    db.rootstock.pond.readable = False
-    db.rootstock.created_by.default = auth.user.id
-    db.rootstock.created_by.writable = False
-    db.rootstock.created_by.readable = False
+    query = (db.rootstock.pond == pond_id)
+    fields = [db.rootstock.name]
 
-    form = SQLFORM(db.rootstock, _id="rootstock-form")
-    return form
+    grid = SQLFORM.grid(query, fields=fields, create=False, editable=False, deletable=False,
+                        details=False, paginate=10, csv=False, user_signature=False)
+
+    return grid
 
 def get_rootstocks():
     """ Returns rootstocks belonging to the selected pond (AJAX call) """

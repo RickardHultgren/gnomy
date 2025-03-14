@@ -47,24 +47,49 @@
             });
             // Handle rootstock form submission via Fetch API
             document.addEventListener("submit", function(e) {
-                if (e.target && e.target.id === "rootstock-form") {
+                if (e.target && e.target.id === "pond-form") {
                     e.preventDefault();
                     let form = e.target;
                     let formData = new FormData(form);
-                    let pond_id = form.querySelector("input[name='pond']").value; // Get pond ID
 
-                    fetch("{{=URL('add_rootstock')}}?pond_id=" + pond_id, {
-                        method: "POST",
-                        body: formData
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById("rootstock-form-container").innerHTML = data; // Reload form
-                        return fetch("{{=URL('get_rootstocks')}}?pond_id=" + pond_id);
-                    })
-                    .then(response => response.text())
-                    .then(data => document.getElementById("rootstock-grid-container").innerHTML = data); // Refresh grid
+                    fetch("{{=URL('index')}}", { method: "POST", body: formData })
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById("pond-grid").innerHTML = data; // Refresh pond grid
+                            attachPondClickListeners(); // Reattach event listeners
+                        });
                 }
             });
-    </script>
+
+            function attachPondClickListeners() {
+              document.querySelectorAll(".pond-link").forEach(function(link) {
+                  link.addEventListener("click", function(e) {
+                      e.preventDefault();
+                      let pond_id = this.getAttribute("data-pond-id");
+
+                      if (!pond_id || pond_id === "null") {
+                          console.error("Invalid pond_id received:", pond_id);
+                          return;
+                      }
+
+                      // Load rootstock form dynamically
+                      fetch("{{=URL('get_rootstock_form')}}?pond_id=" + pond_id)
+                          .then(response => response.text())
+                          .then(data => document.getElementById("rootstock-form-container").innerHTML = data);
+
+                      // Load rootstock grid dynamically
+                      fetch("{{=URL('get_rootstocks')}}?pond_id=" + pond_id)
+                          .then(response => response.text())
+                          .then(data => document.getElementById("rootstock-grid-container").innerHTML = data);
+                  });
+              });
+          }
+
+          // Call function on page load
+          document.addEventListener("DOMContentLoaded", attachPondClickListeners);
+
+
+
+
+  </script>
 {{pass}}
