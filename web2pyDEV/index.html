@@ -14,20 +14,16 @@
 
     <!-- Rootstock Section -->
     {{if rootstock_form:}}
-        <h2>Add a New Rootstock</h2>
+        <h2>Add a New Rootstock (For Selected Pond)</h2>
         {{=rootstock_form}}
     {{pass}}
 
     <h2>Rootstocks</h2>
     {{=rootstock_grid}}
 
-    <!-- Containers for AJAX-loaded content -->
-    <div id="pond-container"></div>  
-    <div id="rootstock-container"></div>  
-
     <script>
         $(document).ready(function() {
-            // Handle pond clicks dynamically
+            // Handle pond selection dynamically
             $(document).on('click', '.pond-link', function(e) {
                 e.preventDefault();
                 var pond_url = this.href;
