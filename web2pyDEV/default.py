@@ -2,9 +2,9 @@
 from gluon import SQLFORM, URL, DIV, A, H2, H3  # Import necessary web2py modules for form creation and UI elements
 from gluon.tools import Auth  # Import authentication system
 
-# Initialize authentication system
+db = DAL('sqlite://storage.sqlite')  # or your database connection
 auth = Auth(db)
-auth.define_tables(username=False, signature=False)  # Define user authentication tables
+auth.define_tables(username=False, signature=False)
 
 
 # -*- coding: utf-8 -*-
