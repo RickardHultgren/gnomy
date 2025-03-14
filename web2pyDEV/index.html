@@ -35,7 +35,8 @@
         <input type="text" id="rootstock-name" placeholder="Rootstock name">
         <button onclick="addRootstock()">Add</button>
     </div>
-
+    
+    <div id="knotstock-list"></div> <!-- Ensure this exists -->
     <script>
         var currentPondId = null;
 
@@ -51,21 +52,21 @@
                   console.log(data); // Debugging: check returned data structure
 
                   let grid = document.getElementById("rootstock-grid");
+                  if (!grid) {
+                      console.error("Element with ID 'rootstock-grid' not found.");
+                      return;
+                  }
+
                   if (data.rootstocks && data.rootstocks.length > 0) {
-                      // Start the table HTML
                       let tableHtml = "<table border='1'><tr><th>Rootstock Name</th></tr>";
 
-                      // Loop through each rootstock and create clickable links
                       data.rootstocks.forEach(rootstock => {
                           tableHtml += `<tr>
                               <td><a href="#" onclick="fetchKnotstocks(${rootstock.id}); return false;">${rootstock.name}</a></td>
                           </tr>`;
                       });
 
-                      // Close the table
                       tableHtml += "</table>";
-
-                      // Update the grid with the table HTML
                       grid.innerHTML = tableHtml;
                   } else {
                       grid.innerHTML = "No rootstocks found for this pond.";
@@ -77,10 +78,17 @@
       }
 
       function fetchKnotstocks(rootstockId) {
+          let list = document.getElementById("knotstock-list");
+          
+          // Ensure the element exists before setting innerHTML
+          if (!list) {
+              console.error("Element with ID 'knotstock-list' not found.");
+              return;
+          }
+
           fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
               .then(response => response.json())
               .then(data => {
-                  let list = document.getElementById("knotstock-list");
                   list.innerHTML = "<h3>Knotstocks for selected Rootstock</h3>";
 
                   if (data.knotstocks && data.knotstocks.length > 0) {
