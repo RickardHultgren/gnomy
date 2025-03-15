@@ -12,31 +12,34 @@ def index():
 
     return dict(pond_form=pond_form, ponds=ponds)
 
+def get_ponds():
+    """Fetch all ponds."""
+    ponds = db(db.pond).select(db.pond.id, db.pond.name)
+    return response.json({"ponds": [{"id": p.id, "name": p.name} for p in ponds]})
+
+
 ############
 
 def get_rootstocks():
-    """Returns the rootstocks for a given pond ID (AJAX call)."""
+    """Fetch rootstocks for a selected pond."""
     pond_id = request.vars.pond_id
     if not pond_id:
-        return "Invalid pond ID"
+        return response.json({"error": "Missing pond_id"})
 
-    # Query rootstocks by pond
-    rootstocks = db(db.rootstock.pond == pond_id).select()
-
-    # Return a JSON response
-    return response.json(dict(rootstocks=[rootstock.as_dict() for rootstock in rootstocks]))
+    rootstocks = db(db.rootstock.pond == pond_id).select(db.rootstock.id, db.rootstock.name)
+    return response.json({"rootstocks": [{"id": r.id, "name": r.name} for r in rootstocks]})
 
 def add_rootstock():
-    """Handles adding a new rootstock to a pond via AJAX."""
+    """Handles adding a new rootstock to a pond."""
     pond_id = request.vars.pond_id
-    name = request.vars.name
+    rootstock_name = request.vars.rootstock_name
 
-    if not pond_id or not name:
-        return "Invalid input"
+    if not pond_id or not rootstock_name:
+        return "Missing parameters."
 
-    db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
-    return "Rootstock added successfully"
-
+    db.rootstock.insert(name=rootstock_name, pond=pond_id, created_by=auth.user_id)
+    return "Rootstock added successfully."
+    
 ############
 
 def get_knotstocks():
@@ -135,7 +138,7 @@ def add_flower():
     db.flower_list.insert(rootstock=rootstock_id, flower=flower_id, created_by=auth.user_id)
 
     return "Flower added successfully."
-    
+
 #############
 
 
