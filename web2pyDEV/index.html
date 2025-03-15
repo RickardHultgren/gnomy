@@ -88,7 +88,6 @@
         <button type="submit">Add Flower</button>
     </form>
 </div>
-
   
   
   
@@ -189,7 +188,6 @@ function addKnotstock(event) {
 
 
 
-
 function fetchFlowers(rootstockId) {
     let flowerGrid = document.getElementById("flower-grid");
 
@@ -249,7 +247,10 @@ function addFlower(event) {
     .catch(error => console.error("Error adding flower:", error));
 }
 
-
+// Automatically set the selected rootstock in the flower form
+function setDefaultRootstock(rootstockId) {
+    document.getElementById("flower-rootstock").value = rootstockId;
+}
 
 
 

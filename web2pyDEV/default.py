@@ -115,7 +115,7 @@ def add_flower():
     flower_name = request.vars.flower_name
     flower_type = request.vars.flower_type
     growing_place = request.vars.growing_place
-    rootstock_id = request.vars.rootstock_id
+    rootstock_id = request.vars.rootstock_id  # Use the selected rootstock
 
     if not (flower_name and flower_type and growing_place and rootstock_id):
         return "Missing parameters."
@@ -135,7 +135,7 @@ def add_flower():
     db.flower_list.insert(rootstock=rootstock_id, flower=flower_id, created_by=auth.user_id)
 
     return "Flower added successfully."
-
+    
 #############
 
 
