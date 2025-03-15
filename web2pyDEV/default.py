@@ -36,7 +36,7 @@ def add_rootstock():
     db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
     return "Rootstock added successfully"
 ##################
-ef add_knotstock():
+def add_knotstock():
     """Handles adding a new knotstock relation via AJAX."""
     rootstock_id = request.vars.rootstock_id
     knotstock_id = request.vars.knotstock_id
@@ -46,7 +46,7 @@ ef add_knotstock():
 
     db.knotstock_list.insert(rootstock=rootstock_id, knotstock=knotstock_id, created_by=auth.user_id)
     return "Knotstock added successfully."
-    
+
 def get_knotstocks():
     """Fetches knotstocks for a given rootstock."""
     rootstock_id = request.vars.rootstock_id
