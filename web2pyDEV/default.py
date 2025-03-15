@@ -32,7 +32,7 @@ def get_knotstocks():
 
     return response.json(dict(knotstocks=result))
 
-
+    
 def add_knotstock():
     rootstock_id = request.vars.rootstock_id
     knotstock_id = request.vars.knotstock_id
@@ -41,7 +41,7 @@ def add_knotstock():
 
 def get_flowers():
     rootstock_id = request.vars.rootstock_id
-    flowers = db(db.tendril.rootstock == rootstock_id).select(db.flower.name)
+    flowers = db(db.flower_list.rootstock == rootstock_id).select(db.flower.name)
     return response.json(dict(flowers=[{"name": f.name} for f in flowers]))
 
 def add_flower():
@@ -49,7 +49,7 @@ def add_flower():
     name = request.vars.name
 
     flower_id = db.flower.insert(name=name, pond=session.pond_id, created_by=auth.user_id)
-    db.tendril.insert(rootstock=rootstock_id, flower=flower_id)
+    db.flower_list.insert(rootstock=rootstock_id, flower=flower_id)
 
     return "Flower added successfully"
 
@@ -59,13 +59,20 @@ def get_tendrils():
 
     result = []
     for tendril in tendrils:
-        knotstock = db.rootstock(tendril.knotstock)  # Assuming knotstock is also a rootstock
-        result.append({
-            "name": tendril.name,
-            "knotstock_name": knotstock.name if knotstock else "Unknown"
-        })
+        knotstock = db.rootstock(tendril.knotstock)
+        if knotstock:
+            result.append({"tendril_name": tendril.name, "knotstock_name": knotstock.name})
 
     return response.json(dict(tendrils=result))
+
+def add_tendril():
+    rootstock_id = request.vars.rootstock_id
+    knotstock_id = request.vars.knotstock_id
+    tendril_name = request.vars.tendril_name  # Added for the tendril name field
+
+    db.tendril.insert(rootstock=rootstock_id, knotstock=knotstock_id, name=tendril_name, created_by=auth.user_id)
+    return "Tendril added successfully"
+
 
 
 
