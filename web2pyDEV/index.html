@@ -28,50 +28,32 @@
     <div id="pond-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
         <h3>Rootstocks for Pond</h3>
         <div id="rootstock-grid"></div>
-
-        <h3>Add Rootstock</h3>
-        <input type="text" id="rootstock-name" placeholder="Rootstock name">
-        <button onclick="addRootstock()">Add</button>
     </div>
 
-    <!-- Knotstock Form -->
-    <div id="knotstock-list">
-        <h3>Add Knotstock</h3>
-        <form id="add-knotstock-form" onsubmit="addKnotstock(event)">
-            <label for="rootstock-select">Select Rootstock:</label>
-            <select id="rootstock-select" onchange="fetchFlowers(this.value); fetchKnotstocks(this.value);">
-                <!-- Populated dynamically -->
-            </select>
+    <!-- Tendril Section -->
+    <div id="tendril-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
+        <h3 id="tendril-title"></h3>
+        
+        <table id="tendril-grid" border="1">
+            <tr>
+                <th>Tendril Name</th>
+                <th>Knotstock</th>
+            </tr>
+        </table>
+
+        <h3>Add Tendril</h3>
+        <form id="add-tendril-form" onsubmit="addTendril(event)">
+            <input type="hidden" id="rootstock-id">
+            
+            <label for="tendril-name">Tendril Name:</label>
+            <input type="text" id="tendril-name" placeholder="Tendril Name">
 
             <label for="knotstock-select">Select Knotstock:</label>
             <select id="knotstock-select">
                 <!-- Populated dynamically -->
             </select>
 
-            <button type="submit">Add Knotstock</button>
-        </form>
-
-        <h3>Knotstocks for Selected Rootstock</h3>
-        <table id="knotstock-grid" border="1">
-            <tr>
-                <th>Knotstock Name</th>
-            </tr>
-        </table>
-    </div>
-
-    <!-- Flower Section (Initially Hidden) -->
-    <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
-        <h3>Flowers for Selected Rootstock</h3>
-        <table id="flower-grid" border="1">
-            <tr>
-                <th>Flower Name</th>
-            </tr>
-        </table>
-
-        <h3>Add Flower</h3>
-        <form id="add-flower-form" onsubmit="addFlower(event)">
-            <input type="text" id="flower-name" placeholder="Flower Name">
-            <button type="submit">Add Flower</button>
+            <button type="submit">Add Tendril</button>
         </form>
     </div>
 
@@ -90,18 +72,11 @@
                 .then(response => response.json())
                 .then(data => {
                     let grid = document.getElementById("rootstock-grid");
-                    let rootstockSelect = document.getElementById("rootstock-select");
-                    let knotstockSelect = document.getElementById("knotstock-select");
-
-                    rootstockSelect.innerHTML = "";
-                    knotstockSelect.innerHTML = "";
                     grid.innerHTML = "";
 
                     if (data.rootstocks.length > 0) {
                         data.rootstocks.forEach(rootstock => {
-                            grid.innerHTML += `<p><a href="#" onclick="fetchFlowers(${rootstock.id}); fetchKnotstocks(${rootstock.id}); return false;">${rootstock.name}</a></p>`;
-                            rootstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
-                            knotstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                            grid.innerHTML += `<p><a href="#" onclick="fetchTendrils(${rootstock.id}); fetchKnotstocks(); return false;">${rootstock.name}</a></p>`;
                         });
                     } else {
                         grid.innerHTML = "<p>No rootstocks found.</p>";
@@ -109,77 +84,56 @@
                 });
         }
 
-        function fetchKnotstocks(rootstockId) {
-            fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
+        function fetchTendrils(rootstockId) {
+            selectedRootstockId = rootstockId;
+            document.getElementById("tendril-container").style.display = "block";
+            document.getElementById("tendril-title").innerText = `Tendrils connected to ${rootstockId}`;
+            document.getElementById("rootstock-id").value = rootstockId;
+
+            fetch("{{=URL('get_tendrils')}}" + "?rootstock_id=" + rootstockId)
                 .then(response => response.json())
                 .then(data => {
-                    let table = document.getElementById("knotstock-grid");
-                    table.innerHTML = "<tr><th>Knotstock Name</th></tr>";
+                    let table = document.getElementById("tendril-grid");
+                    table.innerHTML = "<tr><th>Tendril Name</th><th>Knotstock</th></tr>";
+
+                    data.tendrils.forEach(tendril => {
+                        table.innerHTML += `<tr>
+                            <td>${tendril.name}</td>
+                            <td>${tendril.knotstock_name}</td>
+                        </tr>`;
+                    });
+                });
+        }
+
+        function fetchKnotstocks() {
+            fetch("{{=URL('get_knotstocks')}}")
+                .then(response => response.json())
+                .then(data => {
+                    let select = document.getElementById("knotstock-select");
+                    select.innerHTML = "";
 
                     data.knotstocks.forEach(knotstock => {
-                        table.innerHTML += `<tr><td>${knotstock.knotstock_name}</td></tr>`;
+                        select.innerHTML += `<option value="${knotstock.id}">${knotstock.name}</option>`;
                     });
                 });
         }
 
-        function addRootstock() {
-            let name = document.getElementById("rootstock-name").value;
-            if (!name) return alert("Enter rootstock name.");
-
-            fetch("{{=URL('add_rootstock')}}", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `pond_id=${currentPondId}&name=${encodeURIComponent(name)}`
-            }).then(() => {
-                fetchRootstocks(currentPondId);
-                document.getElementById("rootstock-name").value = "";
-            });
-        }
-
-        function addKnotstock(event) {
+        function addTendril(event) {
             event.preventDefault();
 
-            let rootstockId = document.getElementById("rootstock-select").value;
+            let rootstockId = document.getElementById("rootstock-id").value;
+            let tendrilName = document.getElementById("tendril-name").value;
             let knotstockId = document.getElementById("knotstock-select").value;
 
-            fetch("{{=URL('add_knotstock')}}", {
+            if (!tendrilName) return alert("Enter tendril name.");
+
+            fetch("{{=URL('add_tendril')}}", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `rootstock_id=${rootstockId}&knotstock_id=${knotstockId}`
+                body: `rootstock_id=${rootstockId}&name=${encodeURIComponent(tendrilName)}&knotstock_id=${knotstockId}`
             }).then(() => {
-                fetchKnotstocks(rootstockId);
-            });
-        }
-
-        function fetchFlowers(rootstockId) {
-            selectedRootstockId = rootstockId;
-            document.getElementById("flower-container").style.display = "block";
-
-            fetch("{{=URL('get_flowers')}}" + "?rootstock_id=" + rootstockId)
-                .then(response => response.json())
-                .then(data => {
-                    let table = document.getElementById("flower-grid");
-                    table.innerHTML = "<tr><th>Flower Name</th></tr>";
-
-                    data.flowers.forEach(flower => {
-                        table.innerHTML += `<tr><td>${flower.name}</td></tr>`;
-                    });
-                });
-        }
-
-        function addFlower(event) {
-            event.preventDefault();
-
-            let name = document.getElementById("flower-name").value;
-            if (!name) return alert("Enter flower name.");
-
-            fetch("{{=URL('add_flower')}}", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `rootstock_id=${selectedRootstockId}&name=${encodeURIComponent(name)}`
-            }).then(() => {
-                fetchFlowers(selectedRootstockId);
-                document.getElementById("flower-name").value = "";
+                fetchTendrils(rootstockId);
+                document.getElementById("tendril-name").value = "";
             });
         }
     </script>

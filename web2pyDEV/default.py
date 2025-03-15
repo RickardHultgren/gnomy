@@ -53,7 +53,19 @@ def add_flower():
 
     return "Flower added successfully"
 
+def get_tendrils():
+    rootstock_id = request.vars.rootstock_id
+    tendrils = db(db.tendril.rootstock == rootstock_id).select()
 
+    result = []
+    for tendril in tendrils:
+        knotstock = db.rootstock(tendril.knotstock)  # Assuming knotstock is also a rootstock
+        result.append({
+            "name": tendril.name,
+            "knotstock_name": knotstock.name if knotstock else "Unknown"
+        })
+
+    return response.json(dict(tendrils=result))
 
 
 
