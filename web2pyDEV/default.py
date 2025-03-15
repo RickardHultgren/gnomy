@@ -39,7 +39,7 @@ def add_rootstock():
 
     db.rootstock.insert(name=rootstock_name, pond=pond_id, created_by=auth.user_id)
     return "Rootstock added successfully."
-    
+
 ############
 
 def get_knotstocks():
@@ -96,47 +96,43 @@ def get_knotstocks():
 ############
 
 def get_flowers():
-    """Fetches flowers linked to a rootstock via flower_list."""
+    """Fetches flowers for a given rootstock."""
     rootstock_id = request.vars.rootstock_id
     if not rootstock_id:
         return response.json({"error": "Missing rootstock_id"})
 
-    flowers = db(
-        (db.flower_list.rootstock == rootstock_id) & (db.flower_list.flower == db.flower.id)
-    ).select(db.flower.id, db.flower.name, db.flower.flower_type, db.flower.growing_place)
+    flower_list = db(db.flower_list.rootstock == rootstock_id).select(
+        db.flower_list.flower
+    )
 
-    flower_data = [
-        {"id": f.id, "name": f.name, "flower_type": f.flower_type, "growing_place": f.growing_place} 
-        for f in flowers
-    ]
+    flowers = []
+    for flower_entry in flower_list:
+        flower = db(db.flower.id == flower_entry.flower).select().first()
+        if flower:
+            flowers.append({"name": flower.name, "flower_type": flower.flower_type})
 
-    return response.json({"flowers": flower_data})
+    return response.json({"flowers": flowers})
 
 
 def add_flower():
-    """Handles adding a new flower and linking it to a rootstock."""
-    flower_name = request.vars.flower_name
+    """Handles adding a new flower and linking it to the selected rootstock."""
+    name = request.vars.name
     flower_type = request.vars.flower_type
     growing_place = request.vars.growing_place
-    rootstock_id = request.vars.rootstock_id  # Use the selected rootstock
+    rootstock_id = request.vars.rootstock_id
 
-    if not (flower_name and flower_type and growing_place and rootstock_id):
+    if not name or not flower_type or not growing_place or not rootstock_id:
         return "Missing parameters."
 
-    pond_id = db.rootstock(rootstock_id).pond if rootstock_id else None
-    if not pond_id:
-        return "Invalid rootstock."
-
     flower_id = db.flower.insert(
-        name=flower_name, 
-        pond=pond_id, 
-        flower_type=flower_type, 
-        growing_place=growing_place, 
+        name=name,
+        pond=session.pond_id,
+        flower_type=flower_type,
+        growing_place=growing_place,
         created_by=auth.user_id
     )
 
     db.flower_list.insert(rootstock=rootstock_id, flower=flower_id, created_by=auth.user_id)
-
     return "Flower added successfully."
 
 #############
