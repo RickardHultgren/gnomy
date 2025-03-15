@@ -35,11 +35,10 @@ def add_flower():
     rootstock_id = request.vars.rootstock_id
     name = request.vars.name
 
-    flower_id = db.flower.insert(name=name)
+    flower_id = db.flower.insert(name=name, pond=session.pond_id, created_by=auth.user_id)
     db.flower_list.insert(rootstock=rootstock_id, flower=flower_id)
 
     return "Flower added successfully"
-
 
 
 
