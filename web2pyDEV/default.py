@@ -21,7 +21,7 @@ def add_rootstock():
     return "Rootstock added successfully"
 
 def get_knotstocks():
-    roostock_id = request.vars.rootstock_id
+    rootstock_id = request.vars.rootstock_id
     knotstocks = db(db.knotstock_list.rootstock == rootstock_id).select()
     return response.json(dict(knotstocks=[r.as_dict() for r in knotstocks]))
 
