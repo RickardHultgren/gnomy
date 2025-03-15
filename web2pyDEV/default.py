@@ -20,6 +20,11 @@ def add_rootstock():
     db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
     return "Rootstock added successfully"
 
+def get_knotstocks():
+    roostock_id = request.vars.rootstock_id
+    knotstocks = db(db.knotstock_list.rootstock == rootstock_id).select()
+    return response.json(dict(knotstocks=[r.as_dict() for r in knotstocks]))
+
 def add_knotstock():
     rootstock_id = request.vars.rootstock_id
     knotstock_id = request.vars.knotstock_id

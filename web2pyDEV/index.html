@@ -105,6 +105,31 @@
                 });
         }
 
+        function fetchKnotstocks(pondId) {
+            fetch("{{=URL('get_knotstocks')}}" + "?pond_id=" + pondId)
+                .then(response => response.json())
+                .then(data => {
+                    let grid = document.getElementById("rootstock-grid");
+                    let rootstockSelect = document.getElementById("rootstock-select");
+                    let knotstockSelect = document.getElementById("knotstock-select");
+
+                    rootstockSelect.innerHTML = "";
+                    knotstockSelect.innerHTML = "";
+                    grid.innerHTML = "";
+
+                    if (data.rootstocks.length > 0) {
+                        data.rootstocks.forEach(rootstock => {
+                            grid.innerHTML += `<p><a href="#" onclick="fetchFlowers(${rootstock.id}); return false;">${rootstock.name}</a></p>`;
+                            rootstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                            knotstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                        });
+                    } else {
+                        grid.innerHTML = "<p>No rootstocks found.</p>";
+                    }
+                });
+        }
+
+
         function addRootstock() {
             let name = document.getElementById("rootstock-name").value;
             if (!name) return alert("Enter rootstock name.");
@@ -119,6 +144,7 @@
             });
         }
 
+        
         function fetchFlowers(rootstockId) {
             selectedRootstockId = rootstockId;
             document.getElementById("flower-container").style.display = "block";
