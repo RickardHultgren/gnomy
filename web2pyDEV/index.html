@@ -27,57 +27,53 @@
 
     <div id="pond-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
         <h3>Rootstocks for Pond</h3>
-        <div id="rootstock-grid">
-            <!-- Rootstock grid will be populated dynamically -->
-        </div>
+        <div id="rootstock-grid"></div>
 
         <h3>Add Rootstock</h3>
         <input type="text" id="rootstock-name" placeholder="Rootstock name">
         <button onclick="addRootstock()">Add</button>
     </div>
 
-    <form onsubmit="event.preventDefault(); addKnotstock(document.getElementById('rootstock-select').value, document.getElementById('knotstock-select').value);">
-      <label for="rootstock-select">Select Rootstock:</label>
-      <select id="rootstock-select">
-          {{for row in db(db.rootstock).select():}}
-              <option value="{{=row.id}}">{{=row.name}}</option>
-          {{pass}}
-      </select>
-  
-      <label for="knotstock-select">Select Knotstock:</label>
-      <select id="knotstock-select">
-          {{for row in db(db.rootstock).select():}}
-              <option value="{{=row.id}}">{{=row.name}}</option>
-          {{pass}}
-      </select>
-  
-      <button type="submit">Add Knotstock</button>
-  </form>
-  
-  <div id="rootstock-grid"></div>
-
-  <!-- Knotstock List with Add Form -->
-  <div id="knotstock-list">
-        <h3>Knotstocks for Selected Rootstock</h3>
-        <ul id="knotstock-items"></ul>
-    
-        <!-- Form for Adding Knotstock -->
+    <!-- Knotstock Form -->
+    <div id="knotstock-list">
+        <h3>Add Knotstock</h3>
         <form id="add-knotstock-form" onsubmit="addKnotstock(event)">
-            <label for="new-rootstock">Select Rootstock:</label>
-            <select id="new-rootstock" name="rootstock_id">
-                <!-- Options will be populated dynamically -->
+            <label for="rootstock-select">Select Rootstock:</label>
+            <select id="rootstock-select" onchange="fetchFlowers(this.value)">
+                <!-- Populated dynamically -->
             </select>
-    
-            <label for="new-knotstock">Select Knotstock:</label>
-            <select id="new-knotstock" name="knotstock_id">
-                <!-- Options will be populated dynamically -->
+
+            <label for="knotstock-select">Select Knotstock:</label>
+            <select id="knotstock-select">
+                <!-- Populated dynamically -->
             </select>
-    
+
             <button type="submit">Add Knotstock</button>
         </form>
+
+        <h3>Knotstocks for Selected Rootstock</h3>
+        <ul id="knotstock-items"></ul>
     </div>
+
+    <!-- Flower Section (Initially Hidden) -->
+    <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
+        <h3>Flowers for Selected Rootstock</h3>
+        <table id="flower-grid" border="1">
+            <tr>
+                <th>Flower Name</th>
+            </tr>
+        </table>
+
+        <h3>Add Flower</h3>
+        <form id="add-flower-form" onsubmit="addFlower(event)">
+            <input type="text" id="flower-name" placeholder="Flower Name">
+            <button type="submit">Add Flower</button>
+        </form>
+    </div>
+
     <script>
         var currentPondId = null;
+        var selectedRootstockId = null;
 
         function showPond(pondId) {
             currentPondId = pondId;
@@ -86,113 +82,73 @@
         }
 
         function fetchRootstocks(pondId) {
-          fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
-              .then(response => response.json())
-              .then(data => {
-                  let grid = document.getElementById("rootstock-grid");
-                  let rootstockSelect = document.getElementById("new-rootstock");
-                  let knotstockSelect = document.getElementById("new-knotstock");
+            fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
+                .then(response => response.json())
+                .then(data => {
+                    let grid = document.getElementById("rootstock-grid");
+                    let rootstockSelect = document.getElementById("rootstock-select");
+                    let knotstockSelect = document.getElementById("knotstock-select");
 
-                  if (!grid || !rootstockSelect || !knotstockSelect) {
-                      console.error("One or more elements not found.");
-                      return;
-                  }
+                    rootstockSelect.innerHTML = "";
+                    knotstockSelect.innerHTML = "";
+                    grid.innerHTML = "";
 
-                  rootstockSelect.innerHTML = "";
-                  knotstockSelect.innerHTML = "";
-
-                  if (data.rootstocks && data.rootstocks.length > 0) {
-                      let tableHtml = "<table border='1'><tr><th>Rootstock Name</th></tr>";
-
-                      data.rootstocks.forEach(rootstock => {
-                          tableHtml += `<tr>
-                              <td><a href="#" onclick="fetchKnotstocks(${rootstock.id}); return false;">${rootstock.name}</a></td>
-                          </tr>`;
-
-                          // Populate the select dropdowns
-                          rootstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
-                          knotstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
-                      });
-
-                      tableHtml += "</table>";
-                      grid.innerHTML = tableHtml;
-                  } else {
-                      grid.innerHTML = "No rootstocks found for this pond.";
-                  }
-              })
-              .catch(error => console.error("Error fetching rootstocks:", error));
+                    if (data.rootstocks.length > 0) {
+                        data.rootstocks.forEach(rootstock => {
+                            grid.innerHTML += `<p><a href="#" onclick="fetchFlowers(${rootstock.id}); return false;">${rootstock.name}</a></p>`;
+                            rootstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                            knotstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                        });
+                    } else {
+                        grid.innerHTML = "<p>No rootstocks found.</p>";
+                    }
+                });
         }
 
-      function addRootstock() {
+        function addRootstock() {
             let name = document.getElementById("rootstock-name").value;
-            if (!name) {
-                alert("Please enter a rootstock name.");
-                return;
-            }
+            if (!name) return alert("Enter rootstock name.");
 
             fetch("{{=URL('add_rootstock')}}", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: "pond_id=" + currentPondId + "&name=" + encodeURIComponent(name)
-            })
-            .then(response => response.text())
-            .then(() => {
+                body: `pond_id=${currentPondId}&name=${encodeURIComponent(name)}`
+            }).then(() => {
                 fetchRootstocks(currentPondId);
                 document.getElementById("rootstock-name").value = "";
             });
         }
 
+        function fetchFlowers(rootstockId) {
+            selectedRootstockId = rootstockId;
+            document.getElementById("flower-container").style.display = "block";
 
+            fetch("{{=URL('get_flowers')}}" + "?rootstock_id=" + rootstockId)
+                .then(response => response.json())
+                .then(data => {
+                    let table = document.getElementById("flower-grid");
+                    table.innerHTML = "<tr><th>Flower Name</th></tr>";
 
-
-function fetchKnotstocks(rootstockId) {
-    let list = document.getElementById("knotstock-items");
-
-    if (!list) {
-        console.error("Knotstock list element not found.");
-        return;
-    }
-
-    fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
-        .then(response => response.json())
-        .then(data => {
-            list.innerHTML = ""; // Clear existing items
-
-            if (data.knotstocks && data.knotstocks.length > 0) {
-                data.knotstocks.forEach(knotstock => {
-                    list.innerHTML += `<li>${knotstock.knotstock_name} (Added by: ${knotstock.created_by})</li>`;
+                    data.flowers.forEach(flower => {
+                        table.innerHTML += `<tr><td>${flower.name}</td></tr>`;
+                    });
                 });
-            } else {
-                list.innerHTML = "<p>No knotstocks found for this rootstock.</p>";
-            }
-        })
-        .catch(error => console.error("Error fetching knotstocks:", error));
-}
+        }
 
-function addKnotstock(event) {
-    event.preventDefault();
+        function addFlower(event) {
+            event.preventDefault();
 
-    let rootstockId = document.getElementById("new-rootstock").value;
-    let knotstockId = document.getElementById("new-knotstock").value;
+            let name = document.getElementById("flower-name").value;
+            if (!name) return alert("Enter flower name.");
 
-    if (!rootstockId || !knotstockId) {
-        alert("Please select a valid rootstock and knotstock.");
-        return;
-    }
-
-    fetch("{{=URL('add_knotstock')}}", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `rootstock_id=${rootstockId}&knotstock_id=${knotstockId}`
-    })
-    .then(response => response.text())
-    .then(message => {
-        alert(message);
-        fetchKnotstocks(rootstockId); // Refresh the list after adding
-    })
-    .catch(error => console.error("Error adding knotstock:", error));
-}    }
-
-
-</script>
+            fetch("{{=URL('add_flower')}}", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `rootstock_id=${selectedRootstockId}&name=${encodeURIComponent(name)}`
+            }).then(() => {
+                fetchFlowers(selectedRootstockId);
+                document.getElementById("flower-name").value = "";
+            });
+        }
+    </script>
 {{pass}}

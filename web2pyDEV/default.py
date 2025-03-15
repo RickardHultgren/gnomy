@@ -4,84 +4,41 @@ def index():
     if not auth.is_logged_in():
         return dict(message="please log in")
 
-    # Pond form for creating new ponds
     pond_form = SQLFORM(db.pond).process()
-
-    # Query user's ponds
     ponds = db(db.pond.created_by == auth.user_id).select()
 
     return dict(pond_form=pond_form, ponds=ponds)
 
-##################
-
 def get_rootstocks():
-    """Fetches all rootstocks for the pond."""
     pond_id = request.vars.pond_id
-    if not pond_id:
-        return response.json({"error": "Missing pond_id"})
-
-    rootstocks = db(db.rootstock.pond == pond_id).select(db.rootstock.id, db.rootstock.name)
-
-    return response.json({"rootstocks": [{"id": r.id, "name": r.name} for r in rootstocks]})
-
+    rootstocks = db(db.rootstock.pond == pond_id).select()
+    return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
 
 def add_rootstock():
-    """Handles adding a new rootstock to a pond via AJAX."""
     pond_id = request.vars.pond_id
     name = request.vars.name
-
-    if not pond_id or not name:
-        return "Invalid input"
-
     db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
     return "Rootstock added successfully"
-##################
-def add_knotstock():
-    """Handles adding a new knotstock relation via AJAX."""
-    rootstock_id = request.vars.rootstock_id
-    knotstock_id = request.vars.knotstock_id
-
-    if not rootstock_id or not knotstock_id:
-        return "Missing parameters."
-
-    db.knotstock_list.insert(rootstock=rootstock_id, knotstock=knotstock_id, created_by=auth.user_id)
-    return "Knotstock added successfully."
-
-def get_knotstocks():
-    """Fetches knotstocks for a given rootstock."""
-    rootstock_id = request.vars.rootstock_id
-    if not rootstock_id:
-        return response.json({"error": "Missing rootstock_id"})
-
-    knotstocks = db(db.knotstock_list.rootstock == rootstock_id).select(
-        db.knotstock_list.knotstock, db.knotstock_list.created_by
-    )
-
-    # Convert results to JSON
-    knotstock_data = [
-        {"knotstock_name": row.knotstock.name, "created_by": row.created_by} for row in knotstocks
-    ]
-
-    return response.json({"knotstocks": knotstock_data})
-
-
 
 def add_knotstock():
-    """Handles adding a new knotstock relation via AJAX."""
     rootstock_id = request.vars.rootstock_id
     knotstock_id = request.vars.knotstock_id
-
-    if not rootstock_id or not knotstock_id:
-        return "Missing parameters."
-
     db.knotstock_list.insert(rootstock=rootstock_id, knotstock=knotstock_id, created_by=auth.user_id)
-    return "Knotstock added successfully."
-###############
+    return "Knotstock added successfully"
 
+def get_flowers():
+    rootstock_id = request.vars.rootstock_id
+    flowers = db(db.flower_list.rootstock == rootstock_id).select(db.flower.name)
+    return response.json(dict(flowers=[{"name": f.name} for f in flowers]))
 
+def add_flower():
+    rootstock_id = request.vars.rootstock_id
+    name = request.vars.name
 
+    flower_id = db.flower.insert(name=name)
+    db.flower_list.insert(rootstock=rootstock_id, flower=flower_id)
 
-
+    return "Flower added successfully"
 
 
 
