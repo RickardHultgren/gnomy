@@ -36,20 +36,26 @@
         <button onclick="addRootstock()">Add</button>
     </div>
     
-    <div id="knotstock-list">
-        <h3>Knotstocks for Selected Rootstock</h3>
-        <ul id="knotstock-items"></ul>
-    
-        <!-- Form for Adding Knotstock -->
-        <form id="add-knotstock-form" onsubmit="addKnotstock(event)">
-            <label for="new-knotstock">Select Knotstock:</label>
-            <select id="new-knotstock" name="knotstock_id">
-                <!-- Options will be populated dynamically -->
-            </select>
-            <button type="submit">Add Knotstock</button>
-        </form>
-    </div>
-    <script>
+<!-- Knotstock List with Add Form -->
+<div id="knotstock-list">
+  <h3>Knotstocks for Selected Rootstock</h3>
+  <ul id="knotstock-items"></ul>
+
+    <!-- Form for Adding Knotstock -->
+    <form id="add-knotstock-form" onsubmit="addKnotstock(event)">
+        <label for="new-rootstock">Select Rootstock:</label>
+        <select id="new-rootstock" name="rootstock_id">
+            <!-- Options will be populated dynamically -->
+        </select>
+
+        <label for="new-knotstock">Select Knotstock:</label>
+        <select id="new-knotstock" name="knotstock_id">
+            <!-- Options will be populated dynamically -->
+        </select>
+
+        <button type="submit">Add Knotstock</button>
+    </form>
+  </div>    <script>
         var currentPondId = null;
 
         function showPond(pondId) {
@@ -57,120 +63,93 @@
             document.getElementById("pond-container").style.display = "block";
             fetchRootstocks(pondId);
         }
+
         function fetchRootstocks(pondId) {
-          fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
-              .then(response => response.json())
-              .then(data => {
-                  let grid = document.getElementById("rootstock-grid");
-                  if (!grid) {
-                      console.error("Element with ID 'rootstock-grid' not found.");
-                      return;
-                  }
+    fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
+        .then(response => response.json())
+        .then(data => {
+            let grid = document.getElementById("rootstock-grid");
+            let rootstockSelect = document.getElementById("new-rootstock");
+            let knotstockSelect = document.getElementById("new-knotstock");
 
-                  if (data.rootstocks && data.rootstocks.length > 0) {
-                      let tableHtml = "<table border='1'><tr><th>Rootstock Name</th></tr>";
+            if (!grid || !rootstockSelect || !knotstockSelect) {
+                console.error("One or more elements not found.");
+                return;
+            }
 
-                      data.rootstocks.forEach(rootstock => {
-                          tableHtml += `<tr>
-                              <td><a href="#" onclick="fetchKnotstocks(${rootstock.id}); return false;">${rootstock.name}</a></td>
-                          </tr>`;
-                      });
+            rootstockSelect.innerHTML = "";
+            knotstockSelect.innerHTML = "";
 
-                      tableHtml += "</table>";
-                      grid.innerHTML = tableHtml;
-                  } else {
-                      grid.innerHTML = "No rootstocks found for this pond.";
-                  }
-              })
-              .catch(error => console.error("Error fetching rootstocks:", error));
-      }
+            if (data.rootstocks && data.rootstocks.length > 0) {
+                let tableHtml = "<table border='1'><tr><th>Rootstock Name</th></tr>";
 
-      function fetchKnotstocks(rootstockId) {
-          let list = document.getElementById("knotstock-items");
-          let select = document.getElementById("new-knotstock");
+                data.rootstocks.forEach(rootstock => {
+                    tableHtml += `<tr>
+                        <td><a href="#" onclick="fetchKnotstocks(${rootstock.id}); return false;">${rootstock.name}</a></td>
+                    </tr>`;
 
-          if (!list || !select) {
-              console.error("Knotstock list or select element not found.");
-              return;
-          }
+                    // Populate the select dropdowns
+                    rootstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                    knotstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                });
 
-          fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
-              .then(response => response.json())
-              .then(data => {
-                  list.innerHTML = ""; // Clear existing items
-                  select.innerHTML = ""; // Clear dropdown options
+                tableHtml += "</table>";
+                grid.innerHTML = tableHtml;
+            } else {
+                grid.innerHTML = "No rootstocks found for this pond.";
+            }
+        })
+        .catch(error => console.error("Error fetching rootstocks:", error));
+}
 
-                  if (data.knotstocks && data.knotstocks.length > 0) {
-                      data.knotstocks.forEach(knotstock => {
-                          list.innerHTML += `<li>${knotstock.knotstock_name} (Added by: ${knotstock.created_by})</li>`;
-                      });
-                  } else {
-                      list.innerHTML = "<p>No knotstocks found for this rootstock.</p>";
-                  }
+function fetchKnotstocks(rootstockId) {
+    let list = document.getElementById("knotstock-items");
 
-                  // Populate select dropdown with available rootstocks
-                  if (data.availableRootstocks && data.availableRootstocks.length > 0) {
-                      data.availableRootstocks.forEach(rootstock => {
-                          select.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
-                      });
-                  }
-                  
-                  // Store rootstockId in form for reference
-                  document.getElementById("add-knotstock-form").dataset.rootstockId = rootstockId;
-              })
-              .catch(error => console.error("Error fetching knotstocks:", error));
-      }
+    if (!list) {
+        console.error("Knotstock list element not found.");
+        return;
+    }
 
-      function addKnotstock(event) {
-          event.preventDefault();
+    fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
+        .then(response => response.json())
+        .then(data => {
+            list.innerHTML = ""; // Clear existing items
 
-          let form = document.getElementById("add-knotstock-form");
-          let rootstockId = form.dataset.rootstockId;
-          let knotstockId = document.getElementById("new-knotstock").value;
+            if (data.knotstocks && data.knotstocks.length > 0) {
+                data.knotstocks.forEach(knotstock => {
+                    list.innerHTML += `<li>${knotstock.knotstock_name} (Added by: ${knotstock.created_by})</li>`;
+                });
+            } else {
+                list.innerHTML = "<p>No knotstocks found for this rootstock.</p>";
+            }
+        })
+        .catch(error => console.error("Error fetching knotstocks:", error));
+}
 
-          if (!rootstockId || !knotstockId) {
-              alert("Please select a valid knotstock.");
-              return;
-          }
+function addKnotstock(event) {
+    event.preventDefault();
 
-          fetch("{{=URL('add_knotstock')}}", {
-              method: "POST",
-              headers: { "Content-Type": "application/x-www-form-urlencoded" },
-              body: `rootstock_id=${rootstockId}&knotstock_id=${knotstockId}`
-          })
-          .then(response => response.text())
-          .then(message => {
-              alert(message);
-              fetchKnotstocks(rootstockId); // Refresh the list after adding
-          })
-          .catch(error => console.error("Error adding knotstock:", error));
-      }
+    let rootstockId = document.getElementById("new-rootstock").value;
+    let knotstockId = document.getElementById("new-knotstock").value;
 
+    if (!rootstockId || !knotstockId) {
+        alert("Please select a valid rootstock and knotstock.");
+        return;
+    }
 
-
-
-        function addKnotstock(rootstockId, knotstockId) {
     fetch("{{=URL('add_knotstock')}}", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: new URLSearchParams({
-            rootstock_id: rootstockId,
-            knotstock_id: knotstockId
-        })
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `rootstock_id=${rootstockId}&knotstock_id=${knotstockId}`
     })
-    .then(response => response.json()) 
-    .then(data => {
-        if (data.success) {
-            alert("Knotstock added successfully!");
-            fetchKnotstocks(rootstockId); // Refresh the list
-        } else {
-            alert("Error: " + data.error);
-        }
+    .then(response => response.text())
+    .then(message => {
+        alert(message);
+        fetchKnotstocks(rootstockId); // Refresh the list after adding
     })
-    .catch(error => console.error("Error:", error));
+    .catch(error => console.error("Error adding knotstock:", error));
 }
+
 
 
     </script>
