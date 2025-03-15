@@ -22,9 +22,17 @@ def add_rootstock():
 
 def get_knotstocks():
     rootstock_id = request.vars.rootstock_id
-    knotstocks = db(db.knotstock_list.rootstock == rootstock_id).select()
-    return response.json(dict(knotstocks=[r.as_dict() for r in knotstocks]))
+    knotstocks = db(db.knotstock_list.rootstock == rootstock_id).select(db.knotstock_list.knotstock)
+    
+    result = []
+    for knot in knotstocks:
+        knotstock = db.rootstock(knot.knotstock)
+        if knotstock:
+            result.append({"knotstock_name": knotstock.name})
 
+    return response.json(dict(knotstocks=result))
+
+    
 def add_knotstock():
     rootstock_id = request.vars.rootstock_id
     knotstock_id = request.vars.knotstock_id

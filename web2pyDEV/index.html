@@ -39,7 +39,7 @@
         <h3>Add Knotstock</h3>
         <form id="add-knotstock-form" onsubmit="addKnotstock(event)">
             <label for="rootstock-select">Select Rootstock:</label>
-            <select id="rootstock-select" onchange="fetchFlowers(this.value)">
+            <select id="rootstock-select" onchange="fetchFlowers(this.value); fetchKnotstocks(this.value);">
                 <!-- Populated dynamically -->
             </select>
 
@@ -52,7 +52,11 @@
         </form>
 
         <h3>Knotstocks for Selected Rootstock</h3>
-        <ul id="knotstock-items"></ul>
+        <table id="knotstock-grid" border="1">
+            <tr>
+                <th>Knotstock Name</th>
+            </tr>
+        </table>
     </div>
 
     <!-- Flower Section (Initially Hidden) -->
@@ -93,10 +97,27 @@
                     knotstockSelect.innerHTML = "";
                     grid.innerHTML = "";
 
-                    data.rootstocks.forEach(rootstock => {
-                        grid.innerHTML += `<p><a href="#" onclick="fetchFlowers(${rootstock.id}); return false;">${rootstock.name}</a></p>`;
-                        rootstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
-                        knotstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                    if (data.rootstocks.length > 0) {
+                        data.rootstocks.forEach(rootstock => {
+                            grid.innerHTML += `<p><a href="#" onclick="fetchFlowers(${rootstock.id}); fetchKnotstocks(${rootstock.id}); return false;">${rootstock.name}</a></p>`;
+                            rootstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                            knotstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                        });
+                    } else {
+                        grid.innerHTML = "<p>No rootstocks found.</p>";
+                    }
+                });
+        }
+
+        function fetchKnotstocks(rootstockId) {
+            fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
+                .then(response => response.json())
+                .then(data => {
+                    let table = document.getElementById("knotstock-grid");
+                    table.innerHTML = "<tr><th>Knotstock Name</th></tr>";
+
+                    data.knotstocks.forEach(knotstock => {
+                        table.innerHTML += `<tr><td>${knotstock.knotstock_name}</td></tr>`;
                     });
                 });
         }
@@ -112,6 +133,21 @@
             }).then(() => {
                 fetchRootstocks(currentPondId);
                 document.getElementById("rootstock-name").value = "";
+            });
+        }
+
+        function addKnotstock(event) {
+            event.preventDefault();
+
+            let rootstockId = document.getElementById("rootstock-select").value;
+            let knotstockId = document.getElementById("knotstock-select").value;
+
+            fetch("{{=URL('add_knotstock')}}", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `rootstock_id=${rootstockId}&knotstock_id=${knotstockId}`
+            }).then(() => {
+                fetchKnotstocks(rootstockId);
             });
         }
 
