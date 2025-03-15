@@ -241,7 +241,10 @@ db.define_table('flower',
 #               )
 # Define the table 'knotstock_list'
 db.define_table(
-    'knotstock_list',
+    'tendril',
+    Field('name'),
+    Field('execution'),
+    Field('informing'),
     Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
     Field('knotstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
     Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),

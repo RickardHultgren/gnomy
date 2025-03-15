@@ -32,7 +32,7 @@ def get_knotstocks():
 
     return response.json(dict(knotstocks=result))
 
-    
+
 def add_knotstock():
     rootstock_id = request.vars.rootstock_id
     knotstock_id = request.vars.knotstock_id
@@ -41,7 +41,7 @@ def add_knotstock():
 
 def get_flowers():
     rootstock_id = request.vars.rootstock_id
-    flowers = db(db.flower_list.rootstock == rootstock_id).select(db.flower.name)
+    flowers = db(db.tendril.rootstock == rootstock_id).select(db.flower.name)
     return response.json(dict(flowers=[{"name": f.name} for f in flowers]))
 
 def add_flower():
@@ -49,7 +49,7 @@ def add_flower():
     name = request.vars.name
 
     flower_id = db.flower.insert(name=name, pond=session.pond_id, created_by=auth.user_id)
-    db.flower_list.insert(rootstock=rootstock_id, flower=flower_id)
+    db.tendril.insert(rootstock=rootstock_id, flower=flower_id)
 
     return "Flower added successfully"
 
