@@ -33,51 +33,52 @@
         <input type="text" id="rootstock-name" placeholder="Rootstock name">
         <button onclick="addRootstock()">Add</button>
     </div>
+    <div id="rootstock details">
+        <h3>Selected Rootstock</h3>
+        <div id="map"></div>
+        <div id="selected-rootstock-id">None selected</div>
 
-    <h3>Selected Rootstock</h3>
-    <div id="selected-rootstock-id">None selected</siv>
+        <!-- Knotstock Form -->
+        <div id="knotstock-list">
+            <h3>Add Knotstock</h3>
+            <form id="add-knotstock-form" onsubmit="addKnotstock(event)">
+                <label for="rootstock-select">Select Rootstock:</label>
+                <select id="rootstock-select" onchange="fetchFlowers(this.value); fetchKnotstocks(this.value);">
+                    <!-- Populated dynamically -->
+                </select>
 
-    <!-- Knotstock Form -->
-    <div id="knotstock-list">
-        <h3>Add Knotstock</h3>
-        <form id="add-knotstock-form" onsubmit="addKnotstock(event)">
-            <label for="rootstock-select">Select Rootstock:</label>
-            <select id="rootstock-select" onchange="fetchFlowers(this.value); fetchKnotstocks(this.value);">
-                <!-- Populated dynamically -->
-            </select>
+                <label for="knotstock-select">Select Knotstock:</label>
+                <select id="knotstock-select">
+                    <!-- Populated dynamically -->
+                </select>
 
-            <label for="knotstock-select">Select Knotstock:</label>
-            <select id="knotstock-select">
-                <!-- Populated dynamically -->
-            </select>
+                <button type="submit">Add Knotstock</button>
+            </form>
 
-            <button type="submit">Add Knotstock</button>
-        </form>
+            <h3>Knotstocks for Selected Rootstock</h3>
+            <table id="knotstock-grid" border="1">
+                <tr>
+                    <th>Knotstock Name</th>
+                </tr>
+            </table>
+        </div>
 
-        <h3>Knotstocks for Selected Rootstock</h3>
-        <table id="knotstock-grid" border="1">
-            <tr>
-                <th>Knotstock Name</th>
-            </tr>
-        </table>
+        <!-- Flower Section (Initially Hidden) -->
+        <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
+            <h3>Flowers for Selected Rootstock</h3>
+            <table id="flower-grid" border="1">
+                <tr>
+                    <th>Flower Name</th>
+                </tr>
+            </table>
+
+            <h3>Add Flower</h3>
+            <form id="add-flower-form" onsubmit="addFlower(event)">
+                <input type="text" id="flower-name" placeholder="Flower Name">
+                <button type="submit">Add Flower</button>
+            </form>
+        </div>
     </div>
-
-    <!-- Flower Section (Initially Hidden) -->
-    <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
-        <h3>Flowers for Selected Rootstock</h3>
-        <table id="flower-grid" border="1">
-            <tr>
-                <th>Flower Name</th>
-            </tr>
-        </table>
-
-        <h3>Add Flower</h3>
-        <form id="add-flower-form" onsubmit="addFlower(event)">
-            <input type="text" id="flower-name" placeholder="Flower Name">
-            <button type="submit">Add Flower</button>
-        </form>
-    </div>
-
     <script>
         var currentPondId = null;
         var selectedRootstockId = null;
