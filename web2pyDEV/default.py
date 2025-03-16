@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
 
-def set_rootstock():
-    rootstock_id = request.vars.rootstock_id
-    if rootstock_id:
-        session.rootstock_id = rootstock_id
-    return response.json(dict(rootstock_id=session.rootstock_id))
-
 def index():
     if not auth.is_logged_in():
         return dict(message="please log in")
@@ -13,12 +7,20 @@ def index():
     pond_form = SQLFORM(db.pond).process()
     ponds = db(db.pond.created_by == auth.user_id).select()
 
-    return dict(pond_form=pond_form, ponds=ponds)
+    return dict(pond_form=pond_form, ponds=ponds, rootstock_id=session.rootstock_id or "")
+
+
+def set_rootstock_id():
+    """Set session.rootstock_id from clicked rootstock"""
+    session.rootstock_id = request.vars.rootstock_id
+    return response.json({"status": "success", "rootstock_id": session.rootstock_id})
+
 
 def get_rootstocks():
     pond_id = request.vars.pond_id
     rootstocks = db(db.rootstock.pond == pond_id).select()
     return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
+
 
 def add_rootstock():
     pond_id = request.vars.pond_id
@@ -26,10 +28,11 @@ def add_rootstock():
     db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
     return "Rootstock added successfully"
 
+
 def get_knotstocks():
-    rootstock_id = request.vars.rootstock_id
+    rootstock_id = session.rootstock_id
     knotstocks = db(db.knotstock_list.rootstock == rootstock_id).select(db.knotstock_list.knotstock)
-    
+
     result = []
     for knot in knotstocks:
         knotstock = db.rootstock(knot.knotstock)
@@ -38,46 +41,28 @@ def get_knotstocks():
 
     return response.json(dict(knotstocks=result))
 
-    
+
 def add_knotstock():
-    rootstock_id = request.vars.rootstock_id
+    rootstock_id = session.rootstock_id
     knotstock_id = request.vars.knotstock_id
     db.knotstock_list.insert(rootstock=rootstock_id, knotstock=knotstock_id, created_by=auth.user_id)
     return "Knotstock added successfully"
 
+
 def get_flowers():
-    rootstock_id = request.vars.rootstock_id
+    rootstock_id = session.rootstock_id
     flowers = db(db.flower_list.rootstock == rootstock_id).select(db.flower.name)
     return response.json(dict(flowers=[{"name": f.name} for f in flowers]))
 
+
 def add_flower():
-    rootstock_id = request.vars.rootstock_id
+    rootstock_id = session.rootstock_id
     name = request.vars.name
 
     flower_id = db.flower.insert(name=name, pond=session.pond_id, created_by=auth.user_id)
     db.flower_list.insert(rootstock=rootstock_id, flower=flower_id)
 
     return "Flower added successfully"
-
-def get_tendrils():
-    rootstock_id = request.vars.rootstock_id
-    tendrils = db(db.tendril.rootstock == rootstock_id).select()
-
-    result = []
-    for tendril in tendrils:
-        knotstock = db.rootstock(tendril.knotstock)
-        if knotstock:
-            result.append({"tendril_name": tendril.name, "knotstock_name": knotstock.name})
-
-    return response.json(dict(tendrils=result))
-
-def add_tendril():
-    rootstock_id = request.vars.rootstock_id
-    knotstock_id = request.vars.knotstock_id
-    tendril_name = request.vars.tendril_name  # Added for the tendril name field
-
-    db.tendril.insert(rootstock=rootstock_id, knotstock=knotstock_id, name=tendril_name, created_by=auth.user_id)
-    return "Tendril added successfully"
 
 
 
