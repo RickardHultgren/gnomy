@@ -2,9 +2,7 @@
 
 {{if not auth.is_logged_in():}}
     <h2>{{=message}}</h2>
-{{#pass}}
 {{else:}}
-{{#if auth.is_logged_in():}}
     <h2>Ponds</h2>
     <div>
         {{=pond_form}}
@@ -36,9 +34,8 @@
         <button onclick="addRootstock()">Add</button>
     </div>
 
-    <!-- Flower Section -->
     <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
-        <h3>Flowers for Selected Rootstock <span id="selected-rootstock-id">[{{=rootstock}}, {{=rootstock_name}}]</span></h3>
+        <h3>Flowers for Selected Rootstock (<span id="selected-rootstock-id">{{=rootstock_id or "None"}}</span>)</h3>
         <table id="flower-grid" border="1">
             <tr>
                 <th>Flower Name</th>
@@ -54,7 +51,6 @@
 
     <script>
         var currentPondId = null;
-        var selectedRootstockId = "{{=rootstock_id}}"; // Initialize with session variable
 
         function showPond(pondId) {
             currentPondId = pondId;
@@ -71,9 +67,7 @@
 
                     if (data.rootstocks.length > 0) {
                         data.rootstocks.forEach(rootstock => {
-                            grid.innerHTML += `<p>
-                                <a href="#" onclick="setRootstockId(${rootstock.id})">${rootstock.name}</a>
-                            </p>`;
+                            grid.innerHTML += `<p><a href="#" onclick="selectRootstock(${rootstock.id}, '${rootstock.name}'); return false;">${rootstock.name}</a></p>`;
                         });
                     } else {
                         grid.innerHTML = "<p>No rootstocks found.</p>";
@@ -81,34 +75,23 @@
                 });
         }
 
-        function setRootstockId(rootstockId) {
-            fetch("{{=URL('set_rootstock_id')}}", {
+        function selectRootstock(rootstockId, rootstockName) {
+            fetch("{{=URL('set_rootstock')}}", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: `rootstock_id=${rootstockId}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error("Error:", data.error);
-                    return;
-                }
-
-                let selectedRootstockId = data.rootstock_id;
-                let selectedRootstockName = data.rootstock_name; // Expecting name from the response
-
-                // Update the HTML elements
-                document.getElementById("selected-rootstock-id").innerText = `[${selectedRootstockId}] (${selectedRootstockName})`;
-                document.getElementById("flower-container").style.display = "block";
-                
-                // Fetch flowers for the selected rootstock
-                fetchFlowers(selectedRootstockId);
-            })
-            .catch(error => console.error("Fetch error:", error));
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.status === "success") {
+                      document.getElementById("selected-rootstock-id").innerText = rootstockName;
+                      document.getElementById("flower-container").style.display = "block";
+                      fetchFlowers(rootstockId);
+                  }
+              });
         }
 
         function fetchFlowers(rootstockId) {
-            fetch("{{=URL('get_flowers')}}" + "?rootstock_id=" + rootstockId)
+            fetch("{{=URL('get_flowers')}}")
                 .then(response => response.json())
                 .then(data => {
                     let table = document.getElementById("flower-grid");
@@ -128,12 +111,13 @@
 
             fetch("{{=URL('add_flower')}}", {
                 method: "POST",
-                //headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `rootstock_id=${selectedRootstockId}&name=${encodeURIComponent(name)}`
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `name=${encodeURIComponent(name)}`
             }).then(() => {
-                fetchFlowers(selectedRootstockId);
+                fetchFlowers({{=rootstock_id or "null"}});
                 document.getElementById("flower-name").value = "";
             });
         }
     </script>
+
 {{pass}}

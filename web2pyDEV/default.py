@@ -7,37 +7,12 @@ def index():
     pond_form = SQLFORM(db.pond).process()
     ponds = db(db.pond.created_by == auth.user_id).select()
 
-    return dict(pond_form=pond_form, ponds=ponds, rootstock_id=session.rootstock_id or "")
+    return dict(pond_form=pond_form, ponds=ponds, rootstock_id=session.get("rootstock_id", None))
 
-def set_rootstock_id():
-    rootstock_id = request.post_vars.get('rootstock_id')
-
-    if not rootstock_id:
-        return response.json({"error": "Missing rootstock ID"})
-
-    try:
-        rootstock_id = int(rootstock_id)  # Ensure it's an integer
-    except ValueError:
-        return response.json({"error": "Invalid rootstock ID"})
-
-    rootstock = db.rootstock(rootstock_id)  # Fetch the row by ID
-
-    if not rootstock:
-        return response.json({"error": "Rootstock not found"})
-
-    rootstock_name = rootstock.name  # Now we are sure rootstock is valid
-
-    session.rootstock_id = rootstock_id  # Store in session if needed
-    return response.json({
-        "rootstock_id": rootstock_id,
-        "rootstock_name": rootstock_name
-    })
-    
 def get_rootstocks():
     pond_id = request.vars.pond_id
     rootstocks = db(db.rootstock.pond == pond_id).select()
     return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
-
 
 def add_rootstock():
     pond_id = request.vars.pond_id
@@ -45,11 +20,17 @@ def add_rootstock():
     db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
     return "Rootstock added successfully"
 
+def set_rootstock():
+    """Sets the selected rootstock in the session."""
+    session.rootstock_id = request.vars.rootstock_id
+    return response.json(dict(status="success", rootstock_id=session.rootstock_id))
 
 def get_knotstocks():
-    rootstock_id = session.rootstock_id
-    knotstocks = db(db.knotstock_list.rootstock == rootstock_id).select(db.knotstock_list.knotstock)
+    rootstock_id = session.get("rootstock_id")
+    if not rootstock_id:
+        return response.json(dict(knotstocks=[]))
 
+    knotstocks = db(db.knotstock_list.rootstock == rootstock_id).select(db.knotstock_list.knotstock)
     result = []
     for knot in knotstocks:
         knotstock = db.rootstock(knot.knotstock)
@@ -58,23 +39,28 @@ def get_knotstocks():
 
     return response.json(dict(knotstocks=result))
 
-
 def add_knotstock():
-    rootstock_id = session.rootstock_id
+    rootstock_id = session.get("rootstock_id")
     knotstock_id = request.vars.knotstock_id
+    if not rootstock_id:
+        return "No rootstock selected"
+
     db.knotstock_list.insert(rootstock=rootstock_id, knotstock=knotstock_id, created_by=auth.user_id)
     return "Knotstock added successfully"
 
-
 def get_flowers():
-    rootstock_id = session.rootstock_id
+    rootstock_id = session.get("rootstock_id")
+    if not rootstock_id:
+        return response.json(dict(flowers=[]))
+
     flowers = db(db.flower_list.rootstock == rootstock_id).select(db.flower.name)
     return response.json(dict(flowers=[{"name": f.name} for f in flowers]))
 
-
 def add_flower():
-    rootstock_id = session.rootstock_id
+    rootstock_id = session.get("rootstock_id")
     name = request.vars.name
+    if not rootstock_id:
+        return "No rootstock selected"
 
     flower_id = db.flower.insert(name=name, pond=session.pond_id, created_by=auth.user_id)
     db.flower_list.insert(rootstock=rootstock_id, flower=flower_id)
