@@ -1,130 +1,202 @@
-# -*- coding: utf-8 -*-
+{{extend 'layout.html'}}
 
-def index():
-    if not auth.is_logged_in():
-        return dict(message="please log in")
+{{if not auth.is_logged_in():}}
+    <h2>{{=message}}</h2>
+{{else:}}
+    <h2>Ponds</h2>
+    <div>
+        {{=pond_form}}
+    </div>
 
-    pond_form = SQLFORM(db.pond).process()
-    ponds = db(db.pond.created_by == auth.user_id).select()
-    session.pond_id = "Pond ID unknown"
-    session.rootstock_id = "Rootstock ID unknown"
-    return dict(pond_form=pond_form, ponds=ponds)
+    <table border="1">
+        <tr>
+            <th>Pond Name</th>
+            <th>Actions</th>
+        </tr>
+        {{for pond in ponds:}}
+        <tr>
+            <td>
+                <a href="#" onclick="showPond({{=pond.id}})">{{=pond.name}}</a>
+            </td>
+            <td>
+                <button onclick="showPond({{=pond.id}})">View Rootstocks</button>
+            </td>
+        </tr>
+        {{pass}}
+    </table>
 
-def get_rootstocks():
-    pond_id = request.vars.pond_id
-    rootstocks = db(db.rootstock.pond == pond_id).select()
-    return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
+    <div id="pond-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
+        <h3>Rootstocks for Pond</h3>
+        <div id="rootstock-grid"></div>
 
-def add_rootstock():
-    pond_id = request.vars.pond_id
-    name = request.vars.name
-    rootstock_id = db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
-    session.rootstock_id = rootstock_id  # Store the new rootstock ID in the session
+        <h3>Add Rootstock</h3>
+        <input type="text" id="rootstock-name" placeholder="Rootstock name">
+        <button onclick="addRootstock()">Add</button>
+    </div>
+    <div id="rootstock-details" style="display:none;">
+        <h3>Selected Rootstock</h3>
+        <div id="map"></div>
+        <div id="selected-rootstock-id">None selected</div>
 
-    return response.json({"status": "success", "rootstock_id": rootstock_id})
+        <!-- Knotstock Form -->
+        <div id="knotstock-list">
+            <h3>Add Knotstock</h3>
+            <form id="add-knotstock-form" onsubmit="addKnotstock(event)">
+                <label for="rootstock-select">Select Rootstock:</label>
+                <select id="rootstock-select" onchange="fetchFlowers(this.value); fetchKnotstocks(this.value);">
+                    <!-- Populated dynamically -->
+                </select>
 
-def set_rootstock_id():
-    rootstock_id = request.post_vars.get('rootstock_id')
-    rootstock = db.rootstock(rootstock_id) if rootstock_id else None
+                <label for="knotstock-select">Select Knotstock:</label>
+                <select id="knotstock-select">
+                    <!-- Populated dynamically -->
+                </select>
 
-    if not rootstock:
-        return response.json({"error": "Rootstock not found"})
+                <button type="submit">Add Knotstock</button>
+            </form>
 
-    session.rootstock_id = rootstock.id  # Store the clicked rootstock in session
+            <h3>Knotstocks for Selected Rootstock</h3>
+            <table id="knotstock-grid" border="1">
+                <tr>
+                    <th>Knotstock Name</th>
+                </tr>
+            </table>
+        </div>
 
-    return response.json({
-        "status": "success",
-        "rootstock_id": rootstock.id,
-        "rootstock_name": rootstock.name
-    })
+        <!-- Flower Section (Initially Hidden) -->
+        <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
+            <h3>Flowers for Selected Rootstock</h3>
+            <table id="flower-grid" border="1">
+                <tr>
+                    <th>Flower Name</th>
+                </tr>
+            </table>
 
-def get_knotstocks():
-    rootstock_id = request.vars.rootstock_id
-    knotstocks = db(db.knotstock_list.rootstock == rootstock_id).select(db.knotstock_list.knotstock)
-    
-    result = []
-    for knot in knotstocks:
-        knotstock = db.rootstock(knot.knotstock)
-        if knotstock:
-            result.append({"knotstock_name": knotstock.name})
+            <h3>Add Flower</h3>
+            <form id="add-flower-form" onsubmit="addFlower(event)">
+                <input type="text" id="flower-name" placeholder="Flower Name">
+                <button type="submit">Add Flower</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        var currentPondId = null;
+        var selectedRootstockId = null;
 
-    return response.json(dict(knotstocks=result))
+        function showPond(pondId) {
+            currentPondId = pondId;
+            document.getElementById("pond-container").style.display = "block";
+            fetchRootstocks(pondId);
+        }
 
-    
-def add_knotstock():
-    rootstock_id = request.vars.rootstock_id
-    knotstock_id = request.vars.knotstock_id
-    db.knotstock_list.insert(rootstock=rootstock_id, knotstock=knotstock_id, created_by=auth.user_id)
-    return "Knotstock added successfully"
+        function fetchRootstocks(pondId) {
+            fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
+                .then(response => response.json())
+                .then(data => {
+                    let grid = document.getElementById("rootstock-grid");
+                    grid.innerHTML = "";
 
-def get_flowers():
-    rootstock_id = request.vars.rootstock_id
-    flowers = db(db.flower_list.rootstock == rootstock_id).select(db.flower.name)
-    return response.json(dict(flowers=[{"name": f.name} for f in flowers]))
+                    if (data.rootstocks.length > 0) {
+                        data.rootstocks.forEach(rootstock => {
+                            grid.innerHTML += `<p>
+                                <a href="#" onclick="selectRootstock(${rootstock.id}, '${rootstock.name}'); return false;">
+                                    ${rootstock.name}
+                                </a>
+                            </p>`;
+                        });
+                    } else {
+                        grid.innerHTML = "<p>No rootstocks found.</p>";
+                    }
+                });
+        }
 
-def add_flower():
-    rootstock_id = request.vars.rootstock_id
-    name = request.vars.name
+        function selectRootstock(rootstockId, rootstockName) {
+            fetch("{{=URL('set_rootstock_id')}}", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `rootstock_id=${rootstockId}`
+            }).then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    document.getElementById("selected-rootstock-id").innerText = `ID: ${data.rootstock_id}, Name: ${data.rootstock_name}`;
+                    document.getElementById("rootstock-details").style.display = "block";
+                    fetchFlowers(rootstockId);
+                }
+            });
+        }
 
-    flower_id = db.flower.insert(name=name, pond=session.pond_id, created_by=auth.user_id)
-    db.flower_list.insert(rootstock=rootstock_id, flower=flower_id)
+        function fetchKnotstocks(rootstockId) {
+            fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
+                .then(response => response.json())
+                .then(data => {
+                    let table = document.getElementById("knotstock-grid");
+                    table.innerHTML = "<tr><th>Knotstock Name</th></tr>";
 
-    return "Flower added successfully"
+                    data.knotstocks.forEach(knotstock => {
+                        table.innerHTML += `<tr><td>${knotstock.knotstock_name}</td></tr>`;
+                    });
+                });
+        }
 
+        function addRootstock() {
+            let name = document.getElementById("rootstock-name").value;
+            if (!name) return alert("Enter rootstock name.");
 
+            fetch("{{=URL('add_rootstock')}}", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `pond_id=${currentPondId}&name=${encodeURIComponent(name)}`
+            }).then(() => {
+                fetchRootstocks(currentPondId);
+                document.getElementById("rootstock-name").value = "";
+            });
+        }
 
+        function addKnotstock(event) {
+            event.preventDefault();
 
+            let rootstockId = document.getElementById("rootstock-select").value;
+            let knotstockId = document.getElementById("knotstock-select").value;
 
+            fetch("{{=URL('add_knotstock')}}", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `rootstock_id=${rootstockId}&knotstock_id=${knotstockId}`
+            }).then(() => {
+                fetchKnotstocks(rootstockId);
+            });
+        }
 
+        function fetchFlowers(rootstockId) {
+            selectedRootstockId = rootstockId;
+            document.getElementById("flower-container").style.display = "block";
 
+            fetch("{{=URL('get_flowers')}}" + "?rootstock_id=" + rootstockId)
+                .then(response => response.json())
+                .then(data => {
+                    let table = document.getElementById("flower-grid");
+                    table.innerHTML = "<tr><th>Flower Name</th></tr>";
 
+                    data.flowers.forEach(flower => {
+                        table.innerHTML += `<tr><td>${flower.name}</td></tr>`;
+                    });
+                });
+        }
 
+        function addFlower(event) {
+            event.preventDefault();
 
+            let name = document.getElementById("flower-name").value;
+            if (!name) return alert("Enter flower name.");
 
-# ---- API (example) -----
-@auth.requires_login()
-def api_get_user_email():
-    if not request.env.request_method == 'GET': raise HTTP(403)
-    return response.json({'status':'success', 'email':auth.user.email})
-
-# ---- Smart Grid (example) -----
-@auth.requires_membership('admin') # can only be accessed by members of admin groupd
-def grid():
-    response.view = 'generic.html' # use a generic view
-    tablename = request.args(0)
-    if not tablename in db.tables: raise HTTP(403)
-    grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
-    return dict(grid=grid)
-
-# ---- Embedded wiki (example) ----
-def wiki():
-    auth.wikimenu() # add the wiki to the menu
-    return auth.wiki()
-
-# ---- Action for login/register/etc (required for auth) -----
-def user():
-    """
-    exposes:
-    http://..../[app]/default/user/login
-    http://..../[app]/default/user/logout
-    http://..../[app]/default/user/register
-    http://..../[app]/default/user/profile
-    http://..../[app]/default/user/retrieve_password
-    http://..../[app]/default/user/change_password
-    http://..../[app]/default/user/bulk_register
-    use @auth.requires_login()
-        @auth.requires_membership('group name')
-        @auth.requires_permission('read','table name',record_id)
-    to decorate functions that need access control
-    also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users
-    """
-    return dict(form=auth())
-
-# ---- action to server uploaded static content (required) ---
-@cache.action()
-def download():
-    """
-    allows downloading of uploaded files
-    http://..../[app]/default/download/[filename]
-    """
-    return response.download(request, db)
+            fetch("{{=URL('add_flower')}}", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `rootstock_id=${selectedRootstockId}&name=${encodeURIComponent(name)}`
+            }).then(() => {
+                fetchFlowers(selectedRootstockId);
+                document.getElementById("flower-name").value = "";
+            });
+        }
+    </script>
+{{pass}}
