@@ -11,9 +11,17 @@ def index():
 
 
 def set_rootstock_id():
-    """Set session.rootstock_id from clicked rootstock"""
-    session.rootstock_id = request.vars.rootstock_id
-    return response.json({"status": "success", "rootstock_id": session.rootstock_id})
+    rootstock_id = request.post_vars.get('rootstock_id')
+    rootstock = db.rootstock(rootstock_id) if rootstock_id else None
+
+    if not rootstock:
+        return response.json({"error": "Rootstock not found"})
+
+    session.rootstock_id = rootstock.id  # Store in session if needed
+    return response.json({
+        "rootstock_id": rootstock.id,
+        "rootstock_name": rootstock.name
+    })
 
 
 def get_rootstocks():

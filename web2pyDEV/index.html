@@ -36,8 +36,6 @@
 
     <!-- Flower Section -->
     <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
-        {{rootstock = db.rootstock(rootstock_id)  # Fetch the row by ID}}
-        {{rootstock_name = rootstock.name if rootstock else "Unknown"}}
         <h3>Flowers for Selected Rootstock <span id="selected-rootstock-id">[{{=rootstock}}, {{=rootstock_name}}]</span></h3>
         <table id="flower-grid" border="1">
             <tr>
@@ -89,11 +87,22 @@
             })
             .then(response => response.json())
             .then(data => {
-                selectedRootstockId = data.rootstock_id;
-                document.getElementById("selected-rootstock-id").innerText = `[${selectedRootstockId}]`;
+                if (data.error) {
+                    console.error("Error:", data.error);
+                    return;
+                }
+
+                let selectedRootstockId = data.rootstock_id;
+                let selectedRootstockName = data.rootstock_name; // Expecting name from the response
+
+                // Update the HTML elements
+                document.getElementById("selected-rootstock-id").innerText = `[${selectedRootstockId}] (${selectedRootstockName})`;
                 document.getElementById("flower-container").style.display = "block";
+                
+                // Fetch flowers for the selected rootstock
                 fetchFlowers(selectedRootstockId);
-            });
+            })
+            .catch(error => console.error("Fetch error:", error));
         }
 
         function fetchFlowers(rootstockId) {
