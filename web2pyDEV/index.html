@@ -155,4 +155,31 @@
             });
         }
 
+        function addRootstock() {
+    let name = document.getElementById("rootstock-name").value;
+    if (!name) {
+        alert("Enter a rootstock name.");
+        return;
+    }
+    
+    if (!currentPondId) {
+        alert("No pond selected.");
+        return;
+    }
+
+    fetch("{{=URL('add_rootstock')}}", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `pond_id=${currentPondId}&name=${encodeURIComponent(name)}`
+    })
+    .then(response => response.text()) // Since `add_rootstock()` in Python returns a string
+    .then(data => {
+        alert(data); // Show success or error message
+        document.getElementById("rootstock-name").value = ""; // Clear input field
+        fetchRootstocks(currentPondId); // Refresh the rootstock list
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+
 {{pass}}
