@@ -36,7 +36,9 @@
 
     <!-- Flower Section -->
     <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
-        <h3>Flowers for Selected Rootstock <span id="selected-rootstock-id">[{{=rootstock_id}}]</span></h3>
+        {{rootstock = db.rootstock(rootstock_id)  # Fetch the row by ID}}
+        {{rootstock_name = rootstock.name if rootstock else "Unknown"}}
+        <h3>Flowers for Selected Rootstock <span id="selected-rootstock-id">[{{=rootstock_name}}]</span></h3>
         <table id="flower-grid" border="1">
             <tr>
                 <th>Flower Name</th>

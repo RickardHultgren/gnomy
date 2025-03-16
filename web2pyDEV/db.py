@@ -180,34 +180,12 @@ db.define_table('pond',
 #}
 
 db.define_table('rootstock',
-    #Field('title',unique=True,notnull=True),
-    #Field('description','text'),
-    #Field('priority','integer',default=3,
-    #    requires=IS_IN_SET([1,2,3,4,5],
-    #    labels=[T('Very low'),
-    #            T('Low'),
-    #            T('Medium'),
-    #            T('High'),
-    #            T('Very High')],
-    #    zero=None)),
-    #Field('completed','boolean',default=False),
     Field('pond', 'reference pond'),
-    #Field('pond',db.pond, requires=IS_IN_DB(db, db.pond, '%(name)s')),
-    #Field('pond',db.pond, requires=IS_IN_DB(db(db.pond == session.pond_id), db.rootstock, '%(name)s')),
     Field('name'),
-    #Field('ICD9'),
-    #Field('next_list'),
-    #Field('numeral_system'),
-    #Field('data_type', requires=IS_IN_SET(['Procedure','Factor binary'])),
     Field('created_by', 'reference auth_user', default=lambda: auth.user_id, writable=False, readable=False),
-    #Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)         ,  
-    #Field.Virtual('virtual_field', lambda row: row.name + ' - ' + row.ICD9)
-                
     format='%(name)s'           
                )
-#db.rootstock.virtual_field = Field.Virtual(lambda row: row.name + ' - ' + row.ICD9)
-#db.rootstock.data_type.default = 'Procedure'
 try:
     db.rootstock.pond.id = session.pond_id
 except:
