@@ -14,6 +14,19 @@ def get_rootstocks():
     rootstocks = db(db.rootstock.pond == pond_id).select()
     return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
 
+def set_rootstock_id():
+    rootstock_id = request.post_vars.get('rootstock_id')
+    rootstock = db.rootstock(rootstock_id) if rootstock_id else None
+
+    if not rootstock:
+        return response.json({"error": "Rootstock not found"})
+
+    session.rootstock_id = rootstock.id  # Store in session if needed
+    return response.json({
+        "rootstock_id": rootstock.id,
+        "rootstock_name": rootstock.name
+    })
+
 def add_rootstock():
     pond_id = request.vars.pond_id
     name = request.vars.name
@@ -49,7 +62,8 @@ def add_knotstock():
     return "Knotstock added successfully"
 
 def get_flowers():
-    rootstock_id = session.get("rootstock_id")
+    rootstock_id = request.vars.get("rootstock_id") or session.get("rootstock_id")
+
     if not rootstock_id:
         return response.json(dict(flowers=[]))
 
@@ -57,16 +71,16 @@ def get_flowers():
     return response.json(dict(flowers=[{"name": f.name} for f in flowers]))
 
 def add_flower():
-    rootstock_id = session.get("rootstock_id")
+    rootstock_id = request.vars.rootstock_id  # Correct way to get rootstock_id
     name = request.vars.name
-    if not rootstock_id:
-        return "No rootstock selected"
 
-    flower_id = db.flower.insert(name=name, pond=session.pond_id, created_by=auth.user_id)
+    if not rootstock_id:
+        return response.json({"error": "No rootstock selected"})
+
+    flower_id = db.flower.insert(name=name, created_by=auth.user_id)
     db.flower_list.insert(rootstock=rootstock_id, flower=flower_id)
 
-    return "Flower added successfully"
-
+    return response.json({"status": "success", "flower_id": flower_id})
 
 
 

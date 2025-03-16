@@ -54,9 +54,14 @@
 
         function showPond(pondId) {
             currentPondId = pondId;
+            currentRootstockId = null; // Reset rootstock selection
             document.getElementById("pond-container").style.display = "block";
+            document.getElementById("rootstock-grid").innerHTML = ""; // Clear previous rootstocks
+            document.getElementById("flower-container").style.display = "none"; // Hide flower section
+
             fetchRootstocks(pondId);
         }
+
 
         function fetchRootstocks(pondId) {
             fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
@@ -90,8 +95,34 @@
               });
         }
 
+        function setRootstockId(rootstockId) {
+            fetch("{{=URL('set_rootstock_id')}}", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `rootstock_id=${rootstockId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error("Error:", data.error);
+                    return;
+                }
+
+                let selectedRootstockId = data.rootstock_id;
+                let selectedRootstockName = data.rootstock_name; // Expecting name from the response
+
+                // Update the HTML elements
+                document.getElementById("selected-rootstock-id").innerText = `[${selectedRootstockId}] (${selectedRootstockName})`;
+                document.getElementById("flower-container").style.display = "block";
+                
+                // Fetch flowers for the selected rootstock
+                fetchFlowers(selectedRootstockId);
+            })
+            .catch(error => console.error("Fetch error:", error));
+        }
+
         function fetchFlowers(rootstockId) {
-            fetch("{{=URL('get_flowers')}}")
+            fetch("{{=URL('get_flowers')}}" + "?rootstock_id=" + rootstockId)
                 .then(response => response.json())
                 .then(data => {
                     let table = document.getElementById("flower-grid");
@@ -109,15 +140,19 @@
             let name = document.getElementById("flower-name").value;
             if (!name) return alert("Enter flower name.");
 
+            if (!currentRootstockId) {
+                alert("Please select a rootstock first.");
+                return;
+            }
+
             fetch("{{=URL('add_flower')}}", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `name=${encodeURIComponent(name)}`
+                body: `name=${encodeURIComponent(name)}&rootstock_id=${currentRootstockId}`
             }).then(() => {
-                fetchFlowers({{=rootstock_id or "null"}});
+                fetchFlowers(currentRootstockId);
                 document.getElementById("flower-name").value = "";
             });
         }
-    </script>
 
 {{pass}}
