@@ -6,8 +6,8 @@ def index():
 
     pond_form = SQLFORM(db.pond).process()
     ponds = db(db.pond.created_by == auth.user_id).select()
-    session.pond_id = null
-    session.rootstock_id = null
+    session.pond_id = "Pond ID unknown"
+    session.rootstock_id = "Rootstock ID unknown"
     return dict(pond_form=pond_form, ponds=ponds)
 
 def get_rootstocks():
