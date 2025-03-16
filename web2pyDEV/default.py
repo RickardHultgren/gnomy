@@ -9,22 +9,30 @@ def index():
 
     return dict(pond_form=pond_form, ponds=ponds, rootstock_id=session.rootstock_id or "")
 
-
 def set_rootstock_id():
     rootstock_id = request.post_vars.get('rootstock_id')
+
+    if not rootstock_id:
+        return response.json({"error": "Missing rootstock ID"})
+
+    try:
+        rootstock_id = int(rootstock_id)  # Ensure it's an integer
+    except ValueError:
+        return response.json({"error": "Invalid rootstock ID"})
+
     rootstock = db.rootstock(rootstock_id)  # Fetch the row by ID
-    rootstock_name = rootstock.name if rootstock else "Unknown"
 
     if not rootstock:
         return response.json({"error": "Rootstock not found"})
+
+    rootstock_name = rootstock.name  # Now we are sure rootstock is valid
 
     session.rootstock_id = rootstock_id  # Store in session if needed
     return response.json({
         "rootstock_id": rootstock_id,
         "rootstock_name": rootstock_name
     })
-
-
+    
 def get_rootstocks():
     pond_id = request.vars.pond_id
     rootstocks = db(db.rootstock.pond == pond_id).select()
