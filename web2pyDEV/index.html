@@ -2,7 +2,8 @@
 
 {{if not auth.is_logged_in():}}
     <h2>{{=message}}</h2>
-{{else:}}
+{{#else:}}
+{{if auth.is_logged_in():}}
     <h2>Ponds</h2>
     <div>
         {{=pond_form}}
