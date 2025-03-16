@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# -*- coding: utf-8 -*-
-
-
-def set_rootstock_id():
-    """ Set the global session variable for rootstock_id """
-    if request.vars.rootstock_id:
-        session.rootstock_id = request.vars.rootstock_id
-    return response.json(dict(status="success", rootstock_id=session.rootstock_id))
-
+def set_rootstock():
+    rootstock_id = request.vars.rootstock_id
+    if rootstock_id:
+        session.rootstock_id = rootstock_id
+    return response.json(dict(rootstock_id=session.rootstock_id))
 
 def index():
     if not auth.is_logged_in():
@@ -17,11 +13,7 @@ def index():
     pond_form = SQLFORM(db.pond).process()
     ponds = db(db.pond.created_by == auth.user_id).select()
 
-    # Ensure session.rootstock_id persists on reload
-    rootstock_id = session.rootstock_id if session.rootstock_id else None
-
-    return dict(pond_form=pond_form, ponds=ponds, rootstock_id=rootstock_id)
-
+    return dict(pond_form=pond_form, ponds=ponds)
 
 def get_rootstocks():
     pond_id = request.vars.pond_id
@@ -54,11 +46,7 @@ def add_knotstock():
     return "Knotstock added successfully"
 
 def get_flowers():
-    """ Fetch flowers for the currently selected rootstock """
-    rootstock_id = request.vars.rootstock_id or session.rootstock_id
-    if not rootstock_id:
-        return response.json(dict(error="No rootstock selected"), status=400)
-
+    rootstock_id = request.vars.rootstock_id
     flowers = db(db.flower_list.rootstock == rootstock_id).select(db.flower.name)
     return response.json(dict(flowers=[{"name": f.name} for f in flowers]))
 

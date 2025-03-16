@@ -39,8 +39,8 @@
 <div id="tendril-list">
   <h3>Add Tendril</h3>
   <form id="add-tendril-form" onsubmit="addTendril(event)">
-      <label for="rootstock-select">Select Rootstock:</label>
-      <select id="rootstock-select" onchange="fetchTendrils(this.value);">
+      <!--label for="rootstock-select">Select Rootstock:</label>
+      <select id="rootstock-select" onchange="fetchTendrils(this.value);"-->
           <!-- Populated dynamically -->
       </select>
 
@@ -65,6 +65,10 @@
 </div>
 
 <script>
+
+var currentPondId = null;
+var selectedRootstockId = null;
+
 function fetchTendrils(rootstockId) {
   document.getElementById("tendril-header").innerText = `Tendrils connected to ${rootstockId}`;
 
@@ -83,7 +87,7 @@ function fetchTendrils(rootstockId) {
 function addTendril(event) {
   event.preventDefault();
 
-  let rootstockId = document.getElementById("rootstock-select").value; 
+  let rootstockId = {{session.rootstock_id}};//document.getElementById("rootstock-select").value;
   let knotstockId = document.getElementById("knotstock-select").value;
   let tendrilName = document.getElementById("tendril-name").value;
 
@@ -100,7 +104,7 @@ function addTendril(event) {
 
     <!-- Flower Section (Initially Hidden) -->
     <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
-        <h3>Flowers for Selected Rootstock</h3>
+        <h3 id="selected-rootstock-header">Flowers for Selected Rootstock [{{=session.rootstock_id if session.rootstock_id else "None"}}]</h3>
         <table id="flower-grid" border="1">
             <tr>
                 <th>Flower Name</th>
@@ -116,44 +120,7 @@ function addTendril(event) {
 
     <script>
         var currentPondId = null;
-        var selectedRootstockId = "{{=rootstock_id if rootstock_id else ''}}";
-
-        function updateFlowerList() {
-            if (!selectedRootstockId) return;
-
-            fetch("{{=URL('get_flowers')}}" + "?rootstock_id=" + selectedRootstockId)
-                .then(response => response.json())
-                .then(data => {
-                    let table = document.getElementById("flower-grid");
-                    table.innerHTML = "<tr><th>Flower Name</th></tr>";
-
-                    if (data.flowers) {
-                        data.flowers.forEach(flower => {
-                            table.innerHTML += `<tr><td>${flower.name}</td></tr>`;
-                        });
-                    }
-                });
-        }
-
-        // Restore rootstock selection on page reload
-        document.addEventListener("DOMContentLoaded", function () {
-            if (selectedRootstockId) {
-                fetchFlowers(selectedRootstockId);
-            }
-        });
-
-        function fetchFlowers(rootstockId) {
-            selectedRootstockId = rootstockId;
-            document.getElementById("flower-container").style.display = "block";
-
-            // Set session.rootstock_id in the backend
-            fetch("{{=URL('set_rootstock_id')}}" + "?rootstock_id=" + rootstockId)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Session rootstock_id set:", data.rootstock_id);
-                    updateFlowerList();
-                });
-        }
+        var selectedRootstockId = null;
 
         function showPond(pondId) {
             currentPondId = pondId;
@@ -228,26 +195,30 @@ function addTendril(event) {
         }
 
         function fetchFlowers(rootstockId) {
-    selectedRootstockId = rootstockId;
-    document.getElementById("flower-container").style.display = "block";
+            selectedRootstockId = rootstockId;
 
-    // Set session.rootstock_id in the backend
-    fetch("{{=URL('set_rootstock_id')}}" + "?rootstock_id=" + rootstockId)
-        .then(response => response.json())
-        .then(data => console.log("Session rootstock_id set:", data.rootstock_id));
+            // Store rootstock_id in the session
+            fetch("{{=URL('set_rootstock')}}?rootstock_id=" + rootstockId)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Rootstock ID set in session:", data.rootstock_id);
+                    document.getElementById("flower-container").style.display = "block";
+                    document.getElementById("selected-rootstock-header").innerText = 
+                        "Flowers for Selected Rootstock [" + data.rootstock_id + "]";
 
-    // Fetch flowers related to the selected rootstock
-    fetch("{{=URL('get_flowers')}}" + "?rootstock_id=" + rootstockId)
-        .then(response => response.json())
-        .then(data => {
-            let table = document.getElementById("flower-grid");
-            table.innerHTML = "<tr><th>Flower Name</th></tr>";
+                    // Fetch flowers for the selected rootstock
+                    return fetch("{{=URL('get_flowers')}}?rootstock_id=" + rootstockId);
+                })
+                .then(response => response.json())
+                .then(data => {
+                    let table = document.getElementById("flower-grid");
+                    table.innerHTML = "<tr><th>Flower Name</th></tr>";
 
-            data.flowers.forEach(flower => {
-                table.innerHTML += `<tr><td>${flower.name}</td></tr>`;
-            });
-        });
-}
+                    data.flowers.forEach(flower => {
+                        table.innerHTML += `<tr><td>${flower.name}</td></tr>`;
+                    });
+                });
+        }
 
         function addFlower(event) {
             event.preventDefault();
