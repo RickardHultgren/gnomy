@@ -6,7 +6,8 @@ def index():
 
     pond_form = SQLFORM(db.pond).process()
     ponds = db(db.pond.created_by == auth.user_id).select()
-
+    session.pond_id = null
+    session.rootstock_id = null
     return dict(pond_form=pond_form, ponds=ponds)
 
 def get_rootstocks():
@@ -17,8 +18,25 @@ def get_rootstocks():
 def add_rootstock():
     pond_id = request.vars.pond_id
     name = request.vars.name
-    db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
-    return "Rootstock added successfully"
+    rootstock_id = db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
+    session.rootstock_id = rootstock_id  # Store the new rootstock ID in the session
+
+    return response.json({"status": "success", "rootstock_id": rootstock_id})
+
+def set_rootstock_id():
+    rootstock_id = request.post_vars.get('rootstock_id')
+    rootstock = db.rootstock(rootstock_id) if rootstock_id else None
+
+    if not rootstock:
+        return response.json({"error": "Rootstock not found"})
+
+    session.rootstock_id = rootstock.id  # Store the clicked rootstock in session
+
+    return response.json({
+        "status": "success",
+        "rootstock_id": rootstock.id,
+        "rootstock_name": rootstock.name
+    })
 
 def get_knotstocks():
     rootstock_id = request.vars.rootstock_id
