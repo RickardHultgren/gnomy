@@ -126,7 +126,7 @@
 
             fetch("{{=URL('add_flower')}}", {
                 method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                //headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: `rootstock_id=${selectedRootstockId}&name=${encodeURIComponent(name)}`
             }).then(() => {
                 fetchFlowers(selectedRootstockId);
