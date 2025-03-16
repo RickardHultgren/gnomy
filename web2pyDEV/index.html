@@ -144,7 +144,7 @@ function addTendril(event) {
                         data.rootstocks.forEach(rootstock => {
                             grid.innerHTML += `<p><a href="#" onclick="fetchFlowers(${rootstock.id}); fetchKnotstocks(${rootstock.id}); return false;">${rootstock.name}</a></p>`;
                             rootstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
-                            knotstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                            //knotstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
                         });
                     } else {
                         grid.innerHTML = "<p>No rootstocks found.</p>";
