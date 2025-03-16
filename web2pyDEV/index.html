@@ -34,6 +34,9 @@
         <button onclick="addRootstock()">Add</button>
     </div>
 
+    <h3>Selected Rootstock</h3>
+    <div id="selected-rootstock-id">None selected</siv>
+
     <!-- Knotstock Form -->
     <div id="knotstock-list">
         <h3>Add Knotstock</h3>
@@ -90,23 +93,35 @@
                 .then(response => response.json())
                 .then(data => {
                     let grid = document.getElementById("rootstock-grid");
-                    let rootstockSelect = document.getElementById("rootstock-select");
-                    let knotstockSelect = document.getElementById("knotstock-select");
-
-                    rootstockSelect.innerHTML = "";
-                    knotstockSelect.innerHTML = "";
                     grid.innerHTML = "";
 
                     if (data.rootstocks.length > 0) {
                         data.rootstocks.forEach(rootstock => {
-                            grid.innerHTML += `<p><a href="#" onclick="fetchFlowers(${rootstock.id}); fetchKnotstocks(${rootstock.id}); return false;">${rootstock.name}</a></p>`;
-                            rootstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
-                            knotstockSelect.innerHTML += `<option value="${rootstock.id}">${rootstock.name}</option>`;
+                            grid.innerHTML += `<p>
+                                <a href="#" onclick="selectRootstock(${rootstock.id}, '${rootstock.name}'); return false;">
+                                    ${rootstock.name}
+                                </a>
+                            </p>`;
                         });
                     } else {
                         grid.innerHTML = "<p>No rootstocks found.</p>";
                     }
                 });
+        }
+
+        function selectRootstock(rootstockId, rootstockName) {
+            fetch("{{=URL('set_rootstock_id')}}", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `rootstock_id=${rootstockId}`
+            }).then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    document.getElementById("selected-rootstock-id").innerText = `ID: ${data.rootstock_id}, Name: ${data.rootstock_name}`;
+                    document.getElementById("flower-container").style.display = "block";
+                    fetchFlowers(rootstockId);
+                }
+            });
         }
 
         function fetchKnotstocks(rootstockId) {
