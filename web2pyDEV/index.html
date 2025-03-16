@@ -52,7 +52,7 @@
 
     <script>
         var currentPondId = null;
-        var selectedRootstockId = "{{=session.rootstock_id}}"; // Initialize with session variable
+        var selectedRootstockId = "{{=rootstock_id}}"; // Initialize with session variable
 
         function showPond(pondId) {
             currentPondId = pondId;
@@ -100,7 +100,7 @@
                 document.getElementById("flower-container").style.display = "block";
                 
                 // Fetch flowers for the selected rootstock
-                //fetchFlowers(selectedRootstockId);
+                fetchFlowers(selectedRootstockId);
             })
             .catch(error => console.error("Fetch error:", error));
         }
