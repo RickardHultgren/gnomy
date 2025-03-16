@@ -11,9 +11,16 @@ def index():
 
 def get_rootstocks():
     pond_id = request.vars.pond_id
-    rootstocks = db(db.rootstock.pond == pond_id).select()
-    return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
+    if not pond_id:
+        return response.json(dict(error="Pond ID not provided", rootstocks=[]))
 
+    rootstocks = db(db.rootstock.pond == pond_id).select()
+    
+    if not rootstocks:
+        return response.json(dict(message="No rootstocks found", rootstocks=[]))
+
+    return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
+    
 def set_rootstock_id():
     rootstock_id = request.post_vars.get('rootstock_id')
     rootstock = db.rootstock(rootstock_id) if rootstock_id else None
