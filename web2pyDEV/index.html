@@ -52,7 +52,7 @@
 
     <script>
         var currentPondId = null;
-        var selectedRootstockId = "{{=rootstock_id}}"; // Initialize with session variable
+        var selectedRootstockId = "{{=session.rootstock_id}}"; // Initialize with session variable
 
         function showPond(pondId) {
             currentPondId = pondId;
