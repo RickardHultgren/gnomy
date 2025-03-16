@@ -64,6 +64,7 @@
 
 
         function fetchRootstocks(pondId) {
+            alert("hej");
             fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
                 .then(response => response.json())
                 .then(data => {
