@@ -12,15 +12,16 @@ def index():
 
 def set_rootstock_id():
     rootstock_id = request.post_vars.get('rootstock_id')
-    rootstock = db.rootstock(rootstock_id) if rootstock_id else None
+    rootstock = db.rootstock(rootstock_id)  # Fetch the row by ID
+    rootstock_name = rootstock.name if rootstock else "Unknown"
 
     if not rootstock:
         return response.json({"error": "Rootstock not found"})
 
-    session.rootstock_id = rootstock.id  # Store in session if needed
+    session.rootstock_id = rootstock_id  # Store in session if needed
     return response.json({
-        "rootstock_id": rootstock.id,
-        "rootstock_name": rootstock.name
+        "rootstock_id": rootstock_id,
+        "rootstock_name": rootstock_name
     })
 
 
