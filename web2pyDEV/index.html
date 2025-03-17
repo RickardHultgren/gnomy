@@ -34,10 +34,9 @@
         <button onclick="addRootstock()">Add</button>
     </div>
     <div id="rootstock-details" style="display:none;">
-        <h3>Selected Rootstock: {{=session.rootstock_id or 'None'}}</h3>
+        
+        <div id="selected-rootstock-id"></div>
         <div id="map"></div>
-        <div id="selected-rootstock-id">None selected</div>
-
         <h4>Tendrils</h4>
         <div id="tendril-grid">
             <p>Loading...</p>
