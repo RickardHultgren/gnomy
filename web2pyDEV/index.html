@@ -136,11 +136,24 @@
 
 
         function fetchTendrils() {
-            fetch("{{=URL('get_tendrils')}}" + "?rootstock_id=" + encodeURIComponent({{=session.rootstock_id}}))
+            let rootstockId = "{{=session.rootstock_id}}";
+
+            if (!rootstockId || isNaN(rootstockId)) {
+                console.error("Invalid rootstock ID:", rootstockId);
+                return;
+            }
+
+            fetch("{{=URL('get_tendrils')}}" + "?rootstock_id=" + encodeURIComponent(rootstockId))
                 .then(response => response.json())
                 .then(data => {
                     let grid = document.getElementById("tendril-grid");
                     grid.innerHTML = "";
+
+                    if (data.error) {
+                        console.error("Error fetching tendrils:", data.error);
+                        grid.innerHTML = `<p style="color:red;">${data.error}</p>`;
+                        return;
+                    }
 
                     if (data.tendrils.length > 0) {
                         data.tendrils.forEach(tendril => {

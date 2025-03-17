@@ -6,8 +6,8 @@ def index():
 
     pond_form = SQLFORM(db.pond).process()
     ponds = db(db.pond.created_by == auth.user_id).select()
-    session.pond_id = "Pond ID unknown"
-    session.rootstock_id = "Rootstock ID unknown"
+    session.pond_id = None
+    session.rootstock_id = None
     return dict(pond_form=pond_form, ponds=ponds)
 
 def get_rootstocks():
@@ -16,13 +16,6 @@ def get_rootstocks():
         return response.json({"error": "No pond ID provided"})
 
     rootstocks = db(db.rootstock.pond == pond_id).select()
-    
-    # Ensure session.rootstock_id is correctly set when a rootstock is clicked
-    if rootstocks:
-        session.rootstock_id = rootstocks.first().id  # Set the first rootstock as default
-    else:
-        session.rootstock_id = None
-
     return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
 
 
@@ -36,12 +29,16 @@ def add_rootstock():
 
 def set_rootstock_id():
     rootstock_id = request.post_vars.get('rootstock_id')
-    rootstock = db.rootstock(rootstock_id) if rootstock_id else None
+
+    if not rootstock_id or not rootstock_id.isdigit():
+        return response.json({"error": "Invalid rootstock ID"})
+
+    rootstock = db.rootstock(int(rootstock_id))
 
     if not rootstock:
         return response.json({"error": "Rootstock not found"})
 
-    session.rootstock_id = rootstock.id  # Store the clicked rootstock in session
+    session.rootstock_id = rootstock.id  # Store valid ID only
 
     return response.json({
         "status": "success",
@@ -51,12 +48,14 @@ def set_rootstock_id():
 
 def get_tendrils():
     rootstock_id = request.vars.rootstock_id
-    if not rootstock_id:
-        return response.json({"error": "No rootstock ID provided"})
 
-    tendrils = db(db.tendril.rootstock == rootstock_id).select()
-    
+    if not rootstock_id or not rootstock_id.isdigit():
+        return response.json({"error": "Invalid rootstock ID"})
+
+    tendrils = db(db.tendril.rootstock == int(rootstock_id)).select()
+
     return response.json(dict(tendrils=[t.as_dict() for t in tendrils]))
+
 
 def add_tendril():
     rootstock_id = request.post_vars.rootstock_id
