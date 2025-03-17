@@ -54,7 +54,7 @@
                     <option value="{{=knotstock.id}}">{{=knotstock.name}}</option>
                 {{pass}}
             </select>
-        
+
             <label for="tendril-carry">Carry:</label>
             <input type="text" id="tendril-carry">
         
@@ -181,9 +181,17 @@
         }
 </script>
 <script>
-        function selectTendril(tendrilId, tendrilName) {
+        function selectTendril(tendrilId, tendrilName) { 
+            console.log("Selected tendril:", tendrilId, tendrilName);
 
-                    function addTendril(event) {
+            // Update the UI to show the selected tendril
+            document.getElementById("selected-tendril-name").textContent = tendrilName;
+            document.getElementById("tendril-container").style.display = "block";
+
+            // Optionally fetch more details about the tendril (uncomment if needed)
+            // fetchTendrilDetails(tendrilId);
+        }
+        function addTendril(event) {
             event.preventDefault();
 
             let rootstockId = "{{=session.rootstock_id}}";
