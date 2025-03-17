@@ -25,7 +25,7 @@ def add_rootstock():
     rootstock = db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
     session.rootstock_id = rootstock.id  # Store the new rootstock ID in the session
 
-    return response.json({"status": "success", "rootstock_id": rootstock_id})
+    return response.json({"status": "success", "rootstock_id": rootstock.id})
 
 def set_rootstock_id():
     rootstock_id = request.post_vars.get('rootstock_id')
