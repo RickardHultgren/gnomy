@@ -49,10 +49,59 @@
         
             <label for="knotstock-select">Knotstock:</label>
             <select id="knotstock-select">
-                {{for knotstock in db(db.rootstock.pond == session.pond_id).select():}}
-                    <option value="{{=knotstock.id}}">{{=knotstock.id}} {{=knotstock.name}}</option>
-                {{pass}}
+                <option value="">Select a Knotstock</option>
             </select>
+            
+            <script>
+                function fetchKnotstocks(rootstockId) {
+                    if (!rootstockId) {
+                        console.error("Rootstock ID is missing.");
+                        return;
+                    }
+            
+                    fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
+                        .then(response => response.json())
+                        .then(data => {
+                            let select = document.getElementById("knotstock-select");
+                            select.innerHTML = '<option value="">Select a Knotstock</option>'; // Reset options
+            
+                            if (data.knotstocks.length > 0) {
+                                data.knotstocks.forEach(knotstock => {
+                                    let option = document.createElement("option");
+                                    option.value = knotstock.id;
+                                    option.textContent = `${knotstock.id} ${knotstock.name}`;
+                                    select.appendChild(option);
+                                });
+                            } else {
+                                console.warn("No knotstocks found for this rootstock.");
+                            }
+                        })
+                        .catch(error => console.error("Error fetching knotstocks:", error));
+                }
+            
+                // Ensure we fetch knotstocks when a rootstock is selected
+                function selectRootstock(rootstockId, rootstockName) {
+                    fetch("{{=URL('set_rootstock_id')}}", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `rootstock_id=${rootstockId}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            document.getElementById("selected-rootstock-id").innerText = `ID: ${data.rootstock_id}, Name: ${data.rootstock_name}`;
+                            document.getElementById("rootstock-details").style.display = "block";
+                            localStorage.setItem("rootstock_id", data.rootstock_id);
+            
+                            // Fetch knotstocks for the selected rootstock
+                            fetchKnotstocks(data.rootstock_id);
+                        } else {
+                            console.error("Failed to set rootstock:", data.error);
+                        }
+                    })
+                    .catch(error => console.error("Error selecting rootstock:", error));
+                }
+            </script>
 
             <label for="tendril-carry">Carry:</label>
             <input type="text" id="tendril-carry">
