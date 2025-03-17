@@ -38,11 +38,11 @@ def set_rootstock_id():
     if not rootstock:
         return response.json({"error": "Rootstock not found"})
 
-    session.rootstock_id = rootstock.id  # Store valid ID only
+    session.rootstock_id = rootstock_id  # Store valid ID only
 
     return response.json({
         "status": "success",
-        "rootstock_id": rootstock.id,
+        "rootstock_id": rootstock_id,
         "rootstock_name": rootstock.name
     })
 
@@ -50,12 +50,11 @@ def get_tendrils():
     rootstock_id = request.vars.rootstock_id
 
     if not rootstock_id or not rootstock_id.isdigit():
-        return response.json({"error": "Invalid rootstock ID"})
+        return response.json({"status": "error", "error": "Invalid or missing rootstock ID"})
 
     tendrils = db(db.tendril.rootstock == int(rootstock_id)).select()
 
-    return response.json(dict(tendrils=[t.as_dict() for t in tendrils]))
-
+    return response.json({"status": "success", "tendrils": [t.as_dict() for t in tendrils]})
 
 def add_tendril():
     rootstock_id = request.post_vars.rootstock_id
@@ -64,12 +63,22 @@ def add_tendril():
     tendril_carry = request.post_vars.tendril_carry
     tendril_suffuse = request.post_vars.tendril_suffuse
 
-    if not (rootstock_id and tendril_name):
+    if not rootstock_id or not tendril_name:
         return response.json({"status": "error", "error": "Missing required fields"})
+
+    # Ensure the user is logged in
+    if not auth.user_id:
+        return response.json({"status": "error", "error": "User not authenticated"})
+
+    # Convert rootstock_id to an integer
+    try:
+        rootstock_id = int(rootstock_id)
+    except ValueError:
+        return response.json({"status": "error", "error": "Invalid rootstock ID"})
 
     tendril_id = db.tendril.insert(
         rootstock=rootstock_id,
-        knotstock=knotstock_id,
+        knotstock=knotstock_id if knotstock_id else None,  # Allow nullable values
         name=tendril_name,
         carry=tendril_carry,
         suffuse=tendril_suffuse,
