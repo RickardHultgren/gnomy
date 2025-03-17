@@ -126,21 +126,26 @@
 </script>
 <script>
 
-        function selectRootstock(rootstockId, rootstockName) {
-            fetch("{{=URL('set_rootstock_id')}}", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `rootstock_id=${rootstockId}`
-            }).then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
+    function selectRootstock(rootstockId, rootstockName) { 
+        fetch("{{=URL('set_rootstock_id')}}", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `rootstock_id=${rootstockId}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                document.getElementById("selected-rootstock-id").innerText = `ID: ${data.rootstock_id}, Name: ${data.rootstock_name}`;
+                document.getElementById("rootstock-details").style.display = "block";
 
-                    document.getElementById("selected-rootstock-id").innerText = `ID: ${data.rootstock_id}, Name: ${data.rootstock_name}`;
-                    document.getElementById("rootstock-details").style.display = "block";
-                    fetchFlowers(rootstockId);
-                }
-            });
-        }
+                // Store rootstock ID in localStorage in case the session is not persistent
+                localStorage.setItem("rootstock_id", data.rootstock_id);
+            } else {
+                console.error("Failed to set rootstock:", data.error);
+            }
+        })
+        .catch(error => console.error("Error selecting rootstock:", error));
+    }
 
 </script>
 <script>
