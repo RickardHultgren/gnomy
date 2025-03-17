@@ -89,7 +89,17 @@
     <script>
         var currentPondId = null;
         var selectedRootstockId = null;
+
+        
 </script>
+<script>
+    function showPond(pondId) {
+        currentPondId = pondId;
+        document.getElementById("pond-container").style.display = "block";
+        fetchRootstocks(pondId);
+    }
+    </script>
+
 <script>
 
         function fetchRootstocks(pondId) {
@@ -258,11 +268,4 @@
         }
 </script>
 
-<script>
-function showPond(pondId) {
-    currentPondId = pondId;
-    document.getElementById("pond-container").style.display = "block";
-    fetchRootstocks(pondId);
-}
-</script>
 {{pass}}
