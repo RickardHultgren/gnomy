@@ -6,14 +6,18 @@ def index():
 
     pond_form = SQLFORM(db.pond).process()
     ponds = db(db.pond.created_by == auth.user_id).select()
-    session.pond_id = null
-    session.rootstock_id = null
+    session.pond_id = None
+    session.rootstock_id = None
     return dict(pond_form=pond_form, ponds=ponds)
 
 def get_rootstocks():
     pond_id = request.vars.pond_id
+    if not pond_id:
+        return response.json({"error": "No pond ID provided"})
+
     rootstocks = db(db.rootstock.pond == pond_id).select()
     return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
+
 
 def add_rootstock():
     pond_id = request.vars.pond_id
@@ -25,12 +29,16 @@ def add_rootstock():
 
 def set_rootstock_id():
     rootstock_id = request.post_vars.get('rootstock_id')
-    rootstock = db.rootstock(rootstock_id) if rootstock_id else None
+
+    if not rootstock_id or not rootstock_id.isdigit():
+        return response.json({"error": "Invalid rootstock ID"})
+
+    rootstock = db.rootstock(int(rootstock_id))
 
     if not rootstock:
         return response.json({"error": "Rootstock not found"})
 
-    session.rootstock_id = rootstock.id  # Store the clicked rootstock in session
+    session.rootstock_id = rootstock.id  # Store valid ID only
 
     return response.json({
         "status": "success",
@@ -38,24 +46,37 @@ def set_rootstock_id():
         "rootstock_name": rootstock.name
     })
 
-def get_knotstocks():
+def get_tendrils():
     rootstock_id = request.vars.rootstock_id
-    knotstocks = db(db.knotstock_list.rootstock == rootstock_id).select(db.knotstock_list.knotstock)
-    
-    result = []
-    for knot in knotstocks:
-        knotstock = db.rootstock(knot.knotstock)
-        if knotstock:
-            result.append({"knotstock_name": knotstock.name})
 
-    return response.json(dict(knotstocks=result))
+    if not rootstock_id or not rootstock_id.isdigit():
+        return response.json({"error": "Invalid rootstock ID"})
 
-    
-def add_knotstock():
-    rootstock_id = request.vars.rootstock_id
-    knotstock_id = request.vars.knotstock_id
-    db.knotstock_list.insert(rootstock=rootstock_id, knotstock=knotstock_id, created_by=auth.user_id)
-    return "Knotstock added successfully"
+    tendrils = db(db.tendril.rootstock == int(rootstock_id)).select()
+
+    return response.json(dict(tendrils=[t.as_dict() for t in tendrils]))
+
+
+def add_tendril():
+    rootstock_id = request.post_vars.rootstock_id
+    knotstock_id = request.post_vars.knotstock_id
+    tendril_name = request.post_vars.tendril_name
+    tendril_carry = request.post_vars.tendril_carry
+    tendril_suffuse = request.post_vars.tendril_suffuse
+
+    if not (rootstock_id and tendril_name):
+        return response.json({"status": "error", "error": "Missing required fields"})
+
+    tendril_id = db.tendril.insert(
+        rootstock=rootstock_id,
+        knotstock=knotstock_id,
+        name=tendril_name,
+        carry=tendril_carry,
+        suffuse=tendril_suffuse,
+        created_by=auth.user_id
+    )
+
+    return response.json({"status": "success", "tendril_id": tendril_id})
 
 def get_flowers():
     rootstock_id = request.vars.rootstock_id
