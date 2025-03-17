@@ -221,10 +221,10 @@ db.define_table('flower',
 db.define_table(
     'tendril',
     Field('name'),
-    Field('execution'),
-    Field('informing'),
     Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
     Field('knotstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
+    Field('carry'),
+    Field('suffuse'),
     Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),
     Field('created_on', 'datetime', default=request.now, writable=False, readable=False),
     format='%(rootstock)s'
