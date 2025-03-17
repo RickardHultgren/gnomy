@@ -51,7 +51,7 @@
             <label for="knotstock-select">Knotstock:</label>
             <select id="knotstock-select">
                 {{for knotstock in db(db.rootstock.pond == session.pond_id).select():}}
-                    <option value="{{=knotstock.id}}">{{=knotstock.name}}</option>
+                    <option value="{{=knotstock.id}}">{{=knotstock.id}} {{=knotstock.name}}</option>
                 {{pass}}
             </select>
 
