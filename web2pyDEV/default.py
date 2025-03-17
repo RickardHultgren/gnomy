@@ -12,8 +12,19 @@ def index():
 
 def get_rootstocks():
     pond_id = request.vars.pond_id
+    if not pond_id:
+        return response.json({"error": "No pond ID provided"})
+
     rootstocks = db(db.rootstock.pond == pond_id).select()
+    
+    # Ensure session.rootstock_id is correctly set when a rootstock is clicked
+    if rootstocks:
+        session.rootstock_id = rootstocks.first().id  # Set the first rootstock as default
+    else:
+        session.rootstock_id = None
+
     return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
+
 
 def add_rootstock():
     pond_id = request.vars.pond_id
