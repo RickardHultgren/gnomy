@@ -38,11 +38,11 @@ def set_rootstock_id():
     if not rootstock:
         return response.json({"error": "Rootstock not found"})
 
-    session.rootstock_id = rootstock.id  # Store valid ID only
+    session.rootstock_id = rootstock_id  # Store valid ID only
 
     return response.json({
         "status": "success",
-        "rootstock_id": rootstock.id,
+        "rootstock_id": rootstock_id,
         "rootstock_name": rootstock.name
     })
 
