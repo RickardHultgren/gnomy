@@ -233,12 +233,11 @@ function fetchKnotstocks(pondId) {
             window.selectedTendrilId = tendrilId;
         }
         
-        function addTendril(event) {  
+        function addTendril(event) { 
     event.preventDefault();
 
     // Get the currently selected rootstock ID
-    let rootstockId = "{{=session.rootstock_id}}";
-    // let rootstockId = localStorage.getItem("rootstock_id"); // Retrieve stored rootstock ID
+    let rootstockId = localStorage.getItem("rootstock_id"); // Retrieve stored rootstock ID
     let knotstockId = document.getElementById("knotstock-select").value;
     let tendrilName = document.getElementById("tendril-name").value;
     let tendrilCarry = document.getElementById("tendril-carry").value;
@@ -251,7 +250,7 @@ function fetchKnotstocks(pondId) {
     }
 
     // Ensure rootstockId is valid
-    if (!rootstockId || rootstockId === "None") {
+    if (!rootstockId) {
         console.error("Rootstock ID is missing. Cannot add tendril.");
         return;
     }
@@ -265,7 +264,7 @@ function fetchKnotstocks(pondId) {
     .then(response => response.json())
     .then(data => {
         if (data.status === "success") {
-            rootstockId = data.rootstock_id; // Ensure we get the correct rootstock ID
+            rootstockId = data.rootstock_id;  // Ensure we get the correct rootstock ID
             if (!rootstockId) {
                 console.error("Rootstock ID is missing after confirmation.");
                 return;
