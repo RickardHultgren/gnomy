@@ -42,7 +42,7 @@ def set_rootstock_id():
 
     return response.json({
         "status": "success",
-        "rootstock_id": rootstock_id,
+        "rootstock_id": str(rootstock.id),  # Convert to string to avoid JSON issues
         "rootstock_name": rootstock.name
     })
 
@@ -57,7 +57,7 @@ def get_tendrils():
     return response.json({"status": "success", "tendrils": [t.as_dict() for t in tendrils]})
 
 def add_tendril():
-    rootstock_id = request.post_vars.rootstock_id
+    rootstock_id = request.post_vars.rootstock_id or session.rootstock_id  # Use session if not passed
     knotstock_id = request.post_vars.knotstock_id
     tendril_name = request.post_vars.tendril_name
     tendril_carry = request.post_vars.tendril_carry
@@ -66,11 +66,9 @@ def add_tendril():
     if not rootstock_id or not tendril_name:
         return response.json({"status": "error", "error": "Missing required fields"})
 
-    # Ensure the user is logged in
     if not auth.user_id:
         return response.json({"status": "error", "error": "User not authenticated"})
 
-    # Convert rootstock_id to an integer
     try:
         rootstock_id = int(rootstock_id)
     except ValueError:
@@ -78,7 +76,7 @@ def add_tendril():
 
     tendril_id = db.tendril.insert(
         rootstock=rootstock_id,
-        knotstock=knotstock_id if knotstock_id else None,  # Allow nullable values
+        knotstock=knotstock_id if knotstock_id else None,
         name=tendril_name,
         carry=tendril_carry,
         suffuse=tendril_suffuse,
@@ -100,6 +98,83 @@ def add_flower():
     db.flower_list.insert(rootstock=rootstock_id, flower=flower_id)
 
     return "Flower added successfully"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def rootstock_manager():
+    action = request.vars.action
+
+    if action == "set_rootstock_id":
+        rootstock_id = request.post_vars.get('rootstock_id')
+
+        if not rootstock_id or not rootstock_id.isdigit():
+            return response.json({"error": "Invalid rootstock ID"})
+
+        rootstock = db.rootstock(int(rootstock_id))
+        if not rootstock:
+            return response.json({"error": "Rootstock not found"})
+
+        session.rootstock_id = rootstock.id  # Store valid ID only
+
+        return response.json({
+            "status": "success",
+            "rootstock_id": rootstock_id,
+            "rootstock_name": rootstock.name
+        })
+
+    elif action == "get_rootstocks":
+        pond_id = request.vars.pond_id
+        if not pond_id:
+            return response.json({"error": "No pond ID provided"})
+
+        rootstocks = db(db.rootstock.pond == pond_id).select()
+        return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
+
+    elif action == "add_tendril":
+        rootstock_id = request.post_vars.rootstock_id
+        knotstock_id = request.post_vars.knotstock_id
+        tendril_name = request.post_vars.tendril_name
+        tendril_carry = request.post_vars.tendril_carry
+        tendril_suffuse = request.post_vars.tendril_suffuse
+
+        if not rootstock_id or not tendril_name:
+            return response.json({"status": "error", "error": "Missing required fields"})
+
+        if not auth.user_id:
+            return response.json({"status": "error", "error": "User not authenticated"})
+
+        try:
+            rootstock_id = int(rootstock_id)
+        except ValueError:
+            return response.json({"status": "error", "error": "Invalid rootstock ID"})
+
+        tendril_id = db.tendril.insert(
+            rootstock=rootstock_id,
+            knotstock=knotstock_id if knotstock_id else None,
+            name=tendril_name,
+            carry=tendril_carry,
+            suffuse=tendril_suffuse,
+            created_by=auth.user_id
+        )
+
+        return response.json({"status": "success", "tendril_id": tendril_id})
+
+    return response.json({"error": "Invalid action"})
+
 
 
 
