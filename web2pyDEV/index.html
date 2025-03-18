@@ -39,7 +39,7 @@
         <div id="map"></div>
         <h4>Tendrils</h4>
         <div id="tendril-grid">
-            <p>Loading...</p>
+            
         </div>
         
         <h4>Add Tendril</h4>
@@ -234,16 +234,35 @@ function fetchKnotstocks(pondId) {
         function addTendril(event) {
             event.preventDefault();
 
-            let rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
-            let knotstockId = document.getElementById("knotstock-select").value;
-            let tendrilName = document.getElementById("tendril-name").value;
-            let tendrilCarry = document.getElementById("tendril-carry").value;
-            let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
 
-            if (!rootstockId) {
-                console.error("Rootstock ID is missing. Cannot add tendril.");
-                return;
-            }
+                    fetch("{{=URL('set_rootstock_id')}}", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `rootstock_id=${rootstockId}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+
+                        let rootstockId = ${data.rootstock_id}; // Ensure it's not None
+                        let knotstockId = document.getElementById("knotstock-select").value;
+                        let tendrilName = document.getElementById("tendril-name").value;
+                        let tendrilCarry = document.getElementById("tendril-carry").value;
+                        let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
+
+                        if (!rootstockId) {
+                            console.error("Rootstock ID is missing. Cannot add tendril.");
+                            return;
+                        }
+                    } else {
+                        console.error("Failed to set rootstock:", data.error);
+                    }
+                })
+                .catch(error => console.error("Error selecting rootstock:", error));
+            
+
+
+            
 
             fetch("{{=URL('add_tendril')}}", {
                 method: "POST",
