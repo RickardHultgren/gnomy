@@ -52,6 +52,7 @@
                 <option value="">Select a Knotstock</option>
             </select>
             <script>
+var therootstock_id;
 function fetchKnotstocks(pondId) {
     if (!pondId) {
         console.error("Pond ID is missing.");
@@ -168,6 +169,7 @@ function fetchKnotstocks(pondId) {
 
                 // Store rootstock ID in localStorage in case the session is not persistent
                 localStorage.setItem("rootstock_id", data.rootstock_id);
+                therootstock_id = data.roostock_id;
             } else {
                 console.error("Failed to set rootstock:", data.error);
             }
@@ -255,10 +257,12 @@ function fetchKnotstocks(pondId) {
                 if (data.status === "success") {
                     rootstockId = data.rootstock_id;  // Assign rootstockId properly
                     if (!rootstockId) {
+                        roostockId = therootstock_id
+                    }
+                    if (!rootstockId) {
                         console.error("Rootstock ID is missing. Cannot add tendril.");
                         return;
                     }
-
                     // Now, proceed to send the tendril data
                     return fetch("{{=URL('add_tendril')}}", {
                         method: "POST",
