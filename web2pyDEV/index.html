@@ -54,6 +54,7 @@
             <script>
 
 function fetchKnotstocks(pondId) {
+    var therootstock_id = "";
     if (!pondId) {
         console.error("Pond ID is missing.");
         return;
@@ -237,7 +238,7 @@ function fetchKnotstocks(pondId) {
     event.preventDefault();
 
     // Get the currently selected rootstock ID
-    let rootstockId = localStorage.getItem("rootstock_id"); // Retrieve stored rootstock ID
+    let rootstockId = therootstock_id;//localStorage.getItem("rootstock_id"); // Retrieve stored rootstock ID
     let knotstockId = document.getElementById("knotstock-select").value;
     let tendrilName = document.getElementById("tendril-name").value;
     let tendrilCarry = document.getElementById("tendril-carry").value;
