@@ -181,12 +181,12 @@ function fetchKnotstocks(pondId) {
 <script>
 
         function fetchTendrils() {
-            //let rootstockId = "{{=session.rootstock_id}}";
+            let rootstockId = "{{=session.rootstock_id}}";
 
-            //if (!rootstockId || isNaN(rootstockId)) {
-            //    console.error("Invalid rootstock ID:", rootstockId);
-            //    return;
-            //}
+            if (!rootstockId || isNaN(rootstockId)) {
+                console.error("Invalid rootstock ID:", rootstockId);
+                return;
+            }
 
             fetch("{{=URL('get_tendrils')}}" + "?rootstock_id=" + encodeURIComponent(rootstockId))
                 .then(response => response.json())
@@ -233,71 +233,90 @@ function fetchKnotstocks(pondId) {
             window.selectedTendrilId = tendrilId;
         }
         
-        function addTendril(event) { 
-            event.preventDefault();
+        function selectTendril(tendrilId, tendrilName) {
+            console.log("Selected tendril:", tendrilId, tendrilName);
 
-            // Get the currently selected rootstock ID
-            let rootstockId = localStorage.getItem("rootstock_id"); // Retrieve stored rootstock ID
-            let knotstockId = document.getElementById("knotstock-select").value;
-            let tendrilName = document.getElementById("tendril-name").value;
-            let tendrilCarry = document.getElementById("tendril-carry").value;
-            let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
+            let tendrilNameElem = document.getElementById("selected-tendril-name");
+            let tendrilContainer = document.getElementById("tendril-container");
 
-            // Ensure a valid tendril name
-            if (!tendrilName) {
-                console.error("Tendril name is required.");
-                return;
+            if (tendrilNameElem && tendrilContainer) {
+                tendrilNameElem.textContent = tendrilName;
+                tendrilContainer.style.display = "block";
+            } else {
+                console.error("UI elements for tendril selection not found");
             }
 
-            // Ensure rootstockId is valid
+            // Store the selected tendril ID for further actions if needed
+            window.selectedTendrilId = tendrilId;
+        }
+        
+function addTendril(event) {  
+    event.preventDefault();
+
+    // Get the currently selected rootstock ID
+    let rootstockId = "{{=session.rootstock_id}}";
+    // let rootstockId = localStorage.getItem("rootstock_id"); // Retrieve stored rootstock ID
+    let knotstockId = document.getElementById("knotstock-select").value;
+    let tendrilName = document.getElementById("tendril-name").value;
+    let tendrilCarry = document.getElementById("tendril-carry").value;
+    let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
+
+    // Ensure a valid tendril name
+    if (!tendrilName) {
+        console.error("Tendril name is required.");
+        return;
+    }
+
+    // Ensure rootstockId is valid
+    if (!rootstockId || rootstockId === "None") {
+        console.error("Rootstock ID is missing. Cannot add tendril.");
+        return;
+    }
+
+    // Step 1: Confirm the rootstock ID with the server
+    fetch("{{=URL('set_rootstock_id')}}", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ rootstock_id: rootstockId }) 
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            rootstockId = data.rootstock_id; // Ensure we get the correct rootstock ID
             if (!rootstockId) {
-                console.error("Rootstock ID is missing. Cannot add tendril.");
+                console.error("Rootstock ID is missing after confirmation.");
                 return;
             }
 
-            // Step 1: Confirm the rootstock ID with the server
-            fetch("{{=URL('set_rootstock_id')}}", {
+            // Step 2: Send request to add tendril
+            return fetch("{{=URL('add_tendril')}}", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({ rootstock_id: rootstockId }) 
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
-                    rootstockId = data.rootstock_id;  // Ensure we get the correct rootstock ID
-                    if (!rootstockId) {
-                        console.error("Rootstock ID is missing after confirmation.");
-                        return;
-                    }
-
-                    // Step 2: Send request to add tendril
-                    return fetch("{{=URL('add_tendril')}}", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: new URLSearchParams({
-                            rootstock_id: rootstockId,
-                            knotstock_id: knotstockId,
-                            tendril_name: tendrilName,
-                            tendril_carry: tendrilCarry,
-                            tendril_suffuse: tendrilSuffuse
-                        })
-                    });
-                } else {
-                    throw new Error("Failed to set rootstock: " + data.error);
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
-                    console.log("Tendril added successfully:", data);
-                    fetchTendrils();  // Refresh the tendril list
-                    document.getElementById("add-tendril-form").reset();
-                } else {
-                    console.error("Failed to add tendril:", data.error);
-                }
-            })
-            .catch(error => console.error("Error:", error));
+                body: new URLSearchParams({
+                    rootstock_id: rootstockId,
+                    knotstock_id: knotstockId,
+                    tendril_name: tendrilName,
+                    tendril_carry: tendrilCarry,
+                    tendril_suffuse: tendrilSuffuse
+                })
+            });
+        } else {
+            throw new Error("Failed to set rootstock: " + data.error);
         }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            console.log("Tendril added successfully:", data);
+            fetchTendrils();  // Refresh the tendril list
+            document.getElementById("add-tendril-form").reset();
+        } else {
+            console.error("Failed to add tendril:", data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
 
 </script>
 <script>
