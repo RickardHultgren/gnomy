@@ -52,7 +52,7 @@
                 <option value="">Select a Knotstock</option>
             </select>
             <script>
-var therootstock_id;
+
 function fetchKnotstocks(pondId) {
     if (!pondId) {
         console.error("Pond ID is missing.");
@@ -233,24 +233,7 @@ function fetchKnotstocks(pondId) {
             window.selectedTendrilId = tendrilId;
         }
         
-        function selectTendril(tendrilId, tendrilName) {
-            console.log("Selected tendril:", tendrilId, tendrilName);
-
-            let tendrilNameElem = document.getElementById("selected-tendril-name");
-            let tendrilContainer = document.getElementById("tendril-container");
-
-            if (tendrilNameElem && tendrilContainer) {
-                tendrilNameElem.textContent = tendrilName;
-                tendrilContainer.style.display = "block";
-            } else {
-                console.error("UI elements for tendril selection not found");
-            }
-
-            // Store the selected tendril ID for further actions if needed
-            window.selectedTendrilId = tendrilId;
-        }
-        
-function addTendril(event) {  
+        function addTendril(event) {  
     event.preventDefault();
 
     // Get the currently selected rootstock ID
@@ -316,7 +299,6 @@ function addTendril(event) {
     })
     .catch(error => console.error("Error:", error));
 }
-
 
 </script>
 <script>
