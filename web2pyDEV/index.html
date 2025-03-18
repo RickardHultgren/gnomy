@@ -62,7 +62,7 @@ function fetchKnotstocks(pondId) {
         .then(response => response.json())
         .then(data => {
             let select = document.getElementById("knotstock-select");
-            select.innerHTML = '<option value="">Select a Rootstock</option>'; // Reset options
+            select.innerHTML = '<option value="">Select a Knotstock</option>'; // Reset options
 
             if (data.rootstocks && data.rootstocks.length > 0) {
                 data.rootstocks.forEach(rootstock => {
