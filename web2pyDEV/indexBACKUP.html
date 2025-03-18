@@ -47,12 +47,39 @@
             <label for="tendril-name">Name:</label>
             <input type="text" id="tendril-name" required>
         
-            <label for="knotstock-select">Knotstock:</label>
+            <label for="rootstock-select">Knotstock:</label>
             <select id="knotstock-select">
-                {{for knotstock in db(db.rootstock.pond == session.pond_id).select():}}
-                    <option value="{{=knotstock.id}}">{{=knotstock.id}} {{=knotstock.name}}</option>
-                {{pass}}
+                <option value="">Select a Knotstock</option>
             </select>
+            <script>
+function fetchKnotstocks(pondId) {
+    if (!pondId) {
+        console.error("Pond ID is missing.");
+        return;
+    }
+
+    fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
+        .then(response => response.json())
+        .then(data => {
+            let select = document.getElementById("knotstock-select");
+            select.innerHTML = '<option value="">Select a Knotstock</option>'; // Reset options
+
+            if (data.rootstocks && data.rootstocks.length > 0) {
+                data.rootstocks.forEach(rootstock => {
+                    let option = document.createElement("option");
+                    option.value = rootstock.id;
+                    option.textContent = `${rootstock.id} ${rootstock.name}`;
+                    select.appendChild(option);
+                });
+            } else {
+                console.warn("No rootstocks found for this pond.");
+            }
+        })
+        .catch(error => console.error("Error fetching rootstocks:", error));
+}
+
+                // Ensure we fetch knotstocks when a rootstock is selected
+            </script>
 
             <label for="tendril-carry">Carry:</label>
             <input type="text" id="tendril-carry">
@@ -102,6 +129,8 @@
 <script>
 
         function fetchRootstocks(pondId) {
+            fetchKnotstocks(pondId);
+            document.getElementById("rootstock-details").style.display = "none";
             fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
                 .then(response => response.json())
                 .then(data => {
