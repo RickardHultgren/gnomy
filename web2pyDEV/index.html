@@ -232,62 +232,62 @@ function fetchKnotstocks(pondId) {
         }
         
         function addTendril(event) {
-    event.preventDefault();
+            event.preventDefault();
 
-    let rootstockId = document.getElementById("rootstock-select").value; // Assuming you have a rootstock dropdown
-    if (!rootstockId) {
-        console.error("Rootstock ID is missing. Cannot add tendril.");
-        return;
-    }
-
-    fetch("{{=URL('set_rootstock_id')}}", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ rootstock_id: rootstockId }) // Properly formatted request body
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "success") {
-            let confirmedRootstockId = data.rootstock_id; // Ensure we get the correct rootstock ID
-
+            let rootstockId;
             let knotstockId = document.getElementById("knotstock-select").value;
             let tendrilName = document.getElementById("tendril-name").value;
             let tendrilCarry = document.getElementById("tendril-carry").value;
             let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
 
-            if (!knotstockId) {
-                console.error("Knotstock ID is missing.");
+            if (!tendrilName) {
+                console.error("Tendril name is required.");
                 return;
             }
 
-            // Now that we have a confirmed rootstock ID, make the second fetch request
-            return fetch("{{=URL('add_tendril')}}", {
+            fetch("{{=URL('set_rootstock_id')}}", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({
-                    rootstock_id: confirmedRootstockId, 
-                    knotstock_id: knotstockId,
-                    tendril_name: tendrilName,
-                    tendril_carry: tendrilCarry,
-                    tendril_suffuse: tendrilSuffuse
-                })
-            });
-        } else {
-            throw new Error("Failed to set rootstock: " + data.error);
+                body: new URLSearchParams({ rootstock_id: rootstockId }) // Corrected encoding
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    rootstockId = data.rootstock_id;  // Assign rootstockId properly
+                    if (!rootstockId) {
+                        console.error("Rootstock ID is missing. Cannot add tendril.");
+                        return;
+                    }
+
+                    // Now, proceed to send the tendril data
+                    return fetch("{{=URL('add_tendril')}}", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams({
+                            rootstock_id: rootstockId,
+                            knotstock_id: knotstockId,
+                            tendril_name: tendrilName,
+                            tendril_carry: tendrilCarry,
+                            tendril_suffuse: tendrilSuffuse
+                        })
+                    });
+                } else {
+                    throw new Error("Failed to set rootstock: " + data.error);
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    console.log("Tendril added successfully:", data);
+                    fetchTendrils();  // Refresh the tendril list
+                    document.getElementById("add-tendril-form").reset();
+                } else {
+                    console.error("Failed to add tendril:", data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
         }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "success") {
-            console.log("Tendril added successfully:", data);
-            fetchTendrils();  // Refresh the tendril list
-            document.getElementById("add-tendril-form").reset();
-        } else {
-            console.error("Failed to add tendril:", data.error);
-        }
-    })
-    .catch(error => console.error("Error:", error));
-}
+
 </script>
 <script>
 
