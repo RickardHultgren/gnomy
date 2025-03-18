@@ -59,7 +59,7 @@
                         return;
                     }
             
-                    fetch("{{=URL('get_knotstocks')}}" + "?rootstock_id=" + rootstockId)
+                    fetch("{{=URL('get_rootstocks')}}" + "?rootstock_id=" + rootstockId)
                         .then(response => response.json())
                         .then(data => {
                             let select = document.getElementById("knotstock-select");
