@@ -65,7 +65,7 @@
                             let select = document.getElementById("knotstock-select");
                             select.innerHTML = '<option value="">Select a Knotstock</option>'; // Reset options
             
-                            if (data.knotstocks.length > 0) {
+                            if (data.rootstocks.length > 0) {
                                 data.rootstocks.forEach(knotstock => {
                                     let option = document.createElement("option");
                                     option.value = knotstock.id;
