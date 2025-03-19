@@ -138,6 +138,7 @@ def rootstock_manager():
 
     elif action == "get_rootstocks":
         pond_id = request.vars.pond_id
+        
         if not pond_id:
             return response.json({"error": "No pond ID provided"})
 
@@ -145,7 +146,7 @@ def rootstock_manager():
         return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
 
     elif action == "add_tendril":
-        rootstock_id = request.post_vars.rootstock_id
+        rootstock_id = session.rootstock_id
         knotstock_id = request.post_vars.knotstock_id
         tendril_name = request.post_vars.tendril_name
         tendril_carry = request.post_vars.tendril_carry
@@ -157,9 +158,7 @@ def rootstock_manager():
         if not auth.user_id:
             return response.json({"status": "error", "error": "User not authenticated"})
 
-        try:
-            rootstock_id = int(rootstock_id)
-        except ValueError:
+        if not rootstock_id:
             return response.json({"status": "error", "error": "Invalid rootstock ID"})
 
         tendril_id = db.tendril.insert(
