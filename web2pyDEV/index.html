@@ -234,7 +234,7 @@ function fetchKnotstocks(pondId) {
         function addTendril(event) {
             event.preventDefault();
 
-            let rootstockId = "{{=session.rootstock_id if session.rootstock_id else 'no session.rootstock_id'}}"; // Ensure it's not None
+            let rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
             let knotstockId = document.getElementById("knotstock-select").value;
             let tendrilName = document.getElementById("tendril-name").value;
             let tendrilCarry = document.getElementById("tendril-carry").value;

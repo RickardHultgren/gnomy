@@ -58,7 +58,6 @@ def get_tendrils():
 
 def add_tendril():
     rootstock_id = session.rootstock_id
-    #rootstock_id = request.post_vars.rootstock_id
     knotstock_id = request.post_vars.knotstock_id
     tendril_name = request.post_vars.tendril_name
     tendril_carry = request.post_vars.tendril_carry
@@ -78,7 +77,7 @@ def add_tendril():
         return response.json({"status": "error", "error": "Invalid rootstock ID"})
 
     tendril_id = db.tendril.insert(
-        rootstock=session.rootstock_id,
+        rootstock=rootstock_id,
         knotstock=knotstock_id if knotstock_id else None,  # Allow nullable values
         name=tendril_name,
         carry=tendril_carry,
