@@ -297,16 +297,13 @@ function fetchTendrils() {
         function addTendril(event) {
             event.preventDefault();
 
-            let rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
+            var rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
             let knotstockId = document.getElementById("knotstock-select").value;
             let tendrilName = document.getElementById("tendril-name").value;
             let tendrilCarry = document.getElementById("tendril-carry").value;
             let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
 
-            if (!rootstockId) {
-                console.error("Rootstock ID is missing. Cannot add tendril.");
-                return;
-            }
+  
 
             fetch("{{=URL('add_tendril')}}", {
                 method: "POST",
@@ -323,15 +320,15 @@ function fetchTendrils() {
             .then(data => {
                 if (data.status === "success") {
                     console.log("Tendril added successfully:", data);
-                    //fetchTendrils();  // Refresh the tendril list
+                    
                     document.getElementById("add-tendril-form").reset();
                 } else {
                     console.error("Failed to add tendril:", data.error);
                 }
             })
             .catch(error => console.error("Error adding tendril:", error));
-            fetchTendrils();  // Refresh the tendril list
         }
+        fetchTendrils();  // Refresh the tendril list
 </script>
 <script>
 
