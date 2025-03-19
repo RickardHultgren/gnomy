@@ -323,14 +323,13 @@ function fetchTendrils() {
             .then(data => {
                 if (data.status === "success") {
                     console.log("Tendril added successfully:", data);
-                    //fetchTendrils();  // Refresh the tendril list
+                    fetchTendrils();  // Refresh the tendril list
                     document.getElementById("add-tendril-form").reset();
                 } else {
                     console.error("Failed to add tendril:", data.error);
                 }
             })
             .catch(error => console.error("Error adding tendril:", error));
-            fetchTendrils();  // Refresh the tendril list
         }
 </script>
 <script>
