@@ -54,17 +54,21 @@ def get_tendrils():
 
     tendrils = db(db.tendril.rootstock == int(rootstock_id)).select()
 
+    # Ensure the fields exist before accessing them
+    field_names = db.tendril.fields
+
     return response.json({
         "status": "success",
         "tendrils": [
             {
                 "id": t.id,
                 "name": t.name,
-                "carry": t.carry if "carry" in t else None,
-                "suffuse": t.suffuse if "suffuse" in t else None
+                "carry": t.carry if "carry" in field_names else None,
+                "suffuse": t.suffuse if "suffuse" in field_names else None
             } for t in tendrils
         ]
     })
+
 
 
 def add_tendril():
