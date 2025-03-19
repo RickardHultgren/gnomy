@@ -45,7 +45,7 @@ def set_rootstock_id():
         "rootstock_id": rootstock_id,
         "rootstock_name": rootstock.name
     })
-    
+
 def get_tendrils():
     rootstock_id = request.vars.rootstock_id
 
@@ -54,25 +54,10 @@ def get_tendrils():
 
     tendrils = db(db.tendril.rootstock == int(rootstock_id)).select()
 
-    # Ensure the fields exist before accessing them
-    field_names = db.tendril.fields
-
-    return response.json({
-        "status": "success",
-        "tendrils": [
-            {
-                "id": t.id,
-                "name": t.name,
-                "carry": t.carry if "carry" in field_names else None,
-                "suffuse": t.suffuse if "suffuse" in field_names else None
-            } for t in tendrils
-        ]
-    })
-
-
+    return response.json({"status": "success", "tendrils": [t.as_dict() for t in tendrils]})
 
 def add_tendril():
-    rootstock_id = session.rootstock_id
+    rootstock_id = request.post_vars.rootstock_id
     knotstock_id = request.post_vars.knotstock_id
     tendril_name = request.post_vars.tendril_name
     tendril_carry = request.post_vars.tendril_carry
@@ -92,7 +77,7 @@ def add_tendril():
         return response.json({"status": "error", "error": "Invalid rootstock ID"})
 
     tendril_id = db.tendril.insert(
-        rootstock=session.rootstock_id,
+        rootstock=rootstock_id,
         knotstock=knotstock_id if knotstock_id else None,  # Allow nullable values
         name=tendril_name,
         carry=tendril_carry,
