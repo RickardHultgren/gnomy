@@ -86,10 +86,9 @@ def add_tendril():
         return response.json({"status": "error", "error": "User not authenticated"})
 
     # Convert rootstock_id to an integer
-    try:
-        rootstock_id = int(rootstock_id)
-    except ValueError:
-        return response.json({"status": "error", "error": "Invalid rootstock ID"})
+    if not rootstock_id:
+        return response.json({"status": "error", "error": "No rootstock_id"})
+
 
     tendril_id = db.tendril.insert(
         rootstock=session.rootstock_id,

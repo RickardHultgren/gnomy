@@ -303,16 +303,13 @@ function fetchTendrils() {
             let tendrilCarry = document.getElementById("tendril-carry").value;
             let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
 
-            if (!rootstockId) {
-                console.error("Rootstock ID is missing. Cannot add tendril.");
-                return;
-            }
+  
 
             fetch("{{=URL('add_tendril')}}", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: new URLSearchParams({
-                    rootstock_id: rootstockId,
+                    rootstock_id: {{=session.rootstock_id}},
                     knotstock_id: knotstockId,
                     tendril_name: tendrilName,
                     tendril_carry: tendrilCarry,
@@ -323,14 +320,13 @@ function fetchTendrils() {
             .then(data => {
                 if (data.status === "success") {
                     console.log("Tendril added successfully:", data);
-                    //fetchTendrils();  // Refresh the tendril list
+                    fetchTendrils();  // Refresh the tendril list
                     document.getElementById("add-tendril-form").reset();
                 } else {
                     console.error("Failed to add tendril:", data.error);
                 }
             })
             .catch(error => console.error("Error adding tendril:", error));
-            fetchTendrils();  // Refresh the tendril list
         }
 </script>
 <script>
