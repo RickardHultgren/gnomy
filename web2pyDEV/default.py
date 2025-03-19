@@ -12,11 +12,15 @@ def index():
 
 def get_rootstocks():
     pond_id = request.vars.pond_id
-    session.rootstock_id = request.vars.pond_id
     if not pond_id:
         return response.json({"error": "No pond ID provided"})
 
     rootstocks = db(db.rootstock.pond == pond_id).select()
+
+    if rootstocks:
+        # Set session variable with first rootstock ID (or modify logic as needed)
+        session.rootstock_id = rootstocks.first().id
+
     return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
 
 
@@ -87,9 +91,10 @@ def add_tendril():
         return response.json({"status": "error", "error": "User not authenticated"})
 
     # Convert rootstock_id to an integer
-    if not rootstock_id:
-        return response.json({"status": "error", "error": "No rootstock_id"})
-
+    try:
+        rootstock_id = int(rootstock_id)
+    except ValueError:
+        return response.json({"status": "error", "error": "Invalid rootstock ID"})
 
     tendril_id = db.tendril.insert(
         rootstock=session.rootstock_id,
