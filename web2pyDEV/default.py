@@ -12,6 +12,7 @@ def index():
 
 def get_rootstocks():
     pond_id = request.vars.pond_id
+    session.rootstock_id = request.vars.pond_id
     if not pond_id:
         return response.json({"error": "No pond ID provided"})
 
