@@ -234,15 +234,26 @@ function fetchKnotstocks(pondId) {
         function addTendril(event) {
             event.preventDefault();
 
+            let rootstockId = "{{=session.rootstock_id if session.rootstock_id else 'no session.rootstock_id'}}"; // Ensure it's not None
+            let knotstockId = document.getElementById("knotstock-select").value;
+            let tendrilName = document.getElementById("tendril-name").value;
+            let tendrilCarry = document.getElementById("tendril-carry").value;
+            let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
+
+            if (!rootstockId) {
+                console.error("Rootstock ID is missing. Cannot add tendril.");
+                return;
+            }
+
             fetch("{{=URL('add_tendril')}}", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: new URLSearchParams({
-                    rootstock_id: {{=session.rootstock_id if session.rootstock_id else 'no session.rootstock_id'}}",
-                    knotstock_id: document.getElementById("knotstock-select").value,
-                    tendril_name: document.getElementById("tendril-name").value,
-                    tendril_carry: document.getElementById("tendril-carry").value,
-                    tendril_suffuse: document.getElementById("tendril-suffuse").value
+                    rootstock_id: rootstockId,
+                    knotstock_id: knotstockId,
+                    tendril_name: tendrilName,
+                    tendril_carry: tendrilCarry,
+                    tendril_suffuse: tendrilSuffuse
                 })
             })
             .then(response => response.json())
