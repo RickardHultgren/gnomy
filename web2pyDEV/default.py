@@ -16,11 +16,6 @@ def get_rootstocks():
         return response.json({"error": "No pond ID provided"})
 
     rootstocks = db(db.rootstock.pond == pond_id).select()
-
-    if rootstocks:
-        # Set session variable with first rootstock ID (or modify logic as needed)
-        session.rootstock_id = rootstocks.first().id
-
     return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
 
 
