@@ -57,7 +57,8 @@ def get_tendrils():
     return response.json({"status": "success", "tendrils": [t.as_dict() for t in tendrils]})
 
 def add_tendril():
-    rootstock_id = request.post_vars.rootstock_id
+    rootstock_id = session.rootstock_id
+    #rootstock_id = request.post_vars.rootstock_id
     knotstock_id = request.post_vars.knotstock_id
     tendril_name = request.post_vars.tendril_name
     tendril_carry = request.post_vars.tendril_carry
