@@ -45,7 +45,7 @@ def set_rootstock_id():
         "rootstock_id": rootstock_id,
         "rootstock_name": rootstock.name
     })
-
+    
 def get_tendrils():
     rootstock_id = request.vars.rootstock_id
 
@@ -65,6 +65,7 @@ def get_tendrils():
             } for t in tendrils
         ]
     })
+
 
 def add_tendril():
     rootstock_id = session.rootstock_id
