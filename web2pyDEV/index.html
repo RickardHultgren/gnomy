@@ -227,16 +227,14 @@ function selectRootstock(rootstockId, rootstockName) {
 <script>
 
 function fetchTendrils() {
-    // First, try to get rootstockId from localStorage or session variable
+    // Retrieve rootstockId from localStorage or session variable
     let rootstockId = localStorage.getItem("rootstock_id") || "{{=session.rootstock_id}}";
 
-    // Ensure rootstockId is valid before making the request
     if (!rootstockId || rootstockId === "None" || isNaN(rootstockId)) {
         console.error("Invalid rootstock ID:", rootstockId);
         return;
     }
 
-    // Fetch tendrils for the given rootstockId
     fetch("{{=URL('get_tendrils')}}" + "?rootstock_id=" + encodeURIComponent(rootstockId))
         .then(response => response.json())
         .then(data => {
@@ -259,8 +257,8 @@ function fetchTendrils() {
 
                     tendrilCard.innerHTML = `
                         <h3>${tendril.name}</h3>
-                        <p><strong>Carry:</strong> ${tendril.carry || "N/A"}</p>
-                        <p><strong>Suffuse:</strong> ${tendril.suffuse || "N/A"}</p>
+                        <p><strong>Carry:</strong> ${tendril.carry ? tendril.carry : "N/A"}</p>
+                        <p><strong>Suffuse:</strong> ${tendril.suffuse ? tendril.suffuse : "N/A"}</p>
                         <button onclick="selectTendril(${tendril.id}, '${tendril.name}')">
                             Select
                         </button>
