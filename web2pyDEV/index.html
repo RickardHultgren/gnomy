@@ -1,47 +1,5 @@
 {{extend 'layout.html'}}
 
-<style>
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-    padding: 10px;
-}
-
-.tendril-card {
-    background: #f8f9fa;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.tendril-card h3 {
-    margin: 5px 0;
-}
-
-.tendril-card p {
-    font-size: 14px;
-    color: #555;
-}
-
-.tendril-card button {
-    margin-top: 5px;
-    padding: 5px 10px;
-    border: none;
-    background: #007bff;
-    color: white;
-    cursor: pointer;
-    border-radius: 3px;
-}
-
-.tendril-card button:hover {
-    background: #0056b3;
-}
-
-
-</style>
-
 {{if not auth.is_logged_in():}}
     <h2>{{=message}}</h2>
 {{else:}}
@@ -195,86 +153,65 @@ function fetchKnotstocks(pondId) {
 
 </script>
 <script>
-function selectRootstock(rootstockId, rootstockName) { 
-    fetch("{{=URL('set_rootstock_id')}}", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `rootstock_id=${rootstockId}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "success") {
-            document.getElementById("selected-rootstock-id").innerText = `ID: ${data.rootstock_id}, Name: ${data.rootstock_name}`;
-            document.getElementById("rootstock-details").style.display = "block";
 
-            // Store rootstock ID in localStorage in case the session is not persistent
-            localStorage.setItem("rootstock_id", data.rootstock_id);
+    function selectRootstock(rootstockId, rootstockName) { 
+        fetch("{{=URL('set_rootstock_id')}}", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `rootstock_id=${rootstockId}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                document.getElementById("selected-rootstock-id").innerText = `ID: ${data.rootstock_id}, Name: ${data.rootstock_name}`;
+                document.getElementById("rootstock-details").style.display = "block";
 
-            // Debugging: Check if fetchTendrils exists before calling it
-            if (typeof fetchTendrils === "function") {
-                fetchTendrils();
+                // Store rootstock ID in localStorage in case the session is not persistent
+                localStorage.setItem("rootstock_id", data.rootstock_id);
             } else {
-                console.error("fetchTendrils function is not defined.");
+                console.error("Failed to set rootstock:", data.error);
             }
-        } else {
-            console.error("Failed to set rootstock:", data.error);
-        }
-    })
-    .catch(error => console.error("Error selecting rootstock:", error));
-}
+        })
+        .catch(error => console.error("Error selecting rootstock:", error));
+    }
 
 </script>
 <script>
 
-function fetchTendrils() {
-    // Retrieve rootstockId from localStorage or session variable
-    let rootstockId = localStorage.getItem("rootstock_id") || "{{=session.rootstock_id}}";
+        function fetchTendrils() {
+            let rootstockId = "{{=session.rootstock_id}}";
 
-    if (!rootstockId || rootstockId === "None" || isNaN(rootstockId)) {
-        console.error("Invalid rootstock ID:", rootstockId);
-        return;
-    }
-
-    fetch("{{=URL('get_tendrils')}}" + "?rootstock_id=" + encodeURIComponent(rootstockId))
-        .then(response => response.json())
-        .then(data => {
-            let grid = document.getElementById("tendril-grid");
-            grid.innerHTML = ""; // Clear previous content
-
-            if (data.status === "error") {
-                console.error("Error fetching tendrils:", data.error);
-                grid.innerHTML = `<p style="color:red;">${data.error}</p>`;
+            if (!rootstockId || isNaN(rootstockId)) {
+                console.error("Invalid rootstock ID:", rootstockId);
                 return;
             }
 
-            if (data.tendrils.length > 0) {
-                let gridContainer = document.createElement("div");
-                gridContainer.classList.add("grid-container");
+            fetch("{{=URL('get_tendrils')}}" + "?rootstock_id=" + encodeURIComponent(rootstockId))
+                .then(response => response.json())
+                .then(data => {
+                    let grid = document.getElementById("tendril-grid");
+                    grid.innerHTML = "";
 
-                data.tendrils.forEach(tendril => {
-                    let tendrilCard = document.createElement("div");
-                    tendrilCard.classList.add("tendril-card");
+                    if (data.error) {
+                        console.error("Error fetching tendrils:", data.error);
+                        grid.innerHTML = `<p style="color:red;">${data.error}</p>`;
+                        return;
+                    }
 
-                    tendrilCard.innerHTML = `
-                        <h3>${tendril.name}</h3>
-                        <p><strong>Carry:</strong> ${tendril.carry ? tendril.carry : "N/A"}</p>
-                        <p><strong>Suffuse:</strong> ${tendril.suffuse ? tendril.suffuse : "N/A"}</p>
-                        <button onclick="selectTendril(${tendril.id}, '${tendril.name}')">
-                            Select
-                        </button>
-                    `;
-
-                    gridContainer.appendChild(tendrilCard);
-                });
-
-                grid.appendChild(gridContainer);
-            } else {
-                grid.innerHTML = "<p>No tendrils found.</p>";
-            }
-        })
-        .catch(error => console.error("Error fetching tendrils:", error));
-}
-
+                    if (data.tendrils.length > 0) {
+                        data.tendrils.forEach(tendril => {
+                            grid.innerHTML += `<p>
+                                <a href="#" onclick="selectTendril(${tendril.id}, '${tendril.name}'); return false;">
+                                    ${tendril.name}
+                                </a>
+                            </p>`;
+                        });
+                    } else {
+                        grid.innerHTML = "<p>No tendrils found.</p>";
+                    }
+                })
+                .catch(error => console.error("Error fetching tendrils:", error));
+        }
 </script>
 <script>
         function selectTendril(tendrilId, tendrilName) {
@@ -297,13 +234,16 @@ function fetchTendrils() {
         function addTendril(event) {
             event.preventDefault();
 
-            var rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
+            let rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
             let knotstockId = document.getElementById("knotstock-select").value;
             let tendrilName = document.getElementById("tendril-name").value;
             let tendrilCarry = document.getElementById("tendril-carry").value;
             let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
 
-  
+            if (!rootstockId) {
+                console.error("Rootstock ID is missing. Cannot add tendril.");
+                return;
+            }
 
             fetch("{{=URL('add_tendril')}}", {
                 method: "POST",
@@ -320,7 +260,7 @@ function fetchTendrils() {
             .then(data => {
                 if (data.status === "success") {
                     console.log("Tendril added successfully:", data);
-                    
+                    fetchTendrils();  // Refresh the tendril list
                     document.getElementById("add-tendril-form").reset();
                 } else {
                     console.error("Failed to add tendril:", data.error);
@@ -328,7 +268,6 @@ function fetchTendrils() {
             })
             .catch(error => console.error("Error adding tendril:", error));
         }
-        fetchTendrils();  // Refresh the tendril list
 </script>
 <script>
 
