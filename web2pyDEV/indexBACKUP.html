@@ -135,7 +135,7 @@ function fetchKnotstocks(pondId) {
         <p id="selected-tendril">No tendril selected</p>
         
 <script>
-            fetchTendrils();
+            //fetchTendrils();
 </script>
         
         <!-- Flower Section (Initially Hidden) -->
@@ -239,7 +239,8 @@ function fetchTendrils() {
         .then(response => response.json())
         .then(data => {
             let grid = document.getElementById("tendril-grid");
-            grid.innerHTML = ""; // Clear previous content
+            //Error prone: rootstockList.innerHTML = "";
+            grid.innerHTML = ""; // Clear previous content...
 
             if (data.status === "error") {
                 console.error("Error fetching tendrils:", data.error);
