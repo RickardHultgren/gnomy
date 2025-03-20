@@ -1,51 +1,41 @@
 {{extend 'layout.html'}}
 <style>
-function fetchTendrils() {
-    let rootstockId = "{{=session.rootstock_id}}";
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    padding: 10px;
+}
 
-    if (!rootstockId || isNaN(rootstockId)) {
-        console.error("Invalid rootstock ID:", rootstockId);
-        return;
-    }
+.tendril-card {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
 
-    fetch("{{=URL('get_tendrils')}}" + "?rootstock_id=" + encodeURIComponent(rootstockId))
-        .then(response => response.json())
-        .then(data => {
-            let grid = document.getElementById("tendril-grid");
-            grid.innerHTML = ""; // Clear previous content
+.tendril-card h3 {
+    margin: 5px 0;
+}
 
-            if (data.status === "error") {
-                console.error("Error fetching tendrils:", data.error);
-                grid.innerHTML = `<p style="color:red;">${data.error}</p>`;
-                return;
-            }
+.tendril-card p {
+    font-size: 14px;
+    color: #555;
+}
 
-            if (data.tendrils.length > 0) {
-                let gridContainer = document.createElement("div");
-                gridContainer.classList.add("grid-container");
+.tendril-card button {
+    margin-top: 5px;
+    padding: 5px 10px;
+    border: none;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+}
 
-                data.tendrils.forEach(tendril => {
-                    let tendrilCard = document.createElement("div");
-                    tendrilCard.classList.add("tendril-card");
-
-                    tendrilCard.innerHTML = `
-                        <h3>${tendril.name}</h3>
-                        <p><strong>Carry:</strong> ${tendril.carry || "N/A"}</p>
-                        <p><strong>Suffuse:</strong> ${tendril.suffuse || "N/A"}</p>
-                        <button onclick="selectTendril(${tendril.id}, '${tendril.name}')">
-                            Select
-                        </button>
-                    `;
-
-                    gridContainer.appendChild(tendrilCard);
-                });
-
-                grid.appendChild(gridContainer);
-            } else {
-                grid.innerHTML = "<p>No tendrils found.</p>";
-            }
-        })
-        .catch(error => console.error("Error fetching tendrils:", error));
+.tendril-card button:hover {
+    background: #0056b3;
 }
 
 </style>
@@ -320,6 +310,7 @@ function selectRootstock(rootstockId, rootstockName) {
 
 </script>
 <script>
+    
 
 function fetchTendrils() {
     // Retrieve rootstockId from localStorage or session variable
