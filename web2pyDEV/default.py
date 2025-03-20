@@ -60,11 +60,12 @@ def get_tendrils():
             {
                 "id": t.id,
                 "name": t.name,
-                "carry": t.carry,
-                "suffuse": t.suffuse
+                "carry": t.carry if "carry" in t else None,
+                "suffuse": t.suffuse if "suffuse" in t else None
             } for t in tendrils
         ]
     })
+
 
 def add_tendril():
     rootstock_id = session.rootstock_id
