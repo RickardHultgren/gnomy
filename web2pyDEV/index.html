@@ -160,13 +160,6 @@ function fetchKnotstocks(pondId) {
 
         
 </script>
-<script>
-    function showPond(pondId) {
-        currentPondId = pondId;
-        document.getElementById("pond-container").style.display = "block";
-        fetchRootstocks(pondId);
-    }
-    </script>
 
 <script>
 
@@ -194,6 +187,18 @@ function fetchKnotstocks(pondId) {
         }
 
 </script>
+
+</script>
+<script>
+    function showPond(pondId) {
+        currentPondId = pondId;
+        document.getElementById("pond-container").style.display = "block";
+        fetchRootstocks(pondId);
+    }
+    </script>
+
+<script>
+
 <script>
 function selectRootstock(rootstockId, rootstockName) { 
     fetch("{{=URL('set_rootstock_id')}}", {
