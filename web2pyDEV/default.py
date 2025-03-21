@@ -123,12 +123,16 @@ def get_flowers():
 
 def add_flower():
     rootstock_id = session.rootstock_id
+
+    if rootstock_id is None:
+        return response.json({"status": "error", "error": "Rootstock ID is missing in session"})
+
     flower_name = request.post_vars.flower_name
     flower_fruit = request.post_vars.flower_fruit
     flower_fragrance = request.post_vars.flower_fragrance
 
-    if not rootstock_id or not flower_name:
-        return response.json({"status": "error", "error": "Missing required fields"})
+    if not flower_name:
+        return response.json({"status": "error", "error": "Flower name is required"})
 
     # Ensure the user is logged in
     if not auth.user_id:
@@ -147,6 +151,8 @@ def add_flower():
         suffuse=flower_fragrance,
         created_by=auth.user_id
     )
+
+    return response.json({"status": "success", "flower_id": flower_id})
 
 
 

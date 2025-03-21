@@ -188,7 +188,8 @@ function fetchKnotstocks(pondId) {
         <div id="flower-grid">
             <p>Loading...</p>
         </div>
-                       
+
+        <p id="selected-flower">No flower selected</p>        
 
         <h4>Add Flower:</h4>
         <form id="add-flower-form" onsubmit="addFlower(event)">
@@ -204,7 +205,7 @@ function fetchKnotstocks(pondId) {
             <button type="submit">Add flower</button>
         </form>
         
-        <p id="selected-flower">No flower selected</p>
+
         
 
         <!--/div-->
@@ -419,43 +420,42 @@ function selectTendril(tendrilId, tendrilName) {
         }
 </script>
 <script>        
-    function addFlower(event) {
-            event.preventDefault();
+function addFlower(event) { 
+    event.preventDefault();
 
-            //let rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
-            let knotstockId = document.getElementById("knotstock-select").value;
-            let flowerName = document.getElementById("flower-name").value;
-            let flowerFruit = document.getElementById("flower-fruit").value;
-            let flowerFragrance = document.getElementById("flower-fragrance").value;
+    //let rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}";
+    
+    //if (!rootstockId || rootstockId === "None") {
+    //    console.error("Invalid rootstock ID:", rootstockId);
+    //    return;
+    //}
 
-            /*if (!rootstockId) {
-                console.error("Rootstock ID is missing. Cannot add flower.");
-                return;
-            }*/
+    let flowerName = document.getElementById("flower-name").value;
+    let flowerFruit = document.getElementById("flower-fruit").value;
+    let flowerFragrance = document.getElementById("flower-fragrance").value;
 
-            fetch("{{=URL('add_flower')}}", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({
-                    //rootstock_id: {{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
-                    //rootstock_id: rootstockId,
-                    flower_name: flowerName,
-                    flower_fruit: flowerFruit,
-                    flower_fragrance: flowerFragrance
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
-                    console.log("Flower added successfully:", data);
-                    fetchTendrils(rootstockidJS);  // Refresh the tendril list
-                    document.getElementById("add-flower-form").reset();
-                } else {
-                    console.error("Failed to add flower:", data.error);
-                }
-            })
-            .catch(error => console.error("Error adding flower:", error));
+    fetch("{{=URL('add_flower')}}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            //rootstock_id: rootstockidJS,
+            flower_name: flowerName,
+            flower_fruit: flowerFruit,
+            flower_fragrance: flowerFragrance
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            console.log("Flower added successfully:", data);
+            fetchFlowers(rootstockidJS);  // Refresh the tendril list
+            document.getElementById("add-flower-form").reset();
+        } else {
+            console.error("Failed to add flower:", data.error);
         }
+    })
+    .catch(error => console.error("Error adding flower:", error));
+}
 
 </script>
 <script>
@@ -478,7 +478,7 @@ function selectTendril(tendrilId, tendrilName) {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: new URLSearchParams({
                     //rootstock_id: {{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
-                    //rootstock_id: rootstockId,
+                    //rootstock_id: rootstockidJS,
                     knotstock_id: knotstockId,
                     tendril_name: tendrilName,
                     tendril_carry: tendrilCarry,
