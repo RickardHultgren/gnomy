@@ -191,7 +191,7 @@ function fetchKnotstocks(pondId) {
                        
 
         <h4>Add Flower:</h4>
-        <form id="add-flower-form" onsubmit="addflower(event)">
+        <form id="add-flower-form" onsubmit="addFlower(event)">
             <label for="flower-name">Name:</label>
             <input type="text" id="flower-name" required>
 
@@ -465,8 +465,8 @@ function selectTendril(tendrilId, tendrilName) {
             //let rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
             let knotstockId = document.getElementById("knotstock-select").value;
             let tendrilName = document.getElementById("tendril-name").value;
-            let tendrilFruit = document.getElementById("tendril-fruit").value;
-            let tendrilFragrance = document.getElementById("tendril-Fragrance").value;
+            let tendrilCarry = document.getElementById("tendril-carry").value;
+            let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
 
             /*if (!rootstockId) {
                 console.error("Rootstock ID is missing. Cannot add tendril.");
