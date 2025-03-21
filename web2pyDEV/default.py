@@ -101,19 +101,52 @@ def add_tendril():
 
 def get_flowers():
     rootstock_id = request.vars.rootstock_id
-    flowers = db(db.flower_list.rootstock == rootstock_id).select(db.flower.name)
-    return response.json(dict(flowers=[{"name": f.name} for f in flowers]))
+    
+    if not rootstock_id or not rootstock_id.isdigit():
+        return response.json({"status": "error", "error": "Invalid or missing rootstock ID"})
+
+    flowers = db(db.flower.rootstock == int(rootstock_id)).select()
+
+    return response.json({
+        "status": "success",
+        "flowers": [
+            {   
+                #"rootstock_id": rootstock_id,
+                "id": t.id,
+                "name": t.name,
+                "fruit": t.fruit if "fruit" in t else None,
+                "fragrance": t.fragrance if "fragrance" in t else None
+            } for t in flowers
+        ]
+    })
+
 
 def add_flower():
-    rootstock_id = request.vars.rootstock_id
-    name = request.vars.name
+    rootstock_id = session.rootstock_id
+    flower_name = request.post_vars.flower_name
+    flower_fruit = request.post_vars.flower_fruit
+    flower_fragrance = request.post_vars.flower_fragrance
 
-    flower_id = db.flower.insert(name=name, pond=session.pond_id, created_by=auth.user_id)
-    db.flower_list.insert(rootstock=rootstock_id, flower=flower_id)
+    if not rootstock_id or not flower_name:
+        return response.json({"status": "error", "error": "Missing required fields"})
 
-    return "Flower added successfully"
+    # Ensure the user is logged in
+    if not auth.user_id:
+        return response.json({"status": "error", "error": "User not authenticated"})
 
+    # Convert rootstock_id to an integer
+    try:
+        rootstock_id = int(rootstock_id)
+    except ValueError:
+        return response.json({"status": "error", "error": "Invalid rootstock ID"})
 
+    flower_id = db.flower.insert(
+        rootstock=rootstock_id,
+        name=flower_name,
+        carry=flower_fruit,
+        suffuse=flower_fragrance,
+        created_by=auth.user_id
+    )
 
 
 

@@ -38,6 +38,52 @@
     background: #0056b3;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.flower-card {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.flower-card h3 {
+    margin: 5px 0;
+}
+
+.flower-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+.flower-card button {
+    margin-top: 5px;
+    padding: 5px 10px;
+    border: none;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.flower-card button:hover {
+    background: #0056b3;
+}
+
+
 </style>
 {{if not auth.is_logged_in():}}
     <h2>{{=message}}</h2>
@@ -80,11 +126,6 @@
         <div id="tendril-grid">
             <p>Loading...</p>
         </div>
-
-    <script>        
-            
-    </script>
-            
 
         <h4>Add Tendril</h4>
         <form id="add-tendril-form" onsubmit="addTendril(event)">
@@ -140,20 +181,33 @@ function fetchKnotstocks(pondId) {
         </script>
                 
         <!-- Flower Section (Initially Hidden) -->
-        <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
-            <h3>Flowers for Selected Rootstock</h3>
-            <table id="flower-grid" border="1">
-                <tr>
-                    <th>Flower Name</th>
-                </tr>
-            </table>
-
-            <h3>Add Flower</h3>
-            <form id="add-flower-form" onsubmit="addFlower(event)">
-                <input type="text" id="flower-name" placeholder="Flower Name">
-                <button type="submit">Add Flower</button>
-            </form>
+        <!--div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;"-->
+        <div id="selected-rootstock-id"></div>
+        <div id="map"></div>
+        <h4>Flowers</h4>
+        <div id="flower-grid">
+            <p>Loading...</p>
         </div>
+                       
+
+        <h4>Add Flower:</h4>
+        <form id="add-flower-form" onsubmit="addflower(event)">
+            <label for="flower-name">Name:</label>
+            <input type="text" id="flower-name" required>
+
+            <label for="flower-fruit">Fruit:</label>
+            <input type="text" id="flower-fruit">
+        
+            <label for="flower-suffuse">Fragrance:</label>
+            <input type="text" id="flower-suffuse">
+        
+            <button type="submit">Add flower</button>
+        </form>
+        
+        <p id="selected-flower">No flower selected</p>
+        
+
+        <!--/div-->
     </div>
     <script>
         var currentPondId = null;
@@ -213,6 +267,7 @@ function selectRootstock(rootstockId, rootstockName) {
             // Store rootstock ID in localStorage in case the session is not persistent
             localStorage.setItem("rootstock_id", data.rootstock_id);
             fetchTendrils(data.rootstock_id);
+            fetchFlowers(data.rootstock_id);
         } else {
             console.error("Failed to set rootstock:", data.error);
         }
@@ -223,6 +278,56 @@ function selectRootstock(rootstockId, rootstockName) {
 </script>
 <script>
     
+
+function fetchFlowers(rootstockId) {
+    // Retrieve rootstockId from localStorage or session variable
+    //let rootstockId = localStorage.getItem("rootstock_id") || "{{=session.rootstock_id}}";
+
+    if (!rootstockId || rootstockId === "None" || isNaN(rootstockId)) {
+        console.error("Invalid rootstock ID:", rootstockId);
+        return;
+    }
+
+    fetch("{{=URL('get_flowers')}}" + "?rootstock_id=" + encodeURIComponent(rootstockId))
+        .then(response => response.json())
+        .then(data => {
+            let grid = document.getElementById("flower-grid");
+            grid.innerHTML = ""; // Clear previous content
+
+            if (data.status === "error") {
+                console.error("Error fetching flowers:", data.error);
+                grid.innerHTML = `<p style="color:red;">${data.error}</p>`;
+                return;
+            }
+
+            if (data.flowers.length > 0) {
+                let gridContainer = document.createElement("div");
+                gridContainer.classList.add("grid-container");
+
+                data.flowers.forEach(flower => {
+                    let flowerCard = document.createElement("div");
+                    flowerCard.classList.add("flower-card");
+
+                    flowerCard.innerHTML = `
+                        <h3>${flower.name}</h3>
+                        <p><strong>Fruit:</strong> ${flower.fruit ? flower.fruit : "N/A"}</p>
+                        <p><strong>Fragrance:</strong> ${flower.fragrance ? flower.fragrance : "N/A"}</p>
+                        <button onclick="selectflower(${flower.id}, '${flower.name}')">
+                            Select
+                        </button>
+                    `;
+
+                    gridContainer.appendChild(flowerCard);
+                });
+
+                grid.appendChild(gridContainer);
+            } else {
+                grid.innerHTML = "<p>No flowers found.</p>";
+            }
+        })
+        .catch(error => console.error("Error fetching flowers:", error));
+}
+
 
 function fetchTendrils(rootstockId) {
     // Retrieve rootstockId from localStorage or session variable
@@ -275,7 +380,28 @@ function fetchTendrils(rootstockId) {
 
 </script>
 <script>
-        function selectTendril(tendrilId, tendrilName) {
+        function selectFlower(flowerId, flowerName) {
+            console.log("Selected flower:", flowerId, flowerName);
+
+            let flowerNameElem = document.getElementById("selected-flower-name");
+            let flowerContainer = document.getElementById("flower-container");
+
+            if (flowerNameElem && flowerContainer) {
+                flowerNameElem.textContent = flowerName;
+                flowerContainer.style.display = "block";
+            } else {
+                console.error("UI elements for flower selection not found");
+            }
+
+            // Store the selected flower ID for further actions if needed
+            window.selectedflowerId = flowerId;
+
+        }
+
+</script>
+<script>        
+
+function selectTendril(tendrilId, tendrilName) {
             console.log("Selected tendril:", tendrilId, tendrilName);
 
             let tendrilNameElem = document.getElementById("selected-tendril-name");
@@ -293,14 +419,54 @@ function fetchTendrils(rootstockId) {
         }
 </script>
 <script>        
-        function addTendril(event) {
+    function addFlower(event) {
+            event.preventDefault();
+
+            //let rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
+            let knotstockId = document.getElementById("knotstock-select").value;
+            let flowerName = document.getElementById("flower-name").value;
+            let flowerFruit = document.getElementById("flower-fruit").value;
+            let flowerFragrance = document.getElementById("flower-fragrance").value;
+
+            /*if (!rootstockId) {
+                console.error("Rootstock ID is missing. Cannot add flower.");
+                return;
+            }*/
+
+            fetch("{{=URL('add_flower')}}", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({
+                    //rootstock_id: {{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
+                    //rootstock_id: rootstockId,
+                    flower_name: flowerName,
+                    flower_fruit: flowerFruit,
+                    flower_fragrance: flowerFragrance
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    console.log("Tendril added successfully:", data);
+                    fetchTendrils(rootstockidJS);  // Refresh the tendril list
+                    document.getElementById("add-tendril-form").reset();
+                } else {
+                    console.error("Failed to add tendril:", data.error);
+                }
+            })
+            .catch(error => console.error("Error adding tendril:", error));
+        }
+
+</script>
+<script>
+    function addTendril(event) {
             event.preventDefault();
 
             //let rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
             let knotstockId = document.getElementById("knotstock-select").value;
             let tendrilName = document.getElementById("tendril-name").value;
-            let tendrilCarry = document.getElementById("tendril-carry").value;
-            let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
+            let tendrilFruit = document.getElementById("tendril-fruit").value;
+            let tendrilFragrance = document.getElementById("tendril-Fragrance").value;
 
             /*if (!rootstockId) {
                 console.error("Rootstock ID is missing. Cannot add tendril.");
@@ -345,42 +511,6 @@ function fetchTendrils(rootstockId) {
             }).then(() => {
                 fetchRootstocks(currentPondId);
                 document.getElementById("rootstock-name").value = "";
-            });
-        }
-</script>
-<script>
-        function fetchFlowers(rootstockId) {
-            selectedRootstockId = rootstockId;
-            document.getElementById("flower-container").style.display = "block";
-
-            fetch("{{=URL('get_flowers')}}" + "?rootstock_id=" + rootstockId)
-                .then(response => response.json())
-                .then(data => {
-                    let table = document.getElementById("flower-grid");
-                    table.innerHTML = "<tr><th>Flower Name</th></tr>";
-
-                    data.flowers.forEach(flower => {
-                        table.innerHTML += `<tr><td>${flower.name}</td></tr>`;
-                    });
-                });
-        }
-
-</script>
-<script>
-
-        function addFlower(event) {
-            event.preventDefault();
-
-            let name = document.getElementById("flower-name").value;
-            if (!name) return alert("Enter flower name.");
-
-            fetch("{{=URL('add_flower')}}", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `rootstock_id=${selectedRootstockId}&name=${encodeURIComponent(name)}`
-            }).then(() => {
-                fetchFlowers(selectedRootstockId);
-                document.getElementById("flower-name").value = "";
             });
         }
 </script>

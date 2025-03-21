@@ -198,17 +198,6 @@ db.define_table('knotstock',
     format='%(name)s'           
                )
 
-db.define_table('flower',
-    Field('name'),
-    Field('pond', 'reference pond'),
-    Field('flower_type', requires=IS_IN_SET(['Relatiris','Competentia'])),
-    Field('growing_place', requires=IS_IN_SET(['rootstock','tendril'])),
-    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
-    Field('created_on','datetime',default=request.now,writable=False,readable=False)             ,
-    format='%(name)s'           
-               )
-
-
 #db.define_table('knotstock_list',
 #    Field('rootstock', requires=IS_IN_DB(db, db.rootstock, '%(name)s')),
 #    Field('knotstock',db.rootstock
@@ -230,16 +219,17 @@ db.define_table(
     format='%(rootstock)s'
 )
 
-# Define the table 'flower_list'
+# Define the table 'flower'
 db.define_table(
-    'flower_list',
+    'flower',
+    Field('name'),
     Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
-    Field('flower', db.flower, requires=IS_IN_DB(db(db.flower.pond == session.pond_id), db.rootstock, '%(name)s')),
+    Field('fruit'),
+    Field('fragrance'),
     Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),
     Field('created_on', 'datetime', default=request.now, writable=False, readable=False),
     format='%(rootstock)s'
 )
-
 
 # Now 'rootstock' and 'knotstock' fields in 'knotstock_list' table will be restricted
 # to rootstocks that belong to the pond specified by session.pond_id
