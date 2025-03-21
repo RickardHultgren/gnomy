@@ -48,13 +48,25 @@ def set_rootstock_id():
 
 def get_tendrils():
     rootstock_id = request.vars.rootstock_id
-
+    
     if not rootstock_id or not rootstock_id.isdigit():
         return response.json({"status": "error", "error": "Invalid or missing rootstock ID"})
 
     tendrils = db(db.tendril.rootstock == int(rootstock_id)).select()
 
-    return response.json({"status": "success", "tendrils": [t.as_dict() for t in tendrils]})
+    return response.json({
+        "status": "success",
+        "tendrils": [
+            {   
+                #"rootstock_id": rootstock_id,
+                "id": t.id,
+                "name": t.name,
+                "carry": t.carry if "carry" in t else None,
+                "suffuse": t.suffuse if "suffuse" in t else None
+            } for t in tendrils
+        ]
+    })
+
 
 def add_tendril():
     rootstock_id = session.rootstock_id

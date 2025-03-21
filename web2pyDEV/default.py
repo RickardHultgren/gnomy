@@ -48,7 +48,7 @@ def set_rootstock_id():
 
 def get_tendrils():
     rootstock_id = request.vars.rootstock_id
-
+    
     if not rootstock_id or not rootstock_id.isdigit():
         return response.json({"status": "error", "error": "Invalid or missing rootstock ID"})
 
@@ -57,7 +57,8 @@ def get_tendrils():
     return response.json({
         "status": "success",
         "tendrils": [
-            {
+            {   
+                #"rootstock_id": rootstock_id,
                 "id": t.id,
                 "name": t.name,
                 "carry": t.carry if "carry" in t else None,
