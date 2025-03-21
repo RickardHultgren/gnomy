@@ -447,14 +447,14 @@ function selectTendril(tendrilId, tendrilName) {
             .then(response => response.json())
             .then(data => {
                 if (data.status === "success") {
-                    console.log("Tendril added successfully:", data);
+                    console.log("Flower added successfully:", data);
                     fetchTendrils(rootstockidJS);  // Refresh the tendril list
-                    document.getElementById("add-tendril-form").reset();
+                    document.getElementById("add-flower-form").reset();
                 } else {
-                    console.error("Failed to add tendril:", data.error);
+                    console.error("Failed to add flower:", data.error);
                 }
             })
-            .catch(error => console.error("Error adding tendril:", error));
+            .catch(error => console.error("Error adding flower:", error));
         }
 
 </script>
