@@ -97,12 +97,20 @@ auth.define_tables(username=False, signature=False)
 # -------------------------------------------------------------------------
 # configure email
 # -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+# configure email
+# -------------------------------------------------------------------------
 mail = auth.settings.mailer
 mail.settings.server = 'logging' if request.is_local else configuration.get('smtp.server')
 mail.settings.sender = configuration.get('smtp.sender')
 mail.settings.login = configuration.get('smtp.login')
 mail.settings.tls = configuration.get('smtp.tls') or False
 mail.settings.ssl = configuration.get('smtp.ssl') or False
+#mail = auth.settings.mailer
+#mail.settings.server = 'smtp.gmail.com:587'
+#mail.settings.sender = 'your_email@gmail.com'
+#mail.settings.login = 'your_email@gmail.com:your_password'
+#mail.settings.tls = True
 
 # -------------------------------------------------------------------------
 # configure auth policy
