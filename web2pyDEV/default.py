@@ -147,8 +147,8 @@ def add_flower():
     flower_id = db.flower.insert(
         rootstock=rootstock_id,
         name=flower_name,
-        carry=flower_fruit,
-        suffuse=flower_fragrance,
+        fruit=flower_fruit,
+        fragrance=flower_fragrance,
         created_by=auth.user_id
     )
 
