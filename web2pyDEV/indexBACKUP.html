@@ -122,6 +122,42 @@
         
         <div id="selected-rootstock-id"></div>
         <div id="map"></div>
+
+        <h4>Add Flower:</h4>
+        <form id="add-flower-form" onsubmit="addFlower(event)">
+            <label for="flower-name">Name:</label>
+            <input type="text" id="flower-name" required>
+
+            <label for="flower-fruit">Fruit:</label>
+            <input type="text" id="flower-fruit">
+        
+            <label for="flower-suffuse">Fragrance:</label>
+            <input type="text" id="flower-fragrance">
+        
+            <button type="submit">Add flower</button>
+        </form>
+        
+
+        <!-- Flower Section (Initially Hidden) -->
+        <!--div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;"-->
+        <div id="selected-rootstock-id"></div>
+        <div id="map"></div>
+        <h4>Flowers</h4>
+        <div id="flower-grid">
+            <p>Loading...</p>
+        </div>
+
+        <p id="selected-flower">No flower selected</p>        
+
+
+
+
+
+
+
+
+
+
         <h4>Tendrils</h4>
         <div id="tendril-grid">
             <p>Loading...</p>
@@ -180,35 +216,9 @@ function fetchKnotstocks(pondId) {
         <script>
         </script>
                 
-        <!-- Flower Section (Initially Hidden) -->
-        <!--div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;"-->
-        <div id="selected-rootstock-id"></div>
-        <div id="map"></div>
-        <h4>Flowers</h4>
-        <div id="flower-grid">
-            <p>Loading...</p>
-        </div>
 
-        <p id="selected-flower">No flower selected</p>        
 
-        <h4>Add Flower:</h4>
-        <form id="add-flower-form" onsubmit="addFlower(event)">
-            <label for="flower-name">Name:</label>
-            <input type="text" id="flower-name" required>
 
-            <label for="flower-fruit">Fruit:</label>
-            <input type="text" id="flower-fruit">
-        
-            <label for="flower-suffuse">Fragrance:</label>
-            <input type="text" id="flower-fragrance">
-        
-            <button type="submit">Add flower</button>
-        </form>
-        
-
-        
-
-        <!--/div-->
     </div>
     <script>
         var currentPondId = null;
