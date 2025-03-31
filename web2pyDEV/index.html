@@ -120,14 +120,15 @@
     function showhideaddPond() {
     var element = document.getElementById("addPond");
     var elementminus = document.getElementById("minusbttn");
+    var elementplus = document.getElementById("minusbttn");
     if (element.style.display === "none") {
         element.style.display = "block";
-        elementminus.style.display = "block";
+        elementminus.style.display = "inline-block";
         elementplus.style.display = "none";
     } else {
         element.style.display = "none";
         elementminus.style.display = "none";
-        elementplus.style.display = "block";
+        elementplus.style.display = "inline-block";
     }
 }
 
