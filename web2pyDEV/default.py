@@ -2,7 +2,7 @@
 
 def index():
     if not auth.is_logged_in():
-        return dict(message="please log in")
+        return dict(message="Please log in")
 
     pond_form = SQLFORM(db.pond).process()
     ponds = db(db.pond.created_by == auth.user_id).select()
