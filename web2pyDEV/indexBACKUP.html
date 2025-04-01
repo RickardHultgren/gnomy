@@ -83,33 +83,79 @@
     background: #0056b3;
 }
 
+.splash-content:has() {
+
+    background-color:#000000;width:100%;height:100%;
+}
 
 </style>
 {{if not auth.is_logged_in():}}
-    <h2>{{=message}}</h2>
+<div id="splash">
+    <style>
+        body{background-color:#000000;}
+        #splash {
+        font-family: 'Lora', serif;
+        font-size:3em;
+        display: flex;
+        width: 100%;
+        height: 100vh; 
+        background-image: url('https://raw.githubusercontent.com/RickardHultgren/gnomy/gh-pages/lantern-bg.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;  
+        background-color: #000000;
+        color: #ffffff;
+        justify-content: left;
+        /*align-items: center;*/
+        /*text-align: center;*/
+        text-align: start;
+        padding-left:25%;
+        text-shadow: 0 0 3px #000000;
+        }
+    </style>
+    {{=message}}
+</div>
 {{else:}}
-    <h2>Ponds</h2>
-    <div>
+    <script>
+    function showhideaddPond() {
+    var element = document.getElementById("addPond");
+    var elementminus = document.getElementById("minusbttn");
+    var elementplus = document.getElementById("plusbttn");
+    if (element.style.display === "none") {
+        element.style.display = "block";
+        elementminus.style.display = "inline-block";
+        elementplus.style.display = "none";
+    } else {
+        element.style.display = "none";
+        elementminus.style.display = "none";
+        elementplus.style.display = "inline-block";
+    }
+}
+
+    </script>
+    <h2>Ponds <button id="plusbttn" style="width:3em;height:3em;" onclick="showhideaddPond();">+</button><button id="minusbttn" style="display:none;width:3em;height:3em;" onclick="showhideaddPond();">-</button></h2>
+    <div id="addPond" style="display:none;">
+        <button onclick="showhideaddPond();" class="close-btn" style="border:none; box-shadow: none; margin: 2em 2em 0 0; position:fixed; z-index:10;">&times;</button>
         {{=pond_form}}
     </div>
-
+    <hr>
     <table border="1">
         <tr>
-            <th>Pond Name</th>
-            <th>Actions</th>
+            <th>Your ponds:</th>
+            <!--th>Actions</th-->
         </tr>
         {{for pond in ponds:}}
         <tr>
             <td>
-                <a href="#" onclick="showPond({{=pond.id}})">{{=pond.name}}</a>
+                <a href="#" onclick="showPond({{=pond.id}})"><button>{{=pond.name}}</button></a>
             </td>
-            <td>
+            <!--td>
                 <button onclick="showPond({{=pond.id}})">View Rootstocks</button>
-            </td>
+            </td-->
         </tr>
         {{pass}}
     </table>
-
+    <hr>
     <div id="pond-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;">
         <h3>Rootstocks for Pond</h3>
         <div id="rootstock-grid"></div>
