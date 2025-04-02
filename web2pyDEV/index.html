@@ -179,7 +179,7 @@
         {{pass}}
     </table>
     <hr>
-    <div id="pond-container" style="display:none;">
+    <div id="chosenpond" style="display:none;">
         <h3>Rootstocks for Pond</h3>
         <div id="rootstock-grid"></div>
 
@@ -299,7 +299,7 @@ function fetchKnotstocks(pondId) {
     var rootstockidJS = "";
     function showPond(pondId) {
         currentPondId = pondId;
-        document.getElementById("pond-container").style.display = "block";
+        document.getElementById("chosenpond").style.display = "block";
         fetchRootstocks(pondId);
     }
 </script>
