@@ -308,7 +308,7 @@ function fetchKnotstocks(pondId) {
 
         function fetchRootstocks(pondId) {
             fetchKnotstocks(pondId);
-            document.getElementById("rootstock-details").style.display = "none";
+            //document.getElementById("rootstock-details").style.display = "none";
             document.getElementById("rootstock-details").style.visibility = "hidden";
             fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
                 .then(response => response.json())
@@ -343,7 +343,7 @@ function selectRootstock(rootstockId, rootstockName) {
     .then(data => {
         if (data.status === "success") {
             document.getElementById("selected-rootstock-id").innerText = `ID: ${data.rootstock_id}, Name: ${data.rootstock_name}`;
-            document.getElementById("rootstock-details").style.display = "block";
+            //document.getElementById("rootstock-details").style.display = "block";
             document.getElementById("rootstock-details").style.visibility = "visible";
             // Store rootstock ID in localStorage in case the session is not persistent
             localStorage.setItem("rootstock_id", data.rootstock_id);
