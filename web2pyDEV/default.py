@@ -4,7 +4,7 @@ def index():
     if not auth.is_logged_in():
         return dict(message="Please log in")
 
-    pond_form = SQLFORM(db.pond, _id="pondforminner").process()  # Add _id attribute
+    pond_form = SQLFORM(db.pond, _id="pondform").process()  # Add _id attribute
     ponds = db(db.pond.created_by == auth.user_id).select()
     session.pond_id = None
     session.rootstock_id = None
@@ -12,12 +12,30 @@ def index():
 
 def get_rootstocks():
     pond_id = request.vars.pond_id
+
+    # Validate that pond_id is provided
     if not pond_id:
         return response.json({"error": "No pond ID provided"})
 
-    rootstocks = db(db.rootstock.pond == pond_id).select()
-    return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
+    try:
+        pond_id = int(pond_id)  # Convert to int to match db.pond.id type
+    except ValueError:
+        return response.json({"error": "Invalid pond ID"})
 
+    # Fetch pond name safely
+    pond_row = db(db.pond.id == pond_id).select(db.pond.name).first()
+    pond_name = pond_row.name if pond_row else "Unknown Pond"
+
+    # JavaScript variable assignment (escaped properly)
+    response.js = 'currentPondName = "{}";'.format(pond_name.replace('"', '\\"'))
+
+    # Fetch rootstocks associated with this pond
+    rootstocks = db(db.rootstock.pond == pond_id).select()
+    
+    return response.json(dict(
+        pond_name=pond_name, 
+        rootstocks=[r.as_dict() for r in rootstocks]
+    ))
 
 def add_rootstock():
     pond_id = request.vars.pond_id

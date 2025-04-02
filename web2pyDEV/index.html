@@ -117,6 +117,7 @@
 </div>
 {{else:}}
     <script>
+    var currentPondName = null;
     function showhideaddPond() {
         var element = document.getElementById("addPond");
         var elementbox = document.getElementById("pondformbox");
@@ -179,18 +180,24 @@
         {{pass}}
     </table>
     <hr>
-    <div id="chosenpond" style="display:none;">
-        <h3>Rootstocks for Pond</h3>
+    <div id="chosenpond">
+        <h3 id="pondHeading">Pond name: </h3>
+
+<script>
+  
+  document.getElementById("pondHeading").textContent += currentPondName;
+</script>
         <div id="rootstock-grid"></div>
 
         <h3>Add Rootstock</h3>
         <input type="text" id="rootstock-name" placeholder="Rootstock name">
         <button onclick="addRootstock()">Add</button>
+        <div id="map"></div>
     </div>
     <div id="rootstock-details">
         
         <div id="selected-rootstock-id"></div>
-        <div id="map"></div>
+        
 
         <h4>Add Flower:</h4>
         <form id="add-flower-form" onsubmit="addFlower(event)">
@@ -290,18 +297,35 @@ function fetchKnotstocks(pondId) {
 
     </div>
     <script>
-        var currentPondId = null;
+        
         var selectedRootstockId = null;
 
         
 </script>
 <script>
-    var rootstockidJS = "";
+    
     function showPond(pondId) {
-        currentPondId = pondId;
-        document.getElementById("chosenpond").style.display = "block";
+    /*var rootstockidJS = "";    currentPondId = pondId;
+        document.getElementById("chosenpond").style.visibility = "visible";
         fetchRootstocks(pondId);
     }
+
+    moreButton.onclick = () => {    */
+        const subContainer = document.getElementById("chosenpond");
+
+        if (!subContainer.classList.contains('show')) {
+            // Ensure it's visible before animation starts
+            subContainer.style.visibility = 'visible';
+            subContainer.style.position = 'absolute'; // Prevent layout shift
+            subContainer.classList.add('show'); // Start flip animation
+        } else {
+            subContainer.classList.remove('show'); // Flip out animation
+            setTimeout(() => {
+                subContainer.style.visibility = 'hidden'; // Hide after animation
+            }, 1000); // Matches transition duration (1s)
+        }
+    };
+
 </script>
 
 <script>
@@ -315,7 +339,8 @@ function fetchKnotstocks(pondId) {
                 .then(data => {
                     let grid = document.getElementById("rootstock-grid");
                     grid.innerHTML = "";
-
+                    currentPondName = data.pond_name; 
+                    //add html to pondform thing
                     if (data.rootstocks.length > 0) {
                         data.rootstocks.forEach(rootstock => {
                             grid.innerHTML += `<p>
