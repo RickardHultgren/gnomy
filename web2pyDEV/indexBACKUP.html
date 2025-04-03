@@ -170,7 +170,7 @@
         {{for pond in ponds:}}
         <tr>
             <td>
-                <a href="#" onclick="showPond({{=pond.id}})"><button>{{=pond.name}}</button></a>
+                <a href="#" onclick="showPond({{=pond.id}}, '{{=pond.name}}');"><button>{{=pond.name}}</button></a>
             </td>
             <!--td>
                 <button onclick="showPond({{=pond.id}})">View Rootstocks</button>
@@ -180,7 +180,7 @@
     </table>
     <hr>
     <div id="chosenpond" style="display:none;">
-        <h3>Rootstocks for Pond</h3>
+        <h3>Rootstocks for Pond "<span id="pondBox"></span>"</h3>
         <div id="rootstock-grid"></div>
 
         <h3>Add Rootstock</h3>
@@ -296,17 +296,36 @@ function fetchKnotstocks(pondId) {
         
 </script>
 <script>
-    var rootstockidJS = "";
-    function showPond(pondId) {
-        currentPondId = pondId;
+    
+
+    function showPond(pondId, pondName) {
+        //var rootstockidJS = "";    currentPondId = pondId;
+        document.getElementById("pondBox").innerHTML = pondName;
         document.getElementById("chosenpond").style.display = "block";
         fetchRootstocks(pondId);
-    }
+        //}
+
+        //moreButton.onclick = () => {    */
+        const subContainer = document.getElementById("chosenpond");
+
+        if (!subContainer.classList.contains('show')) {
+            // Ensure it's visible before animation starts
+            subContainer.style.visibility = 'visible';
+            subContainer.style.position = 'absolute'; // Prevent layout shift
+            subContainer.classList.add('show'); // Start flip animation
+        } else {
+            subContainer.classList.remove('show'); // Flip out animation
+            setTimeout(() => {
+                subContainer.style.visibility = 'hidden'; // Hide after animation
+            }, 1000); // Matches transition duration (1s)
+        }
+    };
+
+
 </script>
 
 <script>
-
-        function fetchRootstocks(pondId) {
+    function fetchRootstocks(pondId) {
             fetchKnotstocks(pondId);
             //document.getElementById("rootstock-details").style.display = "none";
             document.getElementById("rootstock-details").style.visibility = "hidden";

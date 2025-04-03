@@ -117,7 +117,6 @@
 </div>
 {{else:}}
     <script>
-    var currentPondName = null;
     function showhideaddPond() {
         var element = document.getElementById("addPond");
         var elementbox = document.getElementById("pondformbox");
@@ -171,7 +170,7 @@
         {{for pond in ponds:}}
         <tr>
             <td>
-                <a href="#" onclick="showPond({{=pond.id}})"><button>{{=pond.name}}</button></a>
+                <a href="#" onclick="showPond({{=pond.id}}, '{{=pond.name}}');"><button>{{=pond.name}}</button></a>
             </td>
             <!--td>
                 <button onclick="showPond({{=pond.id}})">View Rootstocks</button>
@@ -180,24 +179,18 @@
         {{pass}}
     </table>
     <hr>
-    <div id="chosenpond">
-        <h3 id="pondHeading">Pond name: </h3>
-
-<script>
-  
-  document.getElementById("pondHeading").textContent += currentPondName;
-</script>
+    <div id="chosenpond" style="display:none;">
+        <h3>Rootstocks for Pond "<span id="pondBox"></span>"</h3>
         <div id="rootstock-grid"></div>
 
         <h3>Add Rootstock</h3>
         <input type="text" id="rootstock-name" placeholder="Rootstock name">
         <button onclick="addRootstock()">Add</button>
-        <div id="map"></div>
     </div>
     <div id="rootstock-details">
         
         <div id="selected-rootstock-id"></div>
-        
+        <div id="map"></div>
 
         <h4>Add Flower:</h4>
         <form id="add-flower-form" onsubmit="addFlower(event)">
@@ -297,20 +290,22 @@ function fetchKnotstocks(pondId) {
 
     </div>
     <script>
-        
+        var currentPondId = null;
         var selectedRootstockId = null;
 
         
 </script>
 <script>
     
-    function showPond(pondId) {
-    /*var rootstockidJS = "";    currentPondId = pondId;
-        document.getElementById("chosenpond").style.visibility = "visible";
-        fetchRootstocks(pondId);
-    }
 
-    moreButton.onclick = () => {    */
+    function showPond(pondId, pondName) {
+        //var rootstockidJS = "";    currentPondId = pondId;
+        document.getElementById("pondBox").innerHTML = pondName;
+        document.getElementById("chosenpond").style.display = "block";
+        fetchRootstocks(pondId);
+        //}
+
+        //moreButton.onclick = () => {    */
         const subContainer = document.getElementById("chosenpond");
 
         if (!subContainer.classList.contains('show')) {
@@ -326,11 +321,11 @@ function fetchKnotstocks(pondId) {
         }
     };
 
+
 </script>
 
 <script>
-
-        function fetchRootstocks(pondId) {
+    function fetchRootstocks(pondId) {
             fetchKnotstocks(pondId);
             //document.getElementById("rootstock-details").style.display = "none";
             document.getElementById("rootstock-details").style.visibility = "hidden";
@@ -339,8 +334,7 @@ function fetchKnotstocks(pondId) {
                 .then(data => {
                     let grid = document.getElementById("rootstock-grid");
                     grid.innerHTML = "";
-                    currentPondName = data.pond_name; 
-                    //add html to pondform thing
+
                     if (data.rootstocks.length > 0) {
                         data.rootstocks.forEach(rootstock => {
                             grid.innerHTML += `<p>
