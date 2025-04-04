@@ -117,6 +117,25 @@
 </div>
 {{else:}}
     <script>
+
+function showhidePond() {
+    var element = document.getElementById("chosenpond");
+
+    if (element.style.opacity === "0") {
+        element.style.opacity = "1";
+        element.style.transform = "rotateX(0deg)";
+        element.style.visibility = "visible";
+    } else {
+        element.style.opacity = "0";
+        element.style.transform = "rotateX(90deg)";
+        setTimeout(() => {
+            element.style.visibility = "hidden";
+        }, 300); // Matches transition time
+    }
+}
+
+
+
     function showhideaddPond() {
         var element = document.getElementById("addPond");
         var elementbox = document.getElementById("pondformbox");
@@ -179,7 +198,8 @@
         {{pass}}
     </table>
     <hr>
-    <div id="chosenpond" style="display:none;">
+    <div id="chosenpond" style="visibility:hidden;">
+        <button onclick="showhidePond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:30; font-size:2em;">&times;</button>
         <h3>Rootstocks for Pond "<span id="pondBox"></span>"</h3>
         <div id="rootstock-grid"></div>
 
@@ -301,24 +321,11 @@ function fetchKnotstocks(pondId) {
     function showPond(pondId, pondName) {
         //var rootstockidJS = "";    currentPondId = pondId;
         document.getElementById("pondBox").innerHTML = pondName;
-        document.getElementById("chosenpond").style.display = "block";
+        showhidePond();
+        //document.getElementById("chosenpond").style.display = "block";
         fetchRootstocks(pondId);
         //}
 
-        //moreButton.onclick = () => {    */
-        const subContainer = document.getElementById("chosenpond");
-
-        if (!subContainer.classList.contains('show')) {
-            // Ensure it's visible before animation starts
-            subContainer.style.visibility = 'visible';
-            subContainer.style.position = 'absolute'; // Prevent layout shift
-            subContainer.classList.add('show'); // Start flip animation
-        } else {
-            subContainer.classList.remove('show'); // Flip out animation
-            setTimeout(() => {
-                subContainer.style.visibility = 'hidden'; // Hide after animation
-            }, 1000); // Matches transition duration (1s)
-        }
     };
 
 
