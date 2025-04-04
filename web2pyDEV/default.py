@@ -18,6 +18,65 @@ def get_rootstocks():
     rootstocks = db(db.rootstock.pond == pond_id).select()
     return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
 
+    pond_id = request.vars.pond_id
+    if not pond_id:
+        return response.json({"error": "No pond ID provided"})
+
+    try:
+        pond_id = int(pond_id)
+    except ValueError:
+        return response.json({"error": "Invalid pond ID"})
+
+    # Fetch rootstocks for the pond
+    rootstocks = db(db.rootstock.pond == pond_id).select()
+
+    multipleTendrils = []
+    multipleFlowers = []
+
+    for rootstock in rootstocks:
+        tendrils = db(db.tendril.rootstock == rootstock.id).select()
+        flowers = db(db.flower.rootstock == rootstock.id).select()
+
+        multipleTendrils.extend([
+            {
+                "rootstock_id": rootstock.id,
+                "id": t.id,
+                "name": t.name,
+                "carry": t.carry if hasattr(t, "carry") else None,
+                "suffuse": t.suffuse if hasattr(t, "suffuse") else None
+            } for t in tendrils
+        ])
+
+        multipleFlowers.extend([
+            {
+                "rootstock_id": rootstock.id,
+                "id": f.id,
+                "name": f.name,
+                "fragrance": f.fragrance,
+                "fruit": f.fruit
+            } for f in flowers
+        ])
+        
+    rootstocks.extend([
+        {
+                "id": r.id,
+                "name": r.name
+        } for r in rootstocks
+    ])
+    return response.json({
+        "status": "success",
+        "pond_id": pond_id,
+        "roostocks": rootstocks,
+        "multipleTendrils": multipleTendrils,
+        "multipleFlowers": multipleFlowers
+    })
+
+
+
+
+    
+    return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
+
 
 def add_rootstock():
     pond_id = request.vars.pond_id
@@ -153,6 +212,9 @@ def add_flower():
     )
 
     return response.json({"status": "success", "flower_id": flower_id})
+
+
+
 
 
 

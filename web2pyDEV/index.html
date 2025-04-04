@@ -121,7 +121,7 @@
 function showhidePond() {
     var element = document.getElementById("chosenpond");
 
-    if (element.style.opacity === "0") {
+    if (element.style.visibility === "hidden") {
         element.style.opacity = "1";
         element.style.transform = "rotateX(0deg)";
         element.style.visibility = "visible";
@@ -198,9 +198,10 @@ function showhidePond() {
         {{pass}}
     </table>
     <hr>
-    <div id="chosenpond" style="visibility:hidden;">
+    <div id="chosenpond" >
         <button onclick="showhidePond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:30; font-size:2em;">&times;</button>
         <h3>Rootstocks for Pond "<span id="pondBox"></span>"</h3>
+        <div id="d3-rootstocks" style="width:300px;height:300px;background:#BEDBED; style="border: 1px solid #ccc; width: 800px; height: 200px; overflow: hidden;""></div>
         <div id="rootstock-grid"></div>
 
         <h3>Add Rootstock</h3>
@@ -210,7 +211,7 @@ function showhidePond() {
     <div id="rootstock-details">
         
         <div id="selected-rootstock-id"></div>
-        <div id="map"></div>
+ 
 
         <h4>Add Flower:</h4>
         <form id="add-flower-form" onsubmit="addFlower(event)">
@@ -315,6 +316,8 @@ function fetchKnotstocks(pondId) {
 
         
 </script>
+
+
 <script>
     
 
@@ -324,37 +327,144 @@ function fetchKnotstocks(pondId) {
         showhidePond();
         //document.getElementById("chosenpond").style.display = "block";
         fetchRootstocks(pondId);
-        //}
+//}
+        
 
-    };
+    }
 
 
 </script>
 
 <script>
-    function fetchRootstocks(pondId) {
-            fetchKnotstocks(pondId);
-            //document.getElementById("rootstock-details").style.display = "none";
-            document.getElementById("rootstock-details").style.visibility = "hidden";
-            fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
-                .then(response => response.json())
-                .then(data => {
-                    let grid = document.getElementById("rootstock-grid");
-                    grid.innerHTML = "";
+function fetchRootstocks(pondId) {
+    if (!pondId) {
+        console.error("No pondId provided");
+        return;
+    }
 
-                    if (data.rootstocks.length > 0) {
-                        data.rootstocks.forEach(rootstock => {
-                            grid.innerHTML += `<p>
-                                <a href="#" onclick="selectRootstock(${rootstock.id}, '${rootstock.name}'); return false;">
-                                    ${rootstock.name}
-                                </a>
-                            </p>`;
-                        });
-                    } else {
-                        grid.innerHTML = "<p>No rootstocks found.</p>";
-                    }
+    let url = "{{=URL('get_rootstocks')}}" + "?pond_id=" + encodeURIComponent(pondId);
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+        })
+        .then(data => {
+            if (data.status !== "success") {
+                console.error("Server error:", data.error);
+                return;
+            }
+
+            console.log("Rootstocks:", data.rootstocks);
+            console.log("Tendrils:", data.multipleTendrils);
+            console.log("Flowers:", data.multipleFlowers);
+
+            // HTML rendering
+            let rootstockContainer = document.getElementById("rootstock-grid");
+            if (rootstockContainer) {
+                rootstockContainer.innerHTML = "";
+                data.rootstocks.forEach(rootstock => {
+                    rootstockContainer.innerHTML += `<p><strong>${rootstock.name}</strong></p>`;
                 });
-        }
+            }
+
+            let tendrilContainer = document.getElementById("tendril-grid");
+            if (tendrilContainer) {
+                tendrilContainer.innerHTML = "";
+                data.multipleTendrils.forEach(t => {
+                    tendrilContainer.innerHTML += `<div>
+                         <strong>${t.name}</strong> (Carry: ${t.carry ?? "–"}, Suffuse: ${t.suffuse ?? "–"})
+                    </div>`;
+                });
+            }
+
+            let flowerContainer = document.getElementById("flower-grid");
+            if (flowerContainer) {
+                flowerContainer.innerHTML = "";
+                data.multipleFlowers.forEach(f => {
+                    flowerContainer.innerHTML += `<div>
+                         <strong>${f.name}</strong> (Fragrance: ${f.fragrance}, Fruit: ${f.fruit})
+                    </div>`;
+                });
+            }
+
+            // === D3.js section ===
+            const d3Container = document.getElementById("d3-rootstocks");
+            d3Container.innerHTML = ""; // Clear previous SVG
+
+            const width = 800;
+            const height = 200;
+            const nodeSize = 60;
+            const spacing = 80;
+
+            const svg = d3.select("#d3-rootstocks")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .call(
+                    d3.zoom()
+                        .scaleExtent([0.5, 5]) // optional zoom limits
+                        .on("zoom", (event) => {
+                            zoomGroup.attr("transform", event.transform);
+                        })
+                )
+                .append("g") // this is important! group for zooming
+                .attr("cursor", "grab");
+
+            const zoomGroup = svg.append("g");
+
+            const nodes = zoomGroup.selectAll("g")
+                .data(data.rootstocks)
+                .enter()
+                .append("g")
+                .attr("transform", (d, i) => `translate(${i * spacing + 40}, 80)`);
+
+            // Draw squares
+            nodes.append("rect")
+                .attr("width", nodeSize)
+                .attr("height", nodeSize)
+                .attr("fill", "#22ff44")
+                .attr("stroke", "#2f4f4f")
+                .attr("stroke-width", 2)
+                .style("cursor", "pointer")
+                .on("click", d => {
+                    alert("Selected rootstock: " + d.name);
+                });
+
+            // Add text labels
+            nodes.append("text")
+                .attr("x", nodeSize / 2)
+                .attr("y", nodeSize + 15)
+                .attr("text-anchor", "middle")
+                .text(d => d.name)
+                .style("font-size", "12px")
+                .style("fill", "#333");
+
+
+    // Also calling other fetches
+    fetchKnotstocks(pondId);
+    document.getElementById("rootstock-details").style.visibility = "hidden";
+
+    fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
+        .then(response => response.json())
+        .then(data => {
+            let grid = document.getElementById("rootstock-grid");
+            grid.innerHTML = "";
+
+            if (data.rootstocks.length > 0) {
+                data.rootstocks.forEach(rootstock => {
+                    grid.innerHTML += `<p>
+                        <a href="#" onclick="selectRootstock(${rootstock.id}, '${rootstock.name}'); return false;">
+                            ${rootstock.name}
+                        </a>
+                    </p>`;
+                });
+            } else {
+                grid.innerHTML = "<p>No rootstocks found.</p>";
+            }
+        });
+}
+
 
 </script>
 <script>

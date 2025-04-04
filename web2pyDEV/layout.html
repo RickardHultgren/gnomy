@@ -107,13 +107,14 @@
     padding: 10px;
 
     z-index: 50;
-    opacity: 1; /* Start hidden */
+    opacity: 0; /* Start hidden */
     visibility: hidden;
     
     transform-origin: bottom center;
     transform: rotateX(90deg);
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
+
 
 
 /* When the div is shown (add this class via JavaScript) */
