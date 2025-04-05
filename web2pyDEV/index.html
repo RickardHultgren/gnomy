@@ -204,7 +204,7 @@ function showhidePond() {
     <div id="chosenpond" >
         <button onclick="showhidePond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:30; font-size:2em;">&times;</button>
         <h3>Rootstocks for Pond "<span id="pondBox"></span>"</h3>
-        <div id="d3-rootstocks" style="width:300px;height:300px;background:#BEDBED; style="border: 1px solid #ccc; width: 800px; height: 200px; overflow: hidden;""></div>
+        <div id="d3-rootstocks"></div>
         <div id="rootstock-grid"></div>
 
         <h3>Add Rootstock</h3>
@@ -394,10 +394,10 @@ function fetchRootstocks(pondId) {
             const d3Container = document.getElementById("d3-rootstocks");
             d3Container.innerHTML = "";
 
-            const width = 800;
-            const height = 200;
-            const nodeSize = 60;
-            const spacing = 80;
+            const width = 600;
+            const height = 400;
+            const nodeSize = 20;
+            const spacing = 50;
 
             const svgRoot = d3.select("#d3-rootstocks")
                 .append("svg")
@@ -420,17 +420,17 @@ function fetchRootstocks(pondId) {
                 .append("g")
                 .attr("transform", (d, i) => `translate(${i * spacing + 40}, 80)`);
 
-            nodes.append("rect")
-                .attr("width", nodeSize)
-                .attr("height", nodeSize)
+                nodes.append("polygon")
+                .attr("points", "0,30 15,35 2,40 15,40 10,50 20,45 20,58 25,45 30,60 35,45 40,58, 40,45 50,50 45,40 58,40 50,40 60,30 45,25 58,20 45,20 50,10 40,15 40,2 35,15 30,0 25,15 20,2 20,15 10,10 15,20 2,20 15,25 ")  // triangle
+
                 .attr("fill", "#22ff44")
-                .attr("stroke", "#2f4f4f")
+                .attr("stroke", "#22ff44")
                 .attr("stroke-width", 2)
                 .style("cursor", "pointer")
                 .on("click", (event, d) => {
                     alert("Selected rootstock: " + d.name);
                 });
-
+    
             nodes.append("text")
                 .attr("x", nodeSize / 2)
                 .attr("y", nodeSize + 15)
