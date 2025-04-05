@@ -117,7 +117,7 @@
 </div>
 {{else:}}
     <script>
-
+document.getElementById("chosenpond").style.visibility = "hidden";
 function showhidePond() {
     var element = document.getElementById("chosenpond");
 
@@ -354,7 +354,8 @@ function fetchRootstocks(pondId) {
                 console.error("Server error:", data.error);
                 return;
             }
-
+//crucial
+            alert("Rootstocks:", data.rootstocks);
             console.log("Rootstocks:", data.rootstocks);
             console.log("Tendrils:", data.multipleTendrils);
             console.log("Flowers:", data.multipleFlowers);
