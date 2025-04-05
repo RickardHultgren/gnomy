@@ -60,6 +60,27 @@
 <style>
 /* Container */
 
+#d3-rootstocks {
+    width: 600px;
+    height: 400px;
+    background: #BEDBED;
+    border: 2px solid #2a2a2a;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#d3-rootstocks:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+
+
 #pondformbox {
   display: none;
   position: fixed;
@@ -77,8 +98,8 @@
     float: right;
     position: fixed;
     top: 40vh;
-    right: 50vh;
-    margin-right:-145px;
+    right: 50vw;
+    margin-right:-200px;
     margin-top:-40px;
     background: none /*rgba(34, 34, 34, 0.9);*/
     border: none;/*3px solid #d4a373;*/
@@ -94,38 +115,36 @@
 
 
 #chosenpond {
-    background-color: #ff8800;
-    z-index: 50;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-
-    display: block; /* block; Keep display:block but hide it visually */
-    opacity: 0;
-    visibility: hidden;
+    top: 2.5vh;
+    left: 2.5vw;
+    width: 95vw;
+    height: 95vh;
     
-    border: 1px solid #000;
-    padding: 10px;
     background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #000;
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    padding: 10px;
 
-    /* Animation Setup */
+    z-index: 50;
+    /*visibility: hidden;*/
+    
     transform-origin: bottom center;
-    transform: rotateX(90deg); /* Start flipped */
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0s linear 0.3s; /* Ensure smooth hiding */
+    transform: rotateX(90deg);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
+
+
 
 /* When the div is shown (add this class via JavaScript) */
 #chosenpond.show {
     opacity: 1;
     visibility: visible;
     transform: rotateX(0deg);
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+    z-index: 50;
 }
-
 
 
 
@@ -428,7 +447,7 @@ p {
   background-size: .5em 1.45em, .5em 1.45em;/*, .333em .333em;        */">
     <div class="w2p_flash alert alert-dismissable">{{=response.flash or ''}}</div>
     <!-- Navbar ======================================= -->
-    <nav class="navbar navbar-light navbar-expand-md bg-faded bg-dark navbar-dark justify-content-center" style="width:auto;padding: 0 3vw 0 3vw; height:2em;">
+    <nav class="navbar navbar-light navbar-expand-md bg-faded bg-dark navbar-dark justify-content-center" style="width:auto;padding: 0 3vw 0 3vw; height:2em; ">
        <a href="https://rickardhultgren.pythonanywhere.com/gnomy/default/index" class="navbar-brand d-flex w-50 mr-auto" style="  font-family: 'Amatic SC', cursive; /* Use the Amatic SC font */
   font-size: 1em; /* Adjust size as needed */
   letter-spacing: -0.3px; /* Slightly reduced letter spacing */
@@ -436,7 +455,7 @@ p {
   text-align: start; /*center; /* Center align text */
   font-weight: bold;
 ">Gnomy</a>
-       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" style="border:0; background-image:none; background-color:none; box-shadow:none; font-size:0.75rem; font-weight:bold;">
          <span class="navbar-toggler-icon"></span>
        </button>
 
@@ -531,548 +550,7 @@ p {
     {{block page_js}}{{end page_js}}
     {{if response.google_analytics_id:}}
     <!-- Analytics ==================================== -->
-    <script src="{{=URL('static','js/a<!DOCTYPE html>
-      <!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{=T.accepted_language or 'en'}}"> <!--<![endif]-->
-        <head>
-          <meta charset="utf-8">
-          <!-- www.phpied.com/conditional-comments-block-downloads/ -->
-          <!-- Always force latest IE rendering engine
-               (even in intranet) & Chrome Frame
-               Remove this if you use the .htaccess -->
-          <meta http-equiv="X-UA-Compatible" content="IE=edge{{=not request.is_local and ',chrome=1' or ''}}">
-          <!--  Mobile Viewport Fix
-                j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag
-                device-width: Occupy full width of the screen in its current orientation
-                initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
-                user-scalable = yes allows the user to zoom in -->
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>{{=response.title or request.application}}</title>
-          <!-- http://dev.w3.org/html5/markup/meta.name.html -->
-          <meta name="application-name" content="{{=request.application}}">
-          <!-- Speaking of Google, don't forget to set your site up:
-               http://google.com/webmasters -->
-          <meta name="google-site-verification" content="">
-          <!-- include stylesheets -->
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-          <link rel="stylesheet" href="{{=URL('static','css/bootstrap.min.css')}}"/>
-          <link rel="stylesheet" href="{{=URL('static','css/style.css')}}"/>
-          <link rel="stylesheet" href="{{=URL('static','css/web2py-bootstrap4.css')}}"/>
-          <link rel="stylesheet" href="{{=URL('static','css/style.css')}}"/>
-          <link rel="icon" href="https://rickardhultgren.github.io/gnomy/GnomyLogo.ico" > <!--type="image/x-icon"-->
-          <style>
-              @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
-          </style>
-          <link rel="shortcut icon" href="{{=URL('static','images/favicon.ico')}}" type="image/x-icon">
-          <link rel="apple-touch-icon" href="{{=URL('static','images/favicon.png')}}">
-          <link rel="shortcut icon" href="{{=URL('static','images/favicon.ico')}}" type="image/x-icon">
-          <link rel="icon" href="https://rickardhultgren.github.io/gnomy/GnomyLogo.ico" > <!--type="image/x-icon"-->
-          <link rel="preconnect" href="https://fonts.googleapis.com">
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-          
-          <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Orbitron:wght@400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
-          <script src="https://d3js.org/d3.v7.min.js"></script>      
-      
-      
-      
-          <!-- All JavaScript at the bottom, except for Modernizr which enables
-               HTML5 elements & feature detects -->
-          <script src="{{=URL('static','js/modernizr-2.8.3.min.js')}}"></script>
-          <!-- Favicons -->
-            
-          {{include 'web2py_ajax.html'}} <!-- this includes jquery.js, calendar.js/.css and web2py.js -->
-          {{block head}}{{end}}
-      
-          <link rel="stylesheet" href="{{=URL('static','css/style.css')}}"/>
-          <link href='https://fonts.googleapis.com/css?family=Signika Negative' rel='stylesheet'>
-          
-      
-          <link rel="preconnect" href="https://fonts.googleapis.com">
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-          <!--link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IM+Fell+English:ital@0;1&family=Michroma&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Orbitron:wght@400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet"-->
-      
-      <style>
-      /* Container */
-      
-      #pondformbox {
-        display: none;
-        position: fixed;
-        top: 0;
-                  left: 0;
-                  width: 100vw;
-                  height: 100vh;
-                  background-color: rgba(0, 0, 0, 0.8);
-                  z-index: 2;
-                  justify-content: center;
-                  align-items: center;
-        }
-      
-      #pondform {
-          float: right;
-          position: fixed;
-          top: 40vh;
-          right: 50vw;
-          margin-right:-200px;
-          margin-top:-40px;
-          background: none /*rgba(34, 34, 34, 0.9);*/
-          border: none;/*3px solid #d4a373;*/
-          padding: 20px;
-          max-width: 400px;
-          border-radius: 15px;
-          text-align: center;
-          width: 250px;
-          height: auto;
-          padding-top: 40px; /* Prevents overlap with close button */
-          z-index:5;
-      }
-      
-      
-      #chosenpond {
-          position: fixed;
-          top: 2.5vh;
-          left: 2.5vw;
-          width: 95vw;
-          height: 95vh;
-          
-          background: rgba(255, 255, 255, 0.9);
-          border: 1px solid #000;
-          border-radius: 8px;
-          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-          padding: 10px;
-      
-          z-index: 50;
-          /*visibility: hidden;*/
-          
-          transform-origin: bottom center;
-          transform: rotateX(90deg);
-          transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-      }
-      
-      
-      
-      /* When the div is shown (add this class via JavaScript) */
-      #chosenpond.show {
-          opacity: 1;
-          visibility: visible;
-          transform: rotateX(0deg);
-          transition: transform 0.3s ease-in-out;
-          z-index: 50;
-      }
-      
-      
-      
-      /* Close Button */
-      .close-btn {
-          position: absolute;
-          top: 10px;
-          right: 15px;
-          background: transparent;
-          border: none;
-          color: #d4a373;
-          font-size: 22px;
-          font-weight: bold;
-          cursor: pointer;
-          transition: 0.3s;
-      }
-      
-      .close-btn:hover {
-          color: #ff5c5c;
-      }
-      
-      /* Title */
-      #pondform h1 {
-          font-family: 'Uncial Antiqua', cursive;
-          font-size: 22px;
-          color: #d4a373;
-          margin-bottom: 10px;
-      }
-      
-      /* Labels */
-      #pondform label {
-          display: block;
-          font-size: 14px;
-          margin-top: 8px;
-          text-align: left;
-      }
-      
-      /* Input Fields */
-      #pondform input,
-      #pondform select,
-      #pondform textarea {
-          width: 100%;
-          padding: 8px;
-          margin: 5px 0;
-          border: 2px solid #a67c52;
-          background: #222;
-          color: #e0c097;
-          font-size: 14px;
-          border-radius: 5px;
-      }
-      
-      /* Submit Button */
-      #pondform button {
-          background: linear-gradient(to bottom, #8c5a2b, #59391a);
-          color: #fff;
-          font-size: 14px;
-          padding: 10px;
-          border: none;
-          width: 100%;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: 0.3s;
-          font-weight: bold;
-      }
-      
-      #pondform button:hover {
-          background: linear-gradient(to bottom, #a67c52, #8c5a2b);
-      }
-      
-      /* Placeholder Styling */
-      #pondform input::placeholder,
-      #pondform textarea::placeholder {
-          color: #b09a80;
-          opacity: 0.8;
-      }
-      
-      
-      
-      
-      
-      
-      #panic-button {
-          display: flex;  /* Enables flexbox */
-          justify-content: center;  /* Centers text horizontally */
-          align-items: center;  /* Centers text vertically */
-          background-color: #8B0000; /* Dark Red */
-          color: white;
-          font-size: 1em;
-          font-weight: bold;
-          width: 2em;
-          height: 1em;
-          text-align: center;
-          border: 2px solid #cccccc;
-          border-radius: 8px;
-          text-transform: uppercase;
-          cursor: pointer;
-          transition: all 0.2s ease-in-out;
-          box-shadow: 0px 4px 10px rgba(255, 0, 0, 0.3);
-      
-          background-image:
-              radial-gradient(circle at 50% 0%, rgba(255, 100, 100, 0.6) 5%, rgba(139, 0, 0, 0) 100%),
-              radial-gradient(circle at 50% 100%, rgba(200, 50, 50, 0.5) 10%, rgba(139, 0, 0, 0) 100%),
-              radial-gradient(circle at 0% 50%, rgba(255, 80, 80, 0.4) 10%, rgba(139, 0, 0, 0) 100%),
-              radial-gradient(circle at 100% 50%, rgba(255, 60, 60, 0.4) 10%, rgba(139, 0, 0, 0) 100%),
-      
-              repeating-radial-gradient(circle, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.1) 3.5%),
-              repeating-radial-gradient(circle, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 6%, rgba(255, 100, 100, 0.1) 7.5%),
-      
-              radial-gradient(circle at 50% 50%, rgb(200, 50, 50) 5%, rgb(170, 30, 30) 30%, rgb(120, 20, 20) 100%);
-          background-size: cover;
-      }
-      
-          #panic-button:hover {
-              background-color: #A50021; /* Bright Red */
-              border-color: #ffffff;
-              box-shadow: 0px 6px 12px rgba(255, 0, 0, 0.5);
-              transform: scale(1.1);
-              animation: panic-pulse 0.8s infinite alternate ease-in-out;
-          }
-      
-          #panic-button:active {
-              background-color: #7B0000;
-              box-shadow: inset 0px 3px 7px rgba(0, 0, 0, 0.6);
-              transform: scale(0.95);
-          }
-      
-          @keyframes panic-pulse {
-              0% {
-                  box-shadow: 0px 0px 15px rgba(255, 0, 0, 0.6);
-              }
-              100% {
-                  box-shadow: 0px 0px 25px rgba(255, 0, 0, 0.9);
-              }
-          }
-      
-          @keyframes pulse {
-              from {
-                  box-shadow: 0px 4px 8px rgba(255, 50, 50, 0.4),
-                              0px 0px 5px rgba(255, 0, 0, 0.3);
-              }
-              to {
-                  box-shadow: 0px 6px 12px rgba(255, 0, 0, 0.6),
-                              0px 0px 15px rgba(255, 0, 0, 0.5);
-              }
-          }
-       label{margin-right:0}
-        input[type=text]{
-          
-          margin-left:0;
-          margin-bottom:2px; /* Reduced from whatever it currently is */
-          margin-top:2px; /* Reduced from whatever it currently is */
-      }
-      
-      
-      hr{    border: none;
-          height: 4px; /* Thickness */
-          background: linear-gradient(
-              to right, 
-              #6a3d1b, /* Darker copper for shadow */
-              #e6a96d, /* Brighter copper for highlight */
-              #B87333, /* Base copper */
-              #e6a96d, /* Brighter copper for highlight */
-              #6a3d1b  /* Darker copper for shadow */
-          );
-          box-shadow: 
-              0px -2px 3px #e6a96d, /* Top highlight */
-              0px  2px 3px #6a3d1b, /* Bottom shadow */
-              0px  0px 3px #d98a50; /* Soft glow */
-            }
-      
-        button {
-          background-color: #a67844;
-          color: #f8f4e3;
-      
-          color: #b87333;
-        text-shadow: 
-          0px -2px 3px #ffdab9, /* Top highlight */
-          0px 2px 3px #6b3e1e, /* Bottom depth */
-          1px 1px 5px #b87333; /* Glow */
-          font-size: 1.2rem;
-          font-weight:bold;
-          padding: 10px 20px;
-          border-color: #a67844;
-          border-color: 	#B87333;
-          border-width: 4px;
-          border-radius: 5px;
-          /*cursor: pointer;*/
-          transition: background-color 0.3s ease;
-      
-          background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
-          -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0,0%,100%,.6) 0%, hsla(0,0%,100%,0) 100%),
-          -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
-          -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
-          
-          -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
-          -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
-          -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.2) 2.2%),
-          
-          -webkit-radial-gradient( 50% 50%, 200% 50%, hsla(0,0%,90%,1) 5%, hsla(0,0%,85%,1) 30%, hsla(0,0%,60%,1) 100%);
-          box-shadow: 
-          1px -1px 2px #e6a96d,   
-         -1px  2px 3px #6a3d1b,  
-          0px  0px 2px #d98a50,  
-          inset 1px -1px 2px #e6a96d,  
-          inset -1px 1px 2px #6a3d1b;  */
-      
-        }
-      
-        a{
-          font-family:'Lora', serif;  
-          color:#4682B4; /* Steel Blue */
-          text-shadow: 
-          1px -1px 1px #c4d7f2, /* Highlight above */
-         -1px  2px 2px #3b5a76, /* Shadow below */
-          0px  0px 1px #7aa1c4; /* Soft glow for metallic feel */
-        }
-      
-      td, th {
-      /*  box-shadow: 
-          1px -1px 2px #e6a96d,   
-         -1px  2px 3px #6a3d1b,  
-          0px  0px 2px #d98a50,  
-          inset 1px -1px 2px #e6a96d,  
-          inset -1px 1px 2px #6a3d1b;  */
-        padding: 0.25em 0em 0.25em 0em ;
-        border:none;
-      }
-      th {background-color:none;}
-      table {border:none;}
-        
-        [type="submit"], .btn-primary {
-              background-color: #003366; /* Deep metallic blue */
-              color: white;
-              font-size: 1em;
-              padding: 0.5rem 1rem;
-              border: 2px solid #aaaaaa;
-              border-radius: 5px;
-              /*text-transform: uppercase;*/
-              cursor: pointer;
-              transition: all 0.3s ease-in-out;
-              box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-      
-              background-image:
-                  radial-gradient(circle at 50% 0%, rgba(200, 220, 255, 0.4) 5%, rgba(0, 51, 102, 0) 100%),
-                  radial-gradient(circle at 50% 100%, rgba(100, 140, 200, 0.3) 10%, rgba(0, 51, 102, 0) 100%),
-                  radial-gradient(circle at 0% 50%, rgba(80, 120, 180, 0.3) 10%, rgba(0, 51, 102, 0) 100%),
-                  radial-gradient(circle at 100% 50%, rgba(50, 100, 160, 0.3) 10%, rgba(0, 51, 102, 0) 100%),
-                  
-                  repeating-radial-gradient(circle, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.1) 3.5%),
-                  repeating-radial-gradient(circle, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 6%, rgba(200, 220, 255, 0.1) 7.5%),
-      
-                  radial-gradient(circle at 50% 50%, rgb(80, 100, 180) 5%, rgb(50, 80, 160) 30%, rgb(20, 50, 130) 100%);
-              background-size: cover;
-          }
-      
-          [type="submit"]:hover, .btn-primary:hover {
-              background-color: #002244;
-              border-color: #cccccc;
-              box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.2);
-              transform: scale(1.05);
-          }
-      
-          [type="submit"]:active, .btn-primary:active {
-              background-color: #001a33;
-              box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.5);
-              transform: scale(0.98);
-          }
-      
-      
-          :root {
-        font-size: calc(100vw / 40);
-      }
-      
-      h1 {
-        font-size: 3rem;
-      }
-      
-      h2 {
-        font-size: 1.8rem;
-      }
-      
-      p {
-        font-size: 1.2rem;
-      }
-      
-      
-      
-      </style>
-      
-        </head>
-        <!--body style="font-family:'Signika Negative', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif, Helvetica, Arial;padding:0 0 0 0;margin:0; width:100vw;border-width:0;"-->
-        <body style="font-family:'Lora', serif;  color:#B87333;  text-shadow: 
-        1px -1px 1px #e6a96d,  /* Highlight above (lighter copper) */
-       -1px  1px 2px #6a3d1b,  /* Shadow below (darker copper) */
-        0px  0px 1px #d98a50;  /* Soft glow for depth */
-          background-color: #2a2a2a; /* Light beige background */ background-image: 
-          linear-gradient(70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%),
-          linear-gradient(-70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%);
-          /*radial-gradient(circle at center, #444444 25%, transparent 2.5%);*/
-        background-size: .5em 1.45em, .5em 1.45em;/*, .333em .333em;        */">
-          <div class="w2p_flash alert alert-dismissable">{{=response.flash or ''}}</div>
-          <!-- Navbar ======================================= -->
-          <nav class="navbar navbar-light navbar-expand-md bg-faded bg-dark navbar-dark justify-content-center" style="width:auto;padding: 0 3vw 0 3vw; height:2em; ">
-             <a href="https://rickardhultgren.pythonanywhere.com/gnomy/default/index" class="navbar-brand d-flex w-50 mr-auto" style="  font-family: 'Amatic SC', cursive; /* Use the Amatic SC font */
-        font-size: 1em; /* Adjust size as needed */
-        letter-spacing: -0.3px; /* Slightly reduced letter spacing */
-        color: #ffffff; /* Set text color */
-        text-align: start; /*center; /* Center align text */
-        font-weight: bold;
-      ">Gnomy</a>
-             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" style="border:0; background-image:none; background-color:none; box-shadow:none; font-size:0.75rem; font-weight:bold;">
-               <span class="navbar-toggler-icon"></span>
-             </button>
-      
-             <div class="navbar-collapse collapse w-100" id="navbarNavDropdown">
-              <button id="panic-button" onclick="location.href='https://rickardhultgren.github.io/gnomy/panic.html';" style="
-      
-                                                                                                                             color: white;
-                  border-color: #aaaaaa;
-                  font-size:1em;
-                                                                                                                                       vertical-align:middle;
-      
-      ">
-                      !
-                      </button>
-      
-                 <ul class="navbar-nav w-100 justify-content-center">
-                {{for _item in response.menu or []:}}
-                {{if len(_item)<4 or not _item[3]:}}
-                <li class="nav-item {{if _item[1]:}}active{{pass}}">
-                  <a class="nav-link" href="{{=_item[2]}}">{{=_item[0]}}</a>
-                </li>
-                {{else:}}
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="{{=_item[2]}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{=_item[0]}}</a>
-                  <div class="dropdown-menu">
-                    {{for _subitem in _item[3]:}}
-                    <a class="dropdown-item" href="{{=_subitem[2]}}">{{=_subitem[0]}}</a>
-                    {{pass}}
-                  </div>
-                </li>
-                {{pass}}
-                {{pass}}
-              </ul>
-               <!--form class="form-inline my-2 my-lg-0">
-                   <input class="form-control mr-sm-2" type="text" placeholder="Search">
-               </form-->
-              {{if 'auth' in globals():}}
-              <ul class="nav navbar-nav ml-auto w-100 justify-content-end" style="align:right;size:10vw;font-size:3vh;">
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{if auth.user:}}{{=auth.user.first_name}}{{else:}}Login{{pass}}
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    {{if auth.user:}}
-                    <a class="dropdown-item" href="{{=URL('default','user/profile')}}">{{=T('Profile')}}</a>
-                    {{if 'change_password' not in auth.settings.actions_disabled:}}
-                    <a class="dropdown-item" href="{{=URL('default','user/change_password')}}">{{=T('Change Password')}}</a>
-                    {{pass}}
-                    <a class="dropdown-item" href="{{=URL('default','user/logout')}}">{{=T('Logout')}}</a>
-                    {{else:}}
-                    <a class="dropdown-item" href="{{=URL('default','user/login')}}">{{=T('Login')}}</a>
-                    {{if 'register' not in auth.settings.actions_disabled:}}
-                    <a class="dropdown-item" href="{{=URL('default','user/register')}}">{{=T('Sign up')}}</a>
-                    {{pass}}
-                    {{if 'retrieve_password' not in auth.settings.actions_disabled:}}
-                    <a class="dropdown-item" href="{{=URL('default','user/retrieve_password')}}">{{=T('Lost Password')}}</a>
-                    {{pass}}
-                    {{pass}}
-                  </div>
-                </li>
-              </ul>
-              {{pass}}
-            </div-->
-          </nav>
-      
-          <!-- Masthead ===================================== -->
-          {{block header}}
-          {{end}}
-          <!-- Main ========================================= -->
-          <!-- Begin page content -->
-          <div class="container-fluid main-container">
-            {{include}}
-            {{=response.toolbar() if response.show_toolbar else ''}}
-          </div>
-      
-          {{block footer}} <!-- this is default footer -->
-          <!--footer class="footer container-fluid">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="copyright pull-left">{{=T('Copyright')}} &#169; {{=request.now.year}}</div>
-                <div id="poweredBy" class="pull-right">
-                  {{=T('Powered by')}}
-                  <a href="http://www.web2py.com/">web2py</a>
-                </div>
-              </div>
-            </div>
-          </footer-->
-          {{end}}
-          <!-- The javascript =============================== -->
-          <script src="{{=URL('static','js/bootstrap.bundle.min.js')}}"></script>
-          <script src="{{=URL('static','js/web2py-bootstrap4.js')}}"></script>
-          {{block page_js}}{{end page_js}}
-          {{if response.google_analytics_id:}}
-          <!-- Analytics ==================================== -->
-          <script src="{{=URL('static','js/analytics.min.js')}}"></script>
-          <script type="text/javascript">
-            analytics.initialize({
-            'Google Analytics':{trackingId:'{{=response.google_analytics_id}}'}
-            });
-          </script>
-          {{pass}}
-      
-        </body>
-      </html>
-      nalytics.min.js')}}"></script>
+    <script src="{{=URL('static','js/analytics.min.js')}}"></script>
     <script type="text/javascript">
       analytics.initialize({
       'Google Analytics':{trackingId:'{{=response.google_analytics_id}}'}

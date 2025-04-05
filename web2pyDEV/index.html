@@ -413,18 +413,39 @@ function fetchRootstocks(pondId) {
                         zoomGroup.attr("transform", event.transform);
                     })
             );
-
+            const drag = d3.drag()
+                .on("start", function (event, d) {
+                    // Get current transform of the group
+                    const transform = d3.select(this).attr("transform");
+                    const match = /translate\(([^,]+),\s*([^)]+)\)/.exec(transform);
+                    d.offsetX = event.x - (match ? parseFloat(match[1]) : 0);
+                    d.offsetY = event.y - (match ? parseFloat(match[2]) : 0);
+                    d3.select(this).raise().attr("stroke", "black");
+                })
+                .on("drag", function (event, d) {
+                    const x = event.x - d.offsetX;
+                    const y = event.y - d.offsetY;
+                    d3.select(this).attr("transform", `translate(${x}, ${y})`);
+                })
+                .on("end", function (event, d) {
+                    d3.select(this).attr("stroke", null);
+                });
             const nodes = zoomGroup.selectAll("g")
                 .data(data.rootstocks)
                 .enter()
                 .append("g")
-                .attr("transform", (d, i) => `translate(${i * spacing + 40}, 80)`);
+                .attr("transform", (d, i) => {
+                    d.x = i * spacing + 40;
+                    d.y = 80;
+                    return `translate(${d.x}, ${d.y})`;
+                })
+                .call(drag); // 👈 Attach drag here
 
                 nodes.append("polygon")
-                .attr("points", "0,30 15,35 2,40 15,40 10,50 20,45 20,58 25,45 30,60 35,45 40,58, 40,45 50,50 45,40 58,40 50,40 60,30 45,25 58,20 45,20 50,10 40,15 40,2 35,15 30,0 25,15 20,2 20,15 10,10 15,20 2,20 15,25 ")  // triangle
+                .attr("points", "0,30 15,35 2,40 15,40 10,50 20,45 20,58 25,45 30,60 35,45 40,58, 40,45 50,50 45,40 58,40 45,35 60,30 45,25 58,20 45,20 50,10 40,15 40,2 35,15 30,0 25,15 20,2 20,15 10,10 15,20 2,20 15,25 ")  // triangle
 
                 .attr("fill", "#22ff44")
-                .attr("stroke", "#22ff44")
+                .attr("stroke", "#118822")
                 .attr("stroke-width", 2)
                 .style("cursor", "pointer")
                 .on("click", (event, d) => {
