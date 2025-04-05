@@ -13,23 +13,15 @@ def index():
 def get_rootstocks():
     pond_id = request.vars.pond_id
     if not pond_id:
-        return response.json({"error": "No pond ID provided"})
-
-    rootstocks = db(db.rootstock.pond == pond_id).select()
-    return response.json(dict(rootstocks=[r.as_dict() for r in rootstocks]))
-
-    pond_id = request.vars.pond_id
-    if not pond_id:
-        return response.json({"error": "No pond ID provided"})
+        return response.json({"status": "error", "error": "No pond ID provided"})
 
     try:
         pond_id = int(pond_id)
     except ValueError:
-        return response.json({"error": "Invalid pond ID"})
+        return response.json({"status": "error", "error": "Invalid pond ID"})
 
-    # Fetch rootstocks for the pond
     rootstocks = db(db.rootstock.pond == pond_id).select()
-
+    
     multipleTendrils = []
     multipleFlowers = []
 
@@ -42,8 +34,8 @@ def get_rootstocks():
                 "rootstock_id": rootstock.id,
                 "id": t.id,
                 "name": t.name,
-                "carry": t.carry if hasattr(t, "carry") else None,
-                "suffuse": t.suffuse if hasattr(t, "suffuse") else None
+                "carry": t.get("carry"),
+                "suffuse": t.get("suffuse")
             } for t in tendrils
         ])
 
@@ -52,26 +44,18 @@ def get_rootstocks():
                 "rootstock_id": rootstock.id,
                 "id": f.id,
                 "name": f.name,
-                "fragrance": f.fragrance,
-                "fruit": f.fruit
+                "fragrance": f.get("fragrance"),
+                "fruit": f.get("fruit")
             } for f in flowers
         ])
-        
-    rootstocks.extend([
-        {
-                "id": r.id,
-                "name": r.name
-        } for r in rootstocks
-    ])
+
     return response.json({
         "status": "success",
         "pond_id": pond_id,
-        "roostocks": rootstocks,
+        "rootstocks": [r.as_dict() for r in rootstocks],
         "multipleTendrils": multipleTendrils,
         "multipleFlowers": multipleFlowers
     })
-
-
 
 
     

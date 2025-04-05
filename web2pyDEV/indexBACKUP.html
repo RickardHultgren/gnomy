@@ -117,21 +117,24 @@
 </div>
 {{else:}}
     <script>
-
+var showhidevar = 0;
 function showhidePond() {
     var element = document.getElementById("chosenpond");
 
-    if (element.style.visibility === "hidden") {
-        element.style.opacity = "1";
+    if (showhidevar === 0) {
+        //element.style.opacity = "1";
         element.style.transform = "rotateX(0deg)";
         element.style.visibility = "visible";
+        showhidevar = 1;
     } else {
-        element.style.opacity = "0";
+        //element.style.opacity = "0";
         element.style.transform = "rotateX(90deg)";
         setTimeout(() => {
-            element.style.visibility = "hidden";
+        element.style.visibility = "hidden";
         }, 300); // Matches transition time
+        showhidevar = 0;
     }
+    
 }
 
 
@@ -342,7 +345,7 @@ function fetchRootstocks(pondId) {
         return;
     }
 
-    let url = "{{=URL('get_rootstocks')}}" + "?pond_id=" + encodeURIComponent(pondId);
+    const url = "{{=URL('get_rootstocks')}}" + "?pond_id=" + encodeURIComponent(pondId);
 
     fetch(url)
         .then(response => {
@@ -359,7 +362,6 @@ function fetchRootstocks(pondId) {
             console.log("Tendrils:", data.multipleTendrils);
             console.log("Flowers:", data.multipleFlowers);
 
-            // HTML rendering
             let rootstockContainer = document.getElementById("rootstock-grid");
             if (rootstockContainer) {
                 rootstockContainer.innerHTML = "";
@@ -373,7 +375,7 @@ function fetchRootstocks(pondId) {
                 tendrilContainer.innerHTML = "";
                 data.multipleTendrils.forEach(t => {
                     tendrilContainer.innerHTML += `<div>
-                         <strong>${t.name}</strong> (Carry: ${t.carry ?? "–"}, Suffuse: ${t.suffuse ?? "–"})
+                        🌱 <strong>${t.name}</strong> (Carry: ${t.carry ?? "–"}, Suffuse: ${t.suffuse ?? "–"})
                     </div>`;
                 });
             }
@@ -383,35 +385,34 @@ function fetchRootstocks(pondId) {
                 flowerContainer.innerHTML = "";
                 data.multipleFlowers.forEach(f => {
                     flowerContainer.innerHTML += `<div>
-                         <strong>${f.name}</strong> (Fragrance: ${f.fragrance}, Fruit: ${f.fruit})
+                        🌸 <strong>${f.name}</strong> (Fragrance: ${f.fragrance}, Fruit: ${f.fruit})
                     </div>`;
                 });
             }
 
-            // === D3.js section ===
+            // D3.js rendering
             const d3Container = document.getElementById("d3-rootstocks");
-            d3Container.innerHTML = ""; // Clear previous SVG
+            d3Container.innerHTML = "";
 
             const width = 800;
             const height = 200;
             const nodeSize = 60;
             const spacing = 80;
 
-            const svg = d3.select("#d3-rootstocks")
+            const svgRoot = d3.select("#d3-rootstocks")
                 .append("svg")
                 .attr("width", width)
-                .attr("height", height)
-                .call(
-                    d3.zoom()
-                        .scaleExtent([0.5, 5]) // optional zoom limits
-                        .on("zoom", (event) => {
-                            zoomGroup.attr("transform", event.transform);
-                        })
-                )
-                .append("g") // this is important! group for zooming
-                .attr("cursor", "grab");
+                .attr("height", height);
 
-            const zoomGroup = svg.append("g");
+            const zoomGroup = svgRoot.append("g");
+
+            svgRoot.call(
+                d3.zoom()
+                    .scaleExtent([0.5, 5])
+                    .on("zoom", (event) => {
+                        zoomGroup.attr("transform", event.transform);
+                    })
+            );
 
             const nodes = zoomGroup.selectAll("g")
                 .data(data.rootstocks)
@@ -419,7 +420,6 @@ function fetchRootstocks(pondId) {
                 .append("g")
                 .attr("transform", (d, i) => `translate(${i * spacing + 40}, 80)`);
 
-            // Draw squares
             nodes.append("rect")
                 .attr("width", nodeSize)
                 .attr("height", nodeSize)
@@ -427,11 +427,10 @@ function fetchRootstocks(pondId) {
                 .attr("stroke", "#2f4f4f")
                 .attr("stroke-width", 2)
                 .style("cursor", "pointer")
-                .on("click", d => {
+                .on("click", (event, d) => {
                     alert("Selected rootstock: " + d.name);
                 });
 
-            // Add text labels
             nodes.append("text")
                 .attr("x", nodeSize / 2)
                 .attr("y", nodeSize + 15)
@@ -439,32 +438,22 @@ function fetchRootstocks(pondId) {
                 .text(d => d.name)
                 .style("font-size", "12px")
                 .style("fill", "#333");
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+        });
 
-
-    // Also calling other fetches
     fetchKnotstocks(pondId);
     document.getElementById("rootstock-details").style.visibility = "hidden";
-
-    fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
-        .then(response => response.json())
-        .then(data => {
-            let grid = document.getElementById("rootstock-grid");
-            grid.innerHTML = "";
-
-            if (data.rootstocks.length > 0) {
-                data.rootstocks.forEach(rootstock => {
-                    grid.innerHTML += `<p>
-                        <a href="#" onclick="selectRootstock(${rootstock.id}, '${rootstock.name}'); return false;">
-                            ${rootstock.name}
-                        </a>
-                    </p>`;
-                });
-            } else {
-                grid.innerHTML = "<p>No rootstocks found.</p>";
-            }
-        });
 }
 
+// Make sure showPond is globally exposed
+window.showPond = function(pondId, pondName) {
+    currentPondId = pondId;
+    document.getElementById("pondBox").innerHTML = pondName;
+    showhidePond();
+    fetchRootstocks(pondId);
+};
 
 </script>
 <script>
