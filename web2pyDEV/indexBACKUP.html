@@ -204,7 +204,10 @@ function showhidePond() {
     <div id="chosenpond" >
         <button onclick="showhidePond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:30; font-size:2em;">&times;</button>
         <h3>Rootstocks for Pond "<span id="pondBox"></span>"</h3>
-        <div id="d3-rootstocks"></div>
+        <div id="d3-wrapper" style="position: relative;">
+            <div id="d3-rootstocks" style="width: 100%; height: 100%;"></div>
+          </div>
+          
         <div id="rootstock-grid"></div>
 
         <h3>Add Rootstock</h3>
@@ -339,6 +342,34 @@ function fetchKnotstocks(pondId) {
 </script>
 
 <script>
+
+function addRootstockButton() {
+    // Check if button already exists to avoid duplication
+    if (document.getElementById("add-rootstock-button")) return;
+
+    const wrapper = document.getElementById("d3-wrapper");
+    if (!wrapper) {
+        console.error("d3-wrapper container not found!");
+        return;
+    }
+
+    const addButton = document.createElement("button");
+    addButton.id = "add-rootstock-button";
+    addButton.textContent = "Add Rootstock";
+    addButton.style.position = "absolute";
+    addButton.style.bottom = "10px";
+    addButton.style.right = "10px";
+    addButton.style.zIndex = "10";
+    addButton.onclick = () => {
+        alert("Add Rootstock button clicked!");
+    };
+
+    wrapper.appendChild(addButton);
+}
+
+
+
+
 function fetchRootstocks(pondId) {
     if (!pondId) {
         console.error("No pondId provided");
@@ -475,6 +506,17 @@ window.showPond = function(pondId, pondName) {
     showhidePond();
     fetchRootstocks(pondId);
 };
+
+
+window.showPond = function (pondId, pondName) {
+    currentPondId = pondId;
+    document.getElementById("pondBox").innerHTML = pondName;
+    showhidePond();
+    fetchRootstocks(pondId);
+    addRootstockButton(); // ✅ call button setup separately
+};
+
+
 
 </script>
 <script>
