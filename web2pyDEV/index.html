@@ -210,9 +210,11 @@ function showhidePond() {
           
         <div id="rootstock-grid"></div>
 
-        <h3>Add Rootstock</h3>
-        <input type="text" id="rootstock-name" placeholder="Rootstock name">
-        <button onclick="addRootstock()">Add</button>
+        <div id="addRootstockPopup" style="visibility:hidden;">
+            <h3>Add Rootstock</h3>
+            <input type="text" id="rootstock-name" placeholder="Rootstock name">
+            <button onclick="addRootstock()">Add</button>
+        </div>
     </div>
     <div id="rootstock-details">
         
@@ -361,6 +363,7 @@ function addRootstockButton() {
     addButton.style.right = "10px";
     addButton.style.zIndex = "10";
     addButton.onclick = () => {
+        showhideRotPopup();
         alert("Add Rootstock button clicked!");
     };
 
@@ -516,6 +519,25 @@ window.showPond = function (pondId, pondName) {
     addRootstockButton(); // ✅ call button setup separately
 };
 
+var showRootPopup = 0;
+function showhideRotPopup() {
+    var element = document.getElementById("addRootstockPopup");
+
+    if (showRootPopup === 0) {
+        //element.style.opacity = "1";
+        element.style.transform = "rotateX(0deg)";
+        element.style.visibility = "visible";
+        showRootPopup = 1;
+    } else {
+        //element.style.opacity = "0";
+        element.style.transform = "rotateX(90deg)";
+        setTimeout(() => {
+        element.style.visibility = "hidden";
+        }, 300); // Matches transition time
+        showRootPopup = 0;
+    }
+    
+}
 
 
 </script>
