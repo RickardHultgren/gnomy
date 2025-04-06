@@ -211,6 +211,7 @@ function showhidePond() {
         <div id="rootstock-grid"></div>
 
         <div id="addRootstockPopup" style="visibility:hidden;">
+            <button onclick="showhideRotPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
             <h3>Add Rootstock</h3>
             <input type="text" id="rootstock-name" placeholder="Rootstock name">
             <button onclick="addRootstock()">Add</button>
@@ -364,7 +365,6 @@ function addRootstockButton() {
     addButton.style.zIndex = "10";
     addButton.onclick = () => {
         showhideRotPopup();
-        alert("Add Rootstock button clicked!");
     };
 
     wrapper.appendChild(addButton);
@@ -464,36 +464,54 @@ function fetchRootstocks(pondId) {
                 .on("end", function (event, d) {
                     d3.select(this).attr("stroke", null);
                 });
-            const nodes = zoomGroup.selectAll("g")
-                .data(data.rootstocks)
-                .enter()
-                .append("g")
-                .attr("transform", (d, i) => {
-                    d.x = i * spacing + 40;
-                    d.y = 80;
-                    return `translate(${d.x}, ${d.y})`;
-                })
-                .call(drag); // 👈 Attach drag here
+// JOIN
+const nodeGroups = zoomGroup.selectAll("g.rootstock-node")
+    .data(data.rootstocks, d => d.id); // assuming each rootstock has a unique `id`
 
-                nodes.append("polygon")
-                .attr("points", "0,30 15,35 2,40 15,40 10,50 20,45 20,58 25,45 30,60 35,45 40,58, 40,45 50,50 45,40 58,40 45,35 60,30 45,25 58,20 45,20 50,10 40,15 40,2 35,15 30,0 25,15 20,2 20,15 10,10 15,20 2,20 15,25 ")  // triangle
+// EXIT
+nodeGroups.exit().remove();
 
-                .attr("fill", "#22ff44")
-                .attr("stroke", "#118822")
-                .attr("stroke-width", 2)
-                .style("cursor", "pointer")
-                .on("click", (event, d) => {
-                    alert("Selected rootstock: " + d.name);
-                });
-    
-            nodes.append("text")
-                .attr("x", nodeSize / 2)
-                .attr("y", nodeSize + 15)
-                .attr("text-anchor", "middle")
-                .text(d => d.name)
-                .style("font-size", "12px")
-                .style("fill", "#333");
-        })
+// UPDATE
+const nodeUpdate = nodeGroups
+    .attr("transform", (d, i) => {
+        d.x = i * spacing + 40;
+        d.y = 80;
+        return `translate(${d.x}, ${d.y})`;
+    });
+
+// ENTER
+const nodeEnter = nodeGroups.enter()
+    .append("g")
+    .attr("class", "rootstock-node")
+    .attr("transform", (d, i) => {
+        d.x = i * spacing + 40;
+        d.y = 80;
+        return `translate(${d.x}, ${d.y})`;
+    })
+    .call(drag);
+
+// Add polygon to new nodes
+nodeEnter.append("polygon")
+    .attr("points", "0,30 15,35 2,40 15,40 10,50 20,45 20,58 25,45 30,60 35,45 40,58, 40,45 50,50 45,40 58,40 45,35 60,30 45,25 58,20 45,20 50,10 40,15 40,2 35,15 30,0 25,15 20,2 20,15 10,10 15,20 2,20 15,25")
+    .attr("fill", "#22ff44")
+    .attr("stroke", "#118822")
+    .attr("stroke-width", 2)
+    .style("cursor", "pointer")
+    .on("click", (event, d) => {
+        alert("Selected rootstock: " + d.name);
+    });
+
+// Add text label
+nodeEnter.append("text")
+    .attr("x", nodeSize / 2)
+    .attr("y", nodeSize + 15)
+    .attr("text-anchor", "middle")
+    .text(d => d.name)
+    .style("font-size", "12px")
+    .style("fill", "#333");
+
+// MERGE for combined behavior if needed later
+nodeEnter.merge(nodeUpdate);
         .catch(error => {
             console.error("Fetch error:", error);
         });
@@ -802,6 +820,7 @@ function addFlower(event) {
                 fetchRootstocks(currentPondId);
                 document.getElementById("rootstock-name").value = "";
             });
+            showhideRotPopup();
         }
 </script>
 
