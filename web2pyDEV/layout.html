@@ -61,7 +61,7 @@
 /* Container */
 
 #addRootstockPopup {
-<  width: 300px;
+  width: 300px;
   height: 300px;
   background: linear-gradient(to bottom right, #fffbe6, #f7e8b0);
   border: 4px double #b8860b;
@@ -75,7 +75,7 @@
   flex-direction: column;
   justify-content: center;    border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
->    display: block;
+    display: block;
     position:fixed;
     top:15vh;
     left:50vw;
@@ -84,7 +84,36 @@
     align-items: center;
     /*margin: 40px auto;*/
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index:30;
 }
+#deatailsRootstockPopup {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(to bottom right, #fffbe6, #f7e8b0);
+  border: 4px double #b8860b;
+  border-radius: 16px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15);
+/*  font-family: 'Georgia', serif;*/
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #5c4324;
+  flex-direction: column;
+  justify-content: center;    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    display: block;
+    position:fixed;
+    top:15vh;
+    left:50vw;
+    margin-left:-150px;
+    justify-content: center;
+    align-items: center;
+    /*margin: 40px auto;*/
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index:30;
+}
+
+
 #addRootstockPopup button{
   background: linear-gradient(to bottom right, #fffbe6, #f7e8b0);
   border: 1px solid #b8860b;

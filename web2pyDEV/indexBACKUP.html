@@ -205,17 +205,25 @@ function showhidePond() {
         <button onclick="showhidePond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:30; font-size:2em;">&times;</button>
         <h3>Rootstocks for Pond "<span id="pondBox"></span>"</h3>
         <div id="d3-wrapper" style="position: relative;">
+            <div id="selected-node-container" style="margin-bottom:1em; position: absolute; bottom: 60px; left: 10px; z-index: 10;"></div>
             <div id="d3-rootstocks" style="width: 100%; height: 100%;"></div>
           </div>
           
         <div id="rootstock-grid"></div>
 
         <div id="addRootstockPopup" style="visibility:hidden;">
-            <button onclick="showhideRotPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
+            <button onclick="showhideRotPopup();" class="close-btn" style="margin:0 00.5em ;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
             <h3>Add Rootstock</h3>
             <input type="text" id="rootstock-name" placeholder="Rootstock name">
             <button onclick="addRootstock()">Add</button>
         </div>
+        
+        <div id="deatailsRootstockPopup" style="visibility:hidden;">
+            <button onclick="markedPopup();" class="close-btn" style="margin:0 00.5em ;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
+            <h3>Rootstock Details</h3>
+            <input type="text" id="rootstock-name" placeholder="Rootstock name">
+            <button onclick="addRootstock()">Add</button>
+        </div>        
     </div>
     <div id="rootstock-details">
         
@@ -371,6 +379,29 @@ function addRootstockButton() {
 }
 
 
+function markedRootstock(rootstockId, Rootstockaname){
+    markedPopup();
+}
+
+var showMarkedPopup = 0;   
+function markedPopup(){
+    var element = document.getElementById("deatailsRootstockPopup");
+
+    if (showMarkedPopup === 0) {
+        //element.style.opacity = "1";
+        element.style.transform = "rotateX(0deg)";
+        element.style.visibility = "visible";
+        showMarkedPopup = 1;
+    } else {
+        //element.style.opacity = "0";
+        element.style.transform = "rotateX(90deg)";
+        setTimeout(() => {
+        element.style.visibility = "hidden";
+        }, 300); // Matches transition time
+        showMarkedPopup = 0;
+    }
+    
+}
 
 
 function fetchRootstocks(pondId) {
@@ -396,128 +427,150 @@ function fetchRootstocks(pondId) {
             console.log("Tendrils:", data.multipleTendrils);
             console.log("Flowers:", data.multipleFlowers);
 
-            let rootstockContainer = document.getElementById("rootstock-grid");
-            if (rootstockContainer) {
-                rootstockContainer.innerHTML = "";
-                data.rootstocks.forEach(rootstock => {
-                    rootstockContainer.innerHTML += `<p><strong>${rootstock.name}</strong></p>`;
-                });
-            }
+            // Fill HTML containers
+            const rootstockContainer = document.getElementById("rootstock-grid");
+            rootstockContainer.innerHTML = data.rootstocks.map(r => `<p><strong>${r.name}</strong></p>`).join("");
 
-            let tendrilContainer = document.getElementById("tendril-grid");
-            if (tendrilContainer) {
-                tendrilContainer.innerHTML = "";
-                data.multipleTendrils.forEach(t => {
-                    tendrilContainer.innerHTML += `<div>
-                        🌱 <strong>${t.name}</strong> (Carry: ${t.carry ?? "–"}, Suffuse: ${t.suffuse ?? "–"})
-                    </div>`;
-                });
-            }
+            const tendrilContainer = document.getElementById("tendril-grid");
+            tendrilContainer.innerHTML = data.multipleTendrils.map(t =>
+                `<div>🌱 <strong>${t.name}</strong> (Carry: ${t.carry ?? "–"}, Suffuse: ${t.suffuse ?? "–"})</div>`
+            ).join("");
 
-            let flowerContainer = document.getElementById("flower-grid");
-            if (flowerContainer) {
-                flowerContainer.innerHTML = "";
-                data.multipleFlowers.forEach(f => {
-                    flowerContainer.innerHTML += `<div>
-                        🌸 <strong>${f.name}</strong> (Fragrance: ${f.fragrance}, Fruit: ${f.fruit})
-                    </div>`;
-                });
-            }
+            const flowerContainer = document.getElementById("flower-grid");
+            flowerContainer.innerHTML = data.multipleFlowers.map(f =>
+                `<div>🌸 <strong>${f.name}</strong> (Fragrance: ${f.fragrance}, Fruit: ${f.fruit})</div>`
+            ).join("");
 
-            // D3.js rendering
+            // === D3 rendering ===
             const d3Container = document.getElementById("d3-rootstocks");
             d3Container.innerHTML = "";
 
-            const width = 600;
-            const height = 400;
-            const nodeSize = 20;
-            const spacing = 50;
-
-            const svgRoot = d3.select("#d3-rootstocks")
+            const width = 600, height = 400, spacing = 100;
+            const svgRoot = d3.select(d3Container)
                 .append("svg")
                 .attr("width", width)
                 .attr("height", height);
 
+            svgRoot.append("defs").append("marker")
+                .attr("id", "arrowhead")
+                .attr("viewBox", "0 -5 10 10")
+                .attr("refX", 10)
+                .attr("refY", 0)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M0,-5L10,0L0,5")
+                .attr("fill", "#444");
+
             const zoomGroup = svgRoot.append("g");
 
-            svgRoot.call(
-                d3.zoom()
-                    .scaleExtent([0.5, 5])
-                    .on("zoom", (event) => {
-                        zoomGroup.attr("transform", event.transform);
-                    })
-            );
+            svgRoot.call(d3.zoom().scaleExtent([0.5, 5]).on("zoom", (event) => {
+                zoomGroup.attr("transform", event.transform);
+            }));
+
             const drag = d3.drag()
                 .on("start", function (event, d) {
-                    // Get current transform of the group
-                    const transform = d3.select(this).attr("transform");
-                    const match = /translate\(([^,]+),\s*([^)]+)\)/.exec(transform);
-                    d.offsetX = event.x - (match ? parseFloat(match[1]) : 0);
-                    d.offsetY = event.y - (match ? parseFloat(match[2]) : 0);
+                    d.offsetX = event.x - d.x;
+                    d.offsetY = event.y - d.y;
                     d3.select(this).raise().attr("stroke", "black");
                 })
                 .on("drag", function (event, d) {
-                    const x = event.x - d.offsetX;
-                    const y = event.y - d.offsetY;
-                    d3.select(this).attr("transform", `translate(${x}, ${y})`);
+                    d.x = event.x - d.offsetX;
+                    d.y = event.y - d.offsetY;
+                    d3.select(this).attr("transform", `translate(${d.x}, ${d.y})`);
+                    drawArrows(); // live update
                 })
-                .on("end", function (event, d) {
+                .on("end", function () {
                     d3.select(this).attr("stroke", null);
                 });
-// JOIN
-const nodeGroups = zoomGroup.selectAll("g.rootstock-node")
-    .data(data.rootstocks, d => d.id); // assuming each rootstock has a unique `id`
 
-// EXIT
-nodeGroups.exit().remove();
+            // Lay out nodes horizontally
+            data.rootstocks.forEach((r, i) => {
+                r.x = i * spacing + 50;
+                r.y = 80;
+            });
 
-// UPDATE
-const nodeUpdate = nodeGroups
-    .attr("transform", (d, i) => {
-        d.x = i * spacing + 40;
-        d.y = 80;
-        return `translate(${d.x}, ${d.y})`;
-    });
+            // Create node groups
+            const nodeGroups = zoomGroup.selectAll("g.rootstock-node")
+                .data(data.rootstocks, d => d.id)
+                .enter()
+                .append("g")
+                .attr("class", "rootstock-node")
+                .attr("transform", d => `translate(${d.x}, ${d.y})`)
+                .call(drag);
 
-// ENTER
-const nodeEnter = nodeGroups.enter()
-    .append("g")
-    .attr("class", "rootstock-node")
-    .attr("transform", (d, i) => {
-        d.x = i * spacing + 40;
-        d.y = 80;
-        return `translate(${d.x}, ${d.y})`;
-    })
-    .call(drag);
+                let selectedNodeId = null;
 
-// Add polygon to new nodes
-nodeEnter.append("polygon")
-    .attr("points", "0,30 15,35 2,40 15,40 10,50 20,45 20,58 25,45 30,60 35,45 40,58, 40,45 50,50 45,40 58,40 45,35 60,30 45,25 58,20 45,20 50,10 40,15 40,2 35,15 30,0 25,15 20,2 20,15 10,10 15,20 2,20 15,25")
-    .attr("fill", "#22ff44")
-    .attr("stroke", "#118822")
-    .attr("stroke-width", 2)
-    .style("cursor", "pointer")
-    .on("click", (event, d) => {
-        alert("Selected rootstock: " + d.name);
-    });
+            nodeGroups.append("polygon")
+                .attr("points", "0,30 15,35 2,40 15,40 10,50 20,45 20,58 25,45 30,60 35,45 40,58, 40,45 50,50 45,40 58,40 45,35 60,30 45,25 58,20 45,20 50,10 40,15 40,2 35,15 30,0 25,15 20,2 20,15 10,10 15,20 2,20 15,25")
+                .attr("fill", "#22ff44")
+                .attr("stroke", "#118822")
+                .attr("stroke-width", 2)
+                .style("cursor", "pointer")
+                .on("click", (event, d) => {
+//
 
-// Add text label
-nodeEnter.append("text")
-    .attr("x", nodeSize / 2)
-    .attr("y", nodeSize + 15)
-    .attr("text-anchor", "middle")
-    .text(d => d.name)
-    .style("font-size", "12px")
-    .style("fill", "#333");
+                    // Clear previous highlights
+                    nodeGroups.selectAll("polygon").attr("stroke", "#118822");
 
-// MERGE for combined behavior if needed later
-nodeEnter.merge(nodeUpdate);
+                    // Highlight this one
+                    d3.select(event.currentTarget).attr("stroke", "#ff0000");
+
+                    // Update selected node
+                    selectedNodeId = d.id;
+
+                    // Show the button
+                    const container = document.getElementById("selected-node-container");
+                    container.innerHTML = `
+                        <!--button style="padding: 6px 12px; font-size: 14px;" onclick="alert('Selected ID: ${d.id}, Name: ${d.name}')"-->
+                        <button style="padding: 6px 12px; font-size: 14px;" onclick="markedRootstock('${d.id}', '${d.name}')">
+                            Selected: ${d.name} (ID: ${d.id})
+                        </button>
+                    `;
+                });
+
+            nodeGroups.append("text")
+                .attr("x", 25)
+                .attr("y", 75)
+                .attr("text-anchor", "middle")
+                .text(d => d.name)
+                .style("font-size", "12px")
+                .style("fill", "#333");
+
+            // === Arrow drawing function ===
+            function drawArrows() {
+                zoomGroup.selectAll("line.arrow").remove();
+
+                const positionMap = {};
+                data.rootstocks.forEach(r => {
+                    positionMap[r.id] = { x: r.x, y: r.y };
+                });
+
+                data.multipleTendrils.forEach(t => {
+                    const from = positionMap[t.rootstock_id];
+                    const to = positionMap[t.knotstock];
+                    if (from && to) {
+                        zoomGroup.append("line")
+                            .attr("class", "arrow")
+                            .attr("x1", from.x + 25)
+                            .attr("y1", from.y + 25)
+                            .attr("x2", to.x + 25)
+                            .attr("y2", to.y + 25)
+                            .attr("stroke", "#444")
+                            .attr("stroke-width", 2)
+                            .attr("marker-end", "url(#arrowhead)");
+                    }
+                });
+            }
+
+            drawArrows();
+            fetchKnotstocks(pondId);
+            document.getElementById("rootstock-details").style.visibility = "hidden";
+        })
         .catch(error => {
             console.error("Fetch error:", error);
         });
-
-    fetchKnotstocks(pondId);
-    document.getElementById("rootstock-details").style.visibility = "hidden";
 }
 
 // Make sure showPond is globally exposed
