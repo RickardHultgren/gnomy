@@ -133,7 +133,7 @@ function showhidePond() {
         element2.style.transform = "rotateY(90deg)";
         element2.style.opacity = 0;
         element.style.opacity = 1;
-        element.style.transform = "rotateY(00deg)";
+        element.style.transform = "rotateY(0deg)";
         showhidevar = 0;
     }
     
@@ -168,19 +168,19 @@ function showhideaddPond() {
         align-items: center;  display:none;width:2em;height:2em;border-radius: 50%;" onclick="showhideaddPond();">-</button></h2>
         <div id="pondformbox" onclick="">
             <div style="
-            width: 80vw; 
-            height: 80vh; 
-            margin: 10vh auto; 
-            background: rgba(34, 34, 34, 0.9); 
-            border: 3px solid #d4a373; 
-            border-radius: 15px; 
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
-        ">
-        </div>
+                width: 80vw; 
+                height: 80vh; 
+                margin: 10vh auto; 
+                background: rgba(34, 34, 34, 0.9); 
+                border: 3px solid #d4a373; 
+                border-radius: 15px; 
+                box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
+                ">
+            </div>
         
             <div id="addPond" style="position:absolute; display:none; text-align:center; width: 80vw; height:8vh;">
                 <div id="pondform">
-                        <button onclick="showhideaddPond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-2em -2em 0 0 ;">&times;</button>
+                        <button onclick="showhideaddPond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:0 0 0 0 ;">&times;</button>
                         {{=pond_form}}
                 </div>
             
@@ -209,11 +209,13 @@ function showhideaddPond() {
         <button onclick="showhidePond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:30; font-size:2em;">&times;</button>
         <h3>Rootstocks for Pond "<span id="pondBox"></span>"</h3>
         <div id="d3-wrapper" style="position: relative;">
-            <div id="selected-node-container" style="margin-bottom:1em; position: absolute; bottom: 60px; left: 10px; z-index: 10;"></div>
+            <div id="selected-node-container"></div>
             <div id="d3-rootstocks" style="width: 100%; height: 100%;"></div>
-          </div>
-          
-        <div id="rootstock-grid"></div>
+        </div>
+        <!--div style="width:95vw;left:50vw; margin-left:45vw; position: absolute; background-color:#000000; height:3em; "-->
+            <button id="rootstockAdd" onclick="showhideRotPopup();" style="margin: 1em 0 1em 0; border-radius:1em;left:50vw;margin-left:-5em;width:10em;position:absolute;">Add Rootstock</button><br>
+        <!--/div-->
+        <div style="margin-top:3em;" id="rootstock-grid"></div>
 
         <div id="addRootstockPopup" style="visibility:hidden;">
             <button onclick="showhideRotPopup();" class="close-btn" style="margin:0 00.5em ;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
@@ -221,17 +223,18 @@ function showhideaddPond() {
             <input type="text" id="rootstock-name" placeholder="Rootstock name">
             <button onclick="addRootstock()">Add</button>
         </div>
-        
+         
         <div id="deatailsRootstockPopup" style="visibility:hidden;">
             <button onclick="markedPopup();" class="close-btn" style="margin:0 00.5em ;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
             <h3>Rootstock Details</h3>
         </div>        
 </div>
 
+<!--div id="selected-rootstock-id"></div>
+<div id="map"></div-->
 
 
-
-<div id="rootstock-details">
+<!--div id="rootstock-details">
         
         <div id="selected-rootstock-id"></div>
  
@@ -253,8 +256,7 @@ function showhideaddPond() {
 
         <!-- Flower Section (Initially Hidden) -->
         <!--div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;"-->
-        <div id="selected-rootstock-id"></div>
-        <div id="map"></div>
+
         <h4>Flowers</h4>
         <div id="flower-grid">
             <p>Loading...</p>
@@ -271,12 +273,12 @@ function showhideaddPond() {
 
 
 
-        <h4>Tendrils</h4>
+        <!--h4>Tendrils</h4-->
         <div id="tendril-grid">
             <p>Loading...</p>
         </div>
 
-        <h4>Add Tendril</h4>
+        <!--h4>Add Tendril</h4>
         <form id="add-tendril-form" onsubmit="addTendril(event)">
             <label for="tendril-name">Name:</label>
             <input type="text" id="tendril-name" required>
@@ -294,7 +296,7 @@ function showhideaddPond() {
             <button type="submit">Add Tendril</button>
         </form>
         
-        <p id="selected-tendril">No tendril selected</p>
+        <p id="selected-tendril">No tendril selected</p-->
     </div>
 
 
@@ -459,15 +461,6 @@ function addRootstockButton() {
         return;
     }
 
-    const addButton = document.createElement("button");
-    addButton.id = "add-rootstock-button";
-    addButton.textContent = "Add Rootstock";
-    addButton.style.position = "absolute";
-    addButton.style.bottom = "10px";
-    addButton.style.right = "10px";
-    addButton.style.zIndex = "10";
-    addButton.onclick = () => {
-        showhideRotPopup();
     };
 
     wrapper.appendChild(addButton);
@@ -687,7 +680,7 @@ function fetchRootstocks(pondId) {
             nodeGroups.append("polygon")
                 .attr("points", "0,30 15,35 2,40 15,40 10,50 20,45 20,58 25,45 30,60 35,45 40,58, 40,45 50,50 45,40 58,40 45,35 60,30 45,25 58,20 45,20 50,10 40,15 40,2 35,15 30,0 25,15 20,2 20,15 10,10 15,20 2,20 15,25")
                 .attr("fill", "#22aa44")
-                .attr("stroke", "#118822")
+                .attr("stroke", "#114422")
                 .attr("stroke-width", 2)
                 .style("cursor", "pointer")
                 .on("click", (event, d) => {
