@@ -277,7 +277,57 @@ function showhidePond() {
             <select id="knotstock-select">
                 <option value="">Select a Knotstock</option>
             </select>
-            <script>
+            <label for="tendril-carry">Carry:</label>
+            <input type="text" id="tendril-carry">
+        
+            <label for="tendril-suffuse">Suffuse:</label>
+            <input type="text" id="tendril-suffuse">
+        
+            <button type="submit">Add Tendril</button>
+        </form>
+        
+        <p id="selected-tendril">No tendril selected</p>
+    </div>
+
+
+
+    <script>
+        function fetchKnotstocks(pondId) {
+            if (!pondId) {
+                console.error("Pond ID is missing.");
+                return;
+            }
+        
+            fetch("{{=URL('get_rootstocks')}}" + "?pond_id=" + pondId)
+                .then(response => response.json())
+                .then(data => {
+                    let select = document.getElementById("knotstock-select");
+                    select.innerHTML = '<option value="">Select a Knotstock</option>'; // Reset options
+        
+                    if (data.rootstocks && data.rootstocks.length > 0) {
+                        data.rootstocks.forEach(rootstock => {
+                            let option = document.createElement("option");
+                            option.value = rootstock.id;
+                            option.textContent = `${rootstock.id} ${rootstock.name}`;
+                            select.appendChild(option);
+                        });
+                    } else {
+                        console.warn("No rootstocks found for this pond.");
+                    }
+                })
+                .catch(error => console.error("Error fetching rootstocks:", error));
+        }
+        
+                        // Ensure we fetch knotstocks when a rootstock is selected
+    </script>
+        
+                
+        
+
+
+
+
+    <script>
 function fetchKnotstocks(pondId) {
     if (!pondId) {
         console.error("Pond ID is missing.");
@@ -307,16 +357,6 @@ function fetchKnotstocks(pondId) {
                 // Ensure we fetch knotstocks when a rootstock is selected
             </script>
 
-            <label for="tendril-carry">Carry:</label>
-            <input type="text" id="tendril-carry">
-        
-            <label for="tendril-suffuse">Suffuse:</label>
-            <input type="text" id="tendril-suffuse">
-        
-            <button type="submit">Add Tendril</button>
-        </form>
-        
-        <p id="selected-tendril">No tendril selected</p>
         
         <script>
         </script>
@@ -324,7 +364,7 @@ function fetchKnotstocks(pondId) {
 
 
 
-    </div>
+    
     <script>
         var currentPondId = null;
         var selectedRootstockId = null;
@@ -349,7 +389,56 @@ function fetchKnotstocks(pondId) {
 
 
 </script>
+<script>
+function updateTabs() {
+  const container = document.getElementById("tab-container");
+  const sections = container.querySelectorAll("section");
 
+  if (!container || sections.length === 0) return;
+
+  // Prevent duplicate tab nav if called again
+  if (container.querySelector(".tab-nav")) {
+    container.querySelector(".tab-nav").remove();
+  }
+
+  // Create tab navigation
+  const tabNav = document.createElement("div");
+  tabNav.className = "tab-nav";
+
+  sections.forEach((section, index) => {
+    const header = section.querySelector("h3, h4");
+    const label = header ? header.textContent : `Tab ${index + 1}`;
+
+    const tabButton = document.createElement("button");
+    tabButton.textContent = label;
+
+    tabButton.addEventListener("click", () => {
+      // Show only the selected section
+      sections.forEach((s, i) => s.style.display = i === index ? "block" : "none");
+
+      // Highlight active tab
+      tabNav.querySelectorAll("button").forEach(btn => btn.classList.remove("active"));
+      tabButton.classList.add("active");
+    });
+
+    tabNav.appendChild(tabButton);
+  });
+
+  // Insert tab nav above all sections
+  container.insertBefore(tabNav, container.firstChild);
+
+  // Hide all but the first section
+  sections.forEach((section, i) => {
+    section.style.display = i === 0 ? "block" : "none";
+  });
+
+  // Highlight the first tab, if available
+  const firstTab = tabNav.querySelector("button");
+  if (firstTab) firstTab.classList.add("active");
+}
+
+</script>
+    
 <script>
 
 function addRootstockButton() {
@@ -375,37 +464,86 @@ function addRootstockButton() {
 
     wrapper.appendChild(addButton);
 }
-function deleteMarked(rootstockId) {
-    fetch("{{=URL('delete_rootstock')}}", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `rootstock_id=${rootstockId}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "success") {
-            // Replace with correct pond ID or re-fetch the whole list
-            fetchRootstocks(currentPondId); 
-            let nameInput = document.getElementById("rootstock-name");
-            if (nameInput) nameInput.value = "";
-        } else {
-            alert("Error: " + data.message);
-        }
-    })
-    .catch(err => console.error("Delete failed", err));
-
-    markedPopup();
-}
+</script>
 
 
+<script>
 
 function markedRootstock(rootstockId, Rootstockaname) {
     var element = document.getElementById("deatailsRootstockPopup");
     element.innerHTML = `
         <button onclick="markedPopup();" class="close-btn" style="margin:0 00.5em; background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0;">&times;</button>
         <h3>Rootstock Details: ${Rootstockaname}</h3>
+ 
+<div id="tab-container">
+  <section>
+    <h3>General</h3>
         <button onclick="deleteMarked('${rootstockId}');" style="margin:0 00.5em; background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0;">Delete ${Rootstockaname}</button>
-    `;
+          
+        <div id="selected-rootstock-id"></div>
+  </section>
+  <section>
+        <h3>Add Flower:</h3>
+        <form id="add-flower-form" onsubmit="addFlower(event)">
+            <label for="flower-name">Name:</label>
+            <input type="text" id="flower-name" required>
+
+            <label for="flower-fruit">Fruit:</label>
+            <input type="text" id="flower-fruit">
+        
+            <label for="flower-suffuse">Fragrance:</label>
+            <input type="text" id="flower-fragrance">
+        
+            <button type="submit">Add flower</button>
+        </form>
+        
+
+         <h3>Flowers</h3>
+        <div id="flower-grid">
+            <p>Loading...</p>
+        </div>
+
+        <p id="selected-flower">No flower selected</p>        
+
+  </section>
+  <section>
+
+
+
+
+
+        <h4>Tendrils</h4>
+        <div id="tendril-grid">
+            <p>Loading...</p>
+        </div>
+
+        <h4>Add Tendril</h4>
+        <form id="add-tendril-form" onsubmit="addTendril(event)">
+            <label for="tendril-name">Name:</label>
+            <input type="text" id="tendril-name" required>
+        
+            <label for="rootstock-select">Knotstock:</label>
+            <select id="knotstock-select">
+                <option value="">Select a Knotstock</option>
+            </select>
+            <label for="tendril-carry">Carry:</label>
+            <input type="text" id="tendril-carry">
+        
+            <label for="tendril-suffuse">Suffuse:</label>
+            <input type="text" id="tendril-suffuse">
+        
+            <button type="submit">Add Tendril</button>
+        </form>
+        
+        <p id="selected-tendril">No tendril selected</p>
+  </section>
+</div>
+
+
+
+
+        
+        `;
     markedPopup();
 }
 
@@ -428,6 +566,16 @@ function markedPopup(){
     }
     
 }
+
+function updateDetails(theid, thename) {
+    
+    markedRootstock(theid,thename);
+    
+    updateTabs();
+
+
+}
+
 
 
 function fetchRootstocks(pondId) {
@@ -550,7 +698,7 @@ function fetchRootstocks(pondId) {
                     const container = document.getElementById("selected-node-container");
                     container.innerHTML = `
                         <!--button style="padding: 6px 12px; font-size: 14px;" onclick="alert('Selected ID: ${d.id}, Name: ${d.name}')"-->
-                        <button style="padding: 6px 12px; font-size: 14px;" onclick="markedRootstock('${d.id}', '${d.name}')">
+                        <button style="padding: 6px 12px; font-size: 14px;" onclick="updateDetails('${d.id}', '${d.name}');">
                             Selected: ${d.name} (ID: ${d.id})
                         </button>
                     `;
