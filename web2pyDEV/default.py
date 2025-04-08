@@ -70,6 +70,30 @@ def add_rootstock():
 
     return response.json({"status": "success", "rootstock_id": rootstock.id})
 
+
+
+
+
+def delete_rootstock():
+    try:
+        rootstock_id = int(request.vars.rootstock_id or 0)
+    except ValueError:
+        return response.json({"status": "error", "message": "Invalid rootstock ID"})
+
+    rootstock = db.rootstock(rootstock_id)
+    if not rootstock:
+        return response.json({"status": "error", "message": "Rootstock not found"})
+
+    if rootstock.created_by != auth.user_id:
+        return response.json({"status": "error", "message": "Not authorized to delete this rootstock"})
+
+    db(db.rootstock.id == rootstock_id).delete()
+    return response.json({"status": "success", "message": "Rootstock deleted"})
+
+
+
+
+
 def set_rootstock_id():
     rootstock_id = request.post_vars.get('rootstock_id')
 
