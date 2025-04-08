@@ -116,92 +116,96 @@
     {{=message}}
 </div>
 {{else:}}
-    <script>
+<script>
 var showhidevar = 0;
 function showhidePond() {
     var element = document.getElementById("chosenpond");
-
+    var element2 = document.getElementById("pondMenu");
     if (showhidevar === 0) {
         //element.style.opacity = "1";
-        element.style.transform = "rotateX(0deg)";
-        element.style.visibility = "visible";
+        element.style.transform = "rotateY(90deg)";
+        element.style.opacity = 0;
+        element2.style.opacity = 1;
+        element2.style.transform = "rotateY(0deg)";
         showhidevar = 1;
     } else {
         //element.style.opacity = "0";
-        element.style.transform = "rotateX(90deg)";
-        setTimeout(() => {
-        element.style.visibility = "hidden";
-        }, 300); // Matches transition time
+        element2.style.transform = "rotateY(90deg)";
+        element2.style.opacity = 0;
+        element.style.opacity = 1;
+        element.style.transform = "rotateY(00deg)";
         showhidevar = 0;
     }
     
 }
 
-
-
-    function showhideaddPond() {
-        var element = document.getElementById("addPond");
-        var elementbox = document.getElementById("pondformbox");
-        var elementminus = document.getElementById("minusbttn");
-        var elementplus = document.getElementById("plusbttn");
-        if (element.style.display === "none") {
+function showhideaddPond() {
+    var element = document.getElementById("addPond");
+    var elementbox = document.getElementById("pondformbox");
+    var elementminus = document.getElementById("minusbttn");
+    var elementplus = document.getElementById("plusbttn");
+    if (element.style.display === "none") {
             element.style.display = "block";
             elementbox.style.display = "block";
             elementminus.style.display = "inline-flex";
             elementplus.style.display = "none";
-        } else {
+    } else {
             element.style.display = "none";
             elementbox.style.display = "none";
             elementminus.style.display = "none";
             elementplus.style.display = "inline-flex";
-        }
     }
+}
 
-    </script>
-    <hr>
-    <h2>Your ponds <button id="plusbttn" style="    display: inline-flex;  /* Enables flexbox */
+</script>
+<div id="pondMenu">
+    <div id="menuBox">
+        <hr>
+        <h2>Your ponds <button id="plusbttn" style="    display: inline-flex;  /* Enables flexbox */
+            justify-content: center;  /* Centers text horizontally */
+            align-items: center;  width:2em;height:2em;border-radius: 50%;" onclick="showhideaddPond();">+</button><button id="minusbttn" style="    display: inline-flex;  /* Enables flexbox */
         justify-content: center;  /* Centers text horizontally */
-        align-items: center;  width:2em;height:2em;border-radius: 50%;" onclick="showhideaddPond();">+</button><button id="minusbttn" style="    display: inline-flex;  /* Enables flexbox */
-    justify-content: center;  /* Centers text horizontally */
-    align-items: center;  display:none;width:2em;height:2em;border-radius: 50%;" onclick="showhideaddPond();">-</button></h2>
-    <div id="pondformbox" onclick="">
-        <div style="
-        width: 80vw; 
-        height: 80vh; 
-        margin: 10vh auto; 
-        background: rgba(34, 34, 34, 0.9); 
-        border: 3px solid #d4a373; 
-        border-radius: 15px; 
-        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
-    ">
-    </div>
-    
-        <div id="addPond" style="position:absolute; display:none; text-align:center; width: 80vw; height:8vh;">
-            <div id="pondform">
-                    <button onclick="showhideaddPond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-2em -2em 0 0 ;">&times;</button>
-                    {{=pond_form}}
-            </div>
-        
+        align-items: center;  display:none;width:2em;height:2em;border-radius: 50%;" onclick="showhideaddPond();">-</button></h2>
+        <div id="pondformbox" onclick="">
+            <div style="
+            width: 80vw; 
+            height: 80vh; 
+            margin: 10vh auto; 
+            background: rgba(34, 34, 34, 0.9); 
+            border: 3px solid #d4a373; 
+            border-radius: 15px; 
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
+        ">
         </div>
+        
+            <div id="addPond" style="position:absolute; display:none; text-align:center; width: 80vw; height:8vh;">
+                <div id="pondform">
+                        <button onclick="showhideaddPond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-2em -2em 0 0 ;">&times;</button>
+                        {{=pond_form}}
+                </div>
+            
+            </div>
+        </div>
+            <table border="1">
+            <tr>
+                <!--th>Your ponds:</th-->
+                <!--th>Actions</th-->
+            </tr>
+            {{for pond in ponds:}}
+            <tr>
+                <td>
+                    <a href="#" onclick="showPond({{=pond.id}}, '{{=pond.name}}');"><button>{{=pond.name}}</button></a>
+                </td>
+                <!--td>
+                    <button onclick="showPond({{=pond.id}})">View Rootstocks</button>
+                </td-->
+            </tr>
+            {{pass}}
+        </table>
+        <hr>
     </div>
-        <table border="1">
-        <tr>
-            <!--th>Your ponds:</th-->
-            <!--th>Actions</th-->
-        </tr>
-        {{for pond in ponds:}}
-        <tr>
-            <td>
-                <a href="#" onclick="showPond({{=pond.id}}, '{{=pond.name}}');"><button>{{=pond.name}}</button></a>
-            </td>
-            <!--td>
-                <button onclick="showPond({{=pond.id}})">View Rootstocks</button>
-            </td-->
-        </tr>
-        {{pass}}
-    </table>
-    <hr>
-    <div id="chosenpond" >
+</div>
+<div id="chosenpond" >
         <button onclick="showhidePond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:30; font-size:2em;">&times;</button>
         <h3>Rootstocks for Pond "<span id="pondBox"></span>"</h3>
         <div id="d3-wrapper" style="position: relative;">
@@ -222,8 +226,12 @@ function showhidePond() {
             <button onclick="markedPopup();" class="close-btn" style="margin:0 00.5em ;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
             <h3>Rootstock Details</h3>
         </div>        
-    </div>
-    <div id="rootstock-details">
+</div>
+
+
+
+
+<div id="rootstock-details">
         
         <div id="selected-rootstock-id"></div>
  
@@ -678,7 +686,7 @@ function fetchRootstocks(pondId) {
 
             nodeGroups.append("polygon")
                 .attr("points", "0,30 15,35 2,40 15,40 10,50 20,45 20,58 25,45 30,60 35,45 40,58, 40,45 50,50 45,40 58,40 45,35 60,30 45,25 58,20 45,20 50,10 40,15 40,2 35,15 30,0 25,15 20,2 20,15 10,10 15,20 2,20 15,25")
-                .attr("fill", "#22ff44")
+                .attr("fill", "#22aa44")
                 .attr("stroke", "#118822")
                 .attr("stroke-width", 2)
                 .style("cursor", "pointer")

@@ -150,18 +150,21 @@
 
 
 #d3-rootstocks {
-    width: 600px;
-    height: 400px;
-    background: #588cac;
-    border: 2px solid #2a2a2a;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 40px auto;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: inset 0 0 3em #0f3f53;
+  position: relative;
+  border: 3px double #B87333;
+  width: 600px;
+  height: 400px;
+  background: linear-gradient(#a0d8ef, #74c1e3); /* Water-like gradient */
+  border-radius: 12px;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
+
+
+
 /*
 #d3-rootstocks:hover {
     transform: scale(1.02);
@@ -205,22 +208,22 @@
 
 #chosenpond {
     position: fixed;
-    top: 2.5vh;
+    top: 2.5rem;
     left: 2.5vw;
-    width: 95vw;
-    height: 95vh;
-    
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #000;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    padding: 10px;
+    width: 100vw;
+    height: auto;
+  
+    background: #333;
+    border: 1px solid #B87333;
+    /*border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);*/
+    padding: 10px 0 auto 0;
 
     z-index: 50;
     /*visibility: hidden;*/
     
-    transform-origin: bottom center;
-    transform: rotateX(90deg);
+    transform-origin: center left;
+    transform: rotateY(90deg);
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
@@ -234,6 +237,57 @@
     transition: transform 0.3s ease-in-out;
     z-index: 50;
 }
+
+
+
+#menuBox{
+  background-color:#2a2a2a;
+}
+
+
+
+#pondMenu {
+    position: fixed;
+    top: 2.5rem;
+    left: 2.5vw;
+    width: 100vw;
+    height: auto;
+    
+    background: #333;
+    border: 1px solid #B87333;
+    /*border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);*/
+    
+    style="font-family:'Lora', serif;  color:#B87333;  text-shadow: 
+  1px -1px 1px #e6a96d,  /* Highlight above (lighter copper) */
+ -1px  1px 2px #6a3d1b,  /* Shadow below (darker copper) */
+  0px  0px 1px #d98a50;  /* Soft glow for depth */
+    background-color: #2a2a2a; /* Light beige background */ background-image: 
+    linear-gradient(70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%),
+    linear-gradient(-70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%);
+    /*radial-gradient(circle at center, #444444 25%, transparent 2.5%);*/
+  background-size: .5em 1.45em, .5em 1.45em;/*, .333em .333em;        */"
+    
+    transform-origin: center right;
+    transform: rotateY(0deg);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    width:100vw;
+    top:2,5rem;
+    height:100vh;
+    overflow:hidden;
+}
+
+
+
+/* When the div is shown (add this class via JavaScript) */
+#pondMenu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: rotateY(90deg);
+    transition: transform 0.3s ease-in-out;
+    z-index: 50;
+}
+
 
 
 
@@ -529,11 +583,7 @@ p {
   1px -1px 1px #e6a96d,  /* Highlight above (lighter copper) */
  -1px  1px 2px #6a3d1b,  /* Shadow below (darker copper) */
   0px  0px 1px #d98a50;  /* Soft glow for depth */
-    background-color: #2a2a2a; /* Light beige background */ background-image: 
-    linear-gradient(70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%),
-    linear-gradient(-70deg, transparent 46%, #222222 46%, #222222 54%, transparent 54%);
-    /*radial-gradient(circle at center, #444444 25%, transparent 2.5%);*/
-  background-size: .5em 1.45em, .5em 1.45em;/*, .333em .333em;        */">
+    background-color: #000000; padding:0;">
     <div class="w2p_flash alert alert-dismissable">{{=response.flash or ''}}</div>
     <!-- Navbar ======================================= -->
     <nav class="navbar navbar-light navbar-expand-md bg-faded bg-dark navbar-dark justify-content-center" style="width:auto;padding: 0 3vw 0 3vw; height:2em; ">
