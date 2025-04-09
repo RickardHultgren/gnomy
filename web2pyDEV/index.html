@@ -239,6 +239,7 @@ function showhideaddPond() {
         <div id="selected-rootstock-id"></div>
     <div id="flowerz">
 
+        <h4>Add Flower:</h4>
         <form id="add-flower-form" onsubmit="addFlower(event)">
             <label for="flower-name">Name:</label>
             <input type="text" id="flower-name" required>
@@ -251,6 +252,9 @@ function showhideaddPond() {
         
             <button type="submit">Add flower</button>
         </form>
+        
+
+        <Flower Section (Initially Hidden) -->
         <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;"-->
 
         <h4>Flowers</h4>
@@ -363,36 +367,9 @@ function fetchKnotstocks(pondId) {
                 // Ensure we fetch knotstocks when a rootstock is selected
             </script>
 
-<!--script>
-    setInterval(function () {
-      const request = new XMLHttpRequest();
-    
-      request.open("GET", "index.html", true); // Use async!
-      request.onload = function () {
-        if (request.status === 200) {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(request.responseText, "text/html");
-    
-          const tendrilContent = doc.getElementById("tendrilz");
-          const flowerContent = doc.getElementById("flowerz");
-    
-          if (tendrilContent && flowerContent) {
-            document.getElementById("tendrilz").innerHTML = tendrilContent.innerHTML;
-            document.getElementById("flowerz").innerHTML = flowerContent.innerHTML;
-          }
-        } else {
-          console.error("Failed to fetch content:", request.status);
-        }
-      };
-    
-      request.onerror = function () {
-        console.error("Connection error");
-      };
-    
-      request.send();
-    }, 5000);
-    </script-->
-    
+        
+        <script>
+        </script>
                 
 
 
@@ -493,76 +470,128 @@ function addRootstockButton() {
 
 
 <script>
+
 function markedRootstock(rootstockId, Rootstockaname) {
-  const element = document.getElementById("deatailsRootstockPopup"); // Possible typo in ID
-  if (!element) {
-    console.error("Element with ID 'deatailsRootstockPopup' not found.");
-    return;
-  }
-
-  element.innerHTML = `
-  <button onclick="markedPopup();" class="close-btn" 
-      style="background:none; width:2em; height:2em; text-align:left; border:none; 
-             box-shadow:none; z-index:10; font-size:2em; margin:0 0 0 0;">&times;</button>
-    
-    <h3>Rootstock Details:<br>${Rootstockaname}</h3>
-
-    <div id="tab-container">
-      <section>
-        <h3>General</h3>
-        <button onclick="deleteMarked('${rootstockId}');" 
-          style="margin:0 0 0.5em 0; background:none; width:auto; height:2em; 
-                 text-align:left; border:1px solid black; box-shadow:none; font-size:1em;">
-          Delete this rootstock
-        </button>
-        <div id="selected-rootstock-id">${rootstockId}</div>
-      </section>
-
-      <section>
+    var element = document.getElementById("deatailsRootstockPopup");
+    element.innerHTML = `
+        <button onclick="markedPopup();" class="close-btn" style="margin:0 00.5em; background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:0 0 0 0;">&times;</button>
+        <h3>Rootstock Details:<br> ${Rootstockaname}</h3>
+ 
+<div id="tab-container">
+  <section>
+    <h3>General</h3>
+        <button onclick="deleteMarked('${rootstockId}');" style="margin:0 0 0.5em 0; background:none; width:auto; height:2em; text-align:left; border:1px; box-shadow: none; font-size:2em; margin:-1em -1.5em 0 0;">Delete this rootstock</button>
+          
+        <div id="selected-rootstock-id"></div>
+  </section>
+  <section>
         <h3>Add Flower:</h3>
-        <div id="flowerzz"></div>
-      </section>
+        <form id="add-flower-form" onsubmit="addFlower(event)">
+            <label for="flower-name">Name:</label>
+            <input type="text" id="flower-name" required>
 
-      <section>
-        <h3>Tendrils</h3>
-        <div id="tendrilzz"></div>
-      </section>
-    </div>
-  `;
+            <label for="flower-fruit">Fruit:</label>
+            <input type="text" id="flower-fruit">
+        
+            <label for="flower-suffuse">Fragrance:</label>
+            <input type="text" id="flower-fragrance">
+        
+            <button type="submit">Add flower</button>
+        </form>
+        
 
-  
-  // Fix: The following line assumes both 'tendrilzz' and 'tendrilz' exist
-  const flowerzz = document.getElementById("flowerzz");
-  const flowerz = document.getElementById("flowerz");
-  if (flowerzz && flowerz) {
-    flowerzz.replaceChildren(flowerz);
-  } else {
-    console.warn("Missing element(s):", {
-      flowerzzExists: !!flowerzz,
-      flowerzExists: !!flowerz
-    });
-  }
-  
-  // Fix: The following line assumes both 'tendrilzz' and 'tendrilz' exist
-  const tendrilzz = document.getElementById("tendrilzz");
-  const tendrilz = document.getElementById("tendrilz");
-  if (tendrilzz && tendrilz) {
-    tendrilzz.replaceChildren(tendrilz);
-  } else {
-    console.warn("Missing element(s):", {
-      tendrilzzExists: !!tendrilzz,
-      tendrilzExists: !!tendrilz
-    });
-  }
-  
+         <h3>Flowers</h3>
+        <div id="flower-grid">
+            <p>Loading...</p>
+        </div>
 
-  markedPopup();
+        <p id="selected-flower">No flower selected</p>        
+
+  </section>
+  <section>
+
+
+
+
+
+        <h4>Tendrils</h4>
+        <div id="tendril-grid">
+            <p>Loading...</p>
+        </div>
+
+        <h4>Add Tendril</h4>
+        <form id="add-tendril-form" onsubmit="addTendril(event)">
+            <label for="tendril-name">Name:</label>
+            <input type="text" id="tendril-name" required>
+        
+            <label for="rootstock-select">Knotstock:</label>
+            <select id="knotstock-select">
+                <option value="">Select a Knotstock</option>
+            </select>
+            <label for="tendril-carry">Carry:</label>
+            <input type="text" id="tendril-carry">
+        
+            <label for="tendril-suffuse">Suffuse:</label>
+            <input type="text" id="tendril-suffuse">
+        
+            <button type="submit">Add Tendril</button>
+        </form>
+        
+        <p id="selected-tendril">No tendril selected</p>
+  </section>
+</div>
+
+
+
+
+        
+        `;
+    markedPopup();
 }
-
 
 var showMarkedPopup = 0;   
 function markedPopup(){
-    var element = document.getElementById("deatailsRootstockPopup");
+
+ // Fix: The following line assumes both 'tendrilzz' and 'tendrilz' exist
+ //const flowerzz = document.getElementById("flowerzz");
+  const flowerz = document.getElementById("flowerz");
+  
+  //const tendrilzz = document.getElementById("tendrilzz");
+  const tendrilz = document.getElementById("tendrilz");
+  
+
+  var element = document.getElementById("deatailsRootstockPopup");
+
+    if (flowerz.parentNode.id === "flowerzz") {
+        element.replaceChildren(flowerz);    
+    } //else {
+        //flowerzz.replaceChildren(flowerz);
+    //}
+    if (tendrilz.parentNode.id === "tendrilzz") {
+        element.replaceChildren(tendrilz);    
+    } //else {
+        //tendrilzz.replaceChildren(tendrilz);
+    //}
+
+
+    if (showRootPopup === 0) {
+        //element.style.opacity = "1";
+        element.style.transform = "rotateX(0deg)";
+        element.style.visibility = "visible";
+        showRootPopup = 1;
+    } else {
+        //element.style.opacity = "0";
+        element.style.transform = "rotateX(90deg)";
+        setTimeout(() => {
+        element.style.visibility = "hidden";
+        }, 300); // Matches transition time
+        showRootPopup = 0;
+    }
+    
+
+
+
+    
 
     if (showMarkedPopup === 0) {
         //element.style.opacity = "1";
@@ -599,7 +628,6 @@ function fetchRootstocks(pondId) {
 
     const url = "{{=URL('get_rootstocks')}}" + "?pond_id=" + encodeURIComponent(pondId);
 
-    
     fetch(url)
         .then(response => {
             if (!response.ok) throw new Error("Network response was not ok");
@@ -697,44 +725,27 @@ function fetchRootstocks(pondId) {
                 .attr("stroke-width", 2)
                 .style("cursor", "pointer")
                 .on("click", (event, d) => {
-    // Clear previous highlights
-    nodeGroups.selectAll("polygon").attr("stroke", "#118822");
+//
 
-    // Highlight this one
-    d3.select(event.currentTarget).attr("stroke", "#ff0000");
+                    // Clear previous highlights
+                    nodeGroups.selectAll("polygon").attr("stroke", "#118822");
 
-    // Update selected node
-    selectedNodeId = d.id;
+                    // Highlight this one
+                    d3.select(event.currentTarget).attr("stroke", "#ff0000");
 
-    // Send selected rootstock ID to the server
-    fetch("{{=URL('set_rootstockid')}}", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `rootstock_id=${encodeURIComponent(d.id)}`
-    })
+                    // Update selected node
+                    selectedNodeId = d.id;
 
-    
-    .then(response => response.json())
-    .then(result => {
-        if (result.status !== "success") {
-            console.error("Failed to store rootstock ID:", result.message);
-        }
-    })
-    .catch(error => {
-        console.error("Error setting rootstock ID:", error);
-    });
-
-    // Show the button
-    const container = document.getElementById("selected-node-container");
-    container.style.visibility = "visible";
-    container.innerHTML = `
-        <button style="border-radius:1em;z-index:60;position:relative;" onclick="updateDetails('${d.id}', '${d.name}');">
-            Selected: ${d.name} (ID: ${d.id})
-        </button>
-    `;
-});
+                    // Show the button
+                    const container = document.getElementById("selected-node-container");
+                    container.style.visibility = "visible";
+                    container.innerHTML = `
+                        <!--button style="padding: 6px 12px; font-size: 14px;" onclick="alert('Selected ID: ${d.id}, Name: ${d.name}')"-->
+                        <button style="border-radius:1em;z-index:60;position:relative;" onclick="updateDetails('${d.id}', '${d.name}');">
+                            Selected: ${d.name} (ID: ${d.id})
+                        </button>
+                    `;
+                });
 
             nodeGroups.append("text")
                 .attr("x", 25)
@@ -798,26 +809,7 @@ window.showPond = function (pondId, pondName) {
 
 var showRootPopup = 0;
 function showhideRotPopup() {
-
-
-  
-  // Fix: The following line assumes both 'tendrilzz' and 'tendrilz' exist
-  const flowerzz = document.getElementById("flowerzz");
-  const flowerz = document.getElementById("flowerz");
-  
-  var element = document.getElementById("addRootstockPopup");
-
-    if (flowerz.parentNode.id === "flowerzz") {
-        element.replaceChildren(flowerz);    
-    } else {
-        tendrilzz.replaceChildren(flowerz);
-    }
-    if (tendrilz.parentNode.id === "tendrilzz") {
-        element.replaceChildren(tendrilz);    
-    } else {
-        tendrilzz.replaceChildren(tendrilz);
-    }
-
+    var element = document.getElementById("addRootstockPopup");
 
     if (showRootPopup === 0) {
         //element.style.opacity = "1";
@@ -1058,6 +1050,7 @@ function addFlower(event) {
                 console.error("Rootstock ID is missing. Cannot add tendril.");
                 return;
             }*/
+
             fetch("{{=URL('add_tendril')}}", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -1074,7 +1067,7 @@ function addFlower(event) {
             .then(data => {
                 if (data.status === "success") {
                     console.log("Tendril added successfully:", data);
-                    //fetchTendrils(rootstockidJS);  // Refresh the tendril list
+                    fetchTendrils(rootstockidJS);  // Refresh the tendril list
                     document.getElementById("add-tendril-form").reset();
                 } else {
                     console.error("Failed to add tendril:", data.error);

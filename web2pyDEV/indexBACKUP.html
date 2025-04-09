@@ -551,7 +551,47 @@ function markedRootstock(rootstockId, Rootstockaname) {
 
 var showMarkedPopup = 0;   
 function markedPopup(){
-    var element = document.getElementById("deatailsRootstockPopup");
+
+ // Fix: The following line assumes both 'tendrilzz' and 'tendrilz' exist
+ //const flowerzz = document.getElementById("flowerzz");
+  const flowerz = document.getElementById("flowerz");
+  
+  //const tendrilzz = document.getElementById("tendrilzz");
+  const tendrilz = document.getElementById("tendrilz");
+  
+
+  var element = document.getElementById("deatailsRootstockPopup");
+
+    if (flowerz.parentNode.id === "flowerzz") {
+        element.replaceChildren(flowerz);    
+    } //else {
+        //flowerzz.replaceChildren(flowerz);
+    //}
+    if (tendrilz.parentNode.id === "tendrilzz") {
+        element.replaceChildren(tendrilz);    
+    } //else {
+        //tendrilzz.replaceChildren(tendrilz);
+    //}
+
+
+    if (showRootPopup === 0) {
+        //element.style.opacity = "1";
+        element.style.transform = "rotateX(0deg)";
+        element.style.visibility = "visible";
+        showRootPopup = 1;
+    } else {
+        //element.style.opacity = "0";
+        element.style.transform = "rotateX(90deg)";
+        setTimeout(() => {
+        element.style.visibility = "hidden";
+        }, 300); // Matches transition time
+        showRootPopup = 0;
+    }
+    
+
+
+
+    
 
     if (showMarkedPopup === 0) {
         //element.style.opacity = "1";
