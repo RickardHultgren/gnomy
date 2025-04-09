@@ -225,8 +225,8 @@ function showhideaddPond() {
         </div>
          
         <div id="deatailsRootstockPopup" style="visibility:hidden;">
-            <button onclick="markedPopup();" class="close-btn" style="margin:0 00.5em ;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
-            <h3>Rootstock Details</h3>
+            <button onclick="markedPopup();" class="close-btn" style="margin:0 0 -2em -4em;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; font-size:2em;">&times;</button>
+            <h3>Rootstock Details</h3><br>
         </div>        
 </div>
 
@@ -474,13 +474,13 @@ function addRootstockButton() {
 function markedRootstock(rootstockId, Rootstockaname) {
     var element = document.getElementById("deatailsRootstockPopup");
     element.innerHTML = `
-        <button onclick="markedPopup();" class="close-btn" style="margin:0 00.5em; background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0;">&times;</button>
-        <h3>Rootstock Details: ${Rootstockaname}</h3>
+        <button onclick="markedPopup();" class="close-btn" style="margin:0 00.5em; background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:0 0 0 0;">&times;</button>
+        <h3>Rootstock Details:<br> ${Rootstockaname}</h3>
  
 <div id="tab-container">
   <section>
     <h3>General</h3>
-        <button onclick="deleteMarked('${rootstockId}');" style="margin:0 00.5em; background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0;">Delete ${Rootstockaname}</button>
+        <button onclick="deleteMarked('${rootstockId}');" style="margin:0 0 0.5em 0; background:none; width:auto; height:2em; text-align:left; border:1px; box-shadow: none; font-size:2em; margin:-1em -1.5em 0 0;">Delete this rootstock</button>
           
         <div id="selected-rootstock-id"></div>
   </section>
@@ -1052,6 +1052,30 @@ function addFlower(event) {
             });
             showhideRotPopup();
         }
+
+        function deleteMarked(rootstockId) {
+    fetch("{{=URL('delete_rootstock')}}", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `rootstock_id=${rootstockId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            // Replace with correct pond ID or re-fetch the whole list
+            fetchRootstocks(currentPondId); 
+            let nameInput = document.getElementById("rootstock-name");
+            if (nameInput) nameInput.value = "";
+        } else {
+            alert("Error: " + data.message);
+        }
+    })
+    .catch(err => console.error("Delete failed", err));
+
+    markedPopup();
+}
+
+
 </script>
 
 {{pass}}
