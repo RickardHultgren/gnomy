@@ -148,19 +148,30 @@
 
 }
 
+#d3-wrapper {
+  left:50vw;
+  margin-left:-300px;
+  width:600px;
+  height: 400px;
+}
 
 #d3-rootstocks {
-  box-shadow: inset 0 0 3em #0f3f53;
+  box-shadow: inset 0 0 3em #0f3f53, inset 3em 3em 1em 1em rgba(255, 255, 255, 0.0525), inset 0em 3em 1em 1em rgba(255, 255, 255, 0.125), inset 0em -3em 1em 1em rgba(0, 0, 0, 0.0525);
   position: relative;
   border: 3px double #B87333;
   width: 600px;
   height: 400px;
   background: linear-gradient(#a0d8ef, #74c1e3); /* Water-like gradient */
-  border-radius: 12px;
+  border-radius: 2em;
   display: block;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+
+  
+backdrop-filter: blur( 1px );
+-webkit-backdrop-filter: blur( 1px );
+
 }
 
 

@@ -209,8 +209,8 @@ function showhideaddPond() {
         <button onclick="showhidePond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:30; font-size:2em;">&times;</button>
         <h3>Rootstocks for Pond "<span id="pondBox"></span>"</h3>
         <div id="d3-wrapper" style="position: relative;">
-            <div id="selected-node-container"></div>
             <div id="d3-rootstocks" style="width: 100%; height: 100%;"></div>
+            <div id="selected-node-container" style="position:fixed; width:100vw; left:50vw; margin: -4em 0 0 -50vw; text-align:center;z-index:60;"></div>
         </div>
         <!--div style="width:95vw;left:50vw; margin-left:45vw; position: absolute; background-color:#000000; height:3em; "-->
             <button id="rootstockAdd" onclick="showhideRotPopup();" style="margin: 1em 0 1em 0; border-radius:1em;left:50vw;margin-left:-5em;width:10em;position:absolute;">Add Rootstock</button><br>
@@ -450,7 +450,7 @@ function updateTabs() {
 </script>
     
 <script>
-
+/*
 function addRootstockButton() {
     // Check if button already exists to avoid duplication
     if (document.getElementById("add-rootstock-button")) return;
@@ -465,6 +465,7 @@ function addRootstockButton() {
 
     wrapper.appendChild(addButton);
 }
+*/
 </script>
 
 
@@ -697,9 +698,10 @@ function fetchRootstocks(pondId) {
 
                     // Show the button
                     const container = document.getElementById("selected-node-container");
+                    container.style.visibility = "visible";
                     container.innerHTML = `
                         <!--button style="padding: 6px 12px; font-size: 14px;" onclick="alert('Selected ID: ${d.id}, Name: ${d.name}')"-->
-                        <button style="padding: 6px 12px; font-size: 14px;" onclick="updateDetails('${d.id}', '${d.name}');">
+                        <button style="border-radius:1em;z-index:60;position:relative;" onclick="updateDetails('${d.id}', '${d.name}');">
                             Selected: ${d.name} (ID: ${d.id})
                         </button>
                     `;
