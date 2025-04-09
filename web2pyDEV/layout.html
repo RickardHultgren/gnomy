@@ -85,11 +85,16 @@
 /* Container */
 
 #addRootstockPopup {
-  width: 300px;
-  height: 300px;
+  z-index:70;
+  position:fixed;
+  left:50vw;
+  margin-left:-40vw;
+  width: 80vw;
+  height: auto;
   background: linear-gradient(to bottom right, #fffbe6, #f7e8b0);
   border: 4px double #b8860b;
-  border-radius: 16px;
+  border-radius: 0.25em;
+
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15);
 /*  font-family: 'Georgia', serif;*/
   padding: 20px;
@@ -101,14 +106,11 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     display: block;
     position:fixed;
-    top:15vh;
-    left:50vw;
-    margin-left:-150px;
+    top:3em;
     justify-content: center;
     align-items: center;
-    /*margin: 40px auto;*/
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    z-index:30;
+    
 }
 
 #deatailsRootstockPopup {
