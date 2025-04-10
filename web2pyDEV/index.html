@@ -257,47 +257,39 @@ function showhideaddPond() {
         <Flower Section (Initially Hidden) -->
         <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;"-->
 
-        <h4>Flowers</h4>
-        <div id="flower-grid">
-            <p>Loading...</p>
+            <h4>Flowers</h4>
+            <div id="flower-grid">
+                <p>Loading...</p>
+            </div>
+
+            <p id="selected-flower">No flower selected</p>        
+        </div>  
+
+        <div id="tendrilz">
+            <h4>Tendrils</h4-->
+            Add Tendril
+            <form id="add-tendril-form" onsubmit="addTendril(event)">
+                <label for="tendril-name">Name:</label>
+                <input type="text" id="tendril-name" required>
+            
+                <label for="rootstock-select">Knotstock:</label>
+                <select id="knotstock-select">
+                    <option value="">Select a Knotstock</option>
+                </select>
+                <label for="tendril-carry">Carry:</label>
+                <input type="text" id="tendril-carry">
+            
+                <label for="tendril-suffuse">Suffuse:</label>
+                <input type="text" id="tendril-suffuse">
+            
+                <button type="submit">Add Tendril</button>
+            </form>
+            
+            <p id="selected-tendril">No tendril selected</p-->
+            <div id="tendril-grid">
+                <p>Loading...</p>
+            </div>
         </div>
-
-        <p id="selected-flower">No flower selected</p>        
-
-
-
-    </div>
-
-
-
-
-
-    <div id="tendrilz">
-        <h4>Tendrils</h4-->
-        <div id="tendril-grid">
-            <p>Loading...</p>
-        </div>
-
-        <h4>Add Tendril</h4>
-        <form id="add-tendril-form" onsubmit="addTendril(event)">
-            <label for="tendril-name">Name:</label>
-            <input type="text" id="tendril-name" required>
-        
-            <label for="rootstock-select">Knotstock:</label>
-            <select id="knotstock-select">
-                <option value="">Select a Knotstock</option>
-            </select>
-            <label for="tendril-carry">Carry:</label>
-            <input type="text" id="tendril-carry">
-        
-            <label for="tendril-suffuse">Suffuse:</label>
-            <input type="text" id="tendril-suffuse">
-        
-            <button type="submit">Add Tendril</button>
-        </form>
-        
-        <p id="selected-tendril">No tendril selected</p-->
-    </div>
 
 
 
@@ -608,7 +600,7 @@ function markedPopup(){
     }
     
 }
-
+/*
 function updateDetails(theid, thename) {
     
     markedRootstock(theid,thename);
@@ -617,7 +609,7 @@ function updateDetails(theid, thename) {
 
 
 }
-
+*/
 
 
 function fetchRootstocks(pondId) {
@@ -741,7 +733,7 @@ function fetchRootstocks(pondId) {
                     container.style.visibility = "visible";
                     container.innerHTML = `
                         <!--button style="padding: 6px 12px; font-size: 14px;" onclick="alert('Selected ID: ${d.id}, Name: ${d.name}')"-->
-                        <button style="border-radius:1em;z-index:60;position:relative;" onclick="updateDetails('${d.id}', '${d.name}');">
+                        <button style="border-radius:1em;z-index:60;position:relative;" onclick="selectRootstock('${d.id}', '${d.name}');">
                             Selected: ${d.name} (ID: ${d.id})
                         </button>
                     `;
@@ -830,7 +822,9 @@ function showhideRotPopup() {
 
 </script>
 <script>
+//2025-04-10    
 function selectRootstock(rootstockId, rootstockName) { 
+
     rootstockidJS = rootstockId;
     fetch("{{=URL('set_rootstock_id')}}", {
         method: "POST",
@@ -852,6 +846,10 @@ function selectRootstock(rootstockId, rootstockName) {
         }
     })
     .catch(error => console.error("Error selecting rootstock:", error));
+
+    markedRootstock(rootstockId, rootstockName);
+    
+    updateTabs();
 }
 
 </script>
