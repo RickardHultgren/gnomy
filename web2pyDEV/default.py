@@ -150,7 +150,7 @@ def get_tendrils():
 
 def add_tendril():
     rootstock_id = session.rootstock_id
-    knotstock_id = request.post_vars.knotstock_id
+    knotstock_id = eval(request.post_vars.knotstock_id)
     tendril_name = request.post_vars.tendril_name
     tendril_carry = request.post_vars.tendril_carry
     tendril_suffuse = request.post_vars.tendril_suffuse

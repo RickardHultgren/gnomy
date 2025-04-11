@@ -601,7 +601,7 @@ p {
     background-color: #000000; padding:0;">
     <div class="w2p_flash alert alert-dismissable">{{=response.flash or ''}}</div>
     <!-- Navbar ======================================= -->
-    <nav class="navbar navbar-light navbar-expand-md bg-faded bg-dark navbar-dark justify-content-center" style="width:auto;padding: 0 3vw 0 3vw; height:2em; ">
+    <nav class="navbar navbar-light navbar-expand-md bg-faded bg-dark navbar-dark justify-content-center" style="width:auto;padding: 0 3vw 0 3vw; height:2em; z-index:100;">
        <a href="https://rickardhultgren.pythonanywhere.com/gnomy/default/index" class="navbar-brand d-flex w-50 mr-auto" style="  font-family: 'Amatic SC', cursive; /* Use the Amatic SC font */
   font-size: 1em; /* Adjust size as needed */
   letter-spacing: -0.3px; /* Slightly reduced letter spacing */
@@ -647,12 +647,12 @@ p {
              <input class="form-control mr-sm-2" type="text" placeholder="Search">
          </form-->
         {{if 'auth' in globals():}}
-        <ul class="nav navbar-nav ml-auto w-100 justify-content-end" style="align:right;size:10vw;font-size:3vh;">
+        <ul class="nav navbar-nav ml-auto w-100 justify-content-end" style="align:right;size:10vw;font-size:3vh;z-index:100;">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {{if auth.user:}}{{=auth.user.first_name}}{{else:}}Login{{pass}}
             </a>
-            <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-menu dropdown-menu-right" style="z-index:100;">
               {{if auth.user:}}
               <a class="dropdown-item" href="{{=URL('default','user/profile')}}">{{=T('Profile')}}</a>
               {{if 'change_password' not in auth.settings.actions_disabled:}}

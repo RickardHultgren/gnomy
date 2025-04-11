@@ -568,7 +568,7 @@ function fetchRootstocks(pondId) {
         console.error("No pondId provided");
         return;
     }
-
+    const rootstockPositions = {};
     const url = "{{=URL('get_rootstocks')}}" + "?pond_id=" + encodeURIComponent(pondId);
 
     fetch(url)
@@ -579,8 +579,7 @@ function fetchRootstocks(pondId) {
         .then(data => {
             if (data.status !== "success") {
                 console.error("Server error:", data.error);
-                return;
-            }
+                return;            }
 
             console.log("Rootstocks:", data.rootstocks);
             console.log("Tendrils:", data.multipleTendrils);
@@ -647,9 +646,17 @@ function fetchRootstocks(pondId) {
                 .on("drag", function (event, d) {
                     d.x = event.x - d.offsetX;
                     d.y = event.y - d.offsetY;
+
+                    // Update node position
                     d3.select(this).attr("transform", `translate(${d.x}, ${d.y})`);
-                    drawArrows(); // live update
+
+                    // Update global rootstockPositions so arrows follow
+                    rootstockPositions[d.id] = { x: d.x, y: d.y };
+
+                    // Redraw arrows to match new position
+                    drawArrows();
                 })
+
                 .on("end", function () {
                     d3.select(this).attr("stroke", null);
                 });
@@ -657,7 +664,10 @@ function fetchRootstocks(pondId) {
             // Lay out nodes horizontally
             data.rootstocks.forEach((r, i) => {
                 r.x = i * spacing + 50;
+                rootstockX = r.x;
                 r.y = 80;
+                rootstockY = r.y;
+                rootstockPositions[r.id] = { x: r.x, y: r.y };
             });
 
             // Create node groups
@@ -707,37 +717,45 @@ function fetchRootstocks(pondId) {
                 .text(d => d.name)
                 .style("font-size", "12px")
                 .style("fill", "#333");
-
+            drawArrows();
             // === Arrow drawing function ===
             function drawArrows() {
                 zoomGroup.selectAll("line.arrow").remove();
 
-                const positionMap = {};
-                data.rootstocks.forEach(r => {
-                    positionMap[r.id] = { x: r.x, y: r.y };
-                });
-
                 data.multipleTendrils.forEach(t => {
-                    const from = positionMap[t.rootstock_id];
-                    const to = positionMap[t.knotstock];
-                    if (from && to) {
-                        zoomGroup.append("line")
-                            .attr("class", "arrow")
-                            .attr("x1", from.x + 25)
-                            .attr("y1", from.y + 25)
-                            .attr("x2", to.x + 25)
-                            .attr("y2", to.y + 25)
-                            .attr("stroke", "#444")
-                            .attr("stroke-width", 2)
-                            .attr("marker-end", "url(#arrowhead)");
+                    //alert(t.rootstock_id);
+                    //alert(t.knotstock_id);
+                    const from = rootstockPositions[t.rootstock_id];
+                    const to = rootstockPositions[t.knotstock_id];
+
+                    if (!from) {
+                        console.warn(`Missing position for rootstock_id: ${t.rootstock_id}`);
+                        return;
                     }
+                    if (!to) {
+                        console.warn(`Missing position for knotstock: ${t.knotstock_id}`);
+                        return;
+                    }
+
+                    zoomGroup.append("line")
+                        .attr("class", "arrow")
+                        .attr("x1", from.x + 25)
+                        .attr("y1", from.y + 25)
+                        .attr("x2", to.x + 25)
+                        .attr("y2", to.y + 25)
+                        .attr("stroke", "#444")
+                        .attr("stroke-width", 2)
+                        .attr("marker-end", "url(#arrowhead)");
                 });
             }
 
-            drawArrows();
+
+
+
             fetchKnotstocks(pondId);
             document.getElementById("rootstock-details").style.visibility = "hidden";
         })
+        
         .catch(error => {
             console.error("Fetch error:", error);
         });
@@ -1001,6 +1019,7 @@ function addFlower(event) {
 
             //let rootstockId = "{{=session.rootstock_id if session.rootstock_id else ''}}"; // Ensure it's not None
             let knotstockId = document.getElementById("knotstock-select").value;
+            //alert(knotstockId);
             let tendrilName = document.getElementById("tendril-name").value;
             let tendrilCarry = document.getElementById("tendril-carry").value;
             let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
