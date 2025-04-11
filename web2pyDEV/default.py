@@ -43,6 +43,7 @@ def get_rootstocks():
         multipleTendrils.extend([
             {
                 "rootstock_id": rootstock.id,
+                "knotstock_id": t.knotstock,
                 "id": t.id,
                 "name": t.name,
                 "carry": t.get("carry"),

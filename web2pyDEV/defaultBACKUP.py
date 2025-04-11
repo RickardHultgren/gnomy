@@ -10,8 +10,19 @@ def index():
     session.rootstock_id = None
     return dict(pond_form=pond_form, ponds=ponds)
 
+@auth.requires_login()  # or remove if public access is okay
+def set_rootstockid():
+    rootstock_id = request.vars.rootstock_id
+    if rootstock_id:
+        session.rootstock_id = rootstock_id
+        return response.json({'status': 'success', 'message': 'Rootstock ID saved.'})
+    else:
+        return response.json({'status': 'error', 'message': 'No rootstock ID provided'})
+
+
 def get_rootstocks():
     pond_id = request.vars.pond_id
+    session.pond_id = pond_id
     if not pond_id:
         return response.json({"status": "error", "error": "No pond ID provided"})
 
@@ -32,6 +43,7 @@ def get_rootstocks():
         multipleTendrils.extend([
             {
                 "rootstock_id": rootstock.id,
+                "knotstock_id": t.knotstock,
                 "id": t.id,
                 "name": t.name,
                 "carry": t.get("carry"),
@@ -90,8 +102,9 @@ def delete_rootstock():
     db(db.rootstock.id == rootstock_id).delete()
     return response.json({"status": "success", "message": "Rootstock deleted"})
 
-
-
+#def rootstock_tool():
+#    session.rootstock_id = request.vars.rootstock_id
+#    return "OK"
 
 
 def set_rootstock_id():
@@ -143,7 +156,7 @@ def add_tendril():
     tendril_suffuse = request.post_vars.tendril_suffuse
 
     if not rootstock_id or not tendril_name:
-        return response.json({"status": "error", "error": "Missing required fields"})
+        return response.json({"status": "error", "error": "Missing required fields (rootstock_id)"})
 
     # Ensure the user is logged in
     if not auth.user_id:

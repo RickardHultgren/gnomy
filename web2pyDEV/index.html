@@ -238,8 +238,6 @@ function showhideaddPond() {
         
         <div id="selected-rootstock-id"></div>
     <div id="flowerz">
-    <section>
-        <h3>Flowers</h3>
         <form id="add-flower-form" onsubmit="addFlower(event)">
             <label for="flower-name">Name:</label>
             <input type="text" id="flower-name" required>
@@ -253,8 +251,6 @@ function showhideaddPond() {
             <button type="submit">Add flower</button>
         </form>
         
-    </section>
-        <section>
         <div id="flower-container" style="display:none; border:1px solid #000; padding:10px; margin-top:10px;"-->
 
             <h3>Flowers</h3>
@@ -264,35 +260,31 @@ function showhideaddPond() {
 
             <p id="selected-flower">No flower selected</p>        
         </div>  
-        </section>
-
+    </div>  
     
-        <section>
-        <div id="tendrilz">
-            <h3>Tendrils</h3>
-            <form id="add-tendril-form" onsubmit="addTendril(event)">
-                <label for="tendril-name">Name:</label>
-                <input type="text" id="tendril-name" required>
+    <div id="tendrilz">
+        <form id="add-tendril-form" onsubmit="addTendril(event)">
+            <label for="tendril-name">Name:</label>
+            <input type="text" id="tendril-name" required>
             
-                <label for="rootstock-select">Knotstock:</label>
-                <select id="knotstock-select">
+            <label for="rootstock-select">Knotstock:</label>
+            <select id="knotstock-select">
                     <option value="">Select a Knotstock</option>
-                </select>
-                <label for="tendril-carry">Carry:</label>
-                <input type="text" id="tendril-carry">
+            </select>
+            <label for="tendril-carry">Carry:</label>
+            <input type="text" id="tendril-carry">
             
-                <label for="tendril-suffuse">Suffuse:</label>
-                <input type="text" id="tendril-suffuse">
+            <label for="tendril-suffuse">Suffuse:</label>
+            <input type="text" id="tendril-suffuse">
             
-                <button type="submit">Add Tendril</button>
-            </form>
+            <button type="submit">Add Tendril</button>
+        </form>
             
-            <p id="selected-tendril">No tendril selected</p-->
-            <div id="tendril-grid">
-                <p>Loading...</p>
-            </div>
-        </section>
+        <p id="selected-tendril">No tendril selected</p-->
+        <div id="tendril-grid">
+            <p>Loading...</p>
         </div>
+    </div>
 
 
 
@@ -479,59 +471,19 @@ function markedRootstock(rootstockId, Rootstockaname) {
           
         <div id="selected-rootstock-id"></div>
   </section>
-  <section>
+  <section id="flowerzz">
         <h3>Flowers</h3>
-        <form id="add-flower-form" onsubmit="addFlower(event)">
-            <label for="flower-name">Name:</label>
-            <input type="text" id="flower-name" required>
 
-            <label for="flower-fruit">Fruit:</label>
-            <input type="text" id="flower-fruit">
-        
-            <label for="flower-suffuse">Fragrance:</label>
-            <input type="text" id="flower-fragrance">
-        
-            <button type="submit">Add flower</button>
-        </form>
-        
-
-         <h3>Flowers</h3>
-        <div id="flower-grid">
-            <p>Loading...</p>
-        </div>
-
-        <p id="selected-flower">No flower selected</p>        
 
   </section>
-  <section>
+  <section id="tendrilzz">
 
 
 
 
 
-        <h4>Tendrils</h4>
-        <h4>Add Tendril</h4>
-        <form id="add-tendril-form" onsubmit="addTendril(event)">
-            <label for="tendril-name">Name:</label>
-            <input type="text" id="tendril-name" required>
-        
-            <label for="rootstock-select">Knotstock:</label>
-            <select id="knotstock-select">
-                <option value="">Select a Knotstock</option>
-            </select>
-            <label for="tendril-carry">Carry:</label>
-            <input type="text" id="tendril-carry">
-        
-            <label for="tendril-suffuse">Suffuse:</label>
-            <input type="text" id="tendril-suffuse">
-        
-            <button type="submit">Add Tendril</button>
-        </form>
-        
-        <p id="selected-tendril">No tendril selected</p>
-        <div id="tendril-grid">
-            <p>Loading...</p>
-        </div>
+        <h3>Tendrils</h3>
+     
 </section>
 </div>
 
@@ -546,27 +498,18 @@ function markedRootstock(rootstockId, Rootstockaname) {
 var showMarkedPopup = 0;   
 function markedPopup(){
 
- // Fix: The following line assumes both 'tendrilzz' and 'tendrilz' exist
- //const flowerzz = document.getElementById("flowerzz");
-  const flowerz = document.getElementById("flowerz");
+    // Fix: The following line assumes both 'tendrilzz' and 'tendrilz' exist
+    //const flowerzz = document.getElementById("flowerzz");
+    const flowerz = document.getElementById("flowerz");
   
-  //const tendrilzz = document.getElementById("tendrilzz");
-  const tendrilz = document.getElementById("tendrilz");
+    //const tendrilzz = document.getElementById("tendrilzz");
+    const tendrilz = document.getElementById("tendrilz");
   
-
-  var element = document.getElementById("deatailsRootstockPopup");
-
-    if (flowerz.parentNode.id === "flowerzz") {
-        element.replaceChildren(flowerz);    
-    } //else {
-        //flowerzz.replaceChildren(flowerz);
-    //}
-    if (tendrilz.parentNode.id === "tendrilzz") {
-        element.replaceChildren(tendrilz);    
-    } //else {
-        //tendrilzz.replaceChildren(tendrilz);
-    //}
-
+    var element = document.getElementById("deatailsRootstockPopup");
+    var element1 = document.getElementById("rootstock-details");
+    var element2F = document.getElementById("flowerzz");
+    var element2T = document.getElementById("tendrilzz");
+  
 
     if (showRootPopup === 0) {
         //element.style.opacity = "1";
@@ -583,7 +526,7 @@ function markedPopup(){
     }
     
 
-
+  
 
     
 
@@ -591,16 +534,22 @@ function markedPopup(){
         //element.style.opacity = "1";
         element.style.transform = "rotateX(0deg)";
         element.style.visibility = "visible";
+        flowerz.style.visibility = "visible";
+        tendrilz.style.visibility = "visible";        
+        element2F.replaceChildren(flowerz);    
+        element2T.replaceChildren(tendrilz);    
         showMarkedPopup = 1;
     } else {
         //element.style.opacity = "0";
         element.style.transform = "rotateX(90deg)";
-        setTimeout(() => {
         element.style.visibility = "hidden";
-        }, 300); // Matches transition time
+        flowerz.style.visibility = "hidden";
+        tendrilz.style.visibility = "hidden";
+        element1.replaceChildren(flowerz);
+        element1.replaceChildren(tendrilz);
         showMarkedPopup = 0;
     }
-    
+  
 }
 /*
 function updateDetails(theid, thename) {
@@ -635,6 +584,16 @@ function fetchRootstocks(pondId) {
 
             console.log("Rootstocks:", data.rootstocks);
             console.log("Tendrils:", data.multipleTendrils);
+            /*
+            {
+                "rootstock_id": rootstock.id,
+                "knotstock_id": t.knotstock,
+                "id": t.id,
+                "name": t.name,
+                "carry": t.get("carry"),
+                "suffuse": t.get("suffuse")
+            } for t in tendrils
+            */
             console.log("Flowers:", data.multipleFlowers);
 
             // Fill HTML containers
