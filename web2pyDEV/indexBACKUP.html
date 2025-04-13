@@ -158,14 +158,43 @@ function showhideaddPond() {
 }
 
 </script>
-<div id="pondMenu">
+<div id="explanation" style="display: none; position: fixed; z-index:70; width: 50vw; bottom: 11.25vh; left: 50vw; margin-left: -25vw; background-color: rgba(0, 0, 0, 0.7); color: #00ffff;">
+    <button onclick="document.getElementById('explanation').style.display = 'none';"
+      class="close-btn"
+      style="background: none; width: 2em; height: 2em; text-align: left; border: none; box-shadow: none; z-index: 10; font-size: 2em; margin: 0;">
+      &times;
+    </button>
+    <div id="explanation-message"></div>
+</div>
+  
+  <div id="pondMenu">
+    <div class="poem">
+        Hello, and welcome to my land.<br>
+        Things here are odd, but close at hand.<br>
+        The troubles I face are much like yours,<br>
+        just hidden behind different doors.<br><br>
+        Help me explore, and you will see —<br>
+        what’s true for you is true for me.<br>
+        If something’s strange or hard to tell,<br>
+        click the glowing crystal — I’ll explain it well.
+      </div>
+  
+      <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'test'; document.getElementById('explanation').style.display = 'block';"></button>
+
+
     <div id="menuBox">
+
+
+    
+    
         <hr>
         <h2>Your ponds <button id="plusbttn" style="    display: inline-flex;  /* Enables flexbox */
             justify-content: center;  /* Centers text horizontally */
             align-items: center;  width:2em;height:2em;border-radius: 50%;" onclick="showhideaddPond();">+</button><button id="minusbttn" style="    display: inline-flex;  /* Enables flexbox */
         justify-content: center;  /* Centers text horizontally */
-        align-items: center;  display:none;width:2em;height:2em;border-radius: 50%;" onclick="showhideaddPond();">-</button></h2>
+        align-items: center;  display:none;width:2em;height:2em;border-radius: 50%;" onclick="showhideaddPond();">-</button>
+    <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'Ponds are contexts'; document.getElementById('explanation').style.display = 'block';"></button>    
+    </h2>
         <div id="pondformbox" onclick="">
             <div style="
                 width: 80vw; 
@@ -207,7 +236,9 @@ function showhideaddPond() {
 </div>
 <div id="chosenpond" >
         <button onclick="showhidePond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:30; font-size:2em;">&times;</button>
-        <h3>Rootstocks for Pond "<span id="pondBox"></span>"</h3>
+        <h3>Rootstocks <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'A rootstock is a situation'; document.getElementById('explanation').style.display = 'block';"></button>
+            
+            for Pond "<span id="pondBox"></span>"</h3>
         <div id="d3-wrapper" style="position: relative;">
             <div id="d3-rootstocks" style="width: 100%; height: 100%;"></div>
             <div id="selected-node-container" style="position:fixed; width:100vw; left:50vw; margin: -4em 0 0 -50vw; text-align:center;z-index:60;"></div>
@@ -215,7 +246,7 @@ function showhideaddPond() {
         <!--div style="width:95vw;left:50vw; margin-left:45vw; position: absolute; background-color:#000000; height:3em; "-->
             <button id="rootstockAdd" onclick="showhideRotPopup();" style="margin: 1em 0 1em 0; border-radius:1em;left:50vw;margin-left:-5em;width:10em;position:absolute;">Add Rootstock</button><br>
         <!--/div-->
-        <div style="margin-top:3em;" id="rootstock-grid"></div>
+        <div style="margin-top:3em; visibility:hidden;" id="rootstock-grid"></div>
 
         <div id="addRootstockPopup" style="visibility:hidden;">
             <button onclick="showhideRotPopup();" class="close-btn" style="margin:0 00.5em ;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
@@ -511,24 +542,26 @@ function markedPopup(){
     var element2T = document.getElementById("tendrilzz");
   
 
-    if (showRootPopup === 0) {
+    if (showMarkedPopup === 0) {
         //element.style.opacity = "1";
         element.style.transform = "rotateX(0deg)";
         element.style.visibility = "visible";
-        showRootPopup = 1;
+        element2F.replaceChildren(flowerz);    
+        element2T.replaceChildren(tendrilz);    
+          showMarkedPopup = 1;
     } else {
         //element.style.opacity = "0";
         element.style.transform = "rotateX(90deg)";
-        setTimeout(() => {
         element.style.visibility = "hidden";
-        }, 300); // Matches transition time
-        showRootPopup = 0;
+        element1.replaceChildren(flowerz);
+        element1.replaceChildren(tendrilz);
+          showMarkedPopup = 0;
     }
     
 
   
 
-    
+    /*
 
     if (showMarkedPopup === 0) {
         //element.style.opacity = "1";
@@ -549,7 +582,7 @@ function markedPopup(){
         element1.replaceChildren(tendrilz);
         showMarkedPopup = 0;
     }
-  
+  */
 }
 /*
 function updateDetails(theid, thename) {
@@ -743,8 +776,8 @@ function fetchRootstocks(pondId) {
                         .attr("y1", from.y + 25)
                         .attr("x2", to.x + 25)
                         .attr("y2", to.y + 25)
-                        .attr("stroke", "#444")
-                        .attr("stroke-width", 2)
+                        .attr("stroke", "#aaaaaa")
+                        .attr("stroke-width", 3)
                         .attr("marker-end", "url(#arrowhead)");
                 });
             }
