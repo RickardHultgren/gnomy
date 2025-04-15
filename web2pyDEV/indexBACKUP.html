@@ -790,8 +790,19 @@ function fetchRootstocks(pondId) {
         })
         
         .catch(error => {
-            console.error("Fetch error:", error);
+    console.error("Fetch error:", error);
+
+    // Optional deeper debugging:
+    if (error instanceof Response) {
+        error.text().then(text => {
+            console.error("Error body:", text);
         });
+    } else {
+        console.error("Error name:", error.name);
+        console.error("Error message:", error.message);
+        console.error("Error stack:", error.stack);
+    }
+});
 }
 
 // Make sure showPond is globally exposed
@@ -1080,12 +1091,14 @@ function addFlower(event) {
                     console.log("Tendril added successfully:", data);
                     fetchTendrils(rootstockidJS);  // Refresh the tendril list
                     document.getElementById("add-tendril-form").reset();
+                    fetchRootstocks(currentPondId);
                 } else {
                     console.error("Failed to add tendril:", data.error);
                 }
             })
             .catch(error => console.error("Error adding tendril:", error));
-        }
+
+}
 </script>
 <script>
 
