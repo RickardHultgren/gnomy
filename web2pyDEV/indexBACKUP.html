@@ -244,29 +244,52 @@ function showhideaddPond() {
              "<span id="currentBox"></span>"</div>            
         <div id="d3-wrapper" style="position: relative;">
             <div id="buttons" style="width:50px;">
-                <button onclick="mode='details';" style="width:25px;">&#8662;</button>
-                <button onclick="mode='current';" style="width:25px;">&#9711;</button>
-                <button onclick="mode='go';" style="width:25px;">&#9654;</button>
+                <script>
+                    var buttonclicked = 0;
+                    var mode = "";
+                </script>
+                <button id="b1" onclick="buttonclicked=1; bclicked(); mode='details';" style="width:25px; font-size:12px; align-items: center;">&#8662;</button>
+                <button id="b2" onclick="buttonclicked=2; bclicked(); mode='current';" style="width:25px; font-size:12px; align-items: center;">&#9711;</button>
+                <button id="b3" onclick="buttonclicked=3; bclicked(); go();" style="width:25px; font-size:12px; align-items: center;">&#9654;</button>
+                <script>
+                    function bclicked() {
+                        const element1 = document.getElementById("b1");
+                        const element2 = document.getElementById("b2");
+                        const element3 = document.getElementById("b3");
+            
+                        element1.style.color = "rgba(255, 150, 0, " + (buttonclicked === 1 ? "0.7" : "0") + ")";
+                        element2.style.color = "rgba(255, 150, 0, " + (buttonclicked === 2 ? "0.7" : "0") + ")";
+                        element3.style.color = "rgba(255, 150, 0, " + (buttonclicked === 3 ? "0.7" : "0") + ")";
+                    }
+                </script>
             </div>
+            
 
             <div id="d3-rootstocks"></div>
 
             <div id="selected-node-container" style="position:fixed; width:100vw; left:50vw; margin: 0em 0 -200px -50vw; text-align:center;z-index:60;"></div>
         </div>
         <!--div style="width:95vw;left:50vw; margin-left:45vw; position: absolute; background-color:#000000; height:3em; "-->
-            <button id="rootstockAdd" onclick="showhideRotPopup();" style="margin: 1em 0 1em 0; border-radius:1em;left:50vw;margin-left:-5em;width:10em;position:absolute;">Add Rootstock</button><br>
+        <button id="rootstockAdd" onclick="showhideRotPopup();" style="margin: 1em 0 1em 0; border-radius:1em;left:50vw;margin-left:-5em;width:10em;position:absolute;">Add Rootstock</button><br>
         <!--/div-->
+
+        <div id="goPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em;">
+            <button onclick="showhideGoPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
+            <h3>Go</h3>
+        </div>
+
         <div style="margin-top:3em; visibility:hidden;" id="rootstock-grid"></div>
 
         <div id="addRootstockPopup" style="visibility:hidden;">
             <button onclick="showhideRotPopup();" class="close-btn" style="margin:0 00.5em ;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
             <h3>Add Rootstock</h3>
-            <input type="text" id="rootstock-name" placeholder="Rootstock name">
+            <input type="text" id="rootstock-name" placeholder="Rootstock name"></input>
             <button onclick="addRootstock()">Add</button>
         </div>
          
-        <div id="deatailsRootstockPopup" style="visibility:hidden;">
-        </div>        
+        <div id="deatailsRootstockPopup" style="visibility:hidden;"></div>        
+
+        
 </div>
 
 <div id="selected-rootstock-id"></div>
@@ -330,8 +353,8 @@ function showhideaddPond() {
 
     <script>
         function go() {
-        
-        
+            showhideGoPopup();
+            //.innerHTML = pondName
         }
         function fetchKnotstocks(pondId) {
             if (!pondId) {
@@ -964,8 +987,23 @@ window.showPond = function (pondId, pondName) {
     addRootstockButton(); // ✅ call button setup separately
 };
 
+</script>
+<script>
+
+function showhideGoPopup() {
+    const popup = document.getElementById("goPopup");
+    if (popup.style.visibility === "hidden") {
+        popup.style.visibility = "visible";
+    } else {
+        popup.style.visibility = "hidden";
+    }
+}
+
+</script>
+<script>
+
 var showRootPopup = 0;
-function showhideRotPopup() {
+function showhideRootPopup() {
     var element = document.getElementById("addRootstockPopup");
 
     if (showRootPopup === 0) {
@@ -976,9 +1014,7 @@ function showhideRotPopup() {
     } else {
         //element.style.opacity = "0";
         element.style.transform = "rotateX(90deg)";
-        setTimeout(() => {
         element.style.visibility = "hidden";
-        }, 300); // Matches transition time
         showRootPopup = 0;
     }
     
@@ -1154,7 +1190,7 @@ function addFlower(event) {
                 fetchRootstocks(currentPondId);
                 document.getElementById("rootstock-name").value = "";
             });
-            showhideRotPopup();
+            showhideRootPopup();
         }
 
         function deleteMarked(rootstockId) {
