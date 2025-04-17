@@ -117,6 +117,7 @@
 </div>
 {{else:}}
 <script>
+var mode = "";
 var showhidevar = 0;
 function showhidePond() {
     var element = document.getElementById("chosenpond");
@@ -239,9 +240,18 @@ function showhideaddPond() {
         <h3>Rootstocks <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'A rootstock is a situation'; document.getElementById('explanation').style.display = 'block';"></button>
             
             for Pond "<span id="pondBox"></span>"</h3>
+        <div>Rootstock where Gnomy currently is:
+             "<span id="currentBox"></span>"</div>            
         <div id="d3-wrapper" style="position: relative;">
-            <div id="d3-rootstocks" style="width: 100%; height: 100%;"></div>
-            <div id="selected-node-container" style="position:fixed; width:100vw; left:50vw; margin: -4em 0 0 -50vw; text-align:center;z-index:60;"></div>
+            <div id="buttons" style="width:50px;">
+                <button onclick="mode='details';" style="width:25px;">&#8662;</button>
+                <button onclick="mode='current';" style="width:25px;">&#9711;</button>
+                <button onclick="mode='go';" style="width:25px;">&#9654;</button>
+            </div>
+
+            <div id="d3-rootstocks"></div>
+
+            <div id="selected-node-container" style="position:fixed; width:100vw; left:50vw; margin: 0em 0 -200px -50vw; text-align:center;z-index:60;"></div>
         </div>
         <!--div style="width:95vw;left:50vw; margin-left:45vw; position: absolute; background-color:#000000; height:3em; "-->
             <button id="rootstockAdd" onclick="showhideRotPopup();" style="margin: 1em 0 1em 0; border-radius:1em;left:50vw;margin-left:-5em;width:10em;position:absolute;">Add Rootstock</button><br>
@@ -319,6 +329,10 @@ function showhideaddPond() {
 </div>
 
     <script>
+        function go() {
+        
+        
+        }
         function fetchKnotstocks(pondId) {
             if (!pondId) {
                 console.error("Pond ID is missing.");
@@ -602,12 +616,22 @@ function addRootstockButton() {
     </script>
 
 <script>
-
-function markedRootstock(rootstockId, Rootstockaname) {
-    var element = document.getElementById("deatailsRootstockPopup");
-    element.innerHTML = `
+var currentRootstockNode = "";
+var currentRootstockName = "";
+function markedRootstock(rootstockId, rootstockname) {
+    if (mode === "current"){
+        var element = document.getElementById("currentBox");
+        currentRootstockName = rootstockname;
+        currentRootstockNode = rootstockId;
+        element.innerHTML = `${rootstockname}`;
+    }
+    if (mode === "details"){
+        var element = document.getElementById("deatailsRootstockPopup");
+        
+    
+        element.innerHTML = `
         <button onclick="markedPopup();" class="close-btn" style="margin:0 00.5em; background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:0 0 0 0;">&times;</button>
-        <h3>Rootstock Details:<br> ${Rootstockaname}</h3>
+        <h3>Rootstock Details:<br> ${rootstockname}</h3>
  
 <div id="tab-container">
     <section>
@@ -628,6 +652,7 @@ function markedRootstock(rootstockId, Rootstockaname) {
 
         `;
     markedPopup();
+    }   
 }
 
 var showMarkedPopup = 0;   
@@ -826,7 +851,18 @@ function fetchRootstocks(pondId) {
                 .attr("stroke-width", 2)
                 .style("cursor", "pointer")
                 .on("click", (event, d) => {
+                    // Clear all previous circles
+nodeGroups.selectAll("circle").remove();
 //
+// Add a white circle highlight *behind* the polygon if current === d.id
+nodeGroups.filter(d => d.id === currentRootstockNode)
+    .insert("circle", "polygon") // insert before polygon so it doesn't overlap the shape
+    .attr("r", 35)               // radius - adjust to fit around your polygon
+    .attr("cx", 25)              // center X (match polygon's approx. center)
+    .attr("cy", 30)              // center Y
+    .attr("fill", "none")
+    .attr("stroke", "white")
+    .attr("stroke-width", 3);
 
                     // Clear previous highlights
                     nodeGroups.selectAll("polygon").attr("stroke", "#118822");
@@ -838,14 +874,15 @@ function fetchRootstocks(pondId) {
                     selectedNodeId = d.id;
 
                     // Show the button
-                    const container = document.getElementById("selected-node-container");
-                    container.style.visibility = "visible";
+                    selectRootstock(d.id, d.name);
+                    /*const container = document.getElementById("selected-node-container");
+                    /_container.style.visibility = "visible";
                     container.innerHTML = `
                         <!--button style="padding: 6px 12px; font-size: 14px;" onclick="alert('Selected ID: ${d.id}, Name: ${d.name}')"-->
-                        <button style="border-radius:1em;z-index:60;position:relative;" onclick="selectRootstock('${d.id}', '${d.name}');">
+                    <!--button style="border-radius:1em;z-index:60;position:relative;" onclick="selectRootstock('${d.id}', '${d.name}');">
                             Selected: ${d.name} (ID: ${d.id})
-                        </button>
-                    `;
+                        </button-->
+                    `;*/
                 });
 
             nodeGroups.append("text")

@@ -203,30 +203,37 @@
 }
 
 #d3-wrapper {
-  left:50vw;
-  margin-left:-300px;
-  width:600px;
+  background-color: #444444;
+  left: 50vw;
+  margin-left: -300px;
+  width: 600px;
   height: 400px;
+  display: flex; /* Changed from block */
+  justify-content: flex-end; /* Align child to the right */
+  align-items: center;
+  overflow: hidden;
+  border-radius: 2em;
+  box-shadow: inset 1em 1em 1em 1em rgba(0, 0, 0, 0.5);
+  border: 3px double #B87333;
 }
 
 #d3-rootstocks {
-  box-shadow: inset 0 0 3em #0f3f53, inset 3em 3em 1em 1em rgba(255, 255, 255, 0.0525), inset 0em 3em 1em 1em rgba(255, 255, 255, 0.125), inset 0em -3em 1em 1em rgba(0, 0, 0, 0.0525);
+  box-shadow: inset 0 0 3em #0f3f53,
+              inset 3em 3em 1em 1em rgba(255, 255, 255, 0.0525),
+              inset 0em 3em 1em 1em rgba(255, 255, 255, 0.125),
+              inset 0em -3em 1em 1em rgba(0, 0, 0, 0.0525);
   position: relative;
   border: 3px double #B87333;
-  width: 600px;
+  width: 550px; /* Less wide than wrapper */
   height: 400px;
   background: linear-gradient(#a0d8ef, #74c1e3); /* Water-like gradient */
   border-radius: 2em;
-  display: block;
-  justify-content: center;
-  align-items: center;
+  margin-left: auto; /* Push it to the right */
   overflow: hidden;
-
-  
-backdrop-filter: blur( 1px );
--webkit-backdrop-filter: blur( 1px );
-
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
 }
+
 
 #d3-rootstocks::before {
 content: "";
@@ -679,7 +686,7 @@ p {
   1px -1px 1px #e6a96d,  /* Highlight above (lighter copper) */
  -1px  1px 2px #6a3d1b,  /* Shadow below (darker copper) */
   0px  0px 1px #d98a50;  /* Soft glow for depth */
-    background-color: #000000; padding:0;">
+    background-color: #000000; padding:0;  overflow:hidden;">
     <div class="w2p_flash alert alert-dismissable">{{=response.flash or ''}}</div>
     <!-- Navbar ======================================= -->
     <nav class="navbar navbar-light navbar-expand-md bg-faded bg-dark navbar-dark justify-content-center" style="width:auto;padding: 0 3vw 0 3vw; height:2em; ">
