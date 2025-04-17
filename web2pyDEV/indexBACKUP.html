@@ -273,9 +273,53 @@ function showhideaddPond() {
         <button id="rootstockAdd" onclick="showhideRotPopup();" style="margin: 1em 0 1em 0; border-radius:1em;left:50vw;margin-left:-5em;width:10em;position:absolute;">Add Rootstock</button><br>
         <!--/div-->
 
-        <div id="goPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em;">
+        <div id="goPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
             <button onclick="showhideGoPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
             <h3>Go</h3>
+            <div>List of group</div>
+
+            <form id="gnomy-transition-contract">
+
+                <!-- 🌱 Must Be Fields -->
+                <fieldset>
+            
+                  <label for="current-plant">Current Plant (Rootstock):</label>
+                  <input type="text" id="current-plant" name="current-plant"><br>
+              
+                  <label for="target-plant">Target Plant (Rootstock):</label>
+                  <input type="text" id="target-plant" name="target-plant"><br>
+              
+                  <label for="tendril-skill">Tendril (Skill Used):</label>
+                  <input type="text" id="tendril-skill" name="tendril-skill"><br>
+              
+                  <label for="shared-feelings">Shared Feelings/Beliefs (Flowers/Fruits):</label>
+                  <input type="text" id="shared-feelings" name="shared-feelings"><br>
+              
+                  <label for="autonomy-granted-by">Autonomy Granted By:</label>
+                  <input type="text" id="autonomy-granted-by" name="autonomy-granted-by"><br>
+              
+                  <legend>Recommended Information (Should Be)</legend>
+              
+                  <label for="autonomy-source">Autonomy Source Type:</label>
+                  <select id="autonomy-source" name="autonomy-source">
+                    <option value="internal">Internal (Self)</option>
+                    <option value="social">Social (Others)</option>
+                    <option value="systemic">Systemic (Rules/Context)</option>
+                  </select><br>
+              
+                  <label for="risks">Risks/Uncertainties:</label><br>
+                  <textarea id="risks" name="risks"></textarea><br>
+                  <label for="spell-or-tool">Spell or Tool Used:</label>
+                  <input type="text" id="spell-or-tool" name="spell-or-tool"><br>
+              
+                </fieldset>
+              
+                <button type="submit" id="submit-contract">Submit Contract</button>
+              </form>
+              
+
+            <div></div>
+            <div></div>
         </div>
 
         <div style="margin-top:3em; visibility:hidden;" id="rootstock-grid"></div>
