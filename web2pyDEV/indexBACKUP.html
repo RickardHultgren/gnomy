@@ -242,19 +242,22 @@ function showhideaddPond() {
             for Pond "<span id="pondBox"></span>"</h3>
         <div>Rootstock where Gnomy currently is:
              "<span id="currentBox"></span>"</div>            
-        <div id="d3-wrapper" style="position: relative;">
+             <div style="width:100vw;text-align: center; margin:1em 0 0.25em 0;">
+                <button id="b0" onclick="buttonclicked=0; bclicked(); groups();" style="width:25px; font-size:12px; align-items: center; width:auto;">GROUPS</button>
+                <button id="b4" onclick="buttonclicked=4; bclicked(); spells();" style="width:25px; font-size:12px; align-items: center; width:auto;">SPELLS</button>
+                <button id="b5" onclick="buttonclicked=5; bclicked(); leaves();" style="width:25px; font-size:12px; align-items: center; width:auto;">LEAVES</button>
+            </div>
+            <div id="d3-wrapper" style="position: relative;">
             <div id="buttons" style="width:50px;">
                 <script>
                     var buttonclicked = 0;
                     var mode = "";
                 </script>
 
-                <button id="b1" onclick="buttonclicked=1; bclicked(); mode='details';" style="width:25px; font-size:12px; align-items: center;">&#8662;</button>
-                <button id="b2" onclick="buttonclicked=2; bclicked(); mode='current';" style="width:25px; font-size:12px; align-items: center;">&#9711;</button>
-                <button id="b3" onclick="buttonclicked=3; bclicked(); go();" style="width:25px; font-size:12px; align-items: center;">&#9654;</button>
-
-                <button id="b4" onclick="buttonclicked=4; bclicked(); spells();" style="width:25px; font-size:12px; align-items: center;margin-top:2em;">/</button>
-                <button id="b5" onclick="buttonclicked=5; bclicked(); leaves();" style="width:25px; font-size:12px; align-items: center;">&#2619;</button>
+                <button id="b1" class="toolbutton" onclick="buttonclicked=1; bclicked(); mode='details';" style="width:50px; font-size:12px;  align-items: center; margin-top:2em;">i</button>
+                <button id="b2" class="toolbutton" onclick="buttonclicked=2; bclicked(); mode='current';" style="width:50px; font-size:12px;  align-items: center;">&#x273F;</button>
+                <button id="b3" class="toolbutton" onclick="buttonclicked=3; bclicked(); go();" style="width:50px; font-size:12px; align-items: center;">&#x1F5CE;</button>
+                <button id="rootstockAdd" class="toolbutton" onclick="showhideRootPopup();">+</button>
                 <script>
                     function bclicked() {
                         const element1 = document.getElementById("b1");
@@ -274,7 +277,7 @@ function showhideaddPond() {
             <div id="selected-node-container" style="position:fixed; width:100vw; left:50vw; margin: 0em 0 -200px -50vw; text-align:center;z-index:60;"></div>
         </div>
         <!--div style="width:95vw;left:50vw; margin-left:45vw; position: absolute; background-color:#000000; height:3em; "-->
-        <button id="rootstockAdd" onclick="showhideRotPopup();" style="margin: 1em 0 1em 0; border-radius:1em;left:50vw;margin-left:-5em;width:10em;position:absolute;">Add Rootstock</button><br>
+        <br>
         <!--/div-->
 
         <div id="goPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
@@ -304,20 +307,18 @@ function showhideaddPond() {
                   </select>
                   
               
-                  <label for="autonomy-granted-by">Autonomy Granted By:</label>
-                  <select id="tendril-select">
+                  <label for="group-select">Autonomy Granted By:</label>
+                  <select id="group-select">
                     <option value="">Select a group</option>
                   </select>
                   <div id="group-description"></div>
               
-                  <label for="autonomy-source">How should the contract and progress should be announced?</label>
-                  <input type="text" id="shared-feelings" name="shared-feelings"><br>
+                  <label for="reminder">How should the contract and progress should be announced?</label>
+                  <input type="text" id="reminder" name="reminder"><br>
                   
                   <label for="risks">Risks/Uncertainties:</label><br>
                   <textarea id="risks" name="risks"></textarea><br>
-                  <label for="spell-or-tool">Spell or Tool Used:</label>
-                  <input type="text" id="spell-or-tool" name="spell-or-tool"><br>
-              
+                  
                 </fieldset>
               
                 <button type="submit" id="submit-contract">Submit Contract</button>
@@ -331,7 +332,7 @@ function showhideaddPond() {
         <div style="margin-top:3em; visibility:hidden;" id="rootstock-grid"></div>
 
         <div id="addRootstockPopup" style="visibility:hidden;">
-            <button onclick="showhideRotPopup();" class="close-btn" style="margin:0 00.5em ;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
+            <button onclick="showhideRootPopup();" class="close-btn" style="margin:0 00.5em ;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
             <h3>Add Rootstock</h3>
             <input type="text" id="rootstock-name" placeholder="Rootstock name"></input>
             <button onclick="addRootstock()">Add</button>
