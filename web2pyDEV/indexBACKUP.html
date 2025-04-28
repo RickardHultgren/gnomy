@@ -254,19 +254,21 @@ function showhideaddPond() {
                     var mode = "";
                 </script>
 
-                <button id="b1" class="toolbutton" onclick="buttonclicked=1; bclicked(); mode='details';" style="width:50px; font-size:12px;  align-items: center; margin-top:2em;">i</button>
-                <button id="b2" class="toolbutton" onclick="buttonclicked=2; bclicked(); mode='current';" style="width:50px; font-size:12px;  align-items: center;">&#x273F;</button>
-                <button id="b3" class="toolbutton" onclick="buttonclicked=3; bclicked(); go();" style="width:50px; font-size:12px; align-items: center;">&#x1F5CE;</button>
-                <button id="rootstockAdd" class="toolbutton" onclick="showhideRootPopup();">+</button>
+                <button id="b1" class="toolbutton" onclick="buttonclicked=1; bclicked(); mode='details';" style="font-size:25px; width:50px; height:50px;   align-items: center; margin-top:2em; color: rgba(255, 255, 255, 0.7)">i</button>
+                <button id="b2" class="toolbutton" onclick="buttonclicked=2; bclicked(); mode='current';" style="font-size:25px; width:50px; height:50px;   align-items: center; color: rgba(255, 255, 255, 0.7)">&#x273F;</button>
+                <button id="b3" class="toolbutton" onclick="/*buttonclicked=3; bclicked();*/ go();" style="font-size:25px; width:50px; height:50px; font-size:12px; align-items: center; color: rgba(255, 255, 255, 0.7)">&#x1F5CE;</button>
+                <button id="rootstockAdd" class="toolbutton" onclick="showhideRootPopup();" style="font-size:25px; height:50px;width:50px;  color: rgba(255, 255, 255, 0.7)">+</button>
                 <script>
                     function bclicked() {
                         const element1 = document.getElementById("b1");
                         const element2 = document.getElementById("b2");
-                        const element3 = document.getElementById("b3");
+                        //const element3 = document.getElementById("b3");
             
-                        element1.style.color = "rgba(255, 150, 0, " + (buttonclicked === 1 ? "0.7" : "0") + ")";
-                        element2.style.color = "rgba(255, 150, 0, " + (buttonclicked === 2 ? "0.7" : "0") + ")";
-                        element3.style.color = "rgba(255, 150, 0, " + (buttonclicked === 3 ? "0.7" : "0") + ")";
+                        element1.style.color = "rgba(255, 255, 255, " + (buttonclicked === 1 ? "1" : "0.7") + ")";
+                        element1.style.fontSize = (buttonclicked === 1 ? "45px" : "25px");
+                        element2.style.color = "rgba(255, 255, 255, " + (buttonclicked === 2 ? "1" : "0.7") + ")";
+                        element2.style.fontSize = (buttonclicked === 2 ? "45px" : "25px");
+                        //element3.style.color = "rgba(255, 255, 255, " + (buttonclicked === 3 ? "1" : "0.7") + ")";
                     }
                 </script>
             </div>
