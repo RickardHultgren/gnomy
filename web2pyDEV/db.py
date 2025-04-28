@@ -248,14 +248,34 @@ db.define_table('pond_list',
     Field('pond'),                
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
-               
                )
 
+db.define_table('gnome_group',
+    Field('name'),
+    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+               )
 
+db.define_table('gnome',
+    Field('name'),
+    Field('gnome_group', 'reference gnome_group'),            
+    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+               )
 
+db.define_table('spell',
+    Field('name'),
+    Field('category'),
+    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+               )
 
-
-
+db.define_table('leaf',
+    Field('name'),
+    Field('category'),
+    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+               )
 
 
 

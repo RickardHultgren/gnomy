@@ -254,7 +254,7 @@ function showhideaddPond() {
                     var mode = "";
                 </script>
 
-                <button id="b1" class="toolbutton" onclick="buttonclicked=1; bclicked(); mode='details';" style="font-size:25px; width:50px; height:50px;   align-items: center; margin-top:2em; color: rgba(255, 255, 255, 0.7)">i</button>
+                <button id="b1" class="toolbutton" onclick="buttonclicked=1; bclicked(); mode='details';" style="font-size:25px; width:50px; height:50px;   align-items: center; color: rgba(255, 255, 255, 0.7)">i</button>
                 <button id="b2" class="toolbutton" onclick="buttonclicked=2; bclicked(); mode='current';" style="font-size:25px; width:50px; height:50px;   align-items: center; color: rgba(255, 255, 255, 0.7)">&#x273F;</button>
                 <button id="b3" class="toolbutton" onclick="/*buttonclicked=3; bclicked();*/ go();" style="font-size:25px; width:50px; height:50px; font-size:12px; align-items: center; color: rgba(255, 255, 255, 0.7)">&#x1F5CE;</button>
                 <button id="rootstockAdd" class="toolbutton" onclick="showhideRootPopup();" style="font-size:25px; height:50px;width:50px;  color: rgba(255, 255, 255, 0.7)">+</button>
@@ -331,6 +331,154 @@ function showhideaddPond() {
             <div></div>
         </div>
 
+        <div id="groupPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
+            <button onclick="showhideGroupPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
+            <h3>Groups</h3>
+            <div>List of group</div>
+
+            <form id="gnomy-transition-contract">
+
+                <!-- 🌱 Must Be Fields -->
+                <fieldset>
+            
+                  <!--label for="current-plant">Current Plant (Rootstock):</label>
+                  <input type="text" id="current-plant" name="current-plant"-->
+                  <label id="TransactionRootstock"></label>
+                  <br>
+              
+                  <label for="tendril-select">Tendril (competence):</label>
+                  <select id="tendril-select">
+                          <option value="">Select a Tendril</option>
+                  </select>
+                  <div id="tendril-description"></div>
+
+                  <label for="flower-select">Shared Feelings/Beliefs (powder/flowers):</label>
+                  <select id="flower-select">
+                    <option value="">Select a group</option>
+                  </select>
+                  
+              
+                  <label for="group-select">Autonomy Granted By:</label>
+                  <select id="group-select">
+                    <option value="">Select a group</option>
+                  </select>
+                  <div id="group-description"></div>
+              
+                  <label for="reminder">How should the contract and progress should be announced?</label>
+                  <input type="text" id="reminder" name="reminder"><br>
+                  
+                  <label for="risks">Risks/Uncertainties:</label><br>
+                  <textarea id="risks" name="risks"></textarea><br>
+                  
+                </fieldset>
+              
+                <button type="submit" id="submit-contract">Submit Contract</button>
+              </form>
+              
+
+            <div></div>
+            <div></div>
+        </div>
+
+        <div id="spellPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
+            <button onclick="showhideSpellPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
+            <h3>Spells</h3>
+            <div>List of group</div>
+
+            <form id="gnomy-transition-contract">
+
+                <!-- 🌱 Must Be Fields -->
+                <fieldset>
+            
+                  <!--label for="current-plant">Current Plant (Rootstock):</label>
+                  <input type="text" id="current-plant" name="current-plant"-->
+                  <label id="TransactionRootstock"></label>
+                  <br>
+              
+                  <label for="tendril-select">Tendril (competence):</label>
+                  <select id="tendril-select">
+                          <option value="">Select a Tendril</option>
+                  </select>
+                  <div id="tendril-description"></div>
+
+                  <label for="flower-select">Shared Feelings/Beliefs (powder/flowers):</label>
+                  <select id="flower-select">
+                    <option value="">Select a group</option>
+                  </select>
+                  
+              
+                  <label for="group-select">Autonomy Granted By:</label>
+                  <select id="group-select">
+                    <option value="">Select a group</option>
+                  </select>
+                  <div id="group-description"></div>
+              
+                  <label for="reminder">How should the contract and progress should be announced?</label>
+                  <input type="text" id="reminder" name="reminder"><br>
+                  
+                  <label for="risks">Risks/Uncertainties:</label><br>
+                  <textarea id="risks" name="risks"></textarea><br>
+                  
+                </fieldset>
+              
+                <button type="submit" id="submit-contract">Submit Contract</button>
+              </form>
+              
+
+            <div></div>
+            <div></div>
+        </div>
+
+        <div id="leafPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
+            <button onclick="showhideLeafPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
+            <h3>Leaves</h3>
+            <div>List of group</div>
+
+            <form id="gnomy-transition-contract">
+
+                <!-- 🌱 Must Be Fields -->
+                <fieldset>
+            
+                  <!--label for="current-plant">Current Plant (Rootstock):</label>
+                  <input type="text" id="current-plant" name="current-plant"-->
+                  <label id="TransactionRootstock"></label>
+                  <br>
+              
+                  <label for="tendril-select">Tendril (competence):</label>
+                  <select id="tendril-select">
+                          <option value="">Select a Tendril</option>
+                  </select>
+                  <div id="tendril-description"></div>
+
+                  <label for="flower-select">Shared Feelings/Beliefs (powder/flowers):</label>
+                  <select id="flower-select">
+                    <option value="">Select a group</option>
+                  </select>
+                  
+              
+                  <label for="group-select">Autonomy Granted By:</label>
+                  <select id="group-select">
+                    <option value="">Select a group</option>
+                  </select>
+                  <div id="group-description"></div>
+              
+                  <label for="reminder">How should the contract and progress should be announced?</label>
+                  <input type="text" id="reminder" name="reminder"><br>
+                  
+                  <label for="risks">Risks/Uncertainties:</label><br>
+                  <textarea id="risks" name="risks"></textarea><br>
+                  
+                </fieldset>
+              
+                <button type="submit" id="submit-contract">Submit Contract</button>
+              </form>
+              
+
+            <div></div>
+            <div></div>
+        </div>
+
+
         <div style="margin-top:3em; visibility:hidden;" id="rootstock-grid"></div>
 
         <div id="addRootstockPopup" style="visibility:hidden;">
@@ -405,10 +553,24 @@ function showhideaddPond() {
 </div>
 
     <script>
+        function groups() {
+            showhideGroupPopup();
+            //.innerHTML = pondName
+        }
+        function spells() {
+            showhideSpellPopup();
+            //.innerHTML = pondName
+        }
+        function leaves() {
+            showhideLeafPopup();
+            //.innerHTML = pondName
+        }
         function go() {
             showhideGoPopup();
             //.innerHTML = pondName
         }
+
+
         function fetchKnotstocks(pondId) {
             if (!pondId) {
                 console.error("Pond ID is missing.");
@@ -1048,6 +1210,33 @@ window.showPond = function (pondId, pondName) {
 
 function showhideGoPopup() {
     const popup = document.getElementById("goPopup");
+    if (popup.style.visibility === "hidden") {
+        popup.style.visibility = "visible";
+    } else {
+        popup.style.visibility = "hidden";
+    }
+}
+
+function showhideLeafPopup() {
+    const popup = document.getElementById("leafPopup");
+    if (popup.style.visibility === "hidden") {
+        popup.style.visibility = "visible";
+    } else {
+        popup.style.visibility = "hidden";
+    }
+}
+
+function showhideSpellPopup() {
+    const popup = document.getElementById("spellPopup");
+    if (popup.style.visibility === "hidden") {
+        popup.style.visibility = "visible";
+    } else {
+        popup.style.visibility = "hidden";
+    }
+}
+
+function showhideGroupPopup() {
+    const popup = document.getElementById("groupPopup");
     if (popup.style.visibility === "hidden") {
         popup.style.visibility = "visible";
     } else {
