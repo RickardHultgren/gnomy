@@ -252,12 +252,15 @@ db.define_table('pond_list',
 
 db.define_table('team',
     Field('name'),
+    Field('category'),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
                )
 
 db.define_table('gnome',
     Field('name'),
+    Field('category'),
+    Field('information'),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
                )
