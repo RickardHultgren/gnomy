@@ -402,7 +402,7 @@ function showhideaddPond() {
 <div id="rootstock-details">
         
     <div id="selected-rootstock-id"></div>
-    <div id="rootstock-detailsF">
+    <div id="rootstock-detailsFlowerz">
         <div id="flowerz">
             <h3>Flowers</h3>
             <form id="add-flower-form" onsubmit="addFlower(event)">
@@ -412,7 +412,7 @@ function showhideaddPond() {
                 <label for="flower-fruit">Fruit:</label>
                 <input type="text" id="flower-fruit">
             
-                <label for="flower-suffuse">color:</label>
+                <label for="flower-root">color:</label>
                 <input type="text" id="flower-color">
             
                 <button type="submit">Add flower</button>
@@ -426,22 +426,47 @@ function showhideaddPond() {
             
         </div>  
     </div>
-    <div id="rootstock-detailsT">
+
+    <div id="rootstock-detailsTeamz">
+        <div id="teamz">
+            <h3>Teams</h3>
+            <form id="add-team-form" onsubmit="addteam(event)">
+                <label for="team-name">Name:</label>
+                <input type="text" id="team-name" required>
+
+                <label for="team-fruit">Fruit:</label>
+                <input type="text" id="team-fruit">
+            
+                <label for="team-root">color:</label>
+                <input type="text" id="team-color">
+            
+                <button type="submit">Add team</button>
+            </form>
+            <p id="selected-team">No team selected</p>        
+            
+            <div id="team-grid">
+                <p>Loading...</p>
+            </div>
+
+            
+        </div>  
+    </div>
+    <div id="rootstock-detailsTendrilz">
         <div id="tendrilz">
             <h3>Tendrils</h3>
             <form id="add-tendril-form" onsubmit="addTendril(event)">
                 <label for="tendril-name">Name:</label>
                 <input type="text" id="tendril-name" required>
                 
-                <label for="rootstock-select">Knotstock:</label>
+                <label for="rootstock-select">Oprions for the next rootstock:</label>
                 <select id="knotstock-select">
-                        <option value="">Select a Knotstock</option>
+                        <option value="">Select a Rootstock (desired situation)</option>
                 </select>
-                <label for="tendril-carry">Carry:</label>
-                <input type="text" id="tendril-carry">
+                <label for="tendril-boat">Boat (competence/resources):</label>
+                <input type="text" id="tendril-boat">
                 
-                <label for="tendril-suffuse">Suffuse:</label>
-                <input type="text" id="tendril-suffuse">
+                <label for="tendril-root">Roots (risk):</label>
+                <input type="text" id="tendril-root">
                 
                 <button type="submit">Add Tendril</button>
             </form>
@@ -601,6 +626,8 @@ function updateTabs() {
     } else if (index === 1) {
         label = "Flowers";
     } else if (index === 2) {
+        label = "Teams";
+    } else if (index === 3) {
         label = "Tendrils";
     }
 
@@ -739,8 +766,8 @@ function addRootstockButton() {
     
                         tendrilCard.innerHTML = `
                             <h3>${tendril.name}</h3>
-                            <p><strong>Carry:</strong> ${tendril.carry ? tendril.carry : "N/A"}</p>
-                            <p><strong>Suffuse:</strong> ${tendril.suffuse ? tendril.suffuse : "N/A"}</p>
+                            <p><strong>boat:</strong> ${tendril.boat ? tendril.boat : "N/A"}</p>
+                            <p><strong>root:</strong> ${tendril.root ? tendril.root : "N/A"}</p>
                             <button onclick="selectTendril(${tendril.id}, '${tendril.name}')">
                                 Select
                             </button>
@@ -791,6 +818,10 @@ function markedRootstock(rootstockId, rootstockname) {
 
 
     </section>
+    <section id="teamzz">
+
+
+    </section>
     <section id="tendrilzz">
         
      
@@ -811,27 +842,33 @@ function markedPopup(){
   
     //const tendrilzz = document.getElementById("tendrilzz");
     const tendrilz = document.getElementById("tendrilz");
+
+    const teamz = document.getElementById("teamz");
   
     var element = document.getElementById("deatailsRootstockPopup");
-    var element1F = document.getElementById("rootstock-detailsF");
-    var element1T = document.getElementById("rootstock-detailsT");
-    var element2F = document.getElementById("flowerzz");
-    var element2T = document.getElementById("tendrilzz");
+    var element1Flowerz = document.getElementById("rootstock-detailsFlowerz");
+    var element1Teamz = document.getElementById("rootstock-detailsTeamz");
+    var element1Tendrilz = document.getElementById("rootstock-detailsTendrilz");
+    var element2Flowerz = document.getElementById("flowerzz");
+    var element2Teamz = document.getElementById("teamzz");
+    var element2Tendrilz = document.getElementById("tendrilzz");
   
 
     if (showMarkedPopup === 0) {
         //element.style.opacity = "1";
         element.style.transform = "rotateX(0deg)";
         element.style.visibility = "visible";
-        element2F.replaceChildren(flowerz);    
-        element2T.replaceChildren(tendrilz);    
+        element2Flowerz.replaceChildren(flowerz);    
+        element2Teamz.replaceChildren(teamz);    
+        element2Tendrilz.replaceChildren(tendrilz);    
           showMarkedPopup = 1;
     } else {
         //element.style.opacity = "0";
         element.style.transform = "rotateX(90deg)";
         element.style.visibility = "hidden";
-        element1F.replaceChildren(tendrilz);
-        element1T.replaceChildren(flowerz);
+        element1Flowerz.replaceChildren(tendrilz);
+        element1Teamz.replaceChildren(teamz);
+        element1Tendrilz.replaceChildren(flowerz);
         showMarkedPopup = 0;
     }
     
@@ -846,8 +883,8 @@ function markedPopup(){
         element.style.visibility = "visible";
         flowerz.style.visibility = "visible";
         tendrilz.style.visibility = "visible";        
-        element2F.replaceChildren(flowerz);    
-        element2T.replaceChildren(tendrilz);    
+        element2Flowerz.replaceChildren(flowerz);    
+        element2Tendrilz.replaceChildren(tendrilz);    
         showMarkedPopup = 1;
     } else {
         //element.style.opacity = "0";
@@ -899,8 +936,8 @@ function fetchRootstocks(pondId) {
                 "knotstock_id": t.knotstock,
                 "id": t.id,
                 "name": t.name,
-                "carry": t.get("carry"),
-                "suffuse": t.get("suffuse")
+                "boat": t.get("boat"),
+                "root": t.get("root")
             } for t in tendrils
             */
             console.log("Flowers:", data.multipleFlowers);
@@ -911,7 +948,7 @@ function fetchRootstocks(pondId) {
 
             const tendrilContainer = document.getElementById("tendril-grid");
             tendrilContainer.innerHTML = data.multipleTendrils.map(t =>
-                `<div>🌱 <strong>${t.name}</strong> (Carry: ${t.carry ?? "–"}, Suffuse: ${t.suffuse ?? "–"})</div>`
+                `<div>🌱 <strong>${t.name}</strong> (boat: ${t.boat ?? "–"}, root: ${t.root ?? "–"})</div>`
             ).join("");
 
             let flowerContainer = document.getElementById("flower-grid");
@@ -1302,8 +1339,8 @@ function addFlower(event) {
             let knotstockId = document.getElementById("knotstock-select").value;
             //alert(knotstockId);
             let tendrilName = document.getElementById("tendril-name").value;
-            let tendrilCarry = document.getElementById("tendril-carry").value;
-            let tendrilSuffuse = document.getElementById("tendril-suffuse").value;
+            let tendrilboat = document.getElementById("tendril-boat").value;
+            let tendrilroot = document.getElementById("tendril-root").value;
 
             /*if (!rootstockId) {
                 console.error("Rootstock ID is missing. Cannot add tendril.");
@@ -1318,8 +1355,8 @@ function addFlower(event) {
                     //rootstock_id: rootstockidJS,
                     knotstock_id: knotstockId,
                     tendril_name: tendrilName,
-                    tendril_carry: tendrilCarry,
-                    tendril_suffuse: tendrilSuffuse
+                    tendril_boat: tendrilboat,
+                    tendril_root: tendrilroot
                 })
             })
             .then(response => response.json())

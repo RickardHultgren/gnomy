@@ -70,8 +70,8 @@ def get_rootstocks():
                 "knotstock_id": t.knotstock,
                 "id": t.id,
                 "name": t.name,
-                "carry": t.get("carry"),
-                "suffuse": t.get("suffuse")
+                "boat": t.get("boat"),
+                "root": t.get("root")
             } for t in tendrils
         ])
 
@@ -165,8 +165,8 @@ def get_tendrils():
                 #"rootstock_id": rootstock_id,
                 "id": t.id,
                 "name": t.name,
-                "carry": t.carry if "carry" in t else None,
-                "suffuse": t.suffuse if "suffuse" in t else None
+                "boat": t.boat if "boat" in t else None,
+                "root": t.root if "root" in t else None
             } for t in tendrils
         ]
     })
@@ -176,8 +176,8 @@ def add_tendril():
     rootstock_id = session.rootstock_id
     knotstock_id = eval(request.post_vars.knotstock_id)
     tendril_name = request.post_vars.tendril_name
-    tendril_carry = request.post_vars.tendril_carry
-    tendril_suffuse = request.post_vars.tendril_suffuse
+    tendril_boat = request.post_vars.tendril_boat
+    tendril_root = request.post_vars.tendril_root
 
     if not rootstock_id or not tendril_name:
         return response.json({"status": "error", "error": "Missing required fields (rootstock_id)"})
@@ -196,8 +196,8 @@ def add_tendril():
         rootstock=rootstock_id,
         knotstock=knotstock_id if knotstock_id else None,  # Allow nullable values
         name=tendril_name,
-        carry=tendril_carry,
-        suffuse=tendril_suffuse,
+        boat=tendril_boat,
+        root=tendril_root,
         created_by=auth.user_id
     )
 
