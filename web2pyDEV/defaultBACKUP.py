@@ -6,9 +6,33 @@ def index():
 
     pond_form = SQLFORM(db.pond, _id="pondform").process()  # Add _id attribute
     ponds = db(db.pond.created_by == auth.user_id).select()
+    team_form = SQLFORM(db.team, _id="teamform").process()  # Add _id attribute
+    teams = db(db.team.created_by == auth.user_id).select()
+    leaf_form = SQLFORM(db.team, _id="leafform").process()  # Add _id attribute
+    leaves = db(db.team.created_by == auth.user_id).select()
+    flask_form = SQLFORM(db.flask, _id="flaskform").process()  # Add _id attribute
+    flasks = db(db.flask.created_by == auth.user_id).select()
+    #How to manage spells?
+    spell_form = SQLFORM(db.pond, _id="pondform").process()  # Add _id attribute
+    spells = db(db.pond.created_by == auth.user_id).select()            
     session.pond_id = None
     session.rootstock_id = None
-    return dict(pond_form=pond_form, ponds=ponds)
+    return dict(
+        pond_form=pond_form,
+        ponds=ponds,
+        
+        team_form=team_form,
+        teams=teams,
+
+        spell_form=spell_form,
+        spells=spells,
+
+        leaf_form=leaf_form,
+        leaves=leaves,
+
+        flask_form=flask_form,
+        flasks=flasks
+        )
 
 @auth.requires_login()  # or remove if public access is okay
 def set_rootstockid():
@@ -56,7 +80,7 @@ def get_rootstocks():
                 "rootstock_id": rootstock.id,
                 "id": f.id,
                 "name": f.name,
-                "fragrance": f.get("fragrance"),
+                "color": f.get("color"),
                 "fruit": f.get("fruit")
             } for f in flowers
         ])
@@ -150,7 +174,7 @@ def get_tendrils():
 
 def add_tendril():
     rootstock_id = session.rootstock_id
-    knotstock_id = request.post_vars.knotstock_id
+    knotstock_id = eval(request.post_vars.knotstock_id)
     tendril_name = request.post_vars.tendril_name
     tendril_carry = request.post_vars.tendril_carry
     tendril_suffuse = request.post_vars.tendril_suffuse
@@ -195,7 +219,7 @@ def get_flowers():
                 "id": t.id,
                 "name": t.name,
                 "fruit": t.fruit if "fruit" in t else None,
-                "fragrance": t.fragrance if "fragrance" in t else None
+                "color": t.color if "color" in t else None
             } for t in flowers
         ]
     })
@@ -209,7 +233,7 @@ def add_flower():
 
     flower_name = request.post_vars.flower_name
     flower_fruit = request.post_vars.flower_fruit
-    flower_fragrance = request.post_vars.flower_fragrance
+    flower_color = request.post_vars.flower_color
 
     if not flower_name:
         return response.json({"status": "error", "error": "Flower name is required"})
@@ -228,7 +252,7 @@ def add_flower():
         rootstock=rootstock_id,
         name=flower_name,
         fruit=flower_fruit,
-        fragrance=flower_fragrance,
+        color=flower_color,
         created_by=auth.user_id
     )
 
@@ -252,7 +276,7 @@ def api_get_user_email():
     return response.json({'status':'success', 'email':auth.user.email})
 
 # ---- Smart Grid (example) -----
-@auth.requires_membership('admin') # can only be accessed by members of admin groupd
+@auth.requires_membership('admin') # can only be accessed by members of admin teamd
 def grid():
     response.view = 'generic.html' # use a generic view
     tablename = request.args(0)
@@ -277,7 +301,7 @@ def user():
     http://..../[app]/default/user/change_password
     http://..../[app]/default/user/bulk_register
     use @auth.requires_login()
-        @auth.requires_membership('group name')
+        @auth.requires_membership('team name')
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
     also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users

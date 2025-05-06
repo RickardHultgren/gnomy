@@ -243,9 +243,10 @@ function showhideaddPond() {
         <div>Rootstock where Gnomy currently is:
              "<span id="currentBox"></span>"</div>            
              <div style="width:100vw;text-align: center; margin:1em 0 0.25em 0;">
-                <button id="b0" onclick="buttonclicked=0; bclicked(); groups();" style="width:25px; font-size:12px; align-items: center; width:auto;">GROUPS</button>
-                <button id="b4" onclick="buttonclicked=4; bclicked(); spells();" style="width:25px; font-size:12px; align-items: center; width:auto;">SPELLS</button>
-                <button id="b5" onclick="buttonclicked=5; bclicked(); leaves();" style="width:25px; font-size:12px; align-items: center; width:auto;">LEAVES</button>
+                <button id="b10" onclick="buttonclicked=0; flasks();" style="width:25px; font-size:12px; align-items: center; width:auto;">FLASKS</button>
+                <button id="b0" onclick="buttonclicked=0; teams();" style="width:25px; font-size:12px; align-items: center; width:auto;">TEAMS</button>
+                <button id="b5" onclick="buttonclicked=5; leaves();" style="width:25px; font-size:12px; align-items: center; width:auto;">LEAVES</button>
+                <button id="b4" onclick="buttonclicked=4; spells();" style="width:25px; font-size:12px; align-items: center; width:auto;margin-left:3em;">SPELLS</button>
             </div>
             <div id="d3-wrapper" style="position: relative;">
             <div id="buttons" style="width:50px;">
@@ -256,7 +257,7 @@ function showhideaddPond() {
 
                 <button id="b1" class="toolbutton" onclick="buttonclicked=1; bclicked(); mode='details';" style="font-size:25px; width:50px; height:50px;   align-items: center; color: rgba(255, 255, 255, 0.7)">i</button>
                 <button id="b2" class="toolbutton" onclick="buttonclicked=2; bclicked(); mode='current';" style="font-size:25px; width:50px; height:50px;   align-items: center; color: rgba(255, 255, 255, 0.7)">&#x273F;</button>
-                <button id="b3" class="toolbutton" onclick="/*buttonclicked=3; bclicked();*/ go();" style="font-size:25px; width:50px; height:50px; font-size:12px; align-items: center; color: rgba(255, 255, 255, 0.7)">&#x1F5CE;</button>
+                <!--button id="b3" class="toolbutton" onclick="/*buttonclicked=3; bclicked();*/ go();" style="font-size:25px; width:50px; height:50px; font-size:12px; align-items: center; color: rgba(255, 255, 255, 0.7)">&#x1F5CE;</button-->
                 <button id="rootstockAdd" class="toolbutton" onclick="showhideRootPopup();" style="font-size:25px; height:50px;width:50px;  color: rgba(255, 255, 255, 0.7)">+</button>
                 <script>
                     function bclicked() {
@@ -285,7 +286,7 @@ function showhideaddPond() {
         <div id="goPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
             <button onclick="showhideGoPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
             <h3>Go</h3>
-            <div>List of group</div>
+            <div>List of team</div>
 
             <form id="gnomy-transition-contract">
 
@@ -305,15 +306,15 @@ function showhideaddPond() {
 
                   <label for="flower-select">Shared Feelings/Beliefs (powder/flowers):</label>
                   <select id="flower-select">
-                    <option value="">Select a group</option>
+                    <option value="">Select a team</option>
                   </select>
                   
               
-                  <label for="group-select">Autonomy Granted By:</label>
-                  <select id="group-select">
-                    <option value="">Select a group</option>
+                  <label for="team-select">Autonomy Granted By:</label>
+                  <select id="team-select">
+                    <option value="">Select a team</option>
                   </select>
-                  <div id="group-description"></div>
+                  <div id="team-description"></div>
               
                   <label for="reminder">How should the contract and progress should be announced?</label>
                   <input type="text" id="reminder" name="reminder"><br>
@@ -331,49 +332,24 @@ function showhideaddPond() {
             <div></div>
         </div>
 
-        <div id="groupPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
-            <button onclick="showhideGroupPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
-            <h3>Groups</h3>
-            <div>List of group</div>
+        <div id="flaskPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
+            <button onclick="showhideFlaskPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
+            <h3>Flasks</h3>
 
-            <form id="gnomy-transition-contract">
+                  {{=flask_form}}
+                  {{=flasks}}
+              
 
-                <!-- 🌱 Must Be Fields -->
-                <fieldset>
-            
-                  <!--label for="current-plant">Current Plant (Rootstock):</label>
-                  <input type="text" id="current-plant" name="current-plant"-->
-                  <label id="TransactionRootstock"></label>
-                  <br>
-              
-                  <label for="tendril-select">Tendril (competence):</label>
-                  <select id="tendril-select">
-                          <option value="">Select a Tendril</option>
-                  </select>
-                  <div id="tendril-description"></div>
+            <div></div>
+            <div></div>
+        </div>
 
-                  <label for="flower-select">Shared Feelings/Beliefs (powder/flowers):</label>
-                  <select id="flower-select">
-                    <option value="">Select a group</option>
-                  </select>
-                  
-              
-                  <label for="group-select">Autonomy Granted By:</label>
-                  <select id="group-select">
-                    <option value="">Select a group</option>
-                  </select>
-                  <div id="group-description"></div>
-              
-                  <label for="reminder">How should the contract and progress should be announced?</label>
-                  <input type="text" id="reminder" name="reminder"><br>
-                  
-                  <label for="risks">Risks/Uncertainties:</label><br>
-                  <textarea id="risks" name="risks"></textarea><br>
-                  
-                </fieldset>
-              
-                <button type="submit" id="submit-contract">Submit Contract</button>
-              </form>
+        <div id="teamPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
+            <button onclick="showhideTeamPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
+            <h3>Teams</h3>
+
+                  {{=team_form}}
+                  {{=teams}}
               
 
             <div></div>
@@ -383,46 +359,9 @@ function showhideaddPond() {
         <div id="spellPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
             <button onclick="showhideSpellPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
             <h3>Spells</h3>
-            <div>List of group</div>
+            {{=spell_form}}
+            {{=spells}}              
 
-            <form id="gnomy-transition-contract">
-
-                <!-- 🌱 Must Be Fields -->
-                <fieldset>
-            
-                  <!--label for="current-plant">Current Plant (Rootstock):</label>
-                  <input type="text" id="current-plant" name="current-plant"-->
-                  <label id="TransactionRootstock"></label>
-                  <br>
-              
-                  <label for="tendril-select">Tendril (competence):</label>
-                  <select id="tendril-select">
-                          <option value="">Select a Tendril</option>
-                  </select>
-                  <div id="tendril-description"></div>
-
-                  <label for="flower-select">Shared Feelings/Beliefs (powder/flowers):</label>
-                  <select id="flower-select">
-                    <option value="">Select a group</option>
-                  </select>
-                  
-              
-                  <label for="group-select">Autonomy Granted By:</label>
-                  <select id="group-select">
-                    <option value="">Select a group</option>
-                  </select>
-                  <div id="group-description"></div>
-              
-                  <label for="reminder">How should the contract and progress should be announced?</label>
-                  <input type="text" id="reminder" name="reminder"><br>
-                  
-                  <label for="risks">Risks/Uncertainties:</label><br>
-                  <textarea id="risks" name="risks"></textarea><br>
-                  
-                </fieldset>
-              
-                <button type="submit" id="submit-contract">Submit Contract</button>
-              </form>
               
 
             <div></div>
@@ -432,46 +371,9 @@ function showhideaddPond() {
         <div id="leafPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
             <button onclick="showhideLeafPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
             <h3>Leaves</h3>
-            <div>List of group</div>
-
-            <form id="gnomy-transition-contract">
-
-                <!-- 🌱 Must Be Fields -->
-                <fieldset>
-            
-                  <!--label for="current-plant">Current Plant (Rootstock):</label>
-                  <input type="text" id="current-plant" name="current-plant"-->
-                  <label id="TransactionRootstock"></label>
-                  <br>
-              
-                  <label for="tendril-select">Tendril (competence):</label>
-                  <select id="tendril-select">
-                          <option value="">Select a Tendril</option>
-                  </select>
-                  <div id="tendril-description"></div>
-
-                  <label for="flower-select">Shared Feelings/Beliefs (powder/flowers):</label>
-                  <select id="flower-select">
-                    <option value="">Select a group</option>
-                  </select>
-                  
-              
-                  <label for="group-select">Autonomy Granted By:</label>
-                  <select id="group-select">
-                    <option value="">Select a group</option>
-                  </select>
-                  <div id="group-description"></div>
-              
-                  <label for="reminder">How should the contract and progress should be announced?</label>
-                  <input type="text" id="reminder" name="reminder"><br>
-                  
-                  <label for="risks">Risks/Uncertainties:</label><br>
-                  <textarea id="risks" name="risks"></textarea><br>
-                  
-                </fieldset>
-              
-                <button type="submit" id="submit-contract">Submit Contract</button>
-              </form>
+            <div>List of team</div>
+            {{#=leaf_form}}
+            {{#=leaves}}     
               
 
             <div></div>
@@ -510,8 +412,8 @@ function showhideaddPond() {
                 <label for="flower-fruit">Fruit:</label>
                 <input type="text" id="flower-fruit">
             
-                <label for="flower-suffuse">Fragrance:</label>
-                <input type="text" id="flower-fragrance">
+                <label for="flower-suffuse">color:</label>
+                <input type="text" id="flower-color">
             
                 <button type="submit">Add flower</button>
             </form>
@@ -553,10 +455,14 @@ function showhideaddPond() {
 </div>
 
     <script>
-        function groups() {
-            showhideGroupPopup();
+        function teams() {
+            showhideTeamPopup();
             //.innerHTML = pondName
         }
+        function flasks() {
+            showhideFlaskPopup();
+            //.innerHTML = pondName
+        }        
         function spells() {
             showhideSpellPopup();
             //.innerHTML = pondName
@@ -784,7 +690,7 @@ function addRootstockButton() {
                         flowerCard.innerHTML = `
                             <h3>${flower.name}</h3>
                             <p><strong>Fruit:</strong> ${flower.fruit ? flower.fruit : "N/A"}</p>
-                            <p><strong>Fragrance:</strong> ${flower.fragrance ? flower.fragrance : "N/A"}</p>
+                            <p><strong>color:</strong> ${flower.color ? flower.color : "N/A"}</p>
                             <button onclick="selectflower(${flower.id}, '${flower.name}')">
                                 Select
                             </button>
@@ -1010,7 +916,7 @@ function fetchRootstocks(pondId) {
 
             let flowerContainer = document.getElementById("flower-grid");
             flowerContainer.innerHTML = data.multipleFlowers.map(f =>
-                `<div>🌸 <strong>${f.name}</strong> (Fragrance: ${f.fragrance}, Fruit: ${f.fruit})</div>`
+                `<div>🌸 <strong>${f.name}</strong> (color: ${f.color}, Fruit: ${f.fruit})</div>`
             ).join("");
 
             // === D3 rendering ===
@@ -1235,14 +1141,24 @@ function showhideSpellPopup() {
     }
 }
 
-function showhideGroupPopup() {
-    const popup = document.getElementById("groupPopup");
+function showhideTeamPopup() {
+    const popup = document.getElementById("teamPopup");
     if (popup.style.visibility === "hidden") {
         popup.style.visibility = "visible";
     } else {
         popup.style.visibility = "hidden";
     }
 }
+
+function showhideFlaskPopup() {
+    const popup = document.getElementById("flaskPopup");
+    if (popup.style.visibility === "hidden") {
+        popup.style.visibility = "visible";
+    } else {
+        popup.style.visibility = "hidden";
+    }
+}
+
 
 </script>
 <script>
@@ -1352,7 +1268,7 @@ function addFlower(event) {
 
     let flowerName = document.getElementById("flower-name").value;
     let flowerFruit = document.getElementById("flower-fruit").value;
-    let flowerFragrance = document.getElementById("flower-fragrance").value;
+    let flowerColor = document.getElementById("flower-color").value;
 
     fetch("{{=URL('add_flower')}}", {
         method: "POST",
@@ -1361,7 +1277,7 @@ function addFlower(event) {
             //rootstock_id: rootstockidJS,
             flower_name: flowerName,
             flower_fruit: flowerFruit,
-            flower_fragrance: flowerFragrance
+            flower_color: flowercolor
         })
     })
     .then(response => response.json())

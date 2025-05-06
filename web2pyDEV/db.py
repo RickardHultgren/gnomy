@@ -233,7 +233,7 @@ db.define_table(
     Field('name'),
     Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
     Field('fruit'),
-    Field('fragrance'),
+    Field('color'),
     Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),
     Field('created_on', 'datetime', default=request.now, writable=False, readable=False),
     format='%(rootstock)s'
@@ -250,7 +250,7 @@ db.define_table('pond_list',
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
                )
 
-db.define_table('gnome_group',
+db.define_table('team',
     Field('name'),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
@@ -258,7 +258,20 @@ db.define_table('gnome_group',
 
 db.define_table('gnome',
     Field('name'),
-    Field('gnome_group', 'reference gnome_group'),            
+    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+               )
+db.define_table('team_list',
+    Field('gnome', 'reference gnome'),            
+    Field('team', 'reference team'),            
+    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+               )
+
+db.define_table('flask',
+    Field('name'),
+    Field('category'),
+    Field('powders'),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
                )
@@ -266,9 +279,17 @@ db.define_table('gnome',
 db.define_table('spell',
     Field('name'),
     Field('category'),
+    Field('formula'),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
                )
+
+db.define_table('spell_list',
+    Field('spell'),
+    Field('contract'),
+    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+               )               
 
 db.define_table('leaf',
     Field('name'),
