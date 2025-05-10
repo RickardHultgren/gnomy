@@ -433,10 +433,6 @@ function showhideaddPond() {
             <form id="add-team-form" onsubmit="addteam(event)">
                 <label for="team-name">Name:</label>
                 <input type="text" id="team-name" required>
-
-                <label for="team-fruit">Category:</label>
-                <input type="text" id="team-fruit">
-            
                 <button type="submit">Add team</button>
             </form>
             <p id="selected-team">No team selected</p>        
@@ -943,9 +939,14 @@ function fetchRootstocks(pondId) {
             const rootstockContainer = document.getElementById("rootstock-grid");
             rootstockContainer.innerHTML = data.rootstocks.map(r => `<p><strong>${r.name}</strong></p>`).join("");
 
-            const tendrilContainer = document.getElementById("tendril-grid");
+            let tendrilContainer = document.getElementById("tendril-grid");
             tendrilContainer.innerHTML = data.multipleTendrils.map(t =>
                 `<div>🌱 <strong>${t.name}</strong> (boat: ${t.boat ?? "–"}, root: ${t.root ?? "–"})</div>`
+            ).join("");
+
+            let teamContainer = document.getElementById("team-grid");
+            teamContainer.innerHTML = data.multipleTR.map(tr =>
+                `<div><strong>${tr.team}</strong></div>`
             ).join("");
 
             let flowerContainer = document.getElementById("flower-grid");

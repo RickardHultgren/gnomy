@@ -58,10 +58,12 @@ def get_rootstocks():
     rootstocks = db(db.rootstock.pond == pond_id).select()
     
     multipleTendrils = []
+    multipleTR = []
     multipleFlowers = []
 
     for rootstock in rootstocks:
         tendrils = db(db.tendril.rootstock == rootstock.id).select()
+        trs = db(db.tr.rootstock == rootstock.id).select()
         flowers = db(db.flower.rootstock == rootstock.id).select()
 
         multipleTendrils.extend([
@@ -73,6 +75,14 @@ def get_rootstocks():
                 "boat": t.get("boat"),
                 "root": t.get("root")
             } for t in tendrils
+        ])
+
+
+        multipleTR.extend([
+            {
+                "rootstock_id": rootstock.id,
+                "team": tr.get("team"),
+            } for tr in trs
         ])
 
         multipleFlowers.extend([
@@ -90,6 +100,7 @@ def get_rootstocks():
         "pond_id": pond_id,
         "rootstocks": [r.as_dict() for r in rootstocks],
         "multipleTendrils": multipleTendrils,
+        "multipleTR": multipleTR,
         "multipleFlowers": multipleFlowers
     })
 

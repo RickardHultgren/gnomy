@@ -270,6 +270,12 @@ db.define_table('team_list',
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
                )
+db.define_table('tr',
+    Field('team', 'reference team'),            
+    Field('rootstock', 'reference rootstock'),            
+    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+               )               
 
 db.define_table('flask',
     Field('name'),
