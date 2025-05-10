@@ -430,11 +430,15 @@ function showhideaddPond() {
     <div id="rootstock-detailsTeamz">
         <div id="teamz">
             <h3>Teams</h3>
-            <form id="add-team-form" onsubmit="addteam(event)">
-                <label for="team-name">Name:</label>
-                <input type="text" id="team-name" required>
-                <button type="submit">Add team</button>
+
+            <form id="add-team-form" onsubmit="addTendril(event)">
+                <label for="team-select">Team:</label>
+                <select id="team-select">
+                        <option value="">Select a Team</option>
+                </select>
+                <button type="submit">Add Team</button>
             </form>
+
             <p id="selected-team">No team selected</p>        
             
             <div id="team-grid">
@@ -451,7 +455,7 @@ function showhideaddPond() {
                 <label for="tendril-name">Name:</label>
                 <input type="text" id="tendril-name" required>
                 
-                <label for="rootstock-select">Oprions for the next rootstock:</label>
+                <label for="rootstock-select">Options for the next rootstock:</label>
                 <select id="knotstock-select">
                         <option value="">Select a Rootstock (desired situation)</option>
                 </select>
@@ -494,7 +498,7 @@ function showhideaddPond() {
             //.innerHTML = pondName
         }
 
-
+/*
         function fetchKnotstocks(pondId) {
             if (!pondId) {
                 console.error("Pond ID is missing.");
@@ -522,6 +526,8 @@ function showhideaddPond() {
         }
         
                         // Ensure we fetch knotstocks when a rootstock is selected
+    
+    */
     </script>
         
                 
@@ -562,8 +568,34 @@ function fetchKnotstocks(pondId) {
 
         
         <script>
-        </script>
-                
+function fetchTeams() {
+    /*if (!pondId) {
+        console.error("Pond ID is missing.");
+        return;
+    }*/
+   
+    fetch("{{=URL('get_teams')}}")
+        .then(response => response.json())
+        .then(data => {
+            let select = document.getElementById("team-select");
+            select.innerHTML = '<option value="">Select a team</option>'; // Reset options
+
+            if (data.teams && data.teams.length > 0) {
+                data.teams.forEach(team => {
+                    let option = document.createElement("option");
+                    option.value = team.id;
+                    option.textContent = `${team.id} ${team.name}`;
+                    select.appendChild(option);
+                });
+            } else {
+                console.warn("No teams found for this pond.");
+            }
+        })
+        .catch(error => console.error("Error fetching tr:", error));
+}
+
+                // Ensure we fetch knotstocks when a rootstock is selected
+            </script>                
 
 
 
@@ -1110,6 +1142,7 @@ nodeGroups.filter(d => d.id === currentRootstockNode)
 
 
             fetchKnotstocks(pondId);
+            fetchTeams();
             document.getElementById("rootstock-details").style.visibility = "hidden";
         })
         

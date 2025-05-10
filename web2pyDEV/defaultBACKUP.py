@@ -161,6 +161,26 @@ def set_rootstock_id():
         "rootstock_name": rootstock.name
     })
 
+def get_teams():
+    #rootstock_id = request.vars.rootstock_id
+    
+    #if not rootstock_id or not rootstock_id.isdigit():
+    #    return response.json({"status": "error", "error": "Invalid or missing rootstock ID"})
+    teams = db(db.team.created_by == auth.user_id).select()
+
+    return response.json({
+        "status": "success",
+        "teams": [
+            {   
+                #"rootstock_id": rootstock_id,
+                "id": t.id,
+                "name": t.name,                
+                "category": t.category if "category" in t else None,
+            } for t in teams
+        ]
+    })
+
+
 def get_tendrils():
     rootstock_id = request.vars.rootstock_id
     
