@@ -167,7 +167,7 @@ if auth.is_logged_in():
 else:
    me=None
 
-
+#for the context:
 db.define_table('pond',
     Field('name'),
     Field('created_by', 'reference auth_user', default=lambda: auth.user.id if auth.user else None, readable=False, writable=False),
@@ -187,6 +187,7 @@ db.define_table('pond',
 #    'delete': auth.has_permission('delete', db.pond),
 #}
 
+#for the situation:
 db.define_table('rootstock',
     Field('pond', 'reference pond'),
     Field('name'),
@@ -199,12 +200,20 @@ try:
 except:
     pass
 
+#for the next context:
 db.define_table('knotstock',
     Field('name', 'list:reference project'),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             ,
     format='%(name)s'           
                )
+
+#db.define_table('boat',
+#    Field('name'),
+#    Field('category'),
+#    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+#    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+#               )
 
 #db.define_table('knotstock_list',
 #    Field('rootstock', requires=IS_IN_DB(db, db.rootstock, '%(name)s')),
@@ -220,13 +229,28 @@ db.define_table(
     Field('name'),
     Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
     Field('knotstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
-    Field('boat'),
+    #Field('boat', 'reference boat'),            
+    Field('boat'),            
     Field('root'),
     Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),
     Field('created_on', 'datetime', default=request.now, writable=False, readable=False),
     format='%(rootstock)s'
 )
 
+#Team
+#db.define_table('team',
+    #Field('name'),
+     #Field('gnomeREF'),
+     #Field('flowerREF'),
+    #Field('description'),
+    #Field('category'),
+    #Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+    #Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+#               )
+
+
+
+#for the emotions:
 # Define the table 'flower'
 db.define_table(
     'flower',
@@ -234,6 +258,9 @@ db.define_table(
     Field('rootstock', db.rootstock, requires=IS_IN_DB(db(db.rootstock.pond == session.pond_id), db.rootstock, '%(name)s')),
     Field('fruit'),
     Field('color'),
+    Field('team'),            
+    #Field('team', 'reference team'),            
+     #Field('teamsREF'),
     Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),
     Field('created_on', 'datetime', default=request.now, writable=False, readable=False),
     format='%(rootstock)s'
@@ -243,39 +270,35 @@ db.define_table(
 # to rootstocks that belong to the pond specified by session.pond_id
 
 
-db.define_table('pond_list',
-    Field('rootstock'),
-    Field('pond'),                
-    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
-    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
-               )
+#db.define_table('pond_list',
+#    Field('rootstock'),
+#    Field('pond'),                
+#    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+#    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+#               )
 
-db.define_table('team',
-    Field('name'),
-    Field('category'),
-    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
-    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
-               )
 
-db.define_table('gnome',
-    Field('name'),
-    Field('category'),
-    Field('information'),
-    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
-    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
-               )
-db.define_table('team_list',
-    Field('gnome', 'reference gnome'),            
-    Field('team', 'reference team'),            
-    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
-    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
-               )
-db.define_table('tr',
-    Field('team', 'reference team'),            
-    Field('rootstock', 'reference rootstock'),            
-    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
-    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
-               )               
+#db.define_table('gnome',
+#    Field('name'),
+#    Field('category'),
+#    Field('information'),
+#    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+#    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+#               )
+
+#db.define_table('team_gnome',
+#    Field('gnome', 'reference gnome'),            
+#    Field('team', 'reference team'),            
+#    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+#    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+#               )
+
+#db.define_table('flower_team',
+#    Field('team', 'reference team'),            
+#    Field('flower', 'reference flower'),            
+#    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
+#    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
+#               )               
 
 db.define_table('flask',
     Field('name'),
@@ -300,12 +323,6 @@ db.define_table('spell_list',
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
                )               
 
-db.define_table('leaf',
-    Field('name'),
-    Field('category'),
-    Field('created_by',db.auth_user,default=me,writable=False,readable=False),
-    Field('created_on','datetime',default=request.now,writable=False,readable=False)             
-               )
 
 
 

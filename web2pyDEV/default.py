@@ -6,10 +6,10 @@ def index():
 
     pond_form = SQLFORM(db.pond, _id="pondform").process()  # Add _id attribute
     ponds = db(db.pond.created_by == auth.user_id).select()
-    team_form = SQLFORM(db.team, _id="teamform").process()  # Add _id attribute
-    teams = db(db.team.created_by == auth.user_id).select()
-    leaf_form = SQLFORM(db.team, _id="leafform").process()  # Add _id attribute
-    leaves = db(db.team.created_by == auth.user_id).select()
+    #team_form = SQLFORM(db.team, _id="teamform").process()  # Add _id attribute
+    #teams = db(db.team.created_by == auth.user_id).select()
+    #boat_form = SQLFORM(db.team, _id="boatform").process()  # Add _id attribute
+    #boats = db(db.team.created_by == auth.user_id).select()
     flask_form = SQLFORM(db.flask, _id="flaskform").process()  # Add _id attribute
     flasks = db(db.flask.created_by == auth.user_id).select()
     #How to manage spells?
@@ -21,14 +21,14 @@ def index():
         pond_form=pond_form,
         ponds=ponds,
         
-        team_form=team_form,
-        teams=teams,
+        #team_form=team_form,
+        #teams=teams,
 
         spell_form=spell_form,
         spells=spells,
 
-        leaf_form=leaf_form,
-        leaves=leaves,
+        #boat_form=boat_form,
+        #boats=boats,
 
         flask_form=flask_form,
         flasks=flasks
@@ -58,12 +58,13 @@ def get_rootstocks():
     rootstocks = db(db.rootstock.pond == pond_id).select()
     
     multipleTendrils = []
-    multipleTR = []
+    #multipleTeams = []
+    #multipleTR = []
     multipleFlowers = []
 
     for rootstock in rootstocks:
         tendrils = db(db.tendril.rootstock == rootstock.id).select()
-        trs = db(db.tr.rootstock == rootstock.id).select()
+        #trs = db(db.tr.rootstock == rootstock.id).select()
         flowers = db(db.flower.rootstock == rootstock.id).select()
 
         multipleTendrils.extend([
@@ -77,13 +78,22 @@ def get_rootstocks():
             } for t in tendrils
         ])
 
+        #multipleTeams.extend([
+        #    {
+        #        "id": t.id,
+        #        "name": t.name,
+        #        "description": t.get("description"),
+        #        "category": t.get("category")
+        #    } for t in teams
+        #])
 
-        multipleTR.extend([
-            {
-                "rootstock_id": rootstock.id,
-                "team": tr.get("team"),
-            } for tr in trs
-        ])
+
+        #multipleTR.extend([
+        #    {
+        #        "rootstock_id": rootstock.id,
+        #        "team": tr.get("team"),
+        #    } for tr in trs
+        #])
 
         multipleFlowers.extend([
             {
@@ -100,7 +110,7 @@ def get_rootstocks():
         "pond_id": pond_id,
         "rootstocks": [r.as_dict() for r in rootstocks],
         "multipleTendrils": multipleTendrils,
-        "multipleTR": multipleTR,
+        #"multipleTR": multipleTR,
         "multipleFlowers": multipleFlowers
     })
 
@@ -161,6 +171,7 @@ def set_rootstock_id():
         "rootstock_name": rootstock.name
     })
 
+'''
 def get_teams():
     #rootstock_id = request.vars.rootstock_id
     
@@ -173,13 +184,13 @@ def get_teams():
         "teams": [
             {   
                 #"rootstock_id": rootstock_id,
-                "id": t.id,
-                "name": t.name,                
-                "category": t.category if "category" in t else None,
-            } for t in teams
+                "id": team.id,
+                "name": team.name,                
+                "category": team.category if "category" in team else None,
+            } for team in teams
         ]
     })
-
+'''
 
 def get_tendrils():
     rootstock_id = request.vars.rootstock_id

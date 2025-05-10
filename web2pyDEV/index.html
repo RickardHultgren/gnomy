@@ -244,8 +244,8 @@ function showhideaddPond() {
              "<span id="currentBox"></span>"</div>            
              <div style="width:100vw;text-align: center; margin:1em 0 0.25em 0;">
                 <button id="b10" onclick="buttonclicked=0; flasks();" style="width:25px; font-size:12px; align-items: center; width:auto;">FLASKS</button>
-                <button id="b0" onclick="buttonclicked=0; teams();" style="width:25px; font-size:12px; align-items: center; width:auto;">TEAMS</button>
-                <button id="b5" onclick="buttonclicked=5; leaves();" style="width:25px; font-size:12px; align-items: center; width:auto;">LEAVES</button>
+                <!--button id="b0" onclick="buttonclicked=0; teams();" style="width:25px; font-size:12px; align-items: center; width:auto;">TEAMS</button-->
+                <!--button id="b5" onclick="buttonclicked=5; boats();" style="width:25px; font-size:12px; align-items: center; width:auto;">boats</button-->
                 <button id="b4" onclick="buttonclicked=4; spells();" style="width:25px; font-size:12px; align-items: center; width:auto;margin-left:3em;">SPELLS</button>
             </div>
             <div id="d3-wrapper" style="position: relative;">
@@ -344,17 +344,17 @@ function showhideaddPond() {
             <div></div>
         </div>
 
-        <div id="teamPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
+        <!--div id="teamPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
             <button onclick="showhideTeamPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
             <h3>Teams</h3>
 
-                  {{=team_form}}
-                  {{=teams}}
+                  {{#=team_form}}
+                  {{#=teams}}
               
 
             <div></div>
             <div></div>
-        </div>
+        </div-->
 
         <div id="spellPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
             <button onclick="showhideSpellPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
@@ -368,12 +368,12 @@ function showhideaddPond() {
             <div></div>
         </div>
 
-        <div id="leafPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
-            <button onclick="showhideLeafPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
-            <h3>Leaves</h3>
+        <div id="boatPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
+            <button onclick="showhideboatPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
+            <h3>boats</h3>
             <div>List of team</div>
-            {{#=leaf_form}}
-            {{#=leaves}}     
+            {{#=boat_form}}
+            {{#=boats}}     
               
 
             <div></div>
@@ -418,7 +418,11 @@ function showhideaddPond() {
                 <button type="submit">Add flower</button>
             </form>
             <p id="selected-flower">No flower selected</p>        
-            
+
+            <div id="team-grid">
+                <p>Loading...</p>
+            </div>            
+
             <div id="flower-grid">
                 <p>Loading...</p>
             </div>
@@ -427,7 +431,7 @@ function showhideaddPond() {
         </div>  
     </div>
 
-    <div id="rootstock-detailsTeamz">
+    <!--div id="rootstock-detailsTeamz">
         <div id="teamz">
             <h3>Teams</h3>
 
@@ -447,7 +451,7 @@ function showhideaddPond() {
 
             
         </div>  
-    </div>
+    </div-->
     <div id="rootstock-detailsTendrilz">
         <div id="tendrilz">
             <h3>Tendrils</h3>
@@ -489,8 +493,8 @@ function showhideaddPond() {
             showhideSpellPopup();
             //.innerHTML = pondName
         }
-        function leaves() {
-            showhideLeafPopup();
+        function boats() {
+            showhideboatPopup();
             //.innerHTML = pondName
         }
         function go() {
@@ -568,18 +572,19 @@ function fetchKnotstocks(pondId) {
 
         
         <script>
+/*
 function fetchTeams() {
     /*if (!pondId) {
         console.error("Pond ID is missing.");
         return;
     }*/
    
-    fetch("{{=URL('get_teams')}}")
+    /*fetch("{{=URL('get_teams')}}")
         .then(response => response.json())
         .then(data => {
             let select = document.getElementById("team-select");
             select.innerHTML = '<option value="">Select a team</option>'; // Reset options
-
+            alert("test");
             if (data.teams && data.teams.length > 0) {
                 data.teams.forEach(team => {
                     let option = document.createElement("option");
@@ -592,8 +597,9 @@ function fetchTeams() {
             }
         })
         .catch(error => console.error("Error fetching tr:", error));
+        */
 }
-
+*/
                 // Ensure we fetch knotstocks when a rootstock is selected
             </script>                
 
@@ -644,7 +650,7 @@ function updateTabs() {
     const header = section.querySelector("h3");
     //const label = header ? header.textContent : `Tab ${index + 1}`;
     
-    let label;
+    /*let label;
     //let theID;
     if (header) {
         label = header.textContent;
@@ -654,7 +660,17 @@ function updateTabs() {
         label = "Teams";
     } else if (index === 3) {
         label = "Tendrils";
-    }
+    }*/
+
+    let label;
+    //let theID;
+    if (header) {
+        label = header.textContent;
+    } else if (index === 1) {
+        label = "Flowers";
+    } else if (index === 2) {
+        label = "Tendrils";
+    }    
 
     const tabButton = document.createElement("button");
     tabButton.textContent = label;
@@ -843,10 +859,10 @@ function markedRootstock(rootstockId, rootstockname) {
 
 
     </section>
-    <section id="teamzz">
+    <!--section id="teamzz">
 
 
-    </section>
+    </section-->
     <section id="tendrilzz">
         
      
@@ -868,14 +884,14 @@ function markedPopup(){
     //const tendrilzz = document.getElementById("tendrilzz");
     const tendrilz = document.getElementById("tendrilz");
 
-    const teamz = document.getElementById("teamz");
+    //const teamz = document.getElementById("teamz");
   
     var element = document.getElementById("deatailsRootstockPopup");
     var element1Flowerz = document.getElementById("rootstock-detailsFlowerz");
-    var element1Teamz = document.getElementById("rootstock-detailsTeamz");
+    //var element1Teamz = document.getElementById("rootstock-detailsTeamz");
     var element1Tendrilz = document.getElementById("rootstock-detailsTendrilz");
     var element2Flowerz = document.getElementById("flowerzz");
-    var element2Teamz = document.getElementById("teamzz");
+    //var element2Teamz = document.getElementById("teamzz");
     var element2Tendrilz = document.getElementById("tendrilzz");
   
 
@@ -884,7 +900,7 @@ function markedPopup(){
         element.style.transform = "rotateX(0deg)";
         element.style.visibility = "visible";
         element2Flowerz.replaceChildren(flowerz);    
-        element2Teamz.replaceChildren(teamz);    
+        //element2Teamz.replaceChildren(teamz);    
         element2Tendrilz.replaceChildren(tendrilz);    
           showMarkedPopup = 1;
     } else {
@@ -892,7 +908,7 @@ function markedPopup(){
         element.style.transform = "rotateX(90deg)";
         element.style.visibility = "hidden";
         element1Flowerz.replaceChildren(tendrilz);
-        element1Teamz.replaceChildren(teamz);
+        //element1Teamz.replaceChildren(teamz);
         element1Tendrilz.replaceChildren(flowerz);
         showMarkedPopup = 0;
     }
@@ -976,10 +992,10 @@ function fetchRootstocks(pondId) {
                 `<div>🌱 <strong>${t.name}</strong> (boat: ${t.boat ?? "–"}, root: ${t.root ?? "–"})</div>`
             ).join("");
 
-            let teamContainer = document.getElementById("team-grid");
-            teamContainer.innerHTML = data.multipleTR.map(tr =>
-                `<div><strong>${tr.team}</strong></div>`
-            ).join("");
+            //let teamContainer = document.getElementById("team-grid");
+            //teamContainer.innerHTML = data.multipleTR.map(tr =>
+            //    `<div><strong>${tr.team}</strong></div>`
+            //).join("");
 
             let flowerContainer = document.getElementById("flower-grid");
             flowerContainer.innerHTML = data.multipleFlowers.map(f =>
@@ -1142,7 +1158,7 @@ nodeGroups.filter(d => d.id === currentRootstockNode)
 
 
             fetchKnotstocks(pondId);
-            fetchTeams();
+            //fetchTeams();
             document.getElementById("rootstock-details").style.visibility = "hidden";
         })
         
@@ -1176,7 +1192,7 @@ window.showPond = function (pondId, pondName) {
     document.getElementById("pondBox").innerHTML = pondName;
     showhidePond();
     fetchRootstocks(pondId);
-    addRootstockButton(); // ✅ call button setup separately
+    //addRootstockButton(); // ✅ call button setup separately
 };
 
 </script>
@@ -1191,8 +1207,8 @@ function showhideGoPopup() {
     }
 }
 
-function showhideLeafPopup() {
-    const popup = document.getElementById("leafPopup");
+function showhideboatPopup() {
+    const popup = document.getElementById("boatPopup");
     if (popup.style.visibility === "hidden") {
         popup.style.visibility = "visible";
     } else {
