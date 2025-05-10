@@ -261,7 +261,8 @@ def get_flowers():
                 "id": t.id,
                 "name": t.name,
                 "fruit": t.fruit if "fruit" in t else None,
-                "color": t.color if "color" in t else None
+                "color": t.color if "color" in t else None,
+                "team": t.color if "team" in t else None,                
             } for t in flowers
         ]
     })

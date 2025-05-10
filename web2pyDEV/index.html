@@ -305,11 +305,7 @@ function showhideaddPond() {
                   <div id="tendril-description"></div>
 
                   <label for="flower-select">Shared Feelings/Beliefs (powder/flowers):</label>
-                  <select id="flower-select">
-                    <option value="">Select a team</option>
-                  </select>
-                  
-              
+
                   <label for="team-select">Autonomy Granted By:</label>
                   <select id="team-select">
                     <option value="">Select a team</option>
@@ -412,9 +408,12 @@ function showhideaddPond() {
                 <label for="flower-fruit">Fruit:</label>
                 <input type="text" id="flower-fruit">
             
-                <label for="flower-root">color:</label>
+                <label for="flower-color">color:</label>
                 <input type="text" id="flower-color">
-            
+
+                <label for="flower-team">team:</label>
+                <input type="text" id="flower-team">                
+
                 <button type="submit">Add flower</button>
             </form>
             <p id="selected-flower">No flower selected</p>        
@@ -1353,6 +1352,7 @@ function addFlower(event) {
     let flowerName = document.getElementById("flower-name").value;
     let flowerFruit = document.getElementById("flower-fruit").value;
     let flowerColor = document.getElementById("flower-color").value;
+    let flowerTeam = document.getElementById("flower-team").value;
 
     fetch("{{=URL('add_flower')}}", {
         method: "POST",
@@ -1361,7 +1361,8 @@ function addFlower(event) {
             //rootstock_id: rootstockidJS,
             flower_name: flowerName,
             flower_fruit: flowerFruit,
-            flower_color: flowercolor
+            flower_color: flowerColor,
+            flower_team: flowerTeam
         })
     })
     .then(response => response.json())
