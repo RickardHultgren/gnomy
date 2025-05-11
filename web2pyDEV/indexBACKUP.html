@@ -243,7 +243,7 @@ function showhideaddPond() {
         <div>Rootstock where Gnomy currently is:
              "<span id="currentBox"></span>"</div>            
              <div style="width:100vw;text-align: center; margin:1em 0 0.25em 0;">
-                <button id="b10" onclick="buttonclicked=0; flasks();" style="width:25px; font-size:12px; align-items: center; width:auto;">FLASKS</button>
+                <!--button id="b10" onclick="buttonclicked=0; flasks();" style="width:25px; font-size:12px; align-items: center; width:auto;">FLASKS</button-->
                 <!--button id="b0" onclick="buttonclicked=0; teams();" style="width:25px; font-size:12px; align-items: center; width:auto;">TEAMS</button-->
                 <!--button id="b5" onclick="buttonclicked=5; boats();" style="width:25px; font-size:12px; align-items: center; width:auto;">boats</button-->
                 <button id="b4" onclick="buttonclicked=4; spells();" style="width:25px; font-size:12px; align-items: center; width:auto;margin-left:3em;">SPELLS</button>
@@ -351,18 +351,42 @@ function showhideaddPond() {
             <div></div>
             <div></div>
         </div-->
+        <div id="spellPopup" 
+            style="visibility: hidden; /* or toggle via JS */ 
+                    display: block; 
+                    z-index: 100; 
+                    position: fixed; 
+                    width: 80vw; 
+                    height: 80vh; 
+                    top: 50%; 
+                    left: 50%; 
+                    transform: translate(-50%, -50%);
+                    background: white; 
+                    border: 1px solid #ccc; 
+                    padding: 1em; 
+                    overflow-y: auto;">
+            
+            <button onclick="showhideSpellPopup();" 
+                    class="close-btn" 
+                    style="background: none; 
+                        width: 2em; 
+                        height: 2em; 
+                        text-align: left; 
+                        border: none; 
+                        box-shadow: none; 
+                        z-index: 10; 
+                        font-size: 2em; 
+                        position: absolute; 
+                        top: 0; 
+                        right: 0;">&times;</button>
 
-        <div id="spellPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
-            <button onclick="showhideSpellPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
-            <h3>Spells</h3>
-            {{=spell_form}}
-            {{=spells}}              
-
-              
-
-            <div></div>
-            <div></div>
+            <div>
+                <h3>Spells</h3>
+                {{=spell_form}}
+                {{=spells}}              
+            </div>
         </div>
+
 
         <div id="boatPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
             <button onclick="showhideboatPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
@@ -395,25 +419,25 @@ function showhideaddPond() {
 <div id="map"></div-->
 
 
-<div id="rootstock-details">
+<div id="rootstock-details" style="visibility:hidden;">
         
     <div id="selected-rootstock-id"></div>
     <div id="rootstock-detailsFlowerz">
         <div id="flowerz">
             <h3>Flowers</h3>
             <form id="add-flower-form" onsubmit="addFlower(event)">
-                <label for="flower-name">Name:</label>
+                <label for="flower-name">Name <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'The soft powder in the center of the flower reflects your emotional signal and your attitude in this situation. It carries the emotional meaning, direction, and personal relevance — like a mix of your current mood and your deeper intention.'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
                 <input type="text" id="flower-name" required>
-
-                <label for="flower-fruit">Fruit:</label>
+<br>
+                <label for="flower-fruit">Fruit <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'This fruit is the desired outcome'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
                 <input type="text" id="flower-fruit">
-            
-                <label for="flower-color">color:</label>
+<br>           
+                <label for="flower-color">Color <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'The color of the flower shows the emotional tone or vibe of the situation'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
                 <input type="text" id="flower-color">
-
-                <label for="flower-team">team:</label>
+<br>
+                <label for="flower-team">Team <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'The team of people that shares the emotions and the desired outcome'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
                 <input type="text" id="flower-team">                
-
+<br>
                 <button type="submit">Add flower</button>
             </form>
             <p id="selected-flower">No flower selected</p>        
@@ -457,17 +481,18 @@ function showhideaddPond() {
             <form id="add-tendril-form" onsubmit="addTendril(event)">
                 <label for="tendril-name">Name:</label>
                 <input type="text" id="tendril-name" required>
-                
+                <br>
                 <label for="rootstock-select">Options for the next rootstock:</label>
                 <select id="knotstock-select">
                         <option value="">Select a Rootstock (desired situation)</option>
                 </select>
-                <label for="tendril-boat">Boat (competence/resources):</label>
+                <br>
+                <label for="tendril-boat">Boat (competence/resources)<button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'This little boat made from a leaf holds the skills, strengths, or support you have in the situation. It reminds you what you are carrying with you — what you can do or lean on.'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
                 <input type="text" id="tendril-boat">
-                
-                <label for="tendril-root">Roots (risk):</label>
+                <br>
+                <label for="tendril-root">Roots (risk) <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'The roots growing down into the water symbolize the risks, constraints, or hidden factors affecting the situation. They anchor you in reality, reminding you to reflect before acting.'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
                 <input type="text" id="tendril-root">
-                
+                <br>
                 <button type="submit">Add Tendril</button>
             </form>
                 

@@ -13,8 +13,8 @@ def index():
     flask_form = SQLFORM(db.flask, _id="flaskform").process()  # Add _id attribute
     flasks = db(db.flask.created_by == auth.user_id).select()
     #How to manage spells?
-    spell_form = SQLFORM(db.pond, _id="pondform").process()  # Add _id attribute
-    spells = db(db.pond.created_by == auth.user_id).select()            
+    spell_form = SQLFORM(db.spell, _id="pondform").process()  # Add _id attribute
+    spells = db(db.spell.created_by == auth.user_id).select()            
     session.pond_id = None
     session.rootstock_id = None
     return dict(
@@ -261,7 +261,8 @@ def get_flowers():
                 "id": t.id,
                 "name": t.name,
                 "fruit": t.fruit if "fruit" in t else None,
-                "color": t.color if "color" in t else None
+                "color": t.color if "color" in t else None,
+                "team": t.color if "team" in t else None,                
             } for t in flowers
         ]
     })

@@ -234,7 +234,8 @@ db.define_table(
     Field('root'),
     Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),
     Field('created_on', 'datetime', default=request.now, writable=False, readable=False),
-    format='%(rootstock)s'
+    #format='%(rootstock)s'
+    format='%(name)s'  # This controls what shows in dropdown
 )
 
 #Team
@@ -263,7 +264,8 @@ db.define_table(
      #Field('teamsREF'),
     Field('created_by', db.auth_user, default=auth.user_id, writable=False, readable=False),
     Field('created_on', 'datetime', default=request.now, writable=False, readable=False),
-    format='%(rootstock)s'
+    #format='%(rootstock)s'
+    format='%(name)s'  # This controls what shows in dropdown
 )
 
 # Now 'rootstock' and 'knotstock' fields in 'knotstock_list' table will be restricted
@@ -312,6 +314,8 @@ db.define_table('spell',
     Field('name'),
     Field('category'),
     Field('formula'),
+    Field('flower', 'reference flower'),
+    Field('tendril', 'reference tendril'),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
                )

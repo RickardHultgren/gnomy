@@ -13,8 +13,8 @@ def index():
     flask_form = SQLFORM(db.flask, _id="flaskform").process()  # Add _id attribute
     flasks = db(db.flask.created_by == auth.user_id).select()
     #How to manage spells?
-    spell_form = SQLFORM(db.pond, _id="pondform").process()  # Add _id attribute
-    spells = db(db.pond.created_by == auth.user_id).select()            
+    spell_form = SQLFORM(db.spell, _id="pondform").process()  # Add _id attribute
+    spells = db(db.spell.created_by == auth.user_id).select()            
     session.pond_id = None
     session.rootstock_id = None
     return dict(
