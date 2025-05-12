@@ -255,8 +255,8 @@ function showhideaddPond() {
                     var mode = "";
                 </script>
 
-                <button id="b1" class="toolbutton" onclick="buttonclicked=1; bclicked(); mode='details';" style="font-size:25px; width:50px; height:50px;   align-items: center; color: rgba(255, 255, 255, 0.7)">i</button>
-                <button id="b2" class="toolbutton" onclick="buttonclicked=2; bclicked(); mode='current';" style="font-size:25px; width:50px; height:50px;   align-items: center; color: rgba(255, 255, 255, 0.7)">&#x273F;</button>
+                <!--button id="b1" class="toolbutton" onclick="buttonclicked=1; bclicked(); mode='details';" style="font-size:25px; width:50px; height:50px;   align-items: center; color: rgba(255, 255, 255, 0.7)">i</button>
+                <button id="b2" class="toolbutton" onclick="buttonclicked=2; bclicked(); mode='current';" style="font-size:25px; width:50px; height:50px;   align-items: center; color: rgba(255, 255, 255, 0.7)">&#x273F;</button-->
                 <!--button id="b3" class="toolbutton" onclick="/*buttonclicked=3; bclicked();*/ go();" style="font-size:25px; width:50px; height:50px; font-size:12px; align-items: center; color: rgba(255, 255, 255, 0.7)">&#x1F5CE;</button-->
                 <button id="rootstockAdd" class="toolbutton" onclick="showhideRootPopup();" style="font-size:25px; height:50px;width:50px;  color: rgba(255, 255, 255, 0.7)">+</button>
                 <script>
@@ -407,6 +407,7 @@ function showhideaddPond() {
             <button onclick="showhideRootPopup();" class="close-btn" style="margin:0 00.5em ;background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:-1em -1.5em 0 0 ;">&times;</button>
             <h3>Add Rootstock</h3>
             <input type="text" id="rootstock-name" placeholder="Rootstock name"></input>
+            <input type="text" id="rootstock-description" placeholder="Rootstock description"></input>
             <button onclick="addRootstock()">Add</button>
         </div>
          
@@ -854,7 +855,9 @@ function addRootstockButton() {
 <script>
 var currentRootstockNode = "";
 var currentRootstockName = "";
-function markedRootstock(rootstockId, rootstockname) {
+var currentRootstockDescription = "";
+mode = "details"
+function markedRootstock(rootstockId, rootstockname, rootstockdescription) {
     if (mode === "current"){
         var element = document.getElementById("currentBox");
         currentRootstockName = rootstockname;
@@ -871,7 +874,7 @@ function markedRootstock(rootstockId, rootstockname) {
         element.innerHTML = `
         <button onclick="markedPopup();" class="close-btn" style="margin:0 00.5em; background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:0 0 0 0;">&times;</button>
         <h3>Rootstock Details:<br> ${rootstockname}</h3>
- 
+        <h4>Rootstock Details:<br> ${rootstockdescription}</h4>
 <div id="tab-container">
     <section>
         <h3>General</h3>
@@ -1128,7 +1131,7 @@ nodeGroups.filter(d => d.id === currentRootstockNode)
                     selectedNodeId = d.id;
 
                     // Show the button
-                    selectRootstock(d.id, d.name);
+                    selectRootstock(d.id, d.name, d.description);
                     /*const container = document.getElementById("selected-node-container");
                     /_container.style.visibility = "visible";
                     container.innerHTML = `
@@ -1293,7 +1296,7 @@ function showhideRootPopup() {
 </script>
 <script>
 //2025-04-10    
-function selectRootstock(rootstockId, rootstockName) { 
+function selectRootstock(rootstockId, rootstockName, rootstockDescription) { 
 
     rootstockidJS = rootstockId;
     fetch("{{=URL('set_rootstock_id')}}", {
@@ -1304,7 +1307,7 @@ function selectRootstock(rootstockId, rootstockName) {
     .then(response => response.json())
     .then(data => {
         if (data.status === "success") {
-            document.getElementById("selected-rootstock-id").innerText = `ID: ${data.rootstock_id}, Name: ${data.rootstock_name}`;
+            document.getElementById("selected-rootstock-id").innerText = `ID: ${data.rootstock_id}, Name: ${data.rootstock_name}, Description: ${data.rootstock_description}`;
             //document.getElementById("rootstock-details").style.display = "block";
             document.getElementById("rootstock-details").style.visibility = "visible";
             // Store rootstock ID in localStorage in case the session is not persistent
@@ -1317,7 +1320,7 @@ function selectRootstock(rootstockId, rootstockName) {
     })
     .catch(error => console.error("Error selecting rootstock:", error));
 
-    markedRootstock(rootstockId, rootstockName);
+    markedRootstock(rootstockId, rootstockName, rootstockDescription);
     
     updateTabs();
 }
@@ -1452,14 +1455,17 @@ function addFlower(event) {
         function addRootstock() {
             let name = document.getElementById("rootstock-name").value;
             if (!name) return alert("Enter rootstock name.");
+            let description = document.getElementById("rootstock-description").value;
+            if (!description) return alert("Enter rootstock description.");
 
             fetch("{{=URL('add_rootstock')}}", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `pond_id=${currentPondId}&name=${encodeURIComponent(name)}`
+                body: `pond_id=${currentPondId}&name=${encodeURIComponent(name)}&description=${encodeURIComponent(description)}`
             }).then(() => {
                 fetchRootstocks(currentPondId);
                 document.getElementById("rootstock-name").value = "";
+                document.getElementById("rootstock-description").value = "";
             });
             showhideRootPopup();
         }

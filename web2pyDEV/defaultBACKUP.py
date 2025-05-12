@@ -122,7 +122,8 @@ def get_rootstocks():
 def add_rootstock():
     pond_id = request.vars.pond_id
     name = request.vars.name
-    rootstock = db.rootstock.insert(pond=pond_id, name=name, created_by=auth.user_id)
+    description = request.vars.description
+    rootstock = db.rootstock.insert(pond=pond_id, name=name, description=description, created_by=auth.user_id)
     session.rootstock_id = rootstock.id  # Store the new rootstock ID in the session
 
     return response.json({"status": "success", "rootstock_id": rootstock.id})
@@ -168,7 +169,8 @@ def set_rootstock_id():
     return response.json({
         "status": "success",
         "rootstock_id": rootstock_id,
-        "rootstock_name": rootstock.name
+        "rootstock_name": rootstock.name,
+        "rootstock_description": rootstock.description
     })
 
 '''

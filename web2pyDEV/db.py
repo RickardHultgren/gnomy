@@ -191,6 +191,7 @@ db.define_table('pond',
 db.define_table('rootstock',
     Field('pond', 'reference pond'),
     Field('name'),
+    Field('description'),
     Field('created_by', 'reference auth_user', default=lambda: auth.user_id, writable=False, readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)         ,  
     format='%(name)s'           
