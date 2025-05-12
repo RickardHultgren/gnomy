@@ -122,14 +122,20 @@ var showhidevar = 0;
 function showhidePond() {
     var element = document.getElementById("chosenpond");
     var element2 = document.getElementById("pondMenu");
+    var element3 = document.getElementById("rootstock-details");
     if (showhidevar === 0) {
+        //element3.style.visibility = "hidden";
+        //element3.style.visibility = "visible";
         //element.style.opacity = "1";
+        mode = "details"
+        element3.style.visibility = "hidden";
         element.style.transform = "rotateY(90deg)";
         element.style.opacity = 0;
         element2.style.opacity = 1;
         element2.style.transform = "rotateY(0deg)";
         showhidevar = 1;
     } else {
+        //element3.style.visibility = "visible";
         //element.style.opacity = "0";
         element2.style.transform = "rotateY(90deg)";
         element2.style.opacity = 0;
@@ -856,7 +862,7 @@ function addRootstockButton() {
 var currentRootstockNode = "";
 var currentRootstockName = "";
 var currentRootstockDescription = "";
-mode = "details"
+
 function markedRootstock(rootstockId, rootstockname, rootstockdescription) {
     if (mode === "current"){
         var element = document.getElementById("currentBox");
