@@ -323,7 +323,21 @@ def add_flower():
 
     return response.json({"status": "success", "flower_id": flower_id})
 
+@auth.requires_login()
+def delete_flower():
+    flower_id = request.post_vars.flower_id
+    if flower_id:
+        db(db.flower.id == flower_id).delete()
+        return response.json({"status": "success"})
+    return "Invalid ID"
 
+@auth.requires_login()
+def delete_tendril():
+    tendril_id = request.post_vars.tendril_id
+    if tendril_id:
+        db(db.tendril.id == tendril_id).delete()
+        return response.json({"status": "success"})
+    return "Invalid ID"
 
 
 
