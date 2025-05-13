@@ -329,7 +329,7 @@ db.define_table('spell_list',
                )        
 
 db.define_table('todo',
-    #Field('name'),
+    Field('name'),
     Field('is_checked', 'boolean', default=False, writable=False, readable=False),
     Field('spell', 'reference spell'),
     Field('todo_message'),

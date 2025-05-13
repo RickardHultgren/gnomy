@@ -16,8 +16,7 @@ def index():
     spell_form = SQLFORM(db.spell, _id="spellform").process()  # Add _id attribute
     spells = db(db.spell.created_by == auth.user_id).select()            
     # Form to create new todos (without 'checked' field)
-    todo_form = SQLFORM(db.todo, fields=['spell', 'todo_message'], _id="todoform").process()
-
+    todo_form = SQLFORM(db.todo, fields=['name', 'spell', 'todo_message'], _id="todoform").process()
     # Select user's todos
     todos = db(db.todo.created_by == auth.user_id).select()
     session.pond_id = None

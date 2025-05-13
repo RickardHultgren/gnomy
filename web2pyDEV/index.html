@@ -205,12 +205,12 @@ function showhideaddPond() {
 
             <ul>
             {{for row in todos:}}
-                <li>
-                    <input type="checkbox"
-                        onchange="checkTodo(this, {{=row.id}}, '{{=row.todo_message}}')"
-                        {{='checked' if row.is_checked else ''}}>
-                    {{=row.todo_message}} ({{=row.spell}})
-                </li>
+            <div>
+                <input type="checkbox"
+                    onchange="checkTodo(this, {{=row.id}}, '{{=row.todo_message}}')"
+                    {{='checked' if row.is_checked else ''}}>
+                <strong>{{=row.name}}</strong>: {{=row.todo_message}}
+            </div>
             {{pass}}
             </ul>
 
