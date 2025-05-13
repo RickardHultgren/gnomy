@@ -173,7 +173,94 @@ function showhideaddPond() {
     </button>
     <div id="explanation-message"></div>
 </div>
-  
+        <button id="panic-button" onclick="location.href='https://rickardhultgren.github.io/gnomy/panic.html';" style="
+            position:fixed; 
+            top:.5em;
+                        z-index:100;  
+                       left:40vw;                                                                                                color: white;
+            border-color: #aaaaaa;
+            font-size:1em;
+                                                                                                                                 vertical-align:middle;
+
+">
+                !
+                </button>
+
+        <div id="toDoPopup" style="
+                    visibility: hidden; 
+                    display: block; 
+                    z-index: 100; 
+                    position: fixed; 
+/*                    width: 80vw; 
+                    height: 80vh; 
+                    top: 50%; 
+                    left: 50%; 
+                    transform: translate(-50%, -50%);
+                    border: 1px solid #ccc; 
+                    padding: 1em; 
+                    overflow-y: auto;*/">
+        <button onclick="showhideToDoPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; margin:0 0 0 0 ;">&times;</button>
+
+            {{=todo_form}}
+
+            <ul>
+            {{for row in todos:}}
+                <li>
+                    <input type="checkbox"
+                        onchange="checkTodo(this, {{=row.id}}, '{{=row.todo_message}}')"
+                        {{='checked' if row.is_checked else ''}}>
+                    {{=row.todo_message}} ({{=row.spell}})
+                </li>
+            {{pass}}
+            </ul>
+
+            <script>
+            function checkTodo(checkbox, todoId, message) {
+                if (checkbox.checked) {
+                    if (confirm("Mark this as done?\n\n" + message)) {
+                        fetch('{{=URL("mark_done")}}', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({id: todoId})
+                        });
+                    } else {
+                        checkbox.checked = false;
+                    }
+                }
+            }
+            </script>
+
+        </div>
+
+<button id="todo-button"  onclick="showhideToDoPopup();"  style="
+
+                                                                                                                       color: white;
+            position:fixed; 
+            top:.5em;
+            left:50vw;
+            z-index:100;                                                                                                                      
+            border-color: #aaaaaa;
+            font-size:1em;
+                                   display: flex;  /* Enables flexbox */
+    justify-content: center;  /* Centers text horizontally */
+    align-items: center;  /* Centers text vertically */
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    width: 2em;
+    height: 1em;
+    text-align: center;
+    border: 2px solid #cccccc;
+    border-radius: 8px;
+    text-transform: uppercase;
+    cursor: pointer;
+                                                                                                  vertical-align:middle;
+
+">
+                &check;
+                </button>
+
+
   <div id="pondMenu">
     <div class="poem">
         Hello, and welcome to my land.<br>
@@ -288,6 +375,8 @@ function showhideaddPond() {
         <!--div style="width:95vw;left:50vw; margin-left:45vw; position: absolute; background-color:#000000; height:3em; "-->
         <br>
         <!--/div-->
+
+
 
         <div id="goPopup" style="visibility: hidden; display: block; z-index:100; position:fixed; width:80vw; height:80vh; top:50vh; left:50vw; margin:-40vh auto auto -40vw; background:white; border:1px solid #ccc; padding:1em; overflow:auto; ">
             <button onclick="showhideGoPopup();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:10; font-size:2em; position:absolute; top:0; right:0;">&times;</button>
@@ -512,6 +601,8 @@ function showhideaddPond() {
 </div>
 
     <script>
+
+
         function teams() {
             showhideTeamPopup();
             //.innerHTML = pondName
@@ -905,6 +996,22 @@ function markedRootstock(rootstockId, rootstockname, rootstockdescription) {
         `;
     markedPopup();
     }   
+}
+
+var showToDoPopup = 0;   
+function showhideToDoPopup(){
+    var element = document.getElementById("toDoPopup");    
+    if (showToDoPopup === 0) {
+        //element.style.opacity = "1";
+        //element.style.transform = "rotateX(0deg)";
+        element.style.visibility = "visible";
+        showToDoPopup = 1;
+    } else {
+        //element.style.opacity = "0";
+        //element.style.transform = "rotateX(90deg)";
+        element.style.visibility = "hidden";
+        showToDoPopup = 0;
+    }
 }
 
 var showMarkedPopup = 0;   

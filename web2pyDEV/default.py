@@ -13,8 +13,13 @@ def index():
     flask_form = SQLFORM(db.flask, _id="flaskform").process()  # Add _id attribute
     flasks = db(db.flask.created_by == auth.user_id).select()
     #How to manage spells?
-    spell_form = SQLFORM(db.spell, _id="pondform").process()  # Add _id attribute
+    spell_form = SQLFORM(db.spell, _id="spellform").process()  # Add _id attribute
     spells = db(db.spell.created_by == auth.user_id).select()            
+    # Form to create new todos (without 'checked' field)
+    todo_form = SQLFORM(db.todo, fields=['spell', 'todo_message'], _id="todoform").process()
+
+    # Select user's todos
+    todos = db(db.todo.created_by == auth.user_id).select()
     session.pond_id = None
     session.rootstock_id = None
     return dict(
@@ -31,8 +36,24 @@ def index():
         #boats=boats,
 
         flask_form=flask_form,
-        flasks=flasks
+        flasks=flasks,
+
+        todo_form=todo_form,
+        todos=todos
+
         )
+
+@request.restful()
+def mark_done():
+    def POST():
+        import json
+        data = json.loads(request.body.read())
+        todo_id = data.get('id')
+        if todo_id and db.todo(todo_id).created_by == auth.user_id:
+            db(db.todo.id == todo_id).update(is_checked=True)
+            return dict(success=True)
+        return dict(success=False)
+    return locals()
 
 @auth.requires_login()  # or remove if public access is okay
 def set_rootstockid():

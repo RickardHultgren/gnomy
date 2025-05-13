@@ -326,7 +326,17 @@ db.define_table('spell_list',
     Field('contract'),
     Field('created_by',db.auth_user,default=me,writable=False,readable=False),
     Field('created_on','datetime',default=request.now,writable=False,readable=False)             
-               )               
+               )        
+
+db.define_table('todo',
+    #Field('name'),
+    Field('is_checked', 'boolean', default=False, writable=False, readable=False),
+    Field('spell', 'reference spell'),
+    Field('todo_message'),
+    Field('created_by', db.auth_user, default=me, writable=False, readable=False),
+    Field('created_on', 'datetime', default=request.now, writable=False, readable=False)
+)
+
 
 
 
