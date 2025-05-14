@@ -4,43 +4,42 @@ def index():
     if not auth.is_logged_in():
         return dict(message="Please log in")
 
-    pond_form = SQLFORM(db.pond, _id="pondform").process()  # Add _id attribute
+    # Create form for new ponds
+    pond_form = SQLFORM(db.pond, _id="pondform").process()
+    
+    # Create edit form if session.pond_id is set
+    edit_pond_form = None
+    if session.pond_id:
+        record = db.pond(session.pond_id)
+        if record and record.created_by == auth.user_id:
+            edit_pond_form = SQLFORM(db.pond, record, _id="editpondform").process()
+        else:
+            edit_pond_form = "You don’t have access to edit this pond."
+
+    # Retrieve list of ponds
     ponds = db(db.pond.created_by == auth.user_id).select()
-    #team_form = SQLFORM(db.team, _id="teamform").process()  # Add _id attribute
-    #teams = db(db.team.created_by == auth.user_id).select()
-    #boat_form = SQLFORM(db.team, _id="boatform").process()  # Add _id attribute
-    #boats = db(db.team.created_by == auth.user_id).select()
-    flask_form = SQLFORM(db.flask, _id="flaskform").process()  # Add _id attribute
+
+    # Other forms
+    flask_form = SQLFORM(db.flask, _id="flaskform").process()
     flasks = db(db.flask.created_by == auth.user_id).select()
-    #How to manage spells?
-    spell_form = SQLFORM(db.spell, _id="spellform").process()  # Add _id attribute
-    spells = db(db.spell.created_by == auth.user_id).select()            
-    # Form to create new todos (without 'checked' field)
+
+    spell_form = SQLFORM(db.spell, _id="spellform").process()
+    spells = db(db.spell.created_by == auth.user_id).select()
+
     todo_form = SQLFORM(db.todo, fields=['name', 'spell', 'todo_message'], _id="todoform").process()
-    # Select user's todos
     todos = db(db.todo.created_by == auth.user_id).select()
-    session.pond_id = None
-    session.rootstock_id = None
+
     return dict(
         pond_form=pond_form,
+        edit_pond_form=edit_pond_form,
         ponds=ponds,
-        
-        #team_form=team_form,
-        #teams=teams,
-
         spell_form=spell_form,
         spells=spells,
-
-        #boat_form=boat_form,
-        #boats=boats,
-
         flask_form=flask_form,
         flasks=flasks,
-
         todo_form=todo_form,
         todos=todos
-
-        )
+    )
 
 @request.restful()
 def mark_done():
