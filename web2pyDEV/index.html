@@ -173,11 +173,12 @@ function showhideaddPond() {
     </button>
     <div id="explanation-message"></div>
 </div>
+
         <button id="panic-button" onclick="location.href='https://rickardhultgren.github.io/gnomy/panic.html';" style="
             position:fixed; 
             top:.5em;
                         z-index:100;  
-                       left:40vw;                                                                                                color: white;
+                       left:60vw;                                                                                                color: white;
             border-color: #aaaaaa;
             font-size:1em;
                                                                                                                                  vertical-align:middle;
@@ -193,7 +194,7 @@ function showhideaddPond() {
                                                                                                                        color: white;
             position:fixed; 
             top:.5em;
-            left:50vw;
+            left:80vw;
             z-index:100;                                                                                                                      
             border-color: #aaaaaa;
             font-size:1em;
@@ -264,18 +265,22 @@ function showhideaddPond() {
 
 
   <div id="pondMenu">
-    <div class="poem">
-        Hello, and welcome to my land.<br>
-        Things here are odd, but close at hand.<br>
-        The troubles I face are much like yours,<br>
-        just hidden behind different doors.<br><br>
-        Help me explore, and you will see —<br>
-        what’s true for you is true for me.<br>
-        If something’s strange or hard to tell,<br>
-        click the glowing crystal — I’ll explain it well.
-      </div>
-  
-      <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'test'; document.getElementById('explanation').style.display = 'block';"></button>
+ <h1 style="color:#ffffff;
+     
+    text-shadow: 
+    1px -1px 1px #c4d7f2, /* Highlight above */
+   -1px  2px 2px #3b5a76, /* Shadow below */
+    0px  0px 1px #7aa1c4; /* Soft glow for metallic feel */
+  }
+  "> Reflect, Align, Grow</h1>
+<h2 style="color:#aaaaaa;
+    
+    text-shadow: 
+    1px -1px 1px #c4d7f2, /* Highlight above */
+   -1px  2px 2px #3b5a76, /* Shadow below */
+    0px  0px 1px #7aa1c4; /* Soft glow for metallic feel */
+  }">Turn emotions into growth and clarity.</h2>
+      <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'Hello, and welcome to my land.<br>Things here are odd, but close at hand.<br>The troubles I face are much like yours,<br>just hidden behind different doors.<br><br>Help me explore, and you will see —<br>what’s true for you is true for me.<br>If something’s strange or hard to tell,<br>click the glowing crystal — I’ll explain it well.'; document.getElementById('explanation').style.display = 'block';"></button> Click on this crystal to check what it is.
 
 
     <div id="menuBox">
@@ -311,15 +316,21 @@ function showhideaddPond() {
             
             </div>
         </div>
-            <table border="1">
+            <table border="1" style="width:100%;">
             <tr>
                 <!--th>Your ponds:</th-->
                 <!--th>Actions</th-->
             </tr>
             {{for pond in ponds:}}
-            <tr>
-                <td>
-                    <a href="#" onclick="showPond({{=pond.id}}, '{{=pond.name}}');"><button>{{=pond.name}}</button></a>
+            <tr style="width:100%;">
+                <td style="width:100%;">
+                    <a href="#" onclick="showPond({{=pond.id}}, '{{=pond.name}}');"><button class="slide-button">  <span class="bullet"></span>
+                        <span class="button-text">
+                            {{=pond.name}}</span>
+                        <span class="arrow">→</span>
+                        </button>
+                    </a>
+
                 </td>
                 <!--td>
                     <button onclick="showPond({{=pond.id}})">View Rootstocks</button>
@@ -331,17 +342,17 @@ function showhideaddPond() {
     </div>
 </div>
 <div id="chosenpond" >
-        <button onclick="showhidePond();" class="close-btn" style="background:none; width:2em; height:2em; text-align:left; border:none; box-shadow: none; z-index:30; font-size:2em;">&times;</button>
+        <button onclick="showhidePond();" style="text-align:left; z-index:30; font-size:10px;padding:2px;margin-top:0;position:absolute;right:0em;">&larr;BACK</button>
         <h3>Rootstocks <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'A rootstock is a situation'; document.getElementById('explanation').style.display = 'block';"></button>
             
             for Pond "<span id="pondBox"></span>"</h3>
-        <div>Rootstock where Gnomy currently is:
-             "<span id="currentBox"></span>"</div>            
+        <!--div>Rootstock where Gnomy currently is:
+             "<span id="currentBox"></span>"</div-->            
              <div style="width:100vw;text-align: center; margin:1em 0 0.25em 0;">
                 <!--button id="b10" onclick="buttonclicked=0; flasks();" style="width:25px; font-size:12px; align-items: center; width:auto;">FLASKS</button-->
                 <!--button id="b0" onclick="buttonclicked=0; teams();" style="width:25px; font-size:12px; align-items: center; width:auto;">TEAMS</button-->
                 <!--button id="b5" onclick="buttonclicked=5; boats();" style="width:25px; font-size:12px; align-items: center; width:auto;">boats</button-->
-                <button id="b4" onclick="buttonclicked=4; spells();" style="width:25px; font-size:12px; align-items: center; width:auto;margin-left:3em;">SPELLS</button>
+                <!--button id="b4" onclick="buttonclicked=4; spells();" style="width:25px; font-size:12px; align-items: center; width:auto;margin-left:3em;">SPELLS</button-->
             </div>
             <div id="d3-wrapper" style="position: relative;">
             <div id="buttons" style="width:50px;">
@@ -353,7 +364,9 @@ function showhideaddPond() {
                 <!--button id="b1" class="toolbutton" onclick="buttonclicked=1; bclicked(); mode='details';" style="font-size:25px; width:50px; height:50px;   align-items: center; color: rgba(255, 255, 255, 0.7)">i</button>
                 <button id="b2" class="toolbutton" onclick="buttonclicked=2; bclicked(); mode='current';" style="font-size:25px; width:50px; height:50px;   align-items: center; color: rgba(255, 255, 255, 0.7)">&#x273F;</button-->
                 <!--button id="b3" class="toolbutton" onclick="/*buttonclicked=3; bclicked();*/ go();" style="font-size:25px; width:50px; height:50px; font-size:12px; align-items: center; color: rgba(255, 255, 255, 0.7)">&#x1F5CE;</button-->
-                <button id="rootstockAdd" class="toolbutton" onclick="showhideRootPopup();" style="font-size:25px; height:50px;width:50px;  color: rgba(255, 255, 255, 0.7)">+</button>
+                <button id="b4" onclick="buttonclicked=4; spells();" style="width:40px; font-size:10px; align-items: left; padding:0; margin-bottom:1em;">SPELLS</button><br>
+                <button onclick="showhideRootPopup();" style="justify-content: center; align-items: center;  width:2em; height:2em; border-radius:50%;">+</button>
+                <!--button id="rootstockAdd"  style="font-size:25px; height:50px;width:50px;  color: rgba(255, 255, 255, 0.7)">+</button-->
                 <script>
                     function bclicked() {
                         const element1 = document.getElementById("b1");
@@ -529,7 +542,7 @@ function showhideaddPond() {
 <br>
                 <label for="flower-fruit">Fruit <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'This fruit is the desired outcome'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
                 <input type="text" id="flower-fruit">
-<br>           
+<br>   
                 <label for="flower-color">Color <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'The color of the flower shows the emotional tone or vibe of the situation'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
                 <input type="text" id="flower-color">
 <br>

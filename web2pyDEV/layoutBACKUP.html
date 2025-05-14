@@ -156,34 +156,54 @@
       /*margin-bottom: 40px;*/
     }
 
-    .crystal {
-      position: relative;
-      width: 1em;
-      height: 1em;
-      background: linear-gradient(145deg, #00ffff, #0077ff);
-      box-shadow: 0 0 20px #00ffffaa, 0 0 40px #00ffff88, 0 0 60px #00ffff55;
-      clip-path: polygon(
-        15% 0%, 85% 0%, 100% 15%, 100% 85%,
-        85% 100%, 15% 100%, 0% 85%, 0% 15%
-      );
-      display: inline;
-      justify-content: center;
-      align-items: center;
-    }
+.crystal {
+position: relative;
+width: 1rem;
+height: 1rem;
+background: linear-gradient(145deg, #66ccff, #3399ff);
+box-shadow: 0 0 6px #3399ff88, inset 0 0 4px #ffffff33;
+clip-path: polygon(
+20% 0%, 80% 0%, 100% 20%, 100% 80%,
+80% 100%, 20% 100%, 0% 80%, 0% 20%
+);
+display: inline-flex;
+justify-content: center;
+align-items: center;
+font-family: 'Lora', serif;
+font-size: 0.5rem;
+font-weight: bold;
+color: #ffffffee;
+cursor: pointer;
+transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-    .crystal::before {
-      content: '';
-      position: absolute;
-      width: 70%;
-      height: 70%;
-      background: radial-gradient(circle at 30% 30%, #ffffff44, transparent 70%);
-      box-shadow: inset 0 0 15px #00ffffaa;
-      clip-path: polygon(
-        15% 0%, 85% 0%, 100% 15%, 100% 85%,
-        85% 100%, 15% 100%, 0% 85%, 0% 15%
-      );
-    }
-    
+.crystal:hover {
+transform: scale(1.05);
+box-shadow: 0 0 10px #66ccffaa, inset 0 0 6px #ffffff44;
+}
+
+.crystal::before {
+content: 'i';
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+z-index: 2;
+color: #ffffffdd;
+font-size: 1rem;
+text-shadow: 0 0 3px #00000088;
+}
+
+.crystal::after {
+content: '';
+position: absolute;
+width: 100%;
+height: 100%;
+background: radial-gradient(circle at 30% 30%, #ffffff33, transparent 60%);
+clip-path: inherit;
+z-index: 1;
+}
+
     #crystal-message {
       display: none;
       margin-top: 20px;
@@ -323,7 +343,8 @@ content: "";
     z-index: 50;
     /*visibility: hidden;*/
     text-algin:center;
-    transform-origin: center left;
+    /*transform-origin: center left;*/
+    transform-origin: center right;
     transform: rotateY(90deg);
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
@@ -372,7 +393,8 @@ content: "";
     /*radial-gradient(circle at center, #444444 25%, transparent 2.5%);*/
   background-size: .5em 1.45em, .5em 1.45em;/*, .333em .333em;        */"
     
-    transform-origin: center right;
+    /*transform-origin: center right;*/
+    transform-origin: center left;
     transform: rotateY(0deg);
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     width:100vw;
@@ -468,7 +490,51 @@ content: "";
     opacity: 0.8;
 }
 
+.slide-button {
+  width: calc(100% - 1em);
+  margin:.5em 1em .5em 1em;
+  text-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75em 1em;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 0.5em;
+  font-size: 1rem;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
 
+.slide-button:hover {
+  background-color: #e0e0e0;
+}
+
+.bullet {
+  width: 1em;
+  height: 1em;
+  background-color: #555;
+  border-radius: 50%;
+  margin-right: 1em;
+  flex-shrink: 0;
+}
+
+.button-text {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.arrow {
+  margin-left: auto;
+  font-weight: bold;
+  color: #888;
+  transition: transform 0.2s ease;
+}
+
+.slide-button:hover .arrow {
+  transform: translateX(5px);
+}
 
 .toolbutton {
   display: flex;  /* Enables flexbox */
@@ -727,6 +793,7 @@ p {
   color: #ffffff; /* Set text color */
   text-align: start; /*center; /* Center align text */
   font-weight: bold;
+  width:25vw; 
 ">Gnomy</a>
        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" style="border:0; background-image:none; background-color:none; box-shadow:none; font-size:0.75rem; font-weight:bold;">
          <span class="navbar-toggler-icon"></span>
