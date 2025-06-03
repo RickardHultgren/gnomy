@@ -1,4 +1,5 @@
 {{extend 'layout.html'}}
+
 <style>
 .grid-container {
     display: grid;
@@ -90,33 +91,101 @@
 
 </style>
 {{if not auth.is_logged_in():}}
-<div id="splash">
-    <style>
-        body{background-color:#000000;}
-        #splash {
+<style>
+    body {
+        background-color: #000000;
+        overflow-y: auto;
+        margin: 0;
+    }
+
+    #splash {
         font-family: 'Lora', serif;
-        font-size:3em;
+        font-size: 3em;
         display: flex;
+        flex-direction: column;
         width: 100%;
-        height: 100vh; 
+        height: 100vh;
         background-image: url('https://raw.githubusercontent.com/RickardHultgren/gnomy/gh-pages/lantern-bg.jpg');
         background-repeat: no-repeat;
         background-size: cover;
-        background-position: center;  
+        background-position: center;
         background-color: #000000;
         color: #ffffff;
-        justify-content: left;
-        /*align-items: center;*/
-        /*text-align: center;*/
+        justify-content: center;
+        padding-left: 25%;
         text-align: start;
-        padding-left:25%;
         text-shadow: 0 0 3px #000000;
-        }
-    </style>
-    {{=message}}
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #splash h1,
+    #splash h2 {
+        margin: 0;
+        padding: 0;
+    }
+
+    #splash h1 {
+        color: #ffffff;
+        text-shadow:
+            1px -1px 1px #c4d7f2,
+            -1px 2px 2px #3b5a76,
+            0px 0px 1px #7aa1c4;
+        font-size: clamp(1em, min(2vw, 2vh), 1.4em);
+    }
+
+    #splash h2 {
+        color: #aaaaaa;
+        margin-top: 0.5em;
+        text-shadow:
+            1px -1px 1px #c4d7f2,
+            -1px 2px 2px #3b5a76,
+            0px 0px 1px #7aa1c4;
+        font-size: clamp(0.5em, min(1.5vw, 1.5vh), 0.9em);
+    }
+
+    footer {
+        height: 3em;
+        background-color: #b87333;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        font-family: sans-serif;
+        font-size: 1em;
+        z-index: 1000;
+    }
+
+    footer a {
+        color: white;
+        text-decoration: none;
+    }
+</style>
+
+<div id="splash">
+    {{#=message}}
+    <h1>Reflect, Align, Grow</h1>
+    <h2>Turn emotions into growth and clarity.</h2>
 </div>
+
+<footer>
+    <a href="https://www.linkedin.com/newsletters/7247864995974180865/">LinkedIn</a>
+</footer>
+
 {{else:}}
+<style>
+
+    body {
+        background-color: #000000;
+        overflow-y: hidden;
+        margin: 0;
+    }
+
+</style>
+
 <script>
+document.getElementById("body").style.overflow = "hidden";    
 var mode = "";
 var showhidevar = 0;
 function showhidePond() {
@@ -143,8 +212,8 @@ function showhidePond() {
         element.style.transform = "rotateY(0deg)";
         showhidevar = 0;
     }
-    
 }
+
 
 function showhideaddPond() {
     var element = document.getElementById("addPond");
@@ -194,6 +263,7 @@ function showhideeditPond() {
                        left:60vw;                                                                                                color: white;
             border-color: #aaaaaa;
             font-size:1em;
+            z-index:210;
                                                                                                                                  vertical-align:middle;
 
 ">
@@ -225,7 +295,7 @@ function showhideeditPond() {
     text-transform: uppercase;
     cursor: pointer;
                                                                                                   vertical-align:middle;
-
+z-index:210;
 ">
                 &check;
                 </button>
@@ -297,7 +367,7 @@ function showhideeditPond() {
 
 
     <div id="menuBox">
-
+  <div class="rivets"></div>
 
     
     
@@ -382,10 +452,12 @@ function showhideeditPond() {
             </div>
             </div>
 
-        <button onclick="showhidePond();" style="text-align:left; z-index:30; font-size:10px;padding:2px;margin-top:0;position:absolute;right:0em;">&larr;BACK</button>
-        <h3>Rootstocks <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'A rootstock is a situation'; document.getElementById('explanation').style.display = 'block';"></button>
+        <button onclick="showhidePond();" style="text-align:left; z-index:30; font-size:0.8em;padding:2px;margin-top:0;position:absolute;right:0em;color: #3e2f1c; background-image:none;    box-shadow: none;background:#ffffff">&larr;BACK</button>
+        <h3 style="margin-left:10vw;color: #3e2f1c; /* Dark Victorian brown */">Rootstocks <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'A rootstock is a situation'; document.getElementById('explanation').style.display = 'block';"></button>
             
-            for Pond "<span id="pondBox"></span>"<button onclick="showhideeditPond();">&#9998;</button></h3>
+            for Pond "<span id="pondBox"></span>"<button onclick="showhideeditPond();" class="victorian-button"><span class="material-symbols-outlined">
+edit_square
+</span></button></h3>
         <!--div>Rootstock where Gnomy currently is:
              "<span id="currentBox"></span>"</div-->            
              <div style="width:100vw;text-align: center; margin:1em 0 0.25em 0;">
@@ -395,7 +467,7 @@ function showhideeditPond() {
                 <!--button id="b4" onclick="buttonclicked=4; spells();" style="width:25px; font-size:12px; align-items: center; width:auto;margin-left:3em;">SPELLS</button-->
             </div>
             <div id="d3-wrapper" style="position: relative;">
-            <div id="buttons" style="width:50px;">
+            <div id="buttons" style="width:40px;">
                 <script>
                     var buttonclicked = 0;
                     var mode = "";
@@ -551,6 +623,7 @@ function showhideeditPond() {
                 <h3>Spells</h3>
                 {{=spell_form}}
                 {{=spells}}              
+                <button>Delete Spell</button>
             </div>
         </div>
 
@@ -1224,7 +1297,11 @@ function fetchRootstocks(pondId) {
             const d3Container = document.getElementById("d3-rootstocks");
             d3Container.innerHTML = "";
 
-            const width = 600, height = 400, spacing = 100;
+            ///*const width = 600, height = 400, spacing = 100;*/
+            const spacing = 100;
+            const width = window.innerWidth * 0.8;
+            const height = window.innerHeight * 0.6;
+
             const svgRoot = d3.select(d3Container)
                 .append("svg")
                 .attr("width", width)
@@ -1740,4 +1817,7 @@ function addFlower(event) {
 
 </script>
 
+
+
 {{pass}}
+
