@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
+import json
+import os
 
 def index():
     if not auth.is_logged_in():
         return dict(message="Please log in")
 
-    # Create form for new ponds
+    # === Forms ===
     pond_form = SQLFORM(db.pond, _id="pondform").process()
     
-    # Create edit form if session.pond_id is set
+    # Optional: edit form for existing pond
     edit_pond_form = None
     if session.pond_id:
         record = db.pond(session.pond_id)
@@ -16,20 +18,22 @@ def index():
         else:
             edit_pond_form = "You don’t have access to edit this pond."
 
-    # Retrieve list of ponds
-    ponds = db(db.pond.created_by == auth.user_id).select()
-
-    # Other forms
     flask_form = SQLFORM(db.flask, _id="flaskform").process()
-    flasks = db(db.flask.created_by == auth.user_id).select()
-
     spell_form = SQLFORM(db.spell, _id="spellform").process()
-    spells = db(db.spell.created_by == auth.user_id).select()
-
     todo_form = SQLFORM(db.todo, fields=['name', 'spell', 'todo_message'], _id="todoform").process()
+
+    # === Data lists ===
+    ponds = db(db.pond.created_by == auth.user_id).select()
+    flasks = db(db.flask.created_by == auth.user_id).select()
+    spells = db(db.spell.created_by == auth.user_id).select()
     todos = db(db.todo.created_by == auth.user_id).select()
 
+    
+
+    # === Return to template ===
     return dict(
+
+        # Forms and data
         pond_form=pond_form,
         edit_pond_form=edit_pond_form,
         ponds=ponds,
@@ -62,7 +66,25 @@ def set_rootstockid():
     else:
         return response.json({'status': 'error', 'message': 'No rootstock ID provided'})
 
+@auth.requires_login()
+def dialogue_node():
+    import json, os
+    node_id = request.vars.node or 'start'
 
+    try:
+        path = os.path.join(request.folder, 'private', 'dialogue.json')
+        with open(path, 'r', encoding='utf-8') as f:
+            dialogue_tree = json.load(f)
+        current_node = dialogue_tree.get(node_id, {})
+    except Exception as e:
+        current_node = {'text': 'Error loading dialogue.', 'options': []}
+
+    return dict(
+        text=current_node.get('text', ''),
+        options=current_node.get('options', []),
+        current_node=node_id
+    )
+    
 def get_rootstocks():
     pond_id = request.vars.pond_id
     session.pond_id = pond_id

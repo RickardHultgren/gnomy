@@ -126,7 +126,7 @@
     }
 
     #splash h1 {
-        color: #ffffff;
+        color: #44ffff;
         text-shadow:
             1px -1px 1px #c4d7f2,
             -1px 2px 2px #3b5a76,
@@ -246,14 +246,55 @@ function showhideeditPond() {
 }
 
 
+function gnomymessagefunc() {
+    var element = document.getElementById("explanation");
+    var element2 = document.getElementById("dialogue");
+    if (element.style.display === "none") {
+            element.style.display = "block";
+            element2.style.display = "block";
+    } else {
+            element.style.display = "none";
+            element2.style.display = "none";
+    }
+}
+
+
 </script>
-<div id="explanation" style="display: none; position: fixed; z-index:70; width: 50vw; bottom: 11.25vh; left: 50vw; margin-left: -25vw; background-color: rgba(0, 0, 0, 0.7); color: #00ffff;">
-    <button onclick="document.getElementById('explanation').style.display = 'none';"
+<button onclick="gnomymessagefunc();"
       class="close-btn"
-      style="background: none; width: 2em; height: 2em; text-align: left; border: none; box-shadow: none; z-index: 10; font-size: 2em; margin: 0;">
-      &times;
-    </button>
-    <div id="explanation-message"></div>
+      style="background: #00aaaa; background-image: url('https://rickardhultgren.github.io/gnomy/GnomyLogo.png'); background-size: contain;
+background-repeat: no-repeat; background-position: center; width: 2em; height: 2em; right:0.5em; top:50vh; margin-top:-2em; border: 8px solid #333333; border-radius:50%; justify-content: center;
+  align-items: center;
+  text-align: center; box-shadow: none; z-index: 1000; font-size: 2em; ">
+      
+</button>
+<div id="explanation" style="display: block; position: fixed; z-index:70; width: 40vw; bottom: 11.25vh; top:50vh; left: 50vw; margin-left: 0vw; background-color: #ffffff; color: #333333;overflow-y: auto; border: 8px solid #333333;    border-radius: 1em 0em 1em 1em ;">
+    <button onclick="document.getElementById('explanation').style = 'z-index:68;'">BACK TO DIALOGUE</button>
+    <div id="gnomy-message">Click on me for info</div>
+    
+</div>
+
+<div id="dialogue" style="display: block; position: fixed; z-index:69; width: 40vw; bottom: 11.25vh; top:50vh; left: 50vw; margin-left: 0vw; background-color: #ffffff; color: #333333;overflow-y: auto; border: 8px solid #333333;    border-radius: 1em 0em 1em 1em ;">
+    <div id="dialogue-message" style="z-index:1099;">
+    <!-- dialogue block -->
+    <div id="dialogue-container">
+<script>
+  function loadDialogue(node) {
+    fetch('{{=URL("default", "dialogue_node")}}?node=' + encodeURIComponent(node))
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('dialogue-container').innerHTML = html;
+      });
+  }
+
+  window.addEventListener("load", () => {
+    loadDialogue("start");
+  });
+</script>
+    </div>
+
+
+    </div>
 </div>
 
         <button id="panic-button" onclick="location.href='https://rickardhultgren.github.io/gnomy/panic.html';" style="
@@ -348,13 +389,13 @@ z-index:210;
 
 
   <div id="pondMenu">
- <h1 style="color:#ffffff;
+ <h1 style="color: #88cccc;
      
     text-shadow: 
     1px -1px 1px #c4d7f2, /* Highlight above */
    -1px  2px 2px #3b5a76, /* Shadow below */
     0px  0px 1px #7aa1c4; /* Soft glow for metallic feel */
-  }
+  
   "> Reflect, Align, Grow</h1>
 <h2 style="color:#aaaaaa;
     
@@ -363,7 +404,7 @@ z-index:210;
    -1px  2px 2px #3b5a76, /* Shadow below */
     0px  0px 1px #7aa1c4; /* Soft glow for metallic feel */
   }">Turn emotions into growth and clarity.</h2>
-      <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'Hello, and welcome to my land.<br>Things here are odd, but close at hand.<br>The troubles I face are much like yours,<br>just hidden behind different doors.<br><br>Help me explore, and you will see —<br>what’s true for you is true for me.<br>If something’s strange or hard to tell,<br>click the glowing crystal — I’ll explain it well.'; document.getElementById('explanation').style.display = 'block';"></button> Click the crystal to discover what it reveals.
+      <button class="crystal" onclick="document.getElementById('gnomy-message').innerHTML = 'Hello, and welcome to my land.<br>Things here are odd, but close at hand.<br>The troubles I face are much like yours,<br>just hidden behind different doors.<br><br>Help me explore, and you will see —<br>what’s true for you is true for me.<br>If something’s strange or hard to tell,<br>click the glowing crystal — I’ll explain it well.';document.getElementById('explanation').style.display = 'block';document.getElementById('explanation').style = 'z-index:70;'"></button> Click the crystal to discover what it reveals.
 
 
     <div id="menuBox">
@@ -377,7 +418,7 @@ z-index:210;
             align-items: center;  width:2em; height:2em; border-radius:50%;" onclick="showhideaddPond();">+</button><button id="minusbttn" style="    display: inline-flex;  /* Enables flexbox */
         justify-content: center;  /* Centers text horizontally */
         align-items: center;  display:none;width:2em;height:2em;border-radius: 50%;" onclick="showhideaddPond();">-</button>
-    <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'Ponds are contexts'; document.getElementById('explanation').style.display = 'block';"></button>    
+    <button class="crystal" onclick="document.getElementById('gnomy-message').innerHTML = 'Ponds are contexts';document.getElementById('explanation').style.display = 'block';document.getElementById('explanation').style = 'z-index:70;'"></button>    
     </h2>
         <div id="pondformbox" onclick="">
             <div style="
@@ -453,7 +494,7 @@ z-index:210;
             </div>
 
         <button onclick="showhidePond();" style="text-align:left; z-index:30; font-size:0.8em;padding:2px;margin-top:0;position:absolute;right:0em;color: #3e2f1c; background-image:none;    box-shadow: none;background:#ffffff">&larr;BACK</button>
-        <h3 style="margin-left:10vw;color: #3e2f1c; /* Dark Victorian brown */">Rootstocks <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'A rootstock is a situation'; document.getElementById('explanation').style.display = 'block';"></button>
+        <h3 style="margin-left:10vw;color: #3e2f1c; /* Dark Victorian brown */">Rootstocks <button class="crystal" onclick="document.getElementById('gnomy-message').innerHTML = 'A rootstock is a situation';document.getElementById('explanation').style.display = 'block';document.getElementById('explanation').style = 'z-index:70;'"></button>
             
             for Pond "<span id="pondBox"></span>"<button onclick="showhideeditPond();" class="victorian-button"><span class="material-symbols-outlined">
 edit_square
@@ -667,16 +708,16 @@ edit_square
         <div id="flowerz">
             <h3>Flowers</h3>
             <form id="add-flower-form" onsubmit="addFlower(event)">
-                <label for="flower-name">Name <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'The soft powder in the center of the flower reflects your emotional signal and your attitude in this situation. It carries the emotional meaning, direction, and personal relevance — like a mix of your current mood and your deeper intention.'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
+                <label for="flower-name">Name <button class="crystal" onclick="document.getElementById('gnomy-message').innerHTML = 'The soft powder in the center of the flower reflects your emotional signal and your attitude in this situation. It carries the emotional meaning, direction, and personal relevance — like a mix of your current mood and your deeper intention.';document.getElementById('explanation').style.display = 'block';document.getElementById('explanation').style = 'z-index:70;'"></button>:</label>
                 <input type="text" id="flower-name" required>
 <br>
-                <label for="flower-fruit">Fruit <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'This fruit is the desired outcome'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
+                <label for="flower-fruit">Fruit <button class="crystal" onclick="document.getElementById('gnomy-message').innerHTML = 'This fruit is the desired outcome';document.getElementById('explanation').style.display = 'block';document.getElementById('explanation').style = 'z-index:70;'"></button>:</label>
                 <input type="text" id="flower-fruit">
 <br>   
-                <label for="flower-color">Color <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'The color of the flower shows the emotional tone or vibe of the situation'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
+                <label for="flower-color">Color <button class="crystal" onclick="document.getElementById('gnomy-message').innerHTML = 'The color of the flower shows the emotional tone or vibe of the situation';document.getElementById('explanation').style.display = 'block';document.getElementById('explanation').style = 'z-index:70;'"></button>:</label>
                 <input type="text" id="flower-color">
 <br>
-                <label for="flower-team">Team <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'The team of people that shares the emotions and the desired outcome'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
+                <label for="flower-team">Team <button class="crystal" onclick="document.getElementById('gnomy-message').innerHTML = 'The team of people that shares the emotions and the desired outcome';document.getElementById('explanation').style.display = 'block';document.getElementById('explanation').style = 'z-index:70;'"></button>:</label>
                 <input type="text" id="flower-team">                
 <br>
                 <button type="submit">Add flower</button>
@@ -728,10 +769,10 @@ edit_square
                         <option value="">Select a Rootstock (desired situation)</option>
                 </select>
                 <br>
-                <label for="tendril-boat">Boat (competence/resources)<button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'This little boat made from a leaf holds the skills, strengths, or support you have in the situation. It reminds you what you are carrying with you — what you can do or lean on.'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
+                <label for="tendril-boat">Boat (competence/resources)<button class="crystal" onclick="document.getElementById('gnomy-message').innerHTML = 'This little boat made from a leaf holds the skills, strengths, or support you have in the situation. It reminds you what you are carrying with you — what you can do or lean on.';document.getElementById('explanation').style.display = 'block';document.getElementById('explanation').style = 'z-index:70;'"></button>:</label>
                 <input type="text" id="tendril-boat">
                 <br>
-                <label for="tendril-root">Roots (risk) <button class="crystal" onclick="document.getElementById('explanation-message').innerHTML = 'The roots growing down into the water symbolize the risks, constraints, or hidden factors affecting the situation. They anchor you in reality, reminding you to reflect before acting.'; document.getElementById('explanation').style.display = 'block';"></button>:</label>
+                <label for="tendril-root">Roots (risk) <button class="crystal" onclick="document.getElementById('gnomy-message').innerHTML = 'The roots growing down into the water symbolize the risks, constraints, or hidden factors affecting the situation. They anchor you in reality, reminding you to reflect before acting.';document.getElementById('explanation').style.display = 'block';document.getElementById('explanation').style = 'z-index:70;'"></button>:</label>
                 <input type="text" id="tendril-root">
                 <br>
                 <button type="submit">Add Tendril</button>

@@ -1,0 +1,6 @@
+<div id="dialogue">
+  <p>{{=text}}</p>
+  {{for option in options:}}
+    <button onclick="loadDialogue('{{=option['next']}}')">{{=option['label']}}</button><br>
+  {{pass}}
+</div>

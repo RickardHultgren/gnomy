@@ -1,0 +1,32 @@
+{
+  "start": {
+    "text": "How are you feeling today?",
+    "options": [
+      {"label": "Happy 😊", "next": "happy_response"},
+      {"label": "Sad 😢", "next": "sad_response"},
+      {"label": "Not sure 🤔", "next": "not_sure_response"}
+    ]
+  },
+  "happy_response": {
+    "text": "That's great! What made you feel happy?",
+    "options": [
+      {"label": "Something good happened", "next": "end"},
+      {"label": "I just feel good", "next": "end"}
+    ]
+  },
+  "sad_response": {
+    "text": "I'm sorry to hear that. Want to tell me what happened?",
+    "options": [
+      {"label": "Yes", "next": "end"},
+      {"label": "Not now", "next": "end"}
+    ]
+  },
+  "not_sure_response": {
+    "text": "That’s okay. Feelings can be fuzzy sometimes.",
+    "options": [{"label": "Continue", "next": "end"}]
+  },
+  "end": {
+    "text": "Thanks for sharing. I’ve saved this bead in your lantern.",
+    "options": []
+  }
+}
