@@ -2,101 +2,110 @@
   "start": {
     "text": "Whose perspective are you reflecting on?",
     "options": [
-      {"label": "My past self", "next": "select_context"},
-      {"label": "My future self", "next": "select_context"},
-      {"label": "Another person", "next": "select_context"},
-      {"label": "A team or group", "next": "select_context"}
+      { "label": "My past self", "next": "select_context" },
+      { "label": "My future self", "next": "select_context" },
+      { "label": "Another person", "next": "select_context" },
+      { "label": "A team or group", "next": "select_context" }
     ]
   },
   "select_context": {
     "text": "What is the situation or moment you're focusing on?",
     "options": [
-      {"label": "A conflict", "next": "paw_pain"},
-      {"label": "A turning point", "next": "paw_pain"},
-      {"label": "A decision I regret", "next": "paw_pain"},
-      {"label": "A time of growth", "next": "paw_pain"},
-      {"label": "Something else", "next": "paw_pain"}
+      { "label": "A conflict", "next": "paw_pain" },
+      { "label": "A turning point", "next": "paw_pain" },
+      { "label": "A decision I regret", "next": "paw_pain" },
+      { "label": "A time of growth", "next": "paw_pain" },
+      { "label": "Something else", "next": "paw_pain" }
     ]
   },
   "paw_pain": {
     "text": "PAIN – What emotional pain or unmet need was present in that moment?",
     "options": [
-      {"label": "Fear or anxiety", "next": "paw_ambition"},
-      {"label": "Rejection or loneliness", "next": "paw_ambition"},
-      {"label": "Shame or failure", "next": "paw_ambition"},
-      {"label": "Other", "next": "paw_ambition"}
+      { "label": "Fear or anxiety", "next": "paw_ambition" },
+      { "label": "Rejection or loneliness", "next": "paw_ambition" },
+      { "label": "Shame or failure", "next": "paw_ambition" },
+      { "label": "Other", "next": "paw_ambition" }
     ]
   },
   "paw_ambition": {
     "text": "AMBITION – What did the person want to become or achieve at that time?",
     "options": [
-      {"label": "To prove something", "next": "paw_wants"},
-      {"label": "To be accepted or loved", "next": "paw_wants"},
-      {"label": "To grow or succeed", "next": "paw_wants"},
-      {"label": "Other", "next": "paw_wants"}
+      { "label": "To prove something", "next": "paw_wants" },
+      { "label": "To be accepted or loved", "next": "paw_wants" },
+      { "label": "To grow or succeed", "next": "paw_wants" },
+      { "label": "Other", "next": "paw_wants" }
     ]
   },
   "paw_wants": {
     "text": "WANTS – What was the person hoping for in the moment?",
     "options": [
-      {"label": "Connection", "next": "pod_perspective"},
-      {"label": "Relief", "next": "pod_perspective"},
-      {"label": "Control", "next": "pod_perspective"},
-      {"label": "Other", "next": "pod_perspective"}
+      { "label": "Connection", "next": "pod_perspective" },
+      { "label": "Relief", "next": "pod_perspective" },
+      { "label": "Control", "next": "pod_perspective" },
+      { "label": "Other", "next": "pod_perspective" }
     ]
   },
   "pod_perspective": {
     "text": "PERSPECTIVE – What assumptions did this person make about the situation or others?",
     "options": [
-      {"label": "They thought others didn’t care", "next": "pod_other_views"},
-      {"label": "They believed they would fail", "next": "pod_other_views"},
-      {"label": "They assumed they had to act alone", "next": "pod_other_views"},
-      {"label": "Other", "next": "pod_other_views"}
+      { "label": "They thought others didn’t care", "next": "pod_other_views" },
+      { "label": "They believed they would fail", "next": "pod_other_views" },
+      { "label": "They assumed they had to act alone", "next": "pod_other_views" },
+      { "label": "Other", "next": "pod_other_views" }
     ]
   },
   "pod_other_views": {
     "text": "OTHER VIEWS – What are some alternative ways to interpret the situation?",
     "options": [
-      {"label": "Maybe others were doing their best", "next": "pod_dialogue"},
-      {"label": "Maybe I misunderstood their intentions", "next": "pod_dialogue"},
-      {"label": "Maybe I had more support than I thought", "next": "pod_dialogue"},
-      {"label": "Other", "next": "pod_dialogue"}
+      { "label": "Maybe others were doing their best", "next": "pod_dialogue" },
+      { "label": "Maybe I misunderstood their intentions", "next": "pod_dialogue" },
+      { "label": "Maybe I had more support than I thought", "next": "pod_dialogue" },
+      { "label": "Other", "next": "pod_dialogue" }
     ]
   },
   "pod_dialogue": {
     "text": "What kind of conversation would support healing or understanding?",
     "options": [
-      {"label": "Compassionate validation", "next": "dialogue_validation"},
-      {"label": "Empowerment and hope", "next": "dialogue_hope"},
-      {"label": "Collaborative growth", "next": "dialogue_team"}
+      { "label": "Compassionate validation", "next": "dialogue_validation" },
+      { "label": "Empowerment and hope", "next": "dialogue_hope" },
+      { "label": "Collaborative growth", "next": "dialogue_team" },
+      { "label": "Write my own", "next": "dialogue_input" }
     ]
   },
   "dialogue_validation": {
     "text": "What might this sound like?",
     "options": [
-      {"label": "I see why you felt that way", "next": "end"},
-      {"label": "You were doing your best with what you knew", "next": "end"},
-      {"label": "You had hopes that really mattered", "next": "end"},
-      {"label": "That made sense given what you were going through", "next": "end"}
+      { "label": "I see why you felt that way", "next": "end" },
+      { "label": "You were doing your best with what you knew", "next": "end" },
+      { "label": "You had hopes that really mattered", "next": "end" },
+      { "label": "That made sense given what you were going through", "next": "end" },
+      { "label": "Write my own", "next": "dialogue_input" }
     ]
   },
   "dialogue_hope": {
     "text": "What might this sound like?",
     "options": [
-      {"label": "You’ve survived a lot. You’re still here. That means something.", "next": "end"},
-      {"label": "It’s okay to start again—you're not stuck.", "next": "end"},
-      {"label": "Things can change even if they’ve been hard for a long time.", "next": "end"},
-      {"label": "You deserve the chance to heal and grow.", "next": "end"}
+      { "label": "You’ve survived a lot. You’re still here. That means something.", "next": "end" },
+      { "label": "It’s okay to start again—you're not stuck.", "next": "end" },
+      { "label": "Things can change even if they’ve been hard for a long time.", "next": "end" },
+      { "label": "You deserve the chance to heal and grow.", "next": "end" },
+      { "label": "Write my own", "next": "dialogue_input" }
     ]
   },
   "dialogue_team": {
     "text": "What might this sound like?",
     "options": [
-      {"label": "What can we learn from this together?", "next": "end"},
-      {"label": "Let’s be honest and kind moving forward.", "next": "end"},
-      {"label": "We all had different views—how do we realign?", "next": "end"},
-      {"label": "How can we better support each other next time?", "next": "end"}
+      { "label": "What can we learn from this together?", "next": "end" },
+      { "label": "Let’s be honest and kind moving forward.", "next": "end" },
+      { "label": "We all had different views—how do we realign?", "next": "end" },
+      { "label": "How can we better support each other next time?", "next": "end" },
+      { "label": "Write my own", "next": "dialogue_input" }
     ]
+  },
+  "dialogue_input": {
+    "text": "Please write your own dialogue here:",
+    "input": "text",
+    "next": "end"
   },
   "end": {
     "text": "Thank you for exploring this perspective. Your insight has been saved as a lantern bead.",

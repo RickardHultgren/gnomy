@@ -1,0 +1,41 @@
+# GNOMY
+ - Grounding (FIND)
+ - - Feel your breath (Inhale 4, hold 4)
+ - - Introduce pause ("It’s just in my mind")
+ - - Notice curiosity ("What else can I find?")
+ - - Define where you’re starting (Own or Other’s view?)
+ - Narrative (PAW)
+ - - Pain points
+ - - Ambition
+ - - Wants
+ - Others (CROWS)
+ - - Current others
+ - - Retrospective self
+ - - Optional future self
+ - - Wished-for others
+ - - Shared past
+ - More (SPARK)
+ - - Strengths & weaknesses
+ - - Possibilities& Threats
+ - - Assets
+ - - Resourced relationships
+ - - Knowledge
+ - Yikes! (SAGE)
+ - - Spectrum
+ - - - Scary
+ - - - Sufficient
+ - - - Successful
+ - - Actions
+ - - - Avoidance
+ - - - Anchoring
+ - - - Aspiration
+ - - Group & prioritize responsibilities
+ - - - Grade
+ - - - Gauge
+ - - - Group
+ - - - Grid
+ - - Evolution
+ - - - Examine
+ - - - Evaluate
+ - - - Edit
+ - - - Expand
