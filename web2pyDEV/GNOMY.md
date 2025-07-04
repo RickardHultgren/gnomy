@@ -16,7 +16,7 @@
  - - Shared past
  - More (SPARK)
  - - Strengths & weaknesses
- - - Possibilities& Threats
+ - - Possibilities & Threats
  - - Assets
  - - Resourced relationships
  - - Knowledge
