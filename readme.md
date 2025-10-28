@@ -1,1 +1,1 @@
-Harvest mini-game: (https://rickardhultgren.github.io/gnomy/harvest.html)[https://rickardhultgren.github.io/gnomy/harvest.html]
+Harvest mini-game: [https://rickardhultgren.github.io/gnomy/harvest.html]
