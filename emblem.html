@@ -245,8 +245,13 @@
                 </div>
 
                 <div class="field">
-                    <label for="context">Context / Domain</label>
+                    <label for="context">Context / Domain (plant in the Gnomy Framework)</label>
                     <input type="text" id="context" placeholder="e.g., workplace, family, community leadership">
+                </div>
+
+                <div class="field">
+                    <label for="challenge">Challenge for You</label>
+                    <input type="text" id="context" placeholder="name what the biggest challenge is for you">
                 </div>
 
                 <div class="field">
@@ -376,7 +381,7 @@
                 </div>
 
                 <div class="field">
-                    <label for="supporters">Supporters (Flanking Figures – Represent Stakeholders)</label>
+                    <label for="supporters">Supporters (Flanking Figures – Represent stakeholders amd who can help you)</label>
                     <select id="supporters">
                         <option value="">None</option>
                         <option value="two lions">Two Lions – strength, nobility, protection</option>
@@ -445,6 +450,7 @@
     <script>
         function generatePrompt() {
             const roleName = document.getElementById('roleName').value || 'Undefined Role';
+            const challenge = document.getElementById('challenge}').value || '';
             const context = document.getElementById('context').value || 'unspecified context';
             const motto = document.getElementById('motto').value || '';
             const tone = document.getElementById('tone').selectedOptions[0].text;
@@ -485,7 +491,7 @@
                 prompt += `Secondary symbols (representing external expectations): ${secondarySymbols} mixed with ${accountability}\n`;
             }
             if (crest !== 'None') {
-                prompt += `Crest above shield: ${crest}\n`;
+                prompt += `Crest above shield: ${crest} mixed with a symbol of (${challenge}) above\n`;
             }
             if (supporters && supporters !== '') {
                 prompt += `Supporters flanking the shield (representing stakeholders): ${supporters}\n`;
