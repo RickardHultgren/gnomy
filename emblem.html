@@ -5,31 +5,212 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heraldic Role Emblem – AI Prompt Generator</title>
     <style>
-        /* CSS remains unchanged as it was working well */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Garamond', 'Georgia', serif; line-height: 1.6; color: #d4c5b9; background: #1a1412; padding: 16px; padding-bottom: 80px; }
-        .container { max-width: 800px; margin: 0 auto; background: linear-gradient(145deg, #2a1f1a 0%, #1f1511 100%); border-radius: 12px; padding: 24px; border: 1px solid #3d2817; }
-        header { text-align: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 2px solid #4a3527; }
-        h1 { font-size: 1.75rem; color: #e8d4b8; margin-bottom: 12px; }
-        .subtitle { font-size: 0.95rem; color: #a89379; font-style: italic; }
-        .section { margin-bottom: 32px; }
-        .section-title { font-size: 1.25rem; color: #d4af77; margin-bottom: 16px; border-bottom: 1px solid #3d2817; }
-        .field { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; color: #c4a57b; font-size: 0.95rem; }
-        input, textarea, select { width: 100%; padding: 14px; border: 2px solid #3d2817; border-radius: 6px; background: #1a1412; color: #d4c5b9; font-family: inherit; }
-        textarea { min-height: 100px; }
-        button { width: 100%; padding: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
-        .btn-generate { background: linear-gradient(145deg, #6d4c0f 0%, #4a3209 100%); color: #f4e4d0; border: 2px solid #8b6914; }
-        .btn-copy { background: linear-gradient(145deg, #4a3527 0%, #2a1f1a 100%); color: #d4af77; border: 2px solid #3d2817; }
-        .output-section { margin-top: 32px; padding-top: 32px; border-top: 2px solid #4a3527; }
-        .output-area { width: 100%; min-height: 200px; padding: 16px; background: #0f0a08; color: #c4a57b; white-space: pre-wrap; font-family: 'Courier New', monospace; border: 2px solid #3d2817; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Garamond', 'Georgia', serif;
+            line-height: 1.6;
+            color: #d4c5b9;
+            background: #1a1412;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(75, 0, 0, 0.15) 0%, transparent 50%);
+            padding: 16px;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, #2a1f1a 0%, #1f1511 100%);
+            border-radius: 12px;
+            box-shadow: 
+                0 8px 32px rgba(0,0,0,0.6),
+                inset 0 1px 0 rgba(255,255,255,0.05),
+                0 0 60px rgba(139, 69, 19, 0.1);
+            padding: 24px;
+            border: 1px solid #3d2817;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #4a3527;
+            border-image: linear-gradient(90deg, transparent, #8b6914, transparent) 1;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            color: #e8d4b8;
+            margin-bottom: 12px;
+            line-height: 1.3;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #a89379;
+            max-width: 600px;
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #d4af77;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #3d2817;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            letter-spacing: 0.5px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #c4a57b;
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #3d2817;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #1a1412;
+            color: #d4c5b9;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #8b6914;
+            box-shadow: 0 0 12px rgba(139, 105, 20, 0.3);
+            background: #221915;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23d4af77' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: #8b7355;
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border: 2px solid #8b6914;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-generate {
+            background: linear-gradient(145deg, #6d4c0f 0%, #4a3209 100%);
+            color: #f4e4d0;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(139, 105, 20, 0.4);
+        }
+
+        .btn-generate:hover {
+            background: linear-gradient(145deg, #8b6914 0%, #6d4c0f 100%);
+            box-shadow: 0 6px 20px rgba(139, 105, 20, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-copy {
+            background: linear-gradient(145deg, #4a3527 0%, #2a1f1a 100%);
+            color: #d4af77;
+            margin-top: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .btn-copy:hover {
+            background: linear-gradient(145deg, #5a4537 0%, #3a2f2a 100%);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+            transform: translateY(-2px);
+        }
+
+        .output-section {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 2px solid #4a3527;
+            border-image: linear-gradient(90deg, transparent, #8b6914, transparent) 1;
+        }
+
+        .output-area {
+            width: 100%;
+            min-height: 200px;
+            padding: 16px;
+            border: 2px solid #3d2817;
+            border-radius: 6px;
+            background: #0f0a08;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #c4a57b;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+        }
+
         .hidden { display: none; }
+
+        @media (min-width: 768px) {
+            body { padding: 32px; }
+            .container { padding: 40px; }
+            h1 { font-size: 2.25rem; }
+            .section-title { font-size: 1.4rem; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Heraldic Role Emblem Generator</h1>
+            <h1>Heraldic Role Emblem – AI Prompt Generator</h1>
             <p class="subtitle">Transform role descriptions into symbolic heraldic imagery.</p>
         </header>
 
@@ -38,27 +219,73 @@
                 <h2 class="section-title">Role Identity</h2>
                 <div class="field">
                     <label for="roleName">Role Name</label>
-                    <input type="text" id="roleName" placeholder="e.g., Team Lead">
+                    <input type="text" id="roleName" placeholder="e.g., Team Lead, Caregiver, Mediator">
                 </div>
                 <div class="field">
                     <label for="context">Context / Domain</label>
-                    <input type="text" id="context" placeholder="e.g., workplace">
+                    <input type="text" id="context" placeholder="e.g., workplace, family">
                 </div>
                 <div class="field">
                     <label for="challenge">Challenge for You</label>
-                    <input type="text" id="challenge" placeholder="What is your biggest challenge?">
+                    <input type="text" id="challenge" placeholder="What is the biggest challenge?">
                 </div>
                 <div class="field">
-                    <label for="motto">Role Motto</label>
+                    <label for="motto">Role Motto / Vow</label>
                     <input type="text" id="motto" placeholder="e.g., 'Protect and guide'">
                 </div>
                 <div class="field">
                     <label for="tone">Emotional Tone</label>
                     <select id="tone">
-                        <option value="calm">Calm</option>
-                        <option value="protective">Protective</option>
-                        <option value="decisive">Decisive</option>
+                        <option value="calm">Calm – steady, composed</option>
+                        <option value="protective">Protective – vigilant, shielding</option>
+                        <option value="decisive">Decisive – commanding</option>
+                        <option value="reflective">Reflective – thoughtful</option>
+                        <option value="adaptive">Adaptive – flexible</option>
                     </select>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Responsibilities & Expectations</h2>
+                <div class="field">
+                    <label for="responsibilities">Core Responsibilities</label>
+                    <textarea id="responsibilities" placeholder="Key duties..."></textarea>
+                </div>
+                <div class="field">
+                    <label for="expectations">What Others Expect</label>
+                    <textarea id="expectations" placeholder="External pressures..."></textarea>
+                </div>
+                <div class="field">
+                    <label for="boundaries">What This Role is NOT Responsible For</label>
+                    <textarea id="boundaries" placeholder="Clear boundaries..."></textarea>
+                </div>
+                <div class="field">
+                    <label for="timeHorizon">Time Horizon</label>
+                    <select id="timeHorizon">
+                        <option value="short-term">Short-term</option>
+                        <option value="ongoing">Ongoing</option>
+                        <option value="crisis-only">Crisis-only</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Authority & Constraints</h2>
+                <div class="field">
+                    <label for="authority">Decision Authority Level</label>
+                    <select id="authority">
+                        <option value="none">None – advisory</option>
+                        <option value="shared">Shared – collaborative</option>
+                        <option value="final">Final – ultimate authority</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="constraints">Constraints</label>
+                    <textarea id="constraints" placeholder="Rules, limits..."></textarea>
+                </div>
+                <div class="field">
+                    <label for="accountability">Accountability Direction</label>
+                    <input type="text" id="accountability" placeholder="Who do you answer to?">
                 </div>
             </div>
 
@@ -68,17 +295,79 @@
                     <label for="primaryCharge">Primary Charge (Central Symbol)</label>
                     <select id="primaryCharge">
                         <option value="lion">Lion – courage</option>
+                        <option value="eagle">Eagle – vision</option>
+                        <option value="sword">Sword – justice</option>
                         <option value="scales">Scales – balance</option>
                         <option value="key">Key – trust</option>
+                        <option value="shield">Shield – defense</option>
+                        <option value="tower">Tower – stability</option>
+                        <option value="tree">Tree – growth</option>
+                        <option value="book">Book – knowledge</option>
+                        <option value="anchor">Anchor – hope</option>
+                        <option value="sun">Sun – clarity</option>
+                        <option value="moon">Moon – reflection</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="secondarySymbols">Secondary Symbols</label>
+                    <select id="secondarySymbols">
+                        <option value="">None</option>
+                        <option value="stars">Stars – aspiration</option>
+                        <option value="chains">Chains – obligation</option>
+                        <option value="olive branch">Olive Branch – peace</option>
+                        <option value="compass">Compass – direction</option>
+                        <option value="hourglass">Hourglass – urgency</option>
+                        <option value="torch">Torch – enlightenment</option>
                     </select>
                 </div>
                 <div class="field">
                     <label for="crest">Crest (Above Shield)</label>
                     <select id="crest">
-                        <option value="None">None</option>
-                        <option value="crown">Crown</option>
-                        <option value="helm">Helm</option>
+                        <option value="none">None</option>
+                        <option value="crown">Crown – authority</option>
+                        <option value="helm">Helm – duty</option>
+                        <option value="torch">Torch – guidance</option>
+                        <option value="wreath">Wreath – honor</option>
+                        <option value="star">Star – destiny</option>
                     </select>
+                </div>
+                <div class="field">
+                    <label for="supporters">Supporters (Flanking Figures)</label>
+                    <select id="supporters">
+                        <option value="">None</option>
+                        <option value="two lions">Two Lions</option>
+                        <option value="two owls">Two Owls</option>
+                        <option value="two wolves">Two Wolves</option>
+                        <option value="dragon and phoenix">Dragon and Phoenix</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Visual Style</h2>
+                <div class="field">
+                    <label for="fieldColor">Background / Field Color</label>
+                    <select id="fieldColor">
+                        <option value="gold">Gold (Or)</option>
+                        <option value="blue">Blue (Azure)</option>
+                        <option value="red">Red (Gules)</option>
+                        <option value="green">Green (Vert)</option>
+                        <option value="black">Black (Sable)</option>
+                        <option value="white">White (Argent)</option>
+                        <option value="purple">Purple (Purpure)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="era">Era / Style</label>
+                    <select id="era">
+                        <option value="fantasy" selected>Fantasy-Inspired</option>
+                        <option value="medieval">Medieval</option>
+                        <option value="modern">Modern Heraldic</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="styleNotes">Art Style Notes</label>
+                    <textarea id="styleNotes">Highly detailed heraldic emblem, professional design, centered composition, ornate border, dark atmospheric lighting, gothic aesthetic</textarea>
                 </div>
             </div>
 
@@ -94,34 +383,59 @@
 
     <script>
         function generatePrompt() {
-            // Fetch values
             const roleName = document.getElementById('roleName').value || 'Undefined Role';
-            const context = document.getElementById('context').value || 'unspecified context';
             const challenge = document.getElementById('challenge').value || '';
+            const context = document.getElementById('context').value || 'unspecified context';
             const motto = document.getElementById('motto').value || '';
             const tone = document.getElementById('tone').selectedOptions[0].text;
+            const responsibilities = document.getElementById('responsibilities').value || 'responsibilities not specified';
+            const expectations = document.getElementById('expectations').value || 'expectations not specified';
+            const boundaries = document.getElementById('boundaries').value || 'boundaries not defined';
+            const timeHorizon = document.getElementById('timeHorizon').selectedOptions[0].text;
+            const authority = document.getElementById('authority').selectedOptions[0].text;
+            const constraints = document.getElementById('constraints').value || 'no constraints specified';
+            const accountability = document.getElementById('accountability').value || 'accountability not defined';
             const primaryCharge = document.getElementById('primaryCharge').selectedOptions[0].text;
-            const crest = document.getElementById('crest').value;
+            const secondarySymbols = document.getElementById('secondarySymbols').selectedOptions[0].text;
+            const crest = document.getElementById('crest').selectedOptions[0].text;
+            const supporters = document.getElementById('supporters').selectedOptions[0].text;
+            const fieldColor = document.getElementById('fieldColor').selectedOptions[0].text;
+            const era = document.getElementById('era').selectedOptions[0].text;
+            const styleNotes = document.getElementById('styleNotes').value;
 
             let prompt = `A heraldic emblem representing the role of "${roleName}" within the context of ${context}.\n\n`;
             
             prompt += `ROLE DEFINITION:\n`;
+            prompt += `Core responsibilities: ${responsibilities}\n`;
+            prompt += `External expectations: ${expectations}\n`;
+            prompt += `Boundaries: ${boundaries}\n`;
+            prompt += `Time horizon: ${timeHorizon}\n`;
+            prompt += `Authority level: ${authority}\n`;
+            prompt += `Constraints: ${constraints}\n`;
+            prompt += `Accountable to: ${accountability}\n`;
             if (motto) prompt += `Motto: "${motto}"\n`;
             prompt += `Emotional tone: ${tone}\n\n`;
 
             prompt += `HERALDIC COMPOSITION:\n`;
+            prompt += `Shield field color: ${fieldColor}\n`;
             prompt += `Primary charge: ${primaryCharge}\n`;
             
-            // Fixed logic for Crest and Challenge
+            if (secondarySymbols && secondarySymbols !== 'None') {
+                prompt += `Secondary symbols: ${secondarySymbols}\n`;
+            }
+            
             if (crest !== 'None') {
-                prompt += `Crest above shield: ${crest}`;
-                if (challenge) prompt += ` integrated with symbols of "${challenge}"`;
-                prompt += `\n`;
+                prompt += `Crest above shield: ${crest}${challenge ? ' signifying the struggle against ' + challenge : ''}\n`;
+            }
+
+            if (supporters && supporters !== 'None') {
+                prompt += `Supporters: ${supporters}\n`;
             }
 
             prompt += `\nVISUAL STYLE:\n`;
-            prompt += `Highly detailed, ornate border, dark atmospheric lighting, gothic aesthetic.\n`;
-            prompt += `Centered composition, professional quality, high resolution.`;
+            prompt += `${styleNotes}\n`;
+            prompt += `Era/aesthetic: ${era}\n`;
+            prompt += `Format: Square aspect ratio, professional heraldic quality.`;
 
             document.getElementById('outputArea').textContent = prompt;
             document.getElementById('outputSection').classList.remove('hidden');
@@ -138,7 +452,7 @@
                 btn.textContent = 'Copied!';
                 setTimeout(() => btn.textContent = originalText, 2000);
             } catch (err) {
-                // Fallback for older browsers
+                // Fallback
                 const textArea = document.createElement("textarea");
                 textArea.value = text;
                 document.body.appendChild(textArea);
